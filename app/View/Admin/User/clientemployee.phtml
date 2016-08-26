@@ -1,0 +1,93 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<?php include('clientinfoheader.phtml');?>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row">
+
+            <div class="form-group col-sm-3">
+                <label>员工编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sUserName']) ? $aParam['sUserName'] : '' ?>"
+                       class="form-control" name="sUserName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>身份证号码：</label>
+                <input type="text" value="<?php echo !empty($aParam['sIdentityCard']) ? $aParam['sIdentityCard'] : '' ?>"
+                       class="form-control" name="sIdentityCard" style="width: 180px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>所属部门：</label>
+                <select name="iDeptID" class="form-control" style="width: 100px">
+                    <option value="0">全部</option>
+                    <?php foreach ($aDepartment as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iDeptID']) && $aParam['iDeptID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>账号状态：</label>
+                <select name="iStatus" class="form-control" style="width: 100px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                <button class="btn btn-primary" id="user_add">添加员工</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">员工编号</th>
+            <th class="text-center">员工姓名</th>
+            <th class="text-center">部门名称</th>
+            <th class="text-center">职位名称</th>
+            <th class="text-center">身份证号码</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($value['sUserName']) ? $value['sUserName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aDepartment[$value['iDeptID']]) ? $aDepartment[$value['iDeptID']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sJobTitleName'])?$value['sJobTitleName']:''?></td>
+                    <td class="text-center"><?php echo !empty($value['sIdentityCard']) ? $value['sIdentityCard'] : '' ?></td>
+                    <td class="text-center">
+                        <a href="/admin/clientemployee/edit?id=<?php echo $value['iUserID'] ?>" title="编辑"><i
+                                class="fa fa-pencil fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script>
+    $('#user_add').click(function () {
+        location.href = '/admin/clientemployee/add?id=<?php echo !empty($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>';
+        return false;
+    });
+</script>

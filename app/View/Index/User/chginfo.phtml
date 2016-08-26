@@ -1,0 +1,170 @@
+<ul class="cf2 sec_nav">
+	<li class="cf2">
+		<a class="round_s" href="###"><span class="png n_1"></span>订单中心</a> <a
+			class="round_s" href="###"><span class="png n_2"></span>帐号中心</a> <a
+			class="round_s" href="###"><span class="png n_3"></span>财务中心</a> <a
+			class="round_s light" href="javascript:;"><span class="png n_4"></span>个人信息</a>
+	</li>
+</ul>
+
+<div class="cf2 box_w gray_border">
+	<dl class="gray_th">
+		<dd>企业资料</dd>
+	</dl>
+	<table class="fill_table">
+		<tr>
+			<th width="120px;">
+				<span class="red_arrow">*</span>
+				<label for="a_1">公司名字：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sCoName">
+				<label class="error sRePassword" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>所属行业：
+			</th>
+			<td>
+				<ul class="input_list" style="width: 580px;">
+				<?php foreach ($aIndustry as $k => $v){?>
+					<li>
+						<label for="b_1">
+							<div class="sel_box">
+								<input type="checkbox" value="<?php echo $k?>" name="aIndustry[]" />
+								<label for="b_1"></label>
+							</div>
+							<?php echo $v?>
+						</label>
+					</li>
+			    <?php }?>
+				</ul> 
+				<label class="error sRePassword" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="a_2">地址：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sCoAddress">
+				<label class="error sCoAddress" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="a_3">网址：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sCoWebsite">
+				<label class="error sCoWebsite" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="a_4">公司简介：</label>
+			</th>
+			<td>
+				<textarea class="fill_textarea hover_input" name="sCoDesc"></textarea>
+				<label class="error sCoDesc" style="display: none"></label>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<div class="cf2 box_w gray_border">
+	<dl class="gray_th">
+		<dd>个人资料</dd>
+	</dl>
+	<table class="fill_table">
+		<tr>
+			<th width="120px;">
+				<span class="red_arrow">*</span>
+				<label for="b_1">姓名：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sRealName">
+				<label class="error sCoDesc" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="b_2">邮箱：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sEmail" readonly>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="b_3">手机：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input"  name="sMobile" readonly>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="b_4">微信：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sWeixin">
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="b_5" class="eng">QQ：</label>
+			</th>
+			<td>
+				<input type="text" class="fill_text hover_input" name="sQQ">
+			</td>
+		</tr>
+		<tfoot>
+			<tr>
+				<td colspan="2">
+					<input type="button" class="red_btn_t step_btn" value="保存修改">
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+</div>
+<!--end个人资料-->
+
+<script type="text/javascript">
+$(function() {
+	$("#savebtn").click(function(){
+		var form = $('#myform');
+	    $.post(form.action?form.action:location.href, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            //location.href = '/admin/city/list/';
+	        }
+	    }, 'json');
+		return false;
+	});
+	
+	$('#sendverifycode').click(function(){
+		var sMobile = $('#sMobile').val().trim();
+		if (/^1[0-9]{10}$/.test(sMobile)) {
+			alert('请输入正确的手机号码！');
+		}
+		//$.get('/user/')
+	});
+});
+</script>

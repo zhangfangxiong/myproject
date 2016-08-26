@@ -1,0 +1,47 @@
+.ptitle {
+	height: 44px;
+	line-height: 44px;
+	padding-left: 20px;
+	font-weight: bold;
+}
+
+.type,.typeall {
+	padding-right: 5px;
+}
+
+.pbold {
+	font-weight: bold;
+}
+.pcursor {
+	cursor: pointer;
+}
+.pmargin {
+	margin: 0 0 20px 0;
+}
+.aType,.aCategory,.aSupplier,.aCity,.aStatus,.iChannel,.iType,.aChannel,.aParent,.aSex,.aHasType,.aHasCategory,.aHasSupplier,.aHasCity {
+	display: none;
+}
+.th-width {
+	width: 50px;
+}
+.input-width {
+	width: 200px;
+}
+.input-inline {
+	display: inline;
+}
+.input-margin-right {
+	margin-right: 20px;
+}
+.input-margin-left {
+	margin-left: 20px;
+}
+.red {
+	color: #ff0000;
+}
+.popover {
+	max-width:376px;
+}
+.catetitle {
+	float: left;
+}

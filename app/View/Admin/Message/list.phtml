@@ -1,0 +1,188 @@
+<style>
+    .sousuo_now {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .list-caozuo {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="pheader clearfix"><?php echo $aClass['sClassTitle']?>评论列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="<?php echo  $sListUrl ?>">
+        <div class="row sousuo_now">
+            <div class="form-group">
+                &nbsp;&nbsp;&nbsp;&nbsp;ID：
+                <input type="text" value="<?php echo isset($aParam['iMessageID']) ? $aParam['iMessageID'] : '' ?>"
+                       class="form-control input-sm" style="width: 120px;" autocomplete="off" name="iMessageID" id="iMessageID">
+            </div>
+            <div class="form-group">
+                                        开始时间：
+                <input name="iStartTime" autocomplete="off" class="laydatetime form-control" style="width: 140px;" validate="" type="text"
+                       value="<?php echo !empty($aParam['iStartTime']) ? $aParam['iStartTime'] : '' ?>" class="form-control">
+            </div>
+            <div class="form-group">
+                                        结束时间：
+                <input name="iEndTime" autocomplete="off" class="laydatetime form-control" style="width: 140px;" validate="" type="text"
+                       value="<?php echo !empty($aParam['iEndTime']) ? $aParam['iEndTime'] : '' ?>" class="form-control">
+            </div>
+            <div class="form-group">
+                                        内容：
+                <input name="sKeyword" type="text" style="width: 120px;"
+                       value="<?php echo isset($aParam['sKeyword']) ? $aParam['sKeyword'] : '' ?>"
+                       class="form-control input-sm">
+            </div>
+            <div class="form-group">
+                                        状态：
+                <select class="form-control input-sm" name="iStatus">
+                    <option value="-1">请选择</option>
+    				<?php if ($aClass['iIsReview'] == 1) {?>
+                    <option value="2" <?php echo isset($aParam['iStatus']) && 2 == $aParam['iStatus'] ? 'selected' : '' ?>>未审核</option>
+                    <option value="1" <?php echo isset($aParam['iStatus']) && 1 == $aParam['iStatus'] ? 'selected' : '' ?>>审核通过</option>
+                    <option value="3" <?php echo isset($aParam['iStatus']) && 3 == $aParam['iStatus'] ? 'selected' : '' ?>>审核未通过</option>
+                    <?php } else {?>
+                    <option value="1" <?php echo isset($aParam['iStatus']) && 1 == $aParam['iStatus'] ? 'selected' : '' ?>>正常</option>
+                    <?php }?>
+                    <option value="0" <?php echo isset($aParam['iStatus']) && 0 == $aParam['iStatus'] ? 'selected' : '' ?>>已删除</option>
+                </select>
+            </div>
+            <div class="form-group .col-xs-2">
+                <input type="hidden" id="fOrder" name="sOrder"
+                       value="<?php echo isset($aParam['sOrder']) ? $aParam['sOrder'] : '' ?>">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar list-caozuo">
+    <?php if ($aClass['iIsReview'] == 1) {?>
+        <button class="btn btn-primary art_publish" title="批量审核通过" href="<?php echo $sReviewUrl . '?status=1'?>">
+            <i class="fa fa-calendar-check-o"></i> 批量审核通过
+        </button>
+        <button class="btn btn-primary art_publish" title="批量审核不通过" href="<?php echo $sReviewUrl . '?status=3'?>">
+            <i class="fa fa-calendar-times-o"></i> 批量审核不通过
+        </button>
+   <?php }?>
+        <button class="btn btn-primary art_publish" title="批量删除" href="<?php echo $sDelUrl . '?'?>">
+            <i class="fa fa-remove"></i> 批量删除
+        </button>
+        <div style="float:right">
+            <label> 排序方式：</label>
+            <select class="input-sm" id="sOrder">
+                <option value="iCreateTime ASC" <?php echo isset($aParam['sOrder']) && 'iCreateTime ASC' == $aParam['sOrder'] ? 'selected' : '' ?>>按回复时间正序</option>
+                <option value="iCreateTime DESC" <?php echo isset($aParam['sOrder']) && 'iCreateTime DESC' == $aParam['sOrder'] ? 'selected' : '' ?>>按回复时间倒序</option>
+            </select>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">
+                <input type="checkbox" id="art_all_check" name="art_all_check" value="">
+            </th>
+            <th class="col-sm-1 text-center">ID</th>
+            <?php if (!empty($aClass['sTargetModel'])) {?><th class="text-center"><?php echo $aClass['sClassTitle']?>标题</th><?php }?>
+            <th class="text-center">作者</th>
+            <th class="text-center">留言</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($aList['aList'] as $v) { ?>
+            <tr id="tr_<?php echo $v['iMessageID'] ?>">
+                <td class="text-center">
+                    <input type="checkbox" class="art_cb" name="art_check_id" id="art_check_id_<?php echo $v['iMessageID'] ?>" value="<?php echo $v['iMessageID'] ?>">
+                </td>
+                <td class="col-sm-1 text-center"><?php echo $v['iMessageID'] ?></td>
+                <td class="text-center"><?php echo $v['sTargetTitle'] ?></td>
+                <td class="text-center"><?php echo $v['sUserName'] ?></td>
+            	<td class=""><?php echo $v['sContent']?></td>
+                <td class="text-center"><?php echo $aStatus[$v['iStatus']]?></td>
+                <td class="text-center"><?php echo date('Y-m-d H:i', $v['iCreateTime']) ?></td>
+                <td class="text-center">
+                	<a href="<?php echo $sReplyUrl . '?id=' . $v['iMessageID']?>" 
+                       ><i title="审核通过" class="fa fa-reply"></i></a> &nbsp;
+    				<?php if ($aClass['iIsReview'] == 1) {?>
+                	<?php if ($v['iStatus'] == 2) {?>
+                    <a class="art_publish art_check_id_<?php echo $v['iMessageID'] ?>" title="审核通过"
+                       href="<?php echo $sReviewUrl . '?status=1&id=' . $v['iMessageID']?>"
+                       ><i title="审核通过" class="fa fa-calendar-check-o"></i></a> &nbsp;
+                    <a class="art_publish art_check_id_<?php echo $v['iMessageID'] ?>"
+                       href="<?php echo $sReviewUrl . '?status=3&id=' . $v['iMessageID']?>" title="审核未通过"
+                       ><i title="审核未通过" class="fa fa-calendar-times-o"></i></a> &nbsp;
+                    <?php }?>
+                    <?php }?>
+                    <?php if ($v['iStatus'] != 0) {?>
+                    <a class="art_delete" href="<?php echo  $sDelUrl ?>?id=<?php echo $v['iMessageID'] ?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+                    <?php }?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php echo $aList['aPager'] ?>
+</div>
+<script>
+        alldomail="<?php echo $sStaticRoot ?>/js/";
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script>
+    var sCityCode = "";
+    $('#formbtn').click(function () {
+        $('#fOrder').val($('#sOrder').val());
+    });
+    $('#sOrder').change(function () {
+        $('#fOrder').val($('#sOrder').val());
+        $('#myform').submit();
+    });
+
+    $('.art_delete').click(function () {
+        if (confirm("您确认要删除该<?php echo $aClass['sClassTitle']?>吗？")) {
+            $.get(this.href, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+        return false;
+    });
+
+    $('.art_publish').click(function () {
+    	if (confirm("您确认要进行【" + $(this).attr('title')+ "】操作吗？")) {
+        	var url = $(this).attr('href');
+        	if (this.nodeName != 'A') {
+            	var ids = [];
+            	$("input[name='art_check_id']:checked").each(function(){
+                	ids.push($(this).val());
+               	});
+               	if (ids.length == 0) {
+                   	alert('请至少选择一个留言!');
+                   	return false;
+               	}
+               	url += '&id=' + ids.join(',');
+        	}
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+        return false;
+    });
+
+    $('#art_add').click(function () {
+        location.href = '<?php echo $sAddUrl?>';
+    });
+
+
+    $("#art_all_check").click(function () {
+        var is_checked = $(this).prop("checked");
+        $("input[name='art_check_id']").each(function () {
+            $(this).prop("checked", is_checked);
+        });
+    })
+</script>

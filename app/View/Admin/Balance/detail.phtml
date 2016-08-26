@@ -1,0 +1,95 @@
+<div class="pheader clearfix">体检产品结算明细</div>
+<div class="pbody clearfix">
+        <div class="form-group" style="line-height: 50px">
+            <label class="col-sm-3 control-label text-right">供应商：</label>
+            <label class="col-sm-3 control-label"><?php echo $aSupplier['sTypeName']?></label>
+            
+            <label class="col-sm-3 control-label text-right">状态：</label>
+            <label class="col-sm-3 control-label"><?php echo ( !empty($aBalance['iStatus']) && isset($aBalanceStatus[$aBalance['iStatus']]) ) ? $aBalanceStatus[$aBalance['iStatus']] : ''; ?></label>
+        </div>
+        
+        <div class="form-group" style="line-height: 50px">
+            <label class="col-sm-3 control-label text-right">凭证编号：</label>
+            <label class="col-sm-3 control-label"><?php echo $aBalance['sBalanceCode']?></label>
+            
+            <label class="col-sm-3 control-label text-right">请款月份：</label>
+            <label class="col-sm-3 control-label"><?php echo $aBalance['sMonth']?></label>
+        </div>
+        
+        <div class="form-group" style="line-height: 50px">
+            <label class="col-sm-3 control-label text-right">订单数量：</label>
+            <label class="col-sm-3 control-label"><?php echo count($aList)?></label>
+            
+            <label class="col-sm-3 control-label text-right">供应商结算总金额：</label>
+            <label class="col-sm-3 control-label"><?php echo $aBalance['iSMoney']?></label>
+        </div>
+        
+        <div class="form-group" style="line-height: 50px">
+            <label class="col-sm-3 control-label text-right">AF结算总金额：</label>
+            <label class="col-sm-3 control-label"><?php echo $aBalance['iAFMoney']?></label>
+            
+            <label class="col-sm-3 control-label text-right">个人支付总金额：</label>
+            <label class="col-sm-3 control-label"><?php echo $aBalance['iUMoney']?></label>
+        </div>
+        
+        <div class="btn-toolbar text-center" style="line-height: 50px">
+        	<?php if ($aBalance['iStatus'] != 3) {?>
+            <button id="balance" class="btn btn-primary">供应商已结算</button>
+            <?php }?>
+            <button class="btn btn-primary" onclick="location.href='/admin/balance/export.html?id=<?php echo $aBalance['iBalanceID']?>';return false;">导出</button>
+        </div>
+</div>
+<div class="pheader clearfix">订单明细</div>
+<div class="pbody clearfix">
+	<table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">性别</th>
+            <th class="text-center">体检项目</th>
+            <th class="text-center">体检地点</th>
+            <th class="text-center">体检卡</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">个人支付</th>
+            <th class="text-center">AF结算</th>
+            <th class="text-center">供应商结算</th>
+            <th class="text-center">客户来源</th>
+            <th class="text-center">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aList)) {
+            foreach ($aList as $v) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($v['sRealName']) ? $v['sRealName'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sSex']) ? $v['sSex'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sProductName']) ? $v['sProductName'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sStoreName']) ? $v['sStoreName'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['isPhysicalCard']) ? $v['isPhysicalCard'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['iOrderTime']) ? date('Y-m-d', $v['iOrderTime']) : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['iPersonPrice']) ? $v['iPersonPrice'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sChannelPrice']) ? $v['sChannelPrice'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sSupplierPrice']) ? $v['sSupplierPrice'] : '-' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sChannel']) ? $v['sChannel'] : '-' ?></td>
+                    <td class="text-center"><?php echo isset($aStatus[$v['iBookStatus']]) ? $aStatus[$v['iBookStatus']] : '' ?></td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#balance").click(function(){
+		if (confirm('是否确认供应商已结算')) {
+		    $.get('/admin/balance/balance.html?id=<?php echo $aBalance['iBalanceID']?>', function(ret){
+		        alert(ret.data);
+		        if (ret.status) {
+		            location.reload();
+		        }
+		    }, 'json');
+			return false;
+		}
+	});
+});
+</script>

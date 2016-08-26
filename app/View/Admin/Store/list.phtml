@@ -1,0 +1,156 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">体检供应商门店列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label>门店名称：</label>
+                <input type="text" value="<?php echo !empty($aParam['sName']) ? $aParam['sName'] : '' ?>"
+                       class="form-control" name="sName" style="width: 120px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>供应商编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCode']) ? $aParam['sCode'] : '' ?>"
+                       class="form-control" name="sCode" style="width: 120px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>所属供应商：</label>
+                <select name="iSupplierID" class="form-control" style="width: 120px">
+                    <option value="0" <?php echo empty($aParam['iSupplierID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aSupplier as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iSupplierID']) && $aParam['iSupplierID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>所在城市：</label>
+                <select name="iCityID" id="iCityID" class="form-control" style="width: 120px">
+                    <option value="0" <?php echo empty($aParam['iCityID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aCity as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iCityID']) && $aParam['iCityID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>所在地区：</label>
+                <select name="iRegionID" id="iRegionID" class="form-control" style="width: 120px">
+                    <option value="0" <?php echo empty($aParam['iRegionID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aRegion as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iRegionID']) && $aParam['iRegionID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>           
+
+            <div class="form-group col-sm-5">        
+                <a class="text-right btn btn-primary" href='/admin/store/add'>新增供应商门店</a>        
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">门店编号</th>
+            <th class="text-center" width="400px">门店全称</th>
+            <th class="text-center">门店代码</th>
+            <th class="text-center">城市/地区</th>
+            <th class="text-center">联系电话</th>
+            <th class="text-center" width="120px">门店星级</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aList['iTotal'] > 0) {
+            foreach ($aList['aList'] as $key => $aStore) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aStore['sCode'] ?></td>
+                    <td class="text-center"><?php echo $aStore['sName'] ?></td>
+                    <td class="text-center"><?php echo $aStore['sStoreCode'] ?></td>
+                    <td class="text-center"><?php echo $aCity[$aStore['iCityID']] ?>/<?php echo $aRegion[$aStore['iRegionID']] ?></td>
+                    <td class="text-center"><?php echo $aStore['sTel'] ?></td>
+                    <td class="text-center">
+                        <select name="iShopLevel" class="iShopLevel" data-id="<?php echo $aStore['iStoreID']?>" class="form-control" style="width: 120px">
+                            <?php foreach ($aShopLevel as $k => $v) { ?>
+                                <option name='iScore' value="<?php echo $v?>" <?php echo isset($aStore['iShopLevel']) && $aStore['iShopLevel'] == $v ? 'selected' : '' ?>><?php echo $v ?></option>
+                            <?php } ?>
+                        </select>
+                    </td>
+                    <td class="text-center">
+                        <a href="/admin/store/detail/id/<?php echo $aStore['iStoreID']?>">查看</a>
+                        <a class="user_delete" href="javascript:;" 
+                        data-text= "<?php echo 1 == $aStore['iStatus'] ? '停用' : '启用';?>"
+                        data-url="/admin/store/stop?id=<?php echo $aStore['iStoreID'] ?>"><?php echo 1 == $aStore['iStatus'] ? '停用' : '<font color="red"><B>启用</B></font>';?></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>
+
+<input id='ids' value='' type='hidden'/>
+<div class='modal fade' id='tModal'>
+    <div class='modal-dialog'>
+        <div class='modal-content'>
+            <div class='modal-body'>
+                <form class='form-horizontal'>
+                    <div class="form-group col-sm-4">
+                        <label>将选中人员转移至：</label>
+                        <select id='deptID' name="deptID" class="" style="width: 120px">
+                            <?php foreach ($aDeptSet as $k => $v) { ?>
+                                <option value="<?php echo $k ?>" ><?php echo $v ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </form>
+                <button type='button' class='btn btn-primary' id='tSave'>确定</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    var score = $('.iShopLevel').change(function() {
+        $id = $(this).data('id');
+        $score = $(this).children('option:selected').val();
+        window.location.href='/admin/store/updscore?iStoreID='+$id+'&&iShopLevel='+$score;
+    });
+
+    $('#iCityID').on('change',function(){
+        var cid = $(this).find('option:selected').val();
+        $('#iRegionID').empty();
+        $.post('/admin/city/getregion', {iCityID: cid}, function(ret){
+            if (ret.status) {
+                $('#iRegionID').append('<option value="0">全部</option>');
+                $.each(ret.data, function(i,e) {
+                    $('#iRegionID').append('<option value="'+e.iRegionID+'">'+e.sRegionName+'</option>');
+                });
+                return false;
+            }else {
+                alert('请求数据失败!');
+            }
+        }, 'json');
+    });
+
+    $('.user_delete').click(function () {
+        var url = $(this).data('url');
+        var text = $(this).data('text');
+        if (confirm("您确认要"+text+"该门店吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+</script>

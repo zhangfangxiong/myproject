@@ -1,0 +1,16 @@
+<div class="row row-main-margin">
+    <?php if (!empty($aMenu)) {
+        foreach ($aMenu as $key => $value) {
+            ?>
+
+            <div class="home-img-btn col-xs-4">
+                <a href="<?php echo $value['url'] ?>">
+                    <div class="<?php echo $value['icon'] ?> glyphicon"></div>
+                    <div class="btn-text"> <?php echo $value['name'] ?></div>
+                </a>
+            </div>
+
+        <?php
+        }
+    } ?>
+</div>

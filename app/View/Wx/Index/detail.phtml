@@ -1,0 +1,104 @@
+<div class="row row-main-margin">
+    <div class="p-detail-main">
+        <input type="hidden" name="iProductID" id="iProductID"
+               value="<?php echo !empty($aData['iProductID']) ? $aData['iProductID'] : 0 ?>">
+        <h4 class="p-detail-title"><?php echo !empty($aData['sProductName']) ? !empty($aData['sAlias']) ? $aData['sAlias'] : $aData['sProductName'] : '' ?></h4>
+
+        <div class="p-detail-store">可在全国<span
+                class="red"><?php echo !empty($aData['iStoreNum']) ? $aData['iStoreNum'] : '' ?></span>家门店使用（<a
+                href="<?php echo $sStoreUrl . 'id/' . $aData['sProductCode'] ?>">查看门店列表<i
+                    class="fa fa-arrow-circle-right green"></i></a>）
+        </div>
+        <div class="p-detail-supplier">
+            合作机构：<?php echo !empty($aData['sSupplierName']) ? $aData['sSupplierName'] : '' ?></div>
+        <div class="p-detail-price"><i class="fa fa-cny"></i><span
+                class="red"><?php echo !empty($aData['iPrice']) ? $aData['iPrice'] : '' ?></span>元
+        </div>
+        <div>
+            <div class="p-detail-special-title">产品特色：</div>
+            <div class="p-detail-special-content">
+                <?php echo !empty($aData['sRemark']) ? $aData['sRemark'] : '' ?>
+            </div>
+        </div>
+        <div class="p-detail-nav">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                          data-toggle="tab"><?php echo !empty($aCommonLang[29]) ? $aCommonLang[29] : '' ?></a>
+                </li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[30]) ? $aCommonLang[30] : '' ?></a>
+                </li>
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[31]) ? $aCommonLang[31] : '' ?></a>
+                </li>
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[32]) ? $aCommonLang[32] : '' ?></a>
+                </li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content product-detail">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div id="detail" style="background-color:#fff; padding:5px;">
+                        <div id="pnlDetail" style="padding-top:10px;" class="panel-group">
+                            <?php if (!empty($aItemCat)) {
+                                foreach ($aItemCat as $key => $value) {
+                                    ?>
+                                    <div class="panel panel-info">
+                                        <div class="panel-heading" role="tab" style="cursor:pointer;">
+                                            <?php echo $key; ?>
+                                        </div>
+                                        <div class="panel-body " role="tabpanel">
+                                            <?php if (!empty($value)) {
+                                                foreach ($value as $k => $v) {
+                                                    ?>
+                                                    <div style="padding:10px 0; border-bottom:1px dashed #808080">
+                                                        <div><b><?php echo $k ?>
+                                                                ：</b><?php echo implode(',', $v['aItemNames']) ?></div>
+                                                        <!--
+                                                        <div><b>适应人群：</b><span
+                                                                class="persontype label label-success">男性✔</span>&nbsp;<span
+                                                                class="persontype label label-success">女(未婚)✔</span>&nbsp;<span
+                                                                class="persontype label label-success">女(已婚)✔</span>
+                                                        </div>
+                                                        -->
+                                                        <div><b>检查意义：</b><span><?php echo $v['sRemark'] ?></span>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                <?php
+                                                }
+                                            } ?>
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                        <div><b>温馨提示：此体检套餐所含检查单项内容因各家体检机构门店设备差异会有相应替换及调整。</b></div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <?php include('reserve.phtml') ?>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+                    <?php include('attention.phtml') ?>
+                </div>
+                <div role="tabpanel" class="tab-pane detail-store-include" id="settings">
+                    <?php include('store.phtml') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar navbar-fixed-bottom">
+        <div class="container-fluid text-center clearfix navbar-white">
+            <a id="buybtn" class="btn btn-warning navbar-btn col-xs-4 col-xs-offset-1 active" href="javascript:;"
+               role="button">
+                <i class="fa fa-rmb fa-lg"></i> <?php echo !empty($aCommonLang[34]) ? $aCommonLang[34] : '' ?></a>
+            <a id="cartbtn" class="btn btn-default navbar-btn col-xs-4 col-xs-offset-1 active" href="javascript:;"
+               role="button">
+                <i class="fa fa-shopping-cart fa-lg"></i> <?php echo !empty($aCommonLang[35]) ? $aCommonLang[35] : '' ?>
+            </a>
+        </div>
+    </nav>
+</div>

@@ -1,0 +1,54 @@
+<div class="pheader clearfix">设置权限</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>">
+
+        <div class="form-group">
+            <label for="sRoleName" class="col-sm-2 control-label">员工编号：</label>
+
+            <div class="col-sm-10">
+                <input name="sRoleName" disabled type="text" value="<?php echo isset($aUser['sUserName']) ? $aUser['sUserName'] : '' ?>" class="form-control input-validate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sRoleName" class="col-sm-2 control-label">员工姓名：</label>
+
+            <div class="col-sm-10">
+                <input name="sRoleName" disabled type="text" value="<?php echo isset($aUser['sRealName']) ? $aUser['sRealName'] : '' ?>" class="form-control input-validate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="iStatus" class="col-sm-2 control-label">用户权限：</label>
+
+            <div class="col-sm-10">
+                <select name="iRoleID" class="form-control input-validate">
+                    <option
+                        value="0" <?php echo isset($aUser['iRoleID']) && $aUser['iRoleID'] == 0 ? 'selected' : '' ?>>请选择</option>
+                    <?php foreach ($aRole as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aUser['iRoleID']) && $aUser['iRoleID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center">
+            <button id="save" class="btn btn-primary">保存</button>
+            <button id="cancel" class="btn" onclick="location.href='/admin/user/adminlist/';return false;">取消</button>
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    alert(ret.data);
+                    if (ret.status) {
+                        location.href = '/admin/user/adminList/';
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

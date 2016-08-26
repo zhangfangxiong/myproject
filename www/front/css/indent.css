@@ -1,0 +1,63 @@
+@charset "utf-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+body { background:#fff; color:#000; font-size:16px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+td,th,caption { font-size:16px; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal;}
+a { color:#555; text-decoration:none; }
+a:hover { text-decoration:underline; }
+img { border:none; }
+ol,ul,li { list-style:none; }
+input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
+table { border-collapse:collapse; }
+html {overflow-y: scroll;}
+/* css common */
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+.clear{ clear:both;}
+
+
+
+body{width: 100%;min-width: 1100px; font-family: "Microsoft YaHei" ! important;}
+
+/*订单详情*/
+.deatils{width: 1100px;margin: 20px auto;}
+.deatils .deatils_title{width: 100%;height: 40px;background-color: #F5F5F5;border: 1px solid #E7E7E7;}
+.deatils .deatils_title p{height: 40px;line-height: 40px;margin-left: 50px;}
+.deatils .deatils_title p img{position: relative;top:2px;}
+.deatils .deatils_title p span{font-size: 18px;}
+.deatils_content{width:100%;border: 1px solid #E7E7E7;background-color: #fff;}
+.deatils_news{float:left;width:500px;position:relative;left: 180px;top: 110px;}
+/*.deatils_news_table{height: 500px;}*/
+.deatils_news_table a{text-decoration:none;color: red;}
+.deatils_news_table tr{height:50px;background-color: #fff;}
+.deatils_news_table td{text-align: left;}
+
+
+/*手机图像*/
+.deatils_right{position: relative;float:right;right: 16%;top:20px;}
+.deatils_right span{position: relative;top:-40px;}
+.deatils_content p{margin-top: 100px;margin-left:20px;font-size: 18px;}
+.deatils_content p span{font-size: 18px;color: red;}
+.deatils_right .deatils_right_phone .phone{margin-top: 10px;margin-left: -40px;}
+.deatils_right .deatils_right_phone .deatils_div{width: 246px;height:420px;overflow:scroll;margin-top: -480px;margin-left: -12px;}
+
+
+/*订单表格*/
+.deatils_content p{margin-top: 120px;}
+.deatils_content .table_table{width: 1096px;margin: 10px auto 20px;}
+.deatils_content .table_table tr{height: 40px;}
+.deatils_content .table_table tr:first-child{background-color:#F5F5F5;}
+.deatils_content .table_table td{text-align: center;border: 1px solid #E7E7E7 ;}
+.deatils_content .table_table td span{color: green;}
+.deatils_content .table_table td a{text-decoration: none;color: red;}
+
+
+/*button*/
+.button{width: 100%;height: 40px;background-color: #acacac;margin-top: 160px;}
+.button .button_div{width:1100px;margin:0 auto;line-height: 40px;}
+.button .button_span{width:600px;margin: 0 auto;}
+.button .button_span span{margin: 0 10px 10px 0;font-size: 14px;color: #fff;}
+.button .button_span span a{color: #fff;}
+

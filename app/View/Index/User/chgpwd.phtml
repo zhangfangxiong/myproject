@@ -1,0 +1,69 @@
+
+<div class="cf2 box_w gray_border">
+	<dl class="gray_th">
+		<dd>修改密码</dd>
+	</dl>
+	<form method="post">
+	<table class="fill_table">
+		<tr>
+			<th width="120px;">
+				<span class="red_arrow">*</span>
+				<label for="c_1">当前密码：</label>
+			</th>
+			<td>
+				<input type="password" name="sOldPassword" class="fill_text hover_input" id="c_1" name="c_1">
+				<label class="error sOldPassword" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="c_2">新设密码：</label>
+			</th>
+			<td>
+				<input type="password" name="sNewPassword" class="fill_text hover_input" id="c_2" name="c_2">
+				<label class="error sNewPassword" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tr>
+			<th>
+				<span class="red_arrow">*</span>
+				<label for="c_3">确认密码：</label>
+			</th>
+			<td>
+				<input type="password" name="sRePassword" class="fill_text hover_input" id="c_3" name="c_3">
+				<label class="error sRePassword" style="display: none"></label>
+			</td>
+		</tr>
+
+		<tfoot>
+			<tr>
+				<td colspan="2">
+					<input type="button" class="red_btn_t step_btn" value="保存修改">
+				</td>
+			</tr>
+		</tfoot>
+	</table>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$(".red_btn_t").click(function(){
+		var form = $(this).parents('form').get(0);
+	    $.post(form.action?form.action:location.href, $(form).serialize(), function(ret){
+	        if (ret.status) {
+	            alert(ret.data);
+	            location.reload();
+	        } else {
+	        	$(form).find('label.error').hide();
+	        	for (var key in ret.data) {
+		        	$(form).find('.' + key).html(ret.data[key]).show();
+	        	}
+	        }
+	    }, 'json');
+		return false;
+	});
+});
+</script>

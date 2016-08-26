@@ -1,0 +1,100 @@
+<div class="pheader clearfix">个人信息设置</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aEmployee['iUserID'])?$aEmployee['iUserID']:''?>">
+
+        <div class="form-group col-sm-9">
+            <label for="sHeadImage" class="col-sm-3 control-label">头像：</label>
+            <div class="col-sm-5">
+                <input type="hidden" id="sImage" name="sAvatar" value="<?php echo isset($aEmployee['sAvatar']) ? $aEmployee['sAvatar'] : '' ?>">
+                <img id="sImageShow" style="width:160px;height:120px;" src="<?php echo !empty($aEmployee['sAvatar']) ? Util_Uri::getDFSViewURL($aEmployee['sAvatar']) : ''?>">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow" data-fsize="2mb">
+                <span class="text-muted">仅支持jpg,png格式图片，且文件小于2M</span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>姓名：</label>
+            <div class="col-sm-5">
+                <input name="sRealName"  type="text" value="<?php echo !empty($aEmployee['sRealName']) ? $aEmployee['sRealName'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>      
+
+        <div class="form-group col-sm-9">
+            <label for="iSex" class="col-sm-3 control-label"> <span class="tubiao">*</span>性别：</label>
+            <div class="col-sm-5">
+                <input type='radio' name='iSex' value='1' 
+                <?php echo 1 == $aEmployee['iSex'] ? 'checked': '';?>>男</input>
+                <input type='radio' name='iSex' value='2'
+                <?php echo 2 == $aEmployee['iSex'] ? 'checked': '';?>>女</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sIdentityCard" class="col-sm-3 control-label"><span class="tubiao">*</span>身份证号码：</label>
+            <div class="col-sm-5">
+                <input name="sIdentityCard" type="text" value="<?php echo !empty($aEmployee['sIdentityCard']) ? $aEmployee['sIdentityCard'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sBirthDate" class="col-sm-3 control-label"><span class="tubiao">*</span>生日：</label>
+            <div class="col-sm-5">
+                <input id="sBirthDate" name="sBirthDate" type="text" value="<?php echo !empty($aEmployee['sBirthDate']) ? $aEmployee['sBirthDate'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sMobile" class="col-sm-3 control-label"><span class="tubiao">*</span>手机号码：</label>
+            <div class="col-sm-5">
+                <input name="sMobile" type="text" value="<?php echo isset($aEmployee['sMobile'])?$aEmployee['sMobile']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sEmail" class="col-sm-3 control-label"> 邮箱：</label>
+            <div class="col-sm-5">
+                <input name="sEmail" type="text" value="<?php echo isset($aEmployee['sEmail'])?$aEmployee['sEmail']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">保存</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+                // console.log(ret);return;
+                location.href = ret.url;
+            }
+        }, 'json');
+
+        return false;
+    }});
+
+    laydate({
+        elem: '#sBirthDate',
+        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+        festival: true, //显示节日
+        choose: function(datas){ //选择日期完毕的回调
+        }
+    });
+});
+</script>

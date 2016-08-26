@@ -1,0 +1,60 @@
+<div class="pheader clearfix">发送账号</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input type='hidden' name="ids" value="<?php echo $ids;?>"></input>
+        <div class="form-group col-sm-12">
+            <label for="title" class="col-sm-3 control-label"> <span class="tubiao">*</span>通知人员名单：</label>
+            <div class="col-sm-9">            
+                <?php foreach ($aMail['users'] as $key => $value) { 
+                    echo $value['sRealName'].'【'.$value['sEmail'].'】,';
+                } ?>       
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label for="title" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮件标题：</label>
+            <div class="col-sm-9">
+                <input name="title" type="text" value="<?php echo $aMail['title']?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            (您可以自行编辑正文内容，括号“【】”的内容，请勿删除，系统会自动替换为对应的内容)
+            <label for="content" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮件正文：</label>
+            <div class="col-sm-9">
+                <textarea style="margin-top: 0px; margin-bottom: 0px; height: 222px;" name="content" class="form-control input-validate"><?php echo $aMail['content']?></textarea>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label for="content" class="col-sm-3 control-label"> <span class="tubiao">*</span>短信内容：</label>
+            <div class="col-sm-9">
+                <textarea style="margin-top: 0px; margin-bottom: 0px; height: 100px;" name="msg" class="form-control input-validate"><?php echo $aMail['msg']?></textarea>
+            </div>
+        </div>
+
+        <div class="form-group text-center col-sm-12">
+            <input type="checkbox" checked name="sAccount">将员工的登录帐号信息附加到本邮件底部，同步发送给员工。</input>
+            <input type="checkbox" checked name="iSendEmail">发送邮件通知</input>
+            <input type="checkbox" checked name="iSendMsg">发送短信通知</input>
+        </div>
+        
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">发送</button>
+            <a class="text-right btn btn-default" href="/company/physical/record">返回</a>
+        </div>      
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = '';            
+            }
+        }, 'json');
+        return false;
+    }});
+});
+</script>

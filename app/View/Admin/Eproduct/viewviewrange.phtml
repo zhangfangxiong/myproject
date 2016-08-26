@@ -1,0 +1,81 @@
+<?php include('productheader.phtml'); ?>
+<div class="pbody clearfix">
+    <?php if (!empty($aProduct['iCanCompany'])) {
+        ?>
+        <div class="ptitle clearfix">公司客户</div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">渠道</th>
+                <th class="text-center">可见范围</th>
+                <th class="text-center">数量</th>
+                <th class="text-center">男-价格</th>
+                <th class="text-center">女未婚-价格</th>
+                <th class="text-center">女已婚-价格</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($aChannel as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $value['sChannelName'] ?></td>
+                    <td class="text-center"><?php echo $value['sViewName'] ?></td>
+                    <td class="text-center"><?php echo $value['iViewNum'], $value['sViewShortName'] ?></td>
+                    <td class="text-center"><?php echo $value['iManPrice'] ?></td>
+                    <td class="text-center"><?php echo $value['iWomanPrice1'] ?></td>
+                    <td class="text-center"><?php echo $value['iWomanPrice2'] ?></td>
+                </tr>
+            <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } ?>
+
+    <?php if (!empty($aProduct['iCanIndividual'])) {
+        ?>
+        <div class="ptitle clearfix">公司客户</div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">渠道</th>
+                <th class="text-center">可见范围</th>
+                <th class="text-center">数量</th>
+                <th class="text-center">男-价格</th>
+                <th class="text-center">女未婚-价格</th>
+                <th class="text-center">女已婚-价格</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($aChannel1 as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $value['sChannelName'] ?></td>
+                    <td class="text-center"><?php echo $value['sViewName'] ?></td>
+                    <td class="text-center"><?php echo $value['iViewNum'], $value['sViewShortName'] ?></td>
+                    <td class="text-center"><?php echo $value['iManPrice'] ?></td>
+                    <td class="text-center"><?php echo $value['iWomanPrice1'] ?></td>
+                    <td class="text-center"><?php echo $value['iWomanPrice2'] ?></td>
+                </tr>
+            <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } ?>
+
+    <div class="btn-toolbar text-center">
+        <input type="button"
+               data-url="<?php echo !empty($sAddChannelUrl) ? $sAddChannelUrl : '' ?>?type=1&id=<?php echo $value['iProductID'] ?>"
+               id="next"
+               class="btn btn-primary"
+               value="修改">
+        <input type="button" value="返回列表" id="cancel" class="btn" onclick="location.href='<?php echo !empty($sEpListUrl) ? $sEpListUrl : 'javascript:;' ?>';return false;">
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#next').click(function () {
+        location.href = $(this).data('url');
+    });
+</script>

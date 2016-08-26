@@ -1,0 +1,253 @@
+
+<div class="buy_pro_main">
+    <input type="hidden" name="iProductID" id="iProductID" value="<?php echo!empty($aData['iProductID']) ? $aData['iProductID'] : 0 ?>">
+    <div class="page_location">
+        <a href="#">体检预约</a><span class="location_next">&gt;</span><a href="/index/web/list">体检产品</a>
+        <span class="location_next">&gt;</span>
+        <span id="main_lblTitle" class="f_c_999"><?php echo $aData['sProductName'] ?></span>
+    </div>
+    <div class="product-intro c">
+        <div class="pro_big_img pr20 fl">
+            <img id="main_imgUrl" src="<?php echo!empty($aData['sImage']) ? Util_Uri::getDFSViewURL($aData['sImage']) : '' ?>" style="border-width:0px;height:328px;width:400px;" />
+        </div>
+        <div class="pro_big_img_info fl pt10 pb10">
+            <div>
+                <div style="float: left;">
+                    <h1 class="f_c_333" style="width: 345px">
+                        <span  style="font-size:18px;"><?php echo $aData['sProductName'] ?></span>
+                        <span  style="color:#CCCCCC;font-size:14px;font-weight:normal;"></span>
+                    </h1>
+                </div>
+                <div class="bdsharebuttonbox fl mt5" style="text-align:right">
+                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a href="#" class="bds_more" data-cmd="more"></a>
+                </div>
+                <script type="text/javascript">
+                    window._bd_share_config = {"common": {"bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16"}, "share": {}};
+                    with (document)
+                        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                </script>
+            </div>
+
+
+            <div class="summary c">
+                <div class="c">
+                    <ul>
+                        <li id="main_PersonPay"><span class="f_c_999 les4">个人支付：</span> <span
+                                class="f_c_f63 " style="font-weight: bold;">¥<span id="main_lblSaleValue" style="font-size:20px;"><?php echo $aData['iPrice'] ?></span></span><span
+                                class="ml10" style="font-size: 12px; color: #CCCCCC"><span class="f_c_999"></span><strong class="f_c_666 vam"></strong></span></li>
+                        <li>
+                            <span class="f_c_999">体检机构：</span>
+                            <span id="main_lblSupplier" class="f_c_999"><?php echo $sSupplier ?></span>
+                        </li>
+                        <li class="summary_other c">
+                            <div class="fl clo_ico">
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="fl c w215" style=" text-align:right;padding-top:10px">
+                        <a id="show_comment_a" href="#" class="ano_2e84ca show_comment">已有<span id="main_lblOrderCount"><?php echo $aData['iCardNum'] ?></span>位用户选购</a>
+
+                    </div>
+                </div>
+                <div class="pb15" style="padding-top:15px;">
+                    <input type="submit" name="" value="<?php echo!empty($aCommonLang[34]) ? $aCommonLang[34] : '' ?>" id="buybtn" class="reg_btn" style="background-color:Orange;width:140px;">
+                    <input type="submit" name="ctl00$main$btnAdd" value="<?php echo!empty($aCommonLang[35]) ? $aCommonLang[35] : '' ?>" id="cartbtn" class="masking_button" style="width:140px;">
+                </div>
+            </div>
+            <div>
+                <dl class="pro_feature">
+                    <dt>产品特色：</dt>
+                    <dd>
+                        <span id="main_lblInfo"><?php echo $aData['sRemark'] ?></span></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <!--详情 begin-->
+    <div class="pro_det_box">
+        <div class="tab_nav_box mt20" id="product-detail">
+            <div class="float-nav-wrap" style="height: 38px;">
+                <ul class="tab_a c" id="tab_nav" style="height: 38px; width: 1000px;">
+                    <li class="cut"><span><a href="javascript:;">产品详情</a></span></li>
+                    <li><span><a href="javascript:;">体检门店</a></span></li>
+                    <li><span><a href="javascript:;">注意事项</a></span></li>
+                    <li><span><a href="javascript:;">预约流程</a></span></li>
+                    <li style="float: right;"><span style="border-right: none;">咨询电话：400-816-6768</span></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!--产品详情-->
+        <div class="pro_det_con pro_det_con2">
+            <div id="main_UpdatePanel2">
+                <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">产品详情</h2>
+                <div class="pro_det_box2">
+                    <table id="main_rbtnBigType" style="font-size:15pt;font-weight:bold;text-decoration:underline;">
+                        <tr>
+                            <?php foreach ($aItemCat as $key => $value) { ?>
+                            <!--<td>
+                            <input id="" type="radio" name="item" value="1" checked="checked" />
+                            <label for=""><?php // echo $key ?></label>
+                            </td>
+                            -->  
+                            <?php } ?>
+                    </table>
+
+                    <table id="tableFrameBlue" cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr class="title">
+                            <td style="width: 15%">项目
+                            </td>
+                            <td style="width: 25%">检查内容
+                            </td>
+                            <td style="width: 10%; text-align: center;">男
+                            </td>
+                            <td style="width: 10%; text-align: center;">女（未婚）
+                            </td>
+                            <td style="width: 10%; text-align: center;">女（已婚）
+                            </td>
+                            <td style="width: 30%">检查意义
+                            </td>
+                        </tr>
+
+                        <?php foreach ($aItemCat as $key => $value) { 
+                            foreach ($value as $k => $v) { ?>
+                        <tr class="item">
+                            <td>
+                                <span id=""><?php echo $k; ?></span>
+
+                            </td>
+                            <td>
+                                <span id=""><?php echo implode(',', $v['aItemNames']); ?></span>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanMan'] ? '√' : ''?>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanWomanMarry'] ? '√' : ''?>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanWomanNoMarry'] ? '√' : ''?>
+                            </td>
+                            <td>
+                                <span id=""><?php echo $v['sRemark']; ?></span>
+                            </td>
+                        </tr>                            
+                        <?php } } ?>
+                    </table>
+                    <br />
+                    <p style="font-weight: bold;">温馨提示：此体检套餐所含检查单项内容因各家体检机构门店设备差异会有相应替换及调整。</p>
+                </div>
+            </div>
+        </div>
+        <div class="pro_det_con pro_det_con2">
+            <div id="main_UpdatePanel1"> 
+                <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">体检门店</h2>
+               <?php include 'store.phtml' ?>
+            </div>
+         </div>
+        <div class="pro_det_con pro_det_con2">
+            <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">注意事项</h2>
+            <div class="pro_det_box2" style="line-height: 25px;">
+                <?php include('attention.phtml') ?>
+            </div>
+        </div>
+        <div class="pro_det_con pro_det_con2">
+            <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">预约流程</h2>
+            <div class="pro_det_box2" style="line-height: 25px;">
+                <?php include('reserve.phtml') ?>
+            </div>
+        </div>
+        </div>
+
+            <div class="overlay" style="display: none;">
+                我的购物车：
+                <span id="main_lblProductCount">1</span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="submit" name="ctl00$main$btnCale" value="结算" onclick="return ShowLogin();" id="main_btnCale" class="btn_submit_blue" />
+            </div>
+        <input type="hidden" name="ctl00$main$hidSupplierID" id="main_hidSupplierID" />
+
+    </div>
+</div>
+<div id="divQr_Code" style="position: absolute; display:none;"><img src="../images/qr_code.jpg" width="110px" height="110px" /></div>
+
+
+<div class="base_pop" id="tos" style="width: 580px; display: none; z-index: 888;">
+    <div class="pop_hd">
+        <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+        <h3>用户登录</h3>
+    </div>
+    <!-- normal start -->
+    <div class="input-container">
+        <div style="float: left;">
+            <div id="msg_login" class="login-message">
+            </div>
+            <p class="p-input clearfix">
+                <span class="l input-label">账&nbsp;&nbsp;号：</span>
+                <input name="ctl00$txtAccount" type="text" maxlength="30" id="txtAccount" tabindex="1" class="l input-common" />
+                <i id="empty-username" class="btn-clear" style="display: none;"></i>
+            </p>
+            <p id="p-psw" class="p-input clearfix">
+                <span class="l input-label">密&nbsp;&nbsp;码：</span>
+                <input name="ctl00$txtPassword" type="password" maxlength="30" id="txtPassword" tabindex="2" class="l input-common" />
+            </p>
+            <div id="login_passcode" class="p-input clearfix" style="">
+                <span class="l input-label">验证码：</span><span class="wrap-verify">
+                    <input name="ctl00$txtValidateCode" type="text" maxlength="6" id="txtValidateCode" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;" />
+                    <img width="70" height="30" class="l" id="getcode" alt="看不清楚.点击更换" src="#"
+                         onclick="fGetCode();" style="cursor: pointer;" />
+                </span>
+            </div>
+            <p class="p-btn p-submit">
+                <input type="submit" name="ctl00$btnLogin" value="登录" id="btnLogin" class="btn-common btn-shadow yahei" />
+
+                <a href="../Account/ForgetPassword.aspx" class="btn-forgot green" target="_blank">忘记密码？</a>
+                <a href="../Account/EmpRegister.aspx" class="btn-forgot green" target="_blank">马上注册</a>
+
+            <p class="p-btn">
+                <span id="tips-login" class="tips-common"></span>
+            </p>
+        </div>
+        <div style="float: left;">
+            <img src="<?php echo $sStaticRoot ?>/backend/img/register_pic.jpg" style="width: 210px; height: 210px;" alt="" />
+        </div>
+        <div style="clear: both;"> </div>
+    </div>
+    <div style="clear: both;">
+    </div>
+</div>
+<script type="text/javascript">
+    var cartlist = '<?php echo $sCartlistUrl ?>';
+    function addCart(location)
+    {
+        var productid = $('#iProductID').val();
+        var Url = '<?php echo $sAddCartUrl; ?>';
+        var seccussmsg = '<?php echo!empty($aCommonLang[36]) ? $aCommonLang[36] : '' ?>';
+        var failmsg = '<?php echo!empty($aCommonLang[37]) ? $aCommonLang[37] : '' ?>';
+        $.get(Url, {id: productid}, function (ret) {
+            if (ret.status) {
+                if (location) {
+                    window.location.href = location;
+                    return false;
+                }
+                $('.cartnumber').html(ret.data);
+                alert(seccussmsg);
+                window.location.href = '/index/web/detail/id/<?php echo $sProductCode?>';
+            } else {
+                alert(failmsg);
+            }
+        }, 'json');
+    }
+    $('#cartbtn').click(function () {//加入购物车
+        addCart();
+    });
+    $('#buybtn').click(function () {//立即结算
+        addCart(cartlist);
+    });
+</script>
+
+

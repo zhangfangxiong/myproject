@@ -1,0 +1,495 @@
+<div class="row row-main-margin card-list">
+    <?php if (empty($aUser['sMobile'])) {
+        ?>
+        <div role="alert" class="alert alert-danger fade in card-warn-alert">
+            <span>您还没有绑定手机，<a href="<?php echo $sBindPhoneUrl; ?>"> 点击此处进行绑定</a>。</span>
+        </div>
+    <?php }
+    ?>
+    <div class="card-list-title">您共有<?php echo !empty($aCard['iTotal']) ? $aCard['iTotal'] : 0 ?>张体验卡，具体如下：</div>
+    <div id="cardList">
+        <?php
+        if (!empty($aCard['aList'])) {
+            foreach ($aCard['aList'] as $key => $value) {
+                ?>
+                <div class="pay-info">
+                    <div class="form-group"><strong>第<?php echo $key + 1 ?>张</strong></div>
+                    <div class="form-group clearfix">
+                        <span
+                            class="list-label">类型：</span><?php echo !empty($value['sAttribute']) ? $value['sAttribute'] : '' ?>
+                    </div>
+                    <div class="form-group clearfix">
+                        <span
+                            class="list-label">对应套餐：</span><?php echo count($value['aDetail']) == 1 ? $value['aDetail'][0]['sProductName'] : $value['sProductName'] ?><?php echo (count($value['aDetail']) == 1 && !empty($value['aDetail'][0]['iLastProductID'])) ? '<span class="red">(已升级)</span>' : ''; ?>
+                    </div>
+                    <div class="form-group clearfix">
+                        <span
+                            class="list-label">体检卡类型：</span><?php echo !empty($aOrderType[$value['iOrderType']]) ? $aOrderType[$value['iOrderType']] : '' ?>
+                        <?php if ($value['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT || $value['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT_PLAN) {
+                            ?>
+                            <span
+                                class="red">(<?php echo !empty($aPayType[$value['iPayType']]) ? $aPayType[$value['iPayType']] : ''; ?>
+                                )</span>
+                        <?php }
+                        ?>
+                    </div>
+                    <div class="form-group clearfix">
+                        <span
+                            class="list-label">卡号：</span><?php echo !empty($value['sCardCode']) ? $value['sCardCode'] : '' ?>
+                    </div>
+                    <?php if (count($value['aDetail']) == 1) {
+                        ?>
+                        <div class="form-group clearfix">
+                            <span
+                                class="list-label">支持性别：</span><?php echo !empty($value['aDetail'][0]['iNeedSex']) ? $aSex[$value['iSex']] : '通用' ?>
+                        </div>
+                        <div class="form-group clearfix">
+                            <span
+                                class="list-label">可用状态：</span><?php echo !empty($aStatus[$value['aDetail'][0]['iStatus']]) ? $aStatus[$value['aDetail'][0]['iStatus']] : '' ?>
+                        </div>
+                        <div class="form-group clearfix">
+                            <span
+                                class="list-label">预约状态：</span><?php echo !empty($value['aDetail'][0]['sBookStatus']) ? $value['aDetail'][0]['sBookStatus'] : '' ?><?php echo !empty($value['aDetail'][0]['iBookStatus']) && $value['aDetail'][0]['iBookStatus'] == 3 && empty($value['aDetail'][0]['iCheckRefund']) && !empty($value['aDetail'][0]['iLastProductID']) ? '<span class="red">（未退款）</span>' : '' ?>
+                        </div>
+                        <?php if (!empty($value['aDetail'][0]['iOrderTime'])) {
+                            ?>
+                            <div class="form-group clearfix">
+                                <span
+                                    class="list-label">预约时间：</span><?php echo !empty($value['aDetail'][0]) ? date('Y-m-d', $value['aDetail'][0]['iOrderTime']) : '' ?>
+                            </div>
+                        <?php }
+                        ?>
+                        <?php if (empty($value['aDetail'][0]['iOrderTime'])) {
+                            ?>
+                            <div class="form-group clearfix">
+                                <span
+                                    class="list-label">有效期：</span><?php echo $value['aDetail'][0]['sEndDate'] != '0000-00-00' ? $value['aDetail'][0]['sEndDate'] : '无' ?><?php echo ($value['aDetail'][0]['sEndDate'] != '0000-00-00' && strtotime($value['aDetail'][0]['sEndDate']) + 86400 < time()) ? '<span class="red">（已过期）</span>' : '' ?>
+                            </div>
+                        <?php }
+                        ?>
+                        <div class="form-group clearfix card-detail">
+                            <a <?php
+                            //已过期和不可用的产品不能预约
+                            if ((($value['aDetail'][0]['iBookStatus'] == 0 || $value['aDetail'][0]['iBookStatus'] == 3 || $value['aDetail'][0]['iBookStatus'] == 6) && $value['aDetail'][0]['sEndDate'] != '0000-00-00' && strtotime($value['aDetail'][0]['sEndDate']) + 86400 < time()) || $value['aDetail'][0]['iStatus'] == 2) {
+                                echo 'disabled';
+                            } elseif ($value['aDetail'][0]['iBookStatus'] == 3 && !empty($value['aDetail'][0]['iLastProductID']) && empty($value['aDetail'][0]['iCheckRefund'])) {
+                                echo 'disabled ';//已升级的已退订未确认退款的不能预约
+                            }
+                            ?> href="<?php echo (empty($value['aDetail'][0]['iBookStatus']) || $value['aDetail'][0]['iBookStatus'] == 3 || $value['aDetail'][0]['iBookStatus'] == 6) ? $sAppointmentDetailUrl . 'id/' . $value['iAutoID'] . '/pid/' . $value['aDetail'][0]['iProductID'] : $sReserveDetailUrl . 'id/' . $value['iAutoID'] . '/pid/' . $value['aDetail'][0]['iProductID'] ?>"
+                               class="btn btn-warning"><?php echo (empty($value['aDetail'][0]['iBookStatus']) || $value['aDetail'][0]['iBookStatus'] == 3 || $value['aDetail'][0]['iBookStatus'] == 6) ? '立即预约' : '查看详细' ?></a>
+                        </div>
+                    <?php
+                    } else {
+                        ?>
+                        <div class="form-group clearfix">
+                            <span
+                                class="list-label">使用方式：</span><?php echo !empty($aCardUseType[$value['iUseType']]) ? $aCardUseType[$value['iUseType']] : '' ?>
+                        </div>
+                        <div class="form-group clearfix card-detail">
+                            <a data-id="<?php echo $value['iAutoID'] ?>" href="javascript:;"
+                               class="btn btn-warning reserveSelect">查看详情</a>
+                        </div>
+                    <?php }
+                    ?>
+                </div>
+            <?php
+            }
+        } else {
+            ?>
+            <div class="order-attention">
+                <div>如果预约过程中有任何疑问，您可：</div>
+                <div>1,微信对话界面，直接发送相关疑问</div>
+                <div>2,使用线上咨询单,<a href="javascript:;">点击此处</a></div>
+                <div>3,拨打我们的400客服热线</div>
+            </div>
+        <?php }
+        ?>
+    </div>
+    <div class="loaddiv"></div>
+</div>
+
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel">添加新卡</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert"
+                 style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group has-feedback">
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-credit-card fa-lg"></i></span>
+                        <input type="text" class="form-control" id="cardSuccess" aria-describedby="cardStatus">
+                    </div>
+                    <span class="glyphicon form-control-feedback"></span>
+                </div>
+                <div class="clearfix">
+                    <div class="form-group has-feedback verify-input-width">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="fa fa-eye fa-lg"></i></span>
+                            <input type="text" class="form-control" id="verifySuccess" aria-describedby="verifyStatus">
+                        </div>
+                        <div class="verify-msg text-danger">请填写4位验证码</div>
+                        <span class="glyphicon form-control-feedback"></span>
+                    </div>
+                    <div class="form-group verify-width">
+                        <div class="input-group verify-imgage">
+                            <image style="height: 34px" id="sCode" src=""></image>
+                        </div>
+                        <a herf="javascript:;" id="verify-change">看不清？点击刷新</a>
+                    </div>
+                </div>
+
+                <div class="modal-footer clearfix">
+                    <button type="button" id="add-query" class="btn btn-warning col-xs-4 col-xs-offset-1">确认</button>
+                    <button type="button" class="btn btn-default col-xs-4 col-xs-offset-1" data-dismiss="modal">取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="productModalLabel">可选体检套餐</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert"
+                 style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <?php
+                if (!empty($aCard['aList'])) {
+                    foreach ($aCard['aList'] as $key => $value) {
+                        if (count($value['aDetail']) == 1) {
+                            continue;
+                        }
+                        ?>
+                        <div class="reserveList<?php echo $value['iAutoID'] ?>">
+                            <?php foreach ($value['aDetail'] as $k => $v) {
+                                ?>
+                                <div class="form-group clearfix border-bottom1">
+                                    <div class="form-group clearfix">
+                                        <span
+                                            class="list-label">对应套餐：</span><?php echo !empty($v['sProductName']) ? $v['sProductName'] : '' ?><?php echo !empty($v['iLastProductID']) ? '(<span class="red">已升级</span>)' : ''; ?>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <span
+                                            class="list-label">可用状态：</span><?php echo !empty($aStatus[$v['iStatus']]) ? $aStatus[$v['iStatus']] : '' ?>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <span
+                                            class="list-label">预约状态：</span><?php echo !empty($v['sBookStatus']) ? $v['sBookStatus'] : '' ?><?php echo !empty($v['iBookStatus']) && $v['iBookStatus'] == 3 && empty($v['iCheckRefund']) && !empty($v['iLastProductID']) ? '<span class="red">（未退款）</span>' : '' ?>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <span
+                                            class="list-label">支持性别：</span><?php echo !empty($v['iNeedSex']) ? $aSex[$value['iSex']] : '通用' ?>
+                                    </div>
+                                    <?php if (empty($v['iOrderTime'])) {
+                                        ?>
+                                        <div class="form-group clearfix">
+                                            <span
+                                                class="list-label"> 有效期：</span><?php echo $v['sEndDate'] != '0000-00-00' ? $v['sEndDate'] : '无' ?><?php echo ($v['sEndDate'] != '0000-00-00' && strtotime($v['sEndDate']) + 86400 < time()) ? '<span class="red">（已过期）</span>' : '' ?>
+                                        </div>
+                                    <?php }
+                                    ?>
+                                    <?php if (!empty($v['iOrderTime'])) {
+                                        ?>
+                                        <div class="form-group clearfix">
+                                            <span
+                                                class="list-label">预约时间：</span><?php echo !empty($v['iOrderTime']) ? date('Y-m-d', $v['iOrderTime']) : '' ?>
+                                        </div>
+                                    <?php }
+                                    ?>
+                                    <div class="form-group clearfix card-detail">
+                                        <a <?php
+                                        if ((($v['iBookStatus'] == 0 || $v['iBookStatus'] == 3 || $v['iBookStatus'] == 6) && $v['sEndDate'] != '0000-00-00' && strtotime($v['sEndDate']) + 86400 < time()) || $v['iStatus'] == 2) {
+                                            echo 'disabled';//已预约产品和已过期产品不能预约
+                                        } elseif ($v['iBookStatus'] == 3 && $v['iLastProductID'] > 0 && empty($v['iCheckRefund'])) {
+                                            echo 'disabled';//已升级的已退订未确认退款的不能预约
+                                        }
+                                        ?> href="<?php echo (empty($v['iBookStatus']) || $v['iBookStatus'] == 3 || $v['iBookStatus'] == 6) ? $sAppointmentDetailUrl . 'id/' . $value['iAutoID'] . '/pid/' . $v['iProductID'] : $sReserveDetailUrl . 'id/' . $value['iAutoID'] . '/pid/' . $v['iProductID'] ?>"
+                                           class="btn btn-warning"><?php echo (empty($v['iBookStatus']) || $v['iBookStatus'] == 3 || $v['iBookStatus'] == 6) ? '立即预约' : '查看详细' ?></a>
+                                    </div>
+                                </div>
+                            <?php }
+                            ?>
+                        </div>
+                    <?php
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-fixed-bottom">
+    <div class="container-fluid text-center clearfix navbar-white">
+        <a id="addCard" class="btn btn-info navbar-btn active" href="javascript:;"
+           role="button">
+            <i class="fa fa-credit-card fa-lg"></i> <?php echo !empty($aCommonLang[38]) ? $aCommonLang[38] : '' ?></a>
+    </div>
+</nav>
+<script>
+    var listObj = {
+        pagenumber: 2,
+        aOrderType:<?php echo json_encode($aOrderType); ?>,
+        aPayType:<?php echo json_encode($aPayType); ?>,
+        aSex:<?php echo json_encode($aSex); ?>,
+        aStatus:<?php echo json_encode($aStatus); ?>,
+        aCardUseType:<?php echo json_encode($aCardUseType); ?>,
+        getLocalTime: function (nS) {
+            return new Date(parseInt(nS) * 1000).toLocaleString().substr(0, 10);
+        },
+        PRODUCT:<?php echo Model_OrderCard::ORDERTYPE_PRODUCT; ?>,
+        PRODUCT_PLAN:<?php echo Model_OrderCard::ORDERTYPE_PRODUCT_PLAN; ?>,
+        initList: function () {
+            commonObj.moreUrl = "/wx/appointment/cardlist";//设置下拉分页url
+            commonObj.appendId = "cardList";
+            //下滑分页数据
+            commonObj.pageData = {page: listObj.pagenumber, t: true};
+            //下滑分页回调函数
+            commonObj.searchCallBack = function (res) {
+                $(".loaddiv").hide();
+                var dataLength = res.data.aList.length;
+                var dataArray = res.data.aList;
+                if (dataLength > 0) {
+                    listObj.pagenumber++;
+                    commonObj.ajaxstatus = true;
+                    commonObj.pageData.page = listObj.pagenumber;
+                    var htmlArray = [];
+                    var numstart = $("#cardList").children().length;
+                    for (var i = 0; i < dataLength; i++) {
+                        var sAttribute = dataArray[i].sAttribute ? dataArray[i].sAttribute : "";
+                        var aDetail = dataArray[i].aDetail;
+                        var sProductName = (aDetail.length == 1) ? aDetail[0].sProductName : dataArray[i].sProductName;
+                        var iLastProductID = (aDetail.length == 1 && aDetail[0].iLastProductID) ? '<span class="red">(已升级)</span>' : '';
+                        var paytype = listObj.aPayType[dataArray[i].iPayType] ? listObj.aPayType[dataArray[i].iPayType] : "";
+                        var paytypeHtml = (dataArray[i].iOrderType == listObj.PRODUCT || dataArray[i].iOrderType == listObj.PRODUCT_PLAN) ? '<span class="red">(' + paytype + ')</span>' : "";
+                        var iOrderType = listObj.aOrderType[dataArray[i].iOrderType] ? listObj.aOrderType[dataArray[i].iOrderType] : "";
+                        var sCardCode = dataArray[i].sCardCode ? dataArray[i].sCardCode : "";
+                        var hasaDetailHtml = "";
+                        var nodetalHtml = "";
+                        var disable = "";
+                        if (aDetail.length == 1) {
+                            var iNeedSex = aDetail[0]['iNeedSex'] ? listObj.aSex[dataArray[i].iSex] : "通用";
+                            var iStatus = listObj.aStatus[aDetail[0]['iStatus']] ? listObj.aStatus[aDetail[0]['iStatus']] : "";
+                            var sBookStatus = aDetail[0]['sBookStatus'] ? aDetail[0]['sBookStatus'] : "";
+                            var timeHtml = "";
+                            if (aDetail[0]['iOrderTime'] != "0") {
+                                var iOrderTime = aDetail[0]['iOrderTime'] ? listObj.getLocalTime(aDetail[0]['iOrderTime']) : "";
+                                timeHtml = '<div class="form-group clearfix">' +
+                                '<span class="list-label">预约时间：</span>' + iOrderTime + ' </div>';
+                            } else {
+                                var sEndDate = aDetail[0]['sEndDate'] != '0000-00-00' ? aDetail[0]['sEndDate'] : "无";
+                                var sEndDateHtml = (aDetail[0]['sEndDate'] != '0000-00-00' && Date.parse(aDetail[0]['sEndDate']) < Date.parse(new Date())) ? '<span class="red">（已过期）</span>' : '';
+                                timeHtml = '<div class="form-group clearfix">' +
+                                '<span class="list-label">有效期：</span>' + sEndDate + sEndDateHtml + ' </div>';
+                            }
+                            if ((aDetail[0]['iBookStatus'] == 0 || aDetail[0]['iBookStatus'] == 3 || aDetail[0]['iBookStatus'] ==6) && aDetail[0]['sEndDate'] != '0000-00-00' && (Date.parse(aDetail[0]['sEndDate']) + 86400) < Date.parse(new Date()) || aDetail[0]['iStatus'] == 2) {
+                                disable = "disabled";
+                            } else if (aDetail[0]['iBookStatus'] == 3 && aDetail[0]['iLastProductID'] > 0 && !parseInt(aDetail[0]['iCheckRefund'])) {
+                                disable = "disabled";
+                            }
+                            var btnStatus = (!parseInt(aDetail[0]['iBookStatus']) || aDetail[0]['iBookStatus'] == 3 || aDetail[0]['iBookStatus'] == 6) ? "立即预约" : "查看详情";
+                            if (!parseInt(aDetail[0]['iBookStatus']) || aDetail[0]['iBookStatus'] == 3 || aDetail[0]['iBookStatus'] == 6) {
+                                var urlHref = '<?php echo $sAppointmentDetailUrl; ?>' + "id/" + dataArray[i].iAutoID + "/pid/" + aDetail[0]['iProductID'];
+                            } else {
+                                var urlHref = '<?php echo $sReserveDetailUrl; ?>' + "id/" + dataArray[i].iAutoID + "/pid/" + aDetail[0]['iProductID'];
+                            }
+                            hasaDetailHtml = '<div class="form-group clearfix"> ' +
+                            '<span class="list-label">支持性别：</span>' + iNeedSex + '</div> ' +
+                            '<div class="form-group clearfix"> ' +
+                            '<span class="list-label">可用状态：</span> ' + iStatus + ' </div> ' +
+                            '<div class="form-group clearfix"> ' +
+                            '<span class="list-label">预约状态：</span> ' + sBookStatus + ' </div> ' + timeHtml +
+                            '  <div class="form-group clearfix card-detail"> ' +
+                            ' <a  ' + disable + ' href="' + urlHref + '" class="btn btn-warning">' + btnStatus + '</a> ' +
+                            '  </div>';
+                        } else {
+                            var iUseType = listObj.aCardUseType[dataArray[i].iUseType] ? listObj.aCardUseType[dataArray[i].iUseType] : "";
+                            nodetalHtml = '<div class="form-group clearfix">' +
+                            '<span class="list-label">使用方式：</span>' + iUseType + '</div>' +
+                            '<div class="form-group clearfix card-detail">' +
+                            '<a data-id="' + dataArray[i].iAutoID + '" href="javascript:;" class="btn btn-warning reserveSelect">查看详情</a>' +
+                            '</div>';
+                        }
+                        htmlArray[i] = '<div class="pay-info">' +
+                        '<div class="form-group"><strong>第' + (numstart + i + 1) + '张</strong></div>' +
+                        '<div class="form-group clearfix">' +
+                        '<span class="list-label">类型：</span>' + sAttribute +
+                        ' </div>' +
+                        '<div class="form-group clearfix">' +
+                        '<span class="list-label">对应套餐：</span>' + sProductName + iLastProductID +
+                        '</div>' +
+                        '<div class="form-group clearfix">' +
+                        '<span class="list-label">体检卡类型：</span>' + iOrderType + paytypeHtml +
+                        '</div>' +
+                        '<div class="form-group clearfix">' +
+                        ' <span class="list-label">卡号：</span>' + sCardCode +
+                        '</div>' + hasaDetailHtml + nodetalHtml + '</div>';
+                    }
+                    $("#" + commonObj.appendId).append(htmlArray.join(""));
+                } else {
+                    commonObj.fenyestatus = false
+                }
+            }
+            //下滑分页触发
+            commonObj.scrollNextPage();
+
+        }
+    }
+    $(function () {
+        listObj.initList();
+        var cardcheck = false;
+        var verifycheck = false;
+        var CodeUrl = '<?php echo $sVerifyUrl ?>type/<?php echo $iCodeType ?>';
+
+        function codeChange() {
+            $('#sCode').attr('src', CodeUrl + '&' + Math.random());
+        }
+
+        codeChange();
+        $('#sCode').click(function () {
+            codeChange();
+        });
+        $('#verify-change').click(function () {
+            codeChange();
+        });
+
+        $('#addCard').click(function () {
+            $('#selectModal').modal('show');
+        });
+        $('.reserveSelect').click(function () {
+            $('#productModal').modal('show');
+            var showdiv = $(this).data('id');
+            $('.reserveList' + showdiv).show().siblings().hide();
+        });
+        $('.close').click(function () {
+            $('.alert').hide();
+        });
+        $('#add-query').click(function () {
+            if (cardCheck() && verifyCheck()) {
+                // && cardAjaxCheck() && verifyAjaxCheck()
+                cardAjaxCheck();
+                if (cardcheck) {
+                    verifyAjaxCheck();
+                    if (verifycheck) {
+                        addCardOperate();
+                    }
+                }
+            }
+        });
+        $('#cardSuccess').blur(function () {
+            cardCheck();
+        });
+        $('#verifySuccess').blur(function () {
+            verifyCheck();
+        });
+        //卡号验证
+        function cardCheck() {
+            if ($('#cardSuccess').val() == '') {
+                $('#cardSuccess').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#cardSuccess').parent().siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+                return false;
+            } else {
+                $('#cardSuccess').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#cardSuccess').parent().siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+                return true;
+            }
+        }
+
+        //卡号ajax验证
+        function cardAjaxCheck() {
+            var cardnum = $('#cardSuccess').val();
+            $.ajax({
+                url: '<?php echo $sAjaxCheckCardUrl ?>',
+                type: 'post',
+                async: false,
+                data: {cardnum: cardnum},
+                dataType: 'json',
+                success: function (ret) {
+                    if (ret.status) {
+                        $('.alert').hide();
+                        cardcheck = true;
+                    } else {
+                        $('.alert').show();
+                        $('.card-warn-msg').html(ret.data);
+                        cardcheck = false;
+                    }
+                }
+            });
+        }
+
+        //验证码验证
+        function verifyCheck() {
+            if ($('#verifySuccess').val().length != 4) {
+                $('#verifySuccess').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#verifySuccess').parent().siblings('.glyphicon').addClass('glyphicon-remove').removeClass('glyphicon-ok');
+                $('.verify-msg').show();
+                return false;
+            } else {
+                $('#verifySuccess').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#verifySuccess').parent().siblings('.glyphicon').addClass('glyphicon-ok').removeClass('glyphicon-remove');
+                $('.verify-msg').hide();
+                return true;
+            }
+        }
+
+        //验证码ajax验证
+        function verifyAjaxCheck() {
+            var verifycode = $('#verifySuccess').val();
+            $.ajax({
+                url: '<?php echo $sVerifyCheckUrl ?>',
+                type: 'post',
+                async: false,
+                data: {verifycode: verifycode},
+                dataType: 'json',
+                success: function (ret) {
+                    if (ret.status) {
+                        $('.alert').hide();
+                        verifycheck = true;
+                    } else {
+                        $('.alert').show();
+                        $('.card-warn-msg').html(ret.data);
+                        codeChange();
+                        verifycheck = false;
+                    }
+                }
+            });
+        }
+
+        //添加卡操作
+        function addCardOperate() {
+            var cardnum = $('#cardSuccess').val();
+            $.ajax({
+                url: '<?php echo $sAddCardUrl ?>',
+                type: 'post',
+                async: false,
+                data: {cardnum: cardnum},
+                dataType: 'json',
+                success: function (ret) {
+                    alert(ret.data);
+                    if (ret.status) {
+                        window.location.reload();
+                    }
+                    return false;
+                }
+            });
+        }
+
+    })
+</script>

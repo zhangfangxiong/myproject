@@ -1,0 +1,83 @@
+<?php if (!isset($opt) || $opt != 'edit') { ?>
+<div class="pheader clearfix">第一步：新增体检计划</div>
+<?php } ?>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <?php if (isset($opt) && $opt == 'edit') { ?> 
+        <input type='hidden' value='<?php echo $aPlan['iAutoID'] ?>' name='iAutoID'></input>
+        <?php }?>
+        <div class="form-group text-center">
+            <label for="sPlanName" class="col-sm-2 control-label"> 体检计划名称：</label>
+            <div class="col-sm-6">
+                <input name="sPlanName" type="text" value="<?php echo !empty($aPlan['sPlanName']) ? $aPlan['sPlanName'] : '';?>" class="form-control input-validate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 体检周期：</label>
+            <div class="col-sm-6">
+                <input onclick="laydate({format: 'YYYY-MM-DD'})" name='sStartDate' value='<?php echo !empty($aPlan['sStartDate']) ? $aPlan['sStartDate'] : '';?>' style="width:33%"/> 
+                至 <input onclick="laydate({format: 'YYYY-MM-DD'})" name='sEndDate' value='<?php echo !empty($aPlan['sEndDate']) ? $aPlan['sEndDate'] : '';?>' style="width:33%"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 说明：</label>
+            <div class="col-sm-6">
+                <textarea id="sRemark" class="form-control input-validate" name="sRemark"><?php echo !empty($aPlan['sRemark']) ? $aPlan['sRemark'] : '';?></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 状态：</label>
+            <?php if (!isset($opt) || $opt != 'edit') { ?>
+            <div class="col-sm-6">
+                未启动
+            </div>
+            <?php } else { ?>
+            <div class="col-sm-2">
+                <select name="iStatus" class="form-control input-validate">
+                    <?php foreach ($aStatus as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo $aPlan['iStatus']==$k ? 'selected' : ''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>                
+            </div>
+            <?php }?>
+
+            
+        </div>
+        <div class="btn-toolbar text-center">
+            <?php if (!isset($opt) || $opt != 'edit') { ?>
+            <button id="save" class="btn btn-primary">下一步</button>
+            <button id="cancel" class="btn" onclick="location.href='/company/physical/list';return false;">
+                取消
+            </button>
+            <?php } else { ?>
+            <button id="save" class="btn btn-primary">完成</button>
+            <a class="text-right btn btn-default" href='/company/physical/plan'>取消</a>
+            <?php }?>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#myform").validate({
+        submitHandler: function (form) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                <?php if (!isset($opt) || $opt != 'edit') { ?>
+                if (ret.status) {
+                    location.href = ret.data;
+                } else {
+                    alert(ret.data);
+                }
+                <?php } else { ?>
+                alert(ret.data);
+                if (ret.status) {
+                    window.location.reload();
+                }
+                <?php }?>
+            }, 'json');
+            return false;
+        }
+    });
+});
+</script>

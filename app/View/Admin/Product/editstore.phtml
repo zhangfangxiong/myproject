@@ -1,0 +1,462 @@
+<?php if (!empty($iHeaderType)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix">第三步：增加供应商门店</div>
+<?php
+} ?>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">
+        <span data-toggle="popover" data-trigger="hover" data-html="true" data-placement="bottom" data-content="<?php echo !empty($sTips) ? $sTips : '' ?>">已添加的门店(共<span class="red"><?php echo count($aHasStore); ?></span>个)</span>
+        <?php if (!empty($aHasStore) && (empty($iHeaderType) || $iHeaderType == 2)) {?>
+            <input type="button" value="删除选中门店" class="btn btn-primary input-margin-left" id="store-delete-select">
+        <?php }?>
+    </div>
+
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo $iHeaderType == 1 ? $sViewStoreUrl : $sEditStoreUrl ?>?id=<?php echo !empty($iProductID) ? $iProductID : ''?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle">城市</div>
+                <div class="col-sm-11">
+                    <span class="hascityall <?php echo !empty($aHasParam['aHasCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aCity)) {
+                        foreach ($aCity as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="hascity <?php echo in_array($key,$aHasParam['aHasCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aHasParam['aHasCity']) ? 'checked' : '' ?> type="checkbox" class="aHasCity" id="aHasCity_<?php echo $key; ?>" name="aHasCity[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">供应商</div>
+                <div class="col-sm-11">
+                    <span class="hassupplierall <?php echo !empty($aHasParam['aHasSupplier']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aSupplier)) {
+                        foreach ($aSupplier as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="hassupplier <?php echo in_array($key,$aHasParam['aHasSupplier']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aHasParam['aHasSupplier']) ? 'checked' : '' ?> type="checkbox" class="aHasSupplier" id="aHasSupplier_<?php echo $key; ?>" name="aHasSupplier[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">门店性质</div>
+                <div class="col-sm-11">
+                    <span class="hastypeall <?php echo !empty($aHasParam['aType']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aType)) {
+                        foreach ($aType as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="hastype <?php echo in_array($key,$aHasParam['aHasType']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aHasParam['aHasType']) ? 'checked' : '' ?> type="checkbox" class="aHasType" id="aHasType_<?php echo $key; ?>" name="aHasType[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索门店名称或编号" name="sHasKeyword" type="text" value="<?php echo !empty($aHasParam['sHasKeyword'])?$aHasParam['sHasKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="hidden" name="hasdata" value="1">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                </div>
+            </div>
+        </div>
+        </form>
+
+    <?php if (!empty($aHasStore)) {
+        ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="hasstoreall"></th>
+                <?php
+                } ?>
+                <th class="text-center">供应商</th>
+                <th class="text-center">城市</th>
+                <th class="text-center">门店名称</th>
+                <th class="text-center">门店编号</th>
+                <th class="text-center">门店性质</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasStore as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="hasstorelist" type="checkbox" name="hasstorelist[]" value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($aSupplier[$value['aStore']['iSupplierID']]) ? $aSupplier[$value['aStore']['iSupplierID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aCity[$value['aStore']['iCityID']]) ? $aCity[$value['aStore']['iCityID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['aStore']['sName']) ? $value['aStore']['sName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['aStore']['sCode']) ? $value['aStore']['sCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aType[$value['aStore']['iType']]) ? $aType[$value['aStore']['iType']] : '' ?></td>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="hasstore_del" href="javascript:;" data-url="<?php echo !empty($sDeleteStoreUrl) ? $sDeleteStoreUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>" title="删除"><i
+                                        class="fa fa-trash fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } else {
+        ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加门店，请从下面的表格中选择需要添加的门店，添加之后门店信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php
+    } ?>
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的门店</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo $iHeaderType == 1 ? $sViewEStoreUrl : $sEidtEStoreUrl ?>?id=<?php echo !empty($iProductID) ? $iProductID : ''?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle">城市</div>
+                <div class="col-sm-11">
+                    <span class="cityall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aCity)) {
+                        foreach ($aCity as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="city <?php echo in_array($key,$aParam['aCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aCity']) ? 'checked' : '' ?> type="checkbox" class="aCity" id="aCity_<?php echo $key; ?>" name="aCity[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">供应商</div>
+                <div class="col-sm-11">
+                    <span class="supplierall <?php echo !empty($aParam['aSupplier']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aSupplier)) {
+                        foreach ($aSupplier as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="supplier <?php echo in_array($key,$aParam['aSupplier']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aSupplier']) ? 'checked' : '' ?> type="checkbox" class="aSupplier" id="aSupplier_<?php echo $key; ?>" name="aSupplier[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">门店性质</div>
+                <div class="col-sm-11">
+                    <span class="typeall <?php echo !empty($aParam['aType']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aType)) {
+                        foreach ($aType as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="type <?php echo in_array($key,$aParam['aType']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aType']) ? 'checked' : '' ?> type="checkbox" class="aType" id="aType_<?php echo $key; ?>" name="aType[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索门店名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <input type="button" class="btn btn-primary" id="store-add-select" value="添加选中门店">
+                    <?php
+                    } ?>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="storeall"></th>
+                <?php
+                } ?>
+                <th class="text-center">供应商</th>
+                <th class="text-center">城市</th>
+                <th class="text-center">门店名称</th>
+                <th class="text-center">门店编号</th>
+                <th class="text-center">门店性质</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aStore['aList'])) {
+                foreach ($aStore['aList'] as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="storelist" type="checkbox" name="storelist[]" value="<?php echo !empty($value['iStoreID']) ? $value['iStoreID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($aSupplier[$value['iSupplierID']]) ? $aSupplier[$value['iSupplierID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aCity[$value['iCityID']]) ? $aCity[$value['iCityID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sName']) ? $value['sName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aType[$value['iType']]) ? $aType[$value['iType']] : '' ?></td>
+                        <?php if (empty($iHeaderType) ||  $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="store_add" href="javascript:;" data-url="<?php echo !empty($sInsertStoreUrl) ? $sInsertStoreUrl : '' ?>?pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=<?php echo $value['iStoreID'] ?>" title="添加"><i
+                                        class="fa fa-plus fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aStore['aPager']) ? $aStore['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">
+            <?php if (!empty($iHeaderType) && $iHeaderType == 1) {
+                ?>
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($aEditHeaderInfo[3]['editurl']) ? $aEditHeaderInfo[3]['editurl'] : '' ?>?id=<?php echo $aProduct['iProductID'] ?>">
+            <?php
+            } else {
+                ?>
+                <input type="button" data-url="<?php echo !empty($sNextUrl) ? $sNextUrl : 'javascript:;' ?>" id="next" class="btn btn-primary"
+                       value="<?php echo !empty($iHeaderType) ? '保存' : '下一步' ?>">
+            <?php
+            } ?>
+            <input type="button" value="返回列表" id="cancel" class="btn" onclick="location.href='<?php echo !empty($sListUrl) ? $sListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+<!--
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+-->
+<script type="text/javascript">
+    //城市门店点击效果
+    $('.city').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cityall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCity_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.cityall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.city').addClass('pcursor').removeClass('pbold');
+        $('.aCity').prop("checked", false);
+    });
+    //供应商门店点击效果
+    $('.supplier').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplierall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aSupplier_'+key).prop("checked",true);
+    });
+    //供应商全部点击效果
+    $('.supplierall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplier').addClass('pcursor').removeClass('pbold');
+        $('.aSupplier').prop("checked", false);
+    });
+    //城市门店点击效果
+    $('.type').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.typeall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aType_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.typeall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.type').addClass('pcursor').removeClass('pbold');
+        $('.aType').prop("checked", false);
+    });
+
+    //城市门店点击效果
+    $('.hascity').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hascityall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aHasCity_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.hascityall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hascity').addClass('pcursor').removeClass('pbold');
+        $('.aHasCity').prop("checked", false);
+    });
+    //供应商门店点击效果
+    $('.hassupplier').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hassupplierall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aHasSupplier_'+key).prop("checked",true);
+    });
+    //供应商全部点击效果
+    $('.hassupplierall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hassupplier').addClass('pcursor').removeClass('pbold');
+        $('.aHasSupplier').prop("checked", false);
+    });
+    //城市门店点击效果
+    $('.hastype').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hastypeall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aHasType_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.hastypeall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.hastype').addClass('pcursor').removeClass('pbold');
+        $('.aHasType').prop("checked", false);
+    });
+
+    //全选效果
+    $('#storeall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.storelist').prop("checked", false);
+        } else {
+            $('.storelist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasstoreall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasstorelist').prop("checked", false);
+        } else {
+            $('.hasstorelist').prop("checked", true);
+        }
+    });
+    //门店选择效果
+    $('.storelist').click(function(){
+        $('#storeall').prop("checked", false);
+    });
+    //门店选择效果
+    $('.hasstorelist').click(function(){
+        $('#hasstoreall').prop("checked", false);
+    });
+    //门店单个添加
+    $('.store_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该门店吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //门店批量添加
+    $('#store-add-select').click(function(){
+        var select_store = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertStoreUrl) ? $sInsertStoreUrl : '' ?>?type=1&pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=';
+        $('.storelist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_store +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的门店');
+            return false;
+        }
+        select_store=select_store.substring(0,select_store.length-1);
+        url += select_store;
+        if (confirm("您确认要添加选中的"+count_num+"个门店吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //门店单个删除
+    $('.hasstore_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该门店吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //门店批量删除
+    $('#store-delete-select').click(function(){
+        var select_store = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteStoreUrl) ? $sDeleteStoreUrl : '' ?>?type=1&id=';
+        $('.hasstorelist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_store +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的门店');
+            return false;
+        }
+        select_store=select_store.substring(0,select_store.length-1);
+        url += select_store;
+        if (confirm("您确认要删除选中的"+count_num+"个门店吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#next').click(function(){
+        var ifLocation = <?php echo !empty($iHeaderType) ? 0 : 1 ?>;
+        var operationType = '<?php echo !empty($iHeaderType) ? '保存' : '添加' ?>';
+        if (ifLocation) {
+            location.href = $(this).data('url');
+        } else {
+            alert(operationType+'成功!');
+        }
+    });
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $(function () {
+        $("[data-toggle='popover']").popover();
+    });
+</script>

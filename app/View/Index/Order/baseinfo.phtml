@@ -1,0 +1,185 @@
+<form id="myform" class="form-horizontal" role="form" method="post">
+    <div class="search_con" style="margin-top: 50px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+            <input type="hidden" value="<?php echo $aEmployee['iUserID'] ?>" name="iUserID">            
+            <input type="hidden" value="<?php echo $iOrderID ?>" name="iOrderID">
+            <input type="hidden" value="<?php echo $iCardID ?>" name="iCardID">
+            <input type="hidden" value="<?php echo $plan ?>" name="plan">
+            <tr>
+                <th>体检卡号：</th>
+                <td>
+                    <span id=""><?php echo $aCard['sCardCode'] ?></span>
+                </td>
+                <th>对应套餐：</th>
+                <td>
+                    <span id=""><?php echo $aCard['sPName'] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>有效期：</th>
+                <td>
+                    <span id=""><?php echo $aCard['sStartDate'] ?></span>
+                    到
+                    <span id=""><?php echo $aCard['sEndDate'] ?></span>
+                </td>
+                <th>体检类型：</th>
+                <td>
+                    <span id=""><?php echo $aCard['sPhysicalType'] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="border-bottom: 1px dotted #CCCCCC" colspan="4"></td>
+            </tr>
+            <tr>
+                <td colspan="4"></td>
+            </tr>
+            <tr>
+                <th>体检人姓名：
+                </th>
+                <td>
+                    <input name="sRealName" type="text" value="<?php echo $aEmployee['sRealName'] ?>" id="" class="input_text" />
+                    <span style="color: Orange">*</span>
+                </td>
+                <td><span class="msgBox f12" id="errorEmployeeName"></span></td>
+            </tr>
+            <tr>
+                <th style="font-size: 16px; font-weight: bold"><span class="f_c_f63 f20">*</span> <span style="color: Orange"></span>性别：
+                </th>
+                <td style="font-size: 16px; font-weight: bold">
+                    <table id="main_rbtnSex" style="font-size:16px;">
+                        <tr>
+                            <td>
+                                <input type="radio" name="iSex" value="1" <?php echo !$aEmployee['iSex'] || $aEmployee['iSex'] != 2 ? 'checked' : '';?> id="man" /><label for="man">男</label>
+                            </td>
+                            <td>
+                                <input type="radio" name="iSex" value="2" <?php echo $aEmployee['iSex'] == 2 ? 'checked' : '';?> id="famale" /><label for="famale">女</label>
+                            </td>
+                            </tr>
+                    </table>
+                </td>
+                <td></td>
+                <td style="color: orangered; font-weight: bold;">(性别关系到您体检的项目)</td>
+
+            </tr>
+            <tr>
+                <th style="font-size: 16px; font-weight: bold">
+                    <span class="f_c_f63 f20">*</span> 
+                    <span style="color: Orange"></span>婚姻状况：
+                </th>
+                <td style="font-size: 16px; font-weight: bold">
+                    <table id="main_rbtnMaritalStatus" style="font-size:16px;">
+                        <tr>
+                            <td>
+                                <input type="radio" name="iMarriage" value="1" <?php echo !$aEmployee['iMarriage'] || $aEmployee['iMarriage'] != 2 ? 'checked' : '';?> id="allreadyMarriage" /><label for="allreadyMarriage">已婚</label>
+                            </td>
+                            <td>
+                                <input type="radio" name="iMarriage" value="2" <?php echo $aEmployee['iMarriage'] == 2 ? 'checked' : '';?>  id="nomarriage" /><label for="nomarriage">未婚</label>
+                            </td>
+                        </tr>
+                    </table>
+
+                </td>
+                <td><span class="msgBox f12" id="errorMaritalStatus"></span></td>
+                <td style="color: orangered; font-weight: bold;">(婚姻状况关系到您体检的项目)</td>
+            </tr>
+            <tr>
+                <th>证件类型：</th>
+                <td>
+                    <select name="iCardType" id="main_ddlIdType">
+                        <?php foreach($aCardType as $key => $value) { ?>
+                            <option <?php echo $aEmployee['iCardType'] == $key ? 'selected' : '';?> value="<?php echo $key?>"><?php echo $value ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+                <td></td>
+                <td style="color: orange"></td>
+            </tr>
+            <tr>
+                <th>证件号码：</th>
+                <td>
+                    <input name="sIdentityCard" type="text" value="<?php echo $aEmployee['sIdentityCard'] ?>" class="input_text" />
+                    <span class="f_c_f63 f20">*</span>
+                    <span style="color: Orange"></span>
+                </td>
+                <td><span class="msgBox f12"></span></td>
+                <td style="color: orange">(体检时需出示您登记的证件)</td>
+            </tr>
+            <tr>
+                <th>生日：</th>
+                <td>
+                    <input name="sBirthDate" type="text" value="<?php echo $aEmployee['sBirthDate'] ?>" class="Wdate input_text" onclick="laydate({format: 'YYYY-MM-DD'})" />
+                    <span class="f_c_f63 f20">*</span>
+                </td>
+                <td>
+                    <span class="msgBox f12" id="errorBirthday"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>手机：</th>
+                <td>
+                    <input name="sMobile" type="text" value="<?php echo $aEmployee['sMobile'] ?>" class="input_text" />
+                    <span class="f_c_f63 f20">*</span>
+                    <span style="color: Orange"></span>
+                </td>
+                <td>
+                </td>
+                <td style="color: orange">(此号码将用于接收体检短信提醒)</td>
+            </tr>
+            <tr>
+                <th>邮箱：</th>
+                <td>
+                    <input name="sEmail" type="text" value="<?php echo $aEmployee['sEmail'] ?>" class="input_text" />
+                    <span class="f_c_f63 f20">*</span> 
+                    <span style="color: Orange"></span>
+                </td>
+                <td>
+                    <span class="msgBox f12" id="errorEmail"></span>
+                </td>
+                <td style="color: orange">(此邮箱将用于接收体检报告及提醒)</td>
+            </tr>
+            <tr>
+                <th>所在城市：</th>
+                <td>
+                    <select name="iCityID" id="main_ddlCity">
+                    <option value="0">选择城市</option>
+                    <?php foreach ($aCity as $k => $val) { ?>
+                        <option <?php echo $aEmployee['iCityID'] == $k ? 'selected' : '';?> value="<?php echo $k ?>"><?php echo $val ?></option>
+                    <?php } ?>
+                    </select>
+                    <span class="f_c_f63 f20">*</span> <span style="color: Orange"></span>
+                </td>
+                <td>
+                    <span class="msgBox f12" id="errorCity"></span>
+                </td>
+                <td style="color: orange"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    <input type="submit" name="" value="下一步" class="reg_btn" style="width:140px;" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 30px"></td>
+            </tr>
+        </table>
+        
+        <br />
+        <div style="border-bottom: 3px solid orange"></div>
+        <br /><br /><br />
+    </div>
+</form>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/validate.js"></script>
+<script type="text/javascript">
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = ret.url;
+            }
+        }, 'json');
+        return false;
+    }});
+</script>

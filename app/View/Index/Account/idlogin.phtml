@@ -1,0 +1,140 @@
+<!doctype html>
+<!--[if IEMobile 7]><html lang="zh-hans" class="iem7" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"><![endif]-->
+<!--[if lte IE 6]><html lang="zh-hans" class="lt-ie10 lt-ie9 lt-ie8 lt-ie7" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"><![endif]-->
+<!--[if (IE 7)&(!IEMobile)]><html lang="zh-hans" class="lt-ie10 lt-ie9 lt-ie8 ie7" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"><![endif]-->
+<!--[if IE 8]><html lang="zh-hans" class="lt-ie10 lt-ie9 ie8" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"><![endif]-->
+<!--[if IE 9]><html lang="zh-hans" class="lt-ie10 ie9" xmlns="http://www.w3.org/1999/xhtml" dir="ltr"><![endif]-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>安心体检用户中心</title>
+<meta http-equiv="cleartype" content="on">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<meta name="MobileOptimized" content="width">
+<meta name="HandheldFriendly" content="true">
+<meta name="viewport" content="width=device-width"  /><!-- media setting -->
+<meta http-equiv="cleartype" content="on"><!-- MS important -->
+<meta name="apple-mobile-web-app-capable" content="yes"><!-- hide ios topbar -->      
+<meta content="telephone=no" name="format-detection" /><!-- stop call phone -->
+
+<!-- Facicon 57*57 / Retina 114*114 / ipad 72*72 / Ios desktop -->    
+<link rel="apple-touch-icon-precomposed" href="<?php echo $sStaticRoot?>/backend/img/iphone_icon_57.png" sizes="57x57"/>
+<link rel="apple-touch-icon-precomposed" href="<?php echo $sStaticRoot?>/backend/img/iphone_icon_114.png" sizes="114x114"/>
+<link rel="apple-touch-icon-precomposed" href="<?php echo $sStaticRoot?>/backend/img/iphone_icon_72.png" sizes="72x72"/>    		
+<link rel="apple-touch-startup-image" href="<?php echo $sStaticRoot?>/backend/img/iphone_icon_57.png" />
+
+<script src="<?php echo $sStaticRoot?>/backend/js/phoneAgent.js"></script>
+<script src="<?php echo $sStaticRoot?>/backend/js/jquery-2.1.1.min.js"></script>
+
+<script src='<?php echo $sStaticRoot?>/backend/js/idangerous.swiper-2.1.min.js'></script>
+<script src="<?php echo $sStaticRoot?>/backend/js/function.js"></script>
+<link rel="stylesheet" href="<?php echo $sStaticRoot?>/backend/css/ciic.css" type="text/css" media="all">
+</head>
+
+<body>
+<form id="myform" action="" method="post">
+<div id="main">
+    <div id="sign_2">
+    <div id="br_lt"><img src="<?php echo $sStaticRoot?>/backend/img/border_left.png" /></div>
+    <div id="logo" class="logo_2">安心体检</div>           
+           <div class="sign_fr_box active">
+           <h5>身份证登录</h5>
+           <input name="sIdentityCard" type="text" maxlength="30" id="sIdentityCard" tabindex="2" class="l input-common" placeholder="证件号码">
+           <!--id="sMobile" id="again"-->
+           <input name="sMobile" type="text" maxlength="30"  tabindex="2" id="verify" class="l input-common" placeholder="手机号码">
+           <input type="submit" name="" value="获取验证码" id="verify_nb"  class="verify_gr">
+           <input name="iPhoneCode" type="text" id="verify" placeholder="验证码" style="width:216px"/>
+           <button id="login" type="button">登录</button>
+           <a href="/index/account/register" class=""><button type="button" id="forget">免费注册</button></a>
+           </div> 
+           <div class="switch">
+              <a id="main_hlLogin" href="/index/account/pblogin"><button type="button">帐号登录</button></a>
+              <a id="main_hlLogin" href="/index/account/cdlogin"><button type="button">体检卡登录</button></a>
+           </div>
+           <div class="tl_nb"><img src="<?php echo $sStaticRoot?>/backend/img/tp_number_bl.png" /></div>
+           <!-- normal end -->
+            
+     <div id="footer_2">
+         <div id="qr_code"><img src="<?php echo $sStaticRoot?>/backend/img/qr_code.jpg" width="100" /></div>
+         <img src="<?php echo $sStaticRoot?>/backend/img/ciic_logo.png" />
+         <p>上海中盈保险经纪有限公司</p>
+         <p>沪ICP备11037892号
+         <p>Copyright©2012- 2015</p>
+         <p>中盈保险网版权所有</p>
+     </div>
+    </div>
+    <div id="banner_2" style='height:640px'>
+    <div class="br_ic_9"><img src="<?php echo $sStaticRoot?>/backend/img/banner_icon_4.png" /></div>
+    </div>
+</div>
+</form>
+</body>
+
+<script type="text/javascript">
+var UcenterUrl = '/index/web/list';
+function codeChange()
+{
+    var CodeUrl = '/index/account/sendcode/type/<?php echo $iCodeType ?>/mobile/';
+    var Mobile = $('#verify').val();
+    if (!Mobile) {
+        alert('请输入手机号');
+        return false;
+    }
+    CodeUrl = CodeUrl + Mobile;
+    $.get(CodeUrl, function (data) {
+        data = eval("(" + data + ")")
+        if (data.status) {
+            // alert('发送成功');
+        } else {
+            alert('发送失败，请稍后重试');
+        }
+    });
+}
+$('#verify_nb').click(function () {
+     BindButtonTime() 
+});
+
+
+function BindButtonTime() {
+    codeChange();
+    var tc = 90;
+    var tid = 0;
+
+    var timer1 = function () {
+        tc--;
+
+        if (tc > 0) {
+            $('#verify_nb').attr('disabled', "true"); //添加disabled属性
+            $("#verify_nb").val(tc + '秒后可获取');
+            tid = setTimeout(timer1, 1000);
+        }
+        else {
+            $('#verify_nb').removeAttr("disabled"); //移除disabled属性
+            $("#verify_nb").val('获取验证码');
+        }
+    }
+
+    timer1();
+}
+
+$('#login').click(function () {
+        var CanSummit = 1;
+        var form = $('#myform');
+        if (CanSummit) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                if (ret.status) {
+                    //跳转到个人中心
+                    alert('登陆成功!');
+                    window.location = UcenterUrl;
+                    return true;
+                } else {
+                    alert(ret.data);
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    })
+</script>
+</html>

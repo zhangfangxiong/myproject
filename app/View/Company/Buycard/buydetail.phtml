@@ -1,0 +1,109 @@
+<style>
+    #infotable {
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    #listtable {
+        width: 80%;
+        margin: 20px auto;
+    }
+
+    #infotable tr td {
+        height: 50px;
+        border-top: 0px;
+    }
+
+    .totalmonry {
+        color: darkorange;
+        width: 80%;
+        margin: 10px auto;
+        text-align: right;
+    }
+
+    .tishi {
+        width: 80%;
+        margin: 20px auto;
+        color: darkorange;
+    }
+</style>
+<div class="pheader clearfix">购卡信息</div>
+<div class="pbody clearfix">
+
+    <table class="table table-hover" id="infotable">
+        <tr>
+            <td class="text-right">姓名:</td>
+            <td><?php echo !empty($orderDetail['sConsignee']) ? $orderDetail['sConsignee'] : '' ?></td>
+            <td class="text-right">体检卡类型:</td>
+            <td><?php echo !empty($aCardType[$orderDetail['iOrderType']]) ? $aCardType[$orderDetail['iOrderType']] : ''; ?></td>
+        </tr>
+        <tr>
+            <td class="text-right">发放状态:</td>
+            <td><?php echo !empty($aShippingStatus[$orderDetail['iShippingStatus']]) ? $aShippingStatus[$orderDetail['iShippingStatus']] : ''; ?></td>
+            <td class="text-right">手机:</td>
+            <td><?php echo !empty($orderDetail['sMobile']) ? $orderDetail['sMobile'] : '' ?></td>
+        </tr>
+        <tr>
+            <td class="text-right">邮箱:</td>
+            <td><?php echo !empty($orderDetail['sEmail']) ? $orderDetail['sEmail'] : '' ?></td>
+            <td class="text-right">总金额:</td>
+            <td><?php echo !empty($orderDetail['sOrderAmount']) ? $orderDetail['sOrderAmount'] : '' ?></td>
+        </tr>
+        <tr>
+            <td class="text-right">是否需要发票:</td>
+            <td><?php echo !empty($aIfInv[$orderDetail['iIfInv']]) ? $aIfInv[$orderDetail['iIfInv']] : ''; ?></td>
+            <td class="text-right">发票抬头:</td>
+            <td><?php echo !empty($aIfInv[$orderDetail['iIfInv']]) ? !empty($orderDetail['sInvPayee']) ? $orderDetail['sInvPayee'] : '' : ''; ?></td>
+        </tr>
+        <tr>
+            <td class="text-right">付款状态:</td>
+            <td><?php echo !empty($aPayStatus[$orderDetail['iPayStatus']]) ? $aPayStatus[$orderDetail['iPayStatus']] : ''; ?></td>
+            <td class="text-right"><?php echo $orderDetail['iOrderType'] == 2 ? '实体卡类型:' : ''; ?></td>
+            <td><?php echo $orderDetail['iOrderType'] == 2 ? !empty($aProductCardType[$orderDetail['iCardType']]) ? $aProductCardType[$orderDetail['iCardType']] : '' : ''; ?></td>
+        </tr>
+    </table>
+
+</div>
+<div class="tishi">
+    **如您选择的是电子体检卡，我们在确认您付款后将会把卡号发送至您登记的邮箱，解压缩密码为您的手机号码。<br>
+    **如您选择的是实物卡，我们在确认您付款后会在3个工作日之内，快递至您登记的地址，请注意查收。
+</div>
+<div>
+    <table class="table table-hover table-bordered" id="listtable">
+        <tr class="info">
+            <td>体检产品</td>
+            <td>单价</td>
+            <td>订购数量</td>
+            <?php if ($orderDetail['iOrderType'] == 2) {
+            ?>
+                <td>实体卡种类</td>
+            <?php
+            }?>
+            <td>合计</td>
+        </tr>
+        <?php if (!empty($products)) {
+            $total = 0; ?>
+            <?php foreach ($products as $product) {
+                $total += $product['sTotalPrice']; ?>
+                <tr>
+                    <td><?php echo !empty($product['sProductName']) ? $product['sProductName'] : ''; ?></td>
+                    <td><?php echo !empty($product['sProductPrice']) ? $product['sProductPrice'] : 0; ?></td>
+                    <td><?php echo !empty($product['iProductNumber']) ? $product['iProductNumber'] : 0; ?></td>
+                    <?php if ($orderDetail['iOrderType'] == 2) {
+                        ?>
+                        <td><?php echo !empty($aPCard[$product['iPCard']]) ? $aPCard[$product['iPCard']] : ''; ?></td>
+                    <?php
+                    }?>
+                    <td><?php echo !empty($product['sTotalPrice']) ? $product['sTotalPrice'] : ''; ?></td>
+                </tr>
+            <?php } ?>
+        <?php } ?>
+    </table>
+    <div class="totalmonry">总金额：<span><?php echo $total; ?></span>元</div>
+
+    <div style="clear: both;"></div>
+</div>
+
+<div style="text-align: center;">
+    <a href="javascript: history.go(-1);" class="btn btn-primary">返回</a>
+</div>

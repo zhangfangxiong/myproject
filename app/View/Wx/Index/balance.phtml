@@ -1,0 +1,182 @@
+<div class="row row-main-margin">
+    <form method="post" id="myform" action="">
+        <div class="order-list">
+            <div class="order-list-title">
+                订单明细
+            </div>
+            <div class="order-list-content">
+                <?php
+                if (!empty($aParam['checkdata']['aList'])) {
+                    foreach ($aParam['checkdata']['aList'] as $key => $value) {
+                        ?>
+                        <div class="order-item">
+                            <input type="hidden" name="aProduct[iProductID][]"
+                                   value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>">
+                            <input type="hidden" name="aProduct[sProductName][]"
+                                   value="<?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?>">
+                            <input type="hidden" name="aProduct[sPrice][]"
+                                   value="<?php echo !empty($value['sPrice']) ? $value['sPrice'] : '' ?>">
+                            <input type="hidden" name="aProduct[iProductNumber][]"
+                                   value="<?php echo !empty($value['iNum']) ? $value['iNum'] : '' ?>">
+                            <input type="hidden" name="aProduct[sTotalPrice][]"
+                                   value="<?php echo !empty($value['sTotalPrice']) ? $value['sTotalPrice'] : '' ?>">
+                            <input type="hidden" name="aProduct[iSex][]"
+                                   value="<?php echo !empty($value['iSex']) ? $value['iSex'] : '' ?>">
+
+                            <div>名称：<?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></div>
+                            <div>性别：<?php echo !empty($aSex[$value['iSex']]) ? $aSex[$value['iSex']] : '' ?></div>
+                            <div>价格：<span
+                                    class="order-price"><?php echo !empty($value['sPrice']) ? $value['sPrice'] : '' ?></span>元*<?php echo !empty($value['iNum']) ? $value['iNum'] : '' ?>
+                                =<?php echo !empty($value['sTotalPrice']) ? $value['sTotalPrice'] : '' ?>元
+                            </div>
+                        </div>
+                    <?php
+                    }
+                }
+                ?>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <div class="col-xs-4 order-label order-total-price-title"><span class="tubiao">*</span> 总金额：</div>
+            <div class="col-xs-7 order-input">
+                <input type="hidden" name="sProductAmount"
+                       value="<?php echo !empty($aParam['checkdata']['sAllTotalPrice']) ? $aParam['checkdata']['sAllTotalPrice'] : '' ?>">
+                <span
+                    class="order-price"><?php echo !empty($aParam['checkdata']['sAllTotalPrice']) ? $aParam['checkdata']['sAllTotalPrice'] : '' ?></span>元
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 订购人：</label>
+
+            <div class="col-xs-7 order-input">
+                <input id="sConsignee" name="sConsignee" validate="!required:true" placeholder="请输入订购人名字" type="text"
+                       value="" class="form-control input-validate">
+
+                <div id="sConsignee_tip" class="validate_checktip"></div>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 订购人手机：</label>
+
+            <div class="col-xs-7 order-input">
+                <input id="sMobile" name="sMobile" validate="!mobile:true" placeholder="请输入订购人手机" type="text" value=""
+                       class="form-control input-validate">
+
+                <div id="sMobile_tip" class="validate_checktip"></div>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 订购人邮箱：</label>
+
+            <div class="col-xs-7 order-input">
+                <input id="sEmail" name="sEmail" validate="!email:true" placeholder="请输入订购人邮箱" type="text" value=""
+                       class="form-control input-validate">
+
+                <div id="sEmail_tip" class="validate_checktip"></div>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label class="col-xs-4 control-label order-label">发票：</label>
+
+            <div class="col-xs-7 order-input"><input type="radio" name="iIfInv" class="iIfInv" value="0"
+                                                     checked>不需要发票<input type="radio" name="iIfInv" class="iIfInv"
+                                                                         value="1"> 需要发票
+            </div>
+        </div>
+        <div class="fapiao">
+            <div class="form-group clearfix">
+                <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 发票抬头：</label>
+
+                <div class="col-xs-7 order-input">
+                    <input id="sInvPayee" name="sInvPayee" placeholder="请输入发票抬头" type="text" value=""
+                           class="form-control input-validate">
+
+                    <div id="sInvPayee_tip" class="validate_checktip"></div>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 邮寄地址：</label>
+
+                <div class="col-xs-7 order-input">
+                    <input id="sAddress" name="sAddress" placeholder="请输入邮寄地址" type="text" value=""
+                           class="form-control input-validate">
+
+                    <div id="sAddress_tip" class="validate_checktip"></div>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label class="col-xs-4 control-label order-label"> <span class="tubiao">*</span> 邮编：</label>
+
+                <div class="col-xs-7 order-input">
+                    <input id="sZipcode" name="sZipcode" placeholder="请输入邮编" type="text" value=""
+                           class="form-control input-validate">
+
+                    <div id="sZipcode_tip" class="validate_checktip"></div>
+                </div>
+            </div>
+        </div>
+        <div class="order-attention">
+            请注意，本网站所列体检产品，仅提供“上海中盈保险经纪公司”开具的“服务费”发票，恕不提供各体检中心发票，请知晓。
+        </div>
+
+        <div class="jiesuan">
+            <input type="hidden" value="0" name="pay" id="pay">
+            <input type="hidden" value="0" name="iCreateTime" id="iCreateTime">
+            <input type="hidden" value="0" name="ordercode" id="sOrderCode">
+            <input type="submit" value="提交" class="form-control btn-warning">
+        </div>
+        <div class="cart-return">
+            <input class="form-control" value="返回" type="button" onclick="window.history.back()">
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        var payurl = '<?php echo !empty($sWxjsPayUrl) ? $sWxjsPayUrl : '' ?>';
+
+        function order() {
+            $.ajax({
+                url: '<?php echo !empty($sBalancePostUrl) ? $sBalancePostUrl : '' ?>',
+                type: 'post',
+                async: false,
+                data: $($("#myform")).serialize(),
+                dataType: 'json',
+                success: function (ret) {
+                    if (ret.status) {
+                        alert(ret.data.msg);
+                        $('#pay').val(1);
+                        $('#iCreateTime').val(ret.data.iCreateTime);
+                        $('#sOrderCode').val(ret.data.sOrderCode);
+                        //console.log(ret.data);
+                        $("#myform").attr('action', payurl).submit();
+                    } else {
+                        if (ret.data.msg) {
+                            alert(ret.data.msg);
+                        } else {
+                            $('#' + ret.data.inputid + '_tip').html($('#' + ret.data.inputid).attr('placeholder'));
+                            $('#' + ret.data.inputid).focus();
+                        }
+                    }
+                }
+            });
+            return false;
+        };
+
+        $("#myform").validate({
+            submitHandler: function (form) {
+                if ($('#pay').val() == 0) {
+                    return order();
+                }
+                return true;
+            }
+        });
+
+        $('.iIfInv').click(function () {
+            if ($(this).val() == 0) {
+                $('.fapiao').hide();
+            } else {
+                $('.fapiao').show();
+            }
+        })
+    })
+</script>

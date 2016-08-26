@@ -1,0 +1,104 @@
+<div class="pheader clearfix">体检卡购买记录</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/order/buylist">
+        <div class="row">
+            <input type="hidden" name="iOrderType" value="-1"/>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">支付状态：</label>
+                <select name="iPayStatus" class="form-control" style="width: 100px">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aPayStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iPayStatus']) && $aParam['iPayStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">发放状态：</label>
+                <select name="iShippingStatus" class="form-control" style="width: 100px">
+                    <?php foreach ($aShippingStatus as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iShippingStatus']) && $aParam['iShippingStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">支付方式：</label>
+                <select name="iPayChannel" class="form-control" style="width: 100px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aPayType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iPayChannel']) && $aParam['iPayChannel'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sName']) ? $aParam['sName'] : '' ?>"
+                       class="form-control" name="sName" style="width: 100px">
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="info">
+            <th class="text-center">姓名</th>
+            <th class="text-center">订购数量</th>
+            <th class="text-center">订购时间</th>
+            <th class="text-center">支付状态</th>
+            <th class="text-center">生成状态</th>
+            <th class="text-center">发卡状态</th>
+            <th class="text-center">卡类型</th>
+            <th class="text-center">支付类型</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aList['aList'])) {
+            foreach ($aList['aList'] as $order) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($order['sConsignee']) ? $order['sConsignee'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($order['iCardNum']) ? $order['iCardNum'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($order['iCreateTime']) ? date('Y-m-d H:i:s',$order['iCreateTime']) : '' ?></td>
+                    <td class="text-center"><?php echo isset($aPayStatus[$order['iPayStatus']]) ? $aPayStatus[$order['iPayStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo isset($aGenStatus[$order['iPayStatus']]) ? $aGenStatus[$order['iPayStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo isset($aShippingStatus[$order['iSendStatus']]) ? $aShippingStatus[$order['iSendStatus']] : '' ?></td>
+                    <td class="text-center">
+                        <?php
+                            if( 1== intval($order['iOrderType']) ){
+                                echo '电子卡';
+                            }else if( 2== intval($order['iOrderType']) ) {
+                                echo '实体卡';
+                            }else {
+                                echo "";
+                            }
+                        ?>
+                    </td>
+                    <td class="text-center">
+                        <?php
+                        if( 1== intval($order['iUserType']) ){
+                            echo '个人支付';
+                        }else if( 2== intval($order['iUserType']) ) {
+                            echo '公司支付';
+                        }else {
+                            echo "";
+                        }
+                        ?>
+                    </td>
+                    <td class="text-center">
+                        <a href="/admin/order/physicaldet?iOrderID=<?php echo $order['iOrderID'] ?>" title="查看"><i
+                                class="fa fa-eye fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>

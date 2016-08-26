@@ -1,0 +1,36 @@
+<div class="pheader clearfix">第二步：生成请款凭证并打印</div>
+<div class="pbody clearfix">
+    <div id="myform" class="form-horizontal" role="form" method="post">
+        <div class="form-group col-sm-12">
+            <label for="sUserName" class="col-sm-3 control-label">凭证编号：</label>
+            <div class="col-sm-9">
+                <?php echo $aBalance['sBalanceCode']; ?>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <label for="sRealName" class="col-sm-3 control-label">请款时间：</label>
+            <div class="col-sm-9">
+                <?php echo $aBalance['sMonth']; ?>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <label for="sRealName" class="col-sm-3 control-label">订单数量：</label>
+            <div class="col-sm-9">
+                <?php echo $iCount; ?>
+            </div>
+        </div> 
+
+        <div class="form-group col-sm-12">
+            <label for="sRealName" class="col-sm-3 control-label">总金额：</label>
+            <div class="col-sm-9">
+                <?php echo $aBalance['iSMoney']; ?>
+            </div>
+        </div>  
+
+        <div class="btn-toolbar text-center col-sm-12">
+        	<input type="button" value="下一步" class="btn btn-primary" onclick="location.href='<?php echo $sTicketUrl?>/iBalanceID/<?php echo $iBalanceID?>';return false;">
+        </div> 
+    </form>
+</div>

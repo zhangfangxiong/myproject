@@ -1,0 +1,86 @@
+<div class="pheader clearfix"><?php echo $aClass['sName']?>管理</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form">
+	<button class="btn btn-primary" id="type_add">
+		<i class="fa fa-plus"></i> 增加<?php echo $aClass['sName']?>
+	</button>
+	</form>
+	<table class="table table-bordered table-hover">
+	    <thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<?php if ($aClass['sTitle']){?><th class="col-sm-4">名称</th><?php }?>
+    			<?php if ($aClass['sImage']){?><th class="col-sm-1 text-center">图片</th><?php }?>
+    			<?php if ($aClass['sDiy1']){?><th class="col-sm-1 text-center"><?php echo $aClass['sDiy1']?></th><?php }?>
+    			<?php if ($aClass['sDiy2']){?><th class="col-sm-1 text-center"><?php echo $aClass['sDiy2']?></th><?php }?>
+    			<?php if ($aClass['sDiy3']){?><th class="col-sm-1 text-center"><?php echo $aClass['sDiy3']?></th><?php }?>
+    			<?php if ($aClass['sRemark']){?><th class="col-sm-1 text-center">备注</th><?php }?>
+    			<th class="col-sm-2 text-center">操作</th>
+    		</tr>
+		</thead>
+		<tbody>
+		    <?php foreach ($aList as $v) {?>
+    		<tr cid="<?=$v['iAutoID']?>">
+    		    <td align="center"><?=$v['iAutoID']?></td>
+    			<?php if ($aClass['sTitle']){?><td align="center"><?=$v['sTitle']?></td><?php }?>
+    			<?php if ($aClass['sImage']){?><td align="left"><img style="height: 60px;" src="<?php echo Util_Uri::getDFSViewURL($v['sImage']);?>"></td><?php }?>
+    			<?php if ($aClass['sDiy1']){?><td align="center"><?php echo $v['sDiy1'];?></td><?php }?>
+    			<?php if ($aClass['sDiy2']){?><td align="center"><?php echo $v['sDiy2'];?></td><?php }?>
+    			<?php if ($aClass['sDiy3']){?><td align="center"><?php echo $v['sDiy3'];?></td><?php }?>
+    			<?php if ($aClass['sRemark']){?><td align="center"><?php echo $v['sRemark'];?></td><?php }?>
+    			<td class="text-center">
+    				<a onclick="return type_move(this,0);" href="/admin/front/move.html?id=<?php echo $v['iAutoID']?>&direct=0" title="上移"><i class="fa fa-arrow-up fa-large"></i></a>
+    				<a onclick="return type_move(this,1);" href="/admin/front/move.html?id=<?php echo $v['iAutoID']?>&direct=1" title="下移"><i class="fa fa-arrow-down fa-large"></i></a>
+    				<a href="/admin/front/edit.html?id=<?php echo $v['iAutoID'];?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    				<a href="/admin/front/del.html?id=<?php echo $v['iAutoID'];?>" role="button" class="type_del" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+		</tbody>
+	</table>
+</div>
+<style type="text/css">
+.sgBtn{width: 135px; height: 35px; line-height: 35px; margin-left: 10px; margin-top: 10px; text-align: center; background-color: #0095D9; color: #FFFFFF; float: left; border-radius: 5px;}
+</style>
+<script>
+$('#type_add').click(function(){
+	location.href = '/admin/front/add<?php echo empty($sClass)?'.html':"/class/$sClass.html"?>';
+	return false;
+});
+$('.type_del').click(function() {
+	var url = this.href;
+	if (confirm("你确定要删除该<?php echo $aClass['sName']?>吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+
+var type_moving = false;
+function type_move(ele, direct) {
+	if (type_moving == true) {
+		return false;
+	}
+	type_moving = true;
+	$.get($(ele).attr('href'), function(ret){
+		type_moving = false;
+		if (ret.status == false) {
+			alert(ret.data);
+			return false;
+		}
+		if (ret.data > 0) {
+			var currtr = $(ele).parent().parent();
+			if (direct == 0) {
+				currtr.prev().before(currtr);
+			} else {
+				currtr.next().after(currtr);
+			}
+		}
+	});
+	return false;
+}
+</script>

@@ -1,0 +1,233 @@
+<div class="pheader clearfix">第一步：选择可结算的订单</div>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已选择的订单(共<span class="red"><?php echo count($aHasItem); ?></span>个)
+    <?php if (!empty($aHasItem)) {?>
+    <?php if (!isset($opt) || $opt != 'edit') { ?>
+    <input type="button" value="下一步" class="btn btn-primary" onclick="location.href='<?php echo $sNextItemUrl?>/iBalanceID/<?php echo $iBalanceID?>';return false;">
+    <?php }?>
+    <?php }?>
+    </div>
+    <?php if (!empty($aHasItem)) { ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="hasitemall"></th>
+                <th class="text-center">姓名</th>
+                <th class="text-center">性别</th>
+                <th class="text-center">婚姻状况</th>
+                <th class="text-center">体检日期</th>
+                <th class="text-center">出报告日期</th>
+                <th class="text-center">城市</th>
+                <th class="text-center">门店</th>
+                <th class="text-center">体检产品</th>
+                <th class="text-center">结算金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasItem as $value) {?>
+                    <tr>
+                        <td class="text-center"><input class="hasitemlist" type="checkbox" name="hasitemlist[]" value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo $value['sRealName']?></td>
+                        <td class="text-center"><?php echo $value['sSex']?></td>
+                        <td class="text-center"><?php echo $value['sMarriage']?></td>
+                        <td class="text-center"><?php echo $value['sPhysicalTime']?></td>
+                        <td class="text-center"><?php echo $value['sReportTime']?></td>
+                        <td class="text-center"><?php echo $value['sCityName']?></td>
+                        <td class="text-center"><?php echo $value['sStoreName']?></td>
+                        <td class="text-center"><?php echo $value['sProductName']?></td>
+                        <td class="text-center"><?php echo $value['sCost']?></td>                      
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加订单，请从下面的表格中选择需要添加的订单</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php } ?>
+    <div class="btn-toolbar text-center">
+        <?php if (!empty($aHasItem)) {?>
+            <input type="button" value="删除选中单项" class="btn btn-primary input-margin-left" id="item-delete-select">
+        <?php }?>
+    </div>
+    <hr/>
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的订单</div>
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="col-sm-12 form-group">          
+            <div class="col-sm-9">
+                <label>出报告日期：</label>
+                <input type="text" value="<?php echo !empty($aParam['sStartDate']) ? $aParam['sStartDate'] : '' ?>"
+                       class="laydatetime form-control" name="sStartDate" style="width: 100px">
+                <label>至：</label>
+                <input type="text" value="<?php echo !empty($aParam['sEndDate']) ? $aParam['sEndDate'] : '' ?>"
+                       class="laydatetime form-control" name="sEndDate" style="width: 100px">
+                <label>体检类型：</label>
+                <select name="iPhysicalType" class="form-control" style="width: 100px">
+                    <option value="0" <?php echo empty($aParam['iPhysicalType']) ? 'selected' : '' ?>>全部</option>
+                    <option value="1" <?php echo 1 == $aParam['iPhysicalType'] ? 'selected' : '' ?>>普通体检</option>
+                    <option value="2" <?php echo 2 == $aParam['iPhysicalType'] ? 'selected' : '' ?>>入职体检</option>
+                </select>
+
+                <label>城市：</label>
+                <select name="iCityID" class="form-control" style="width: 100px">
+                    <option value="0" <?php echo empty($aParam['iCityID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aStoreCity as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iCityID']) && $aParam['iCityID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div> 
+            <div class="col-sm-3">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>         
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+                <th class="text-center">姓名</th>
+                <th class="text-center">性别</th>
+                <th class="text-center">婚姻状况</th>
+                <th class="text-center">体检日期</th>
+                <th class="text-center">出报告日期</th>
+                <th class="text-center">城市</th>
+                <th class="text-center">门店</th>
+                <th class="text-center">体检产品</th>
+                <th class="text-center">结算金额</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aProduct['aList'])) {
+                foreach ($aProduct['aList'] as $key => $value) {?>
+                    <tr>
+                        <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]" value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo $value['sRealName']?></td>
+                        <td class="text-center"><?php echo $value['sSex']?></td>
+                        <td class="text-center"><?php echo $value['sMarriage']?></td>
+                        <td class="text-center"><?php echo $value['sPhysicalTime']?></td>
+                        <td class="text-center"><?php echo $value['sReportTime']?></td>
+                        <td class="text-center"><?php echo $value['sCityName']?></td>
+                        <td class="text-center"><?php echo $value['sStoreName']?></td>
+                        <td class="text-center"><?php echo $value['sProductName']?></td>
+                        <td class="text-center"><?php echo $value['sCost']?></td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        
+        <?php echo !empty($aProduct['aPager']) ? $aProduct['aPager'] : '' ?>
+
+        <div class="btn-toolbar text-center">           
+            <input type="button" value="添加选中订单" class="btn btn-primary" id="item-add-select">
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+    //全选效果
+    $('#itemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasitemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasitemlist').prop("checked", false);
+        } else {
+            $('.hasitemlist').prop("checked", true);
+        }
+    });
+    //单项选择效果
+    $('.itemlist').click(function(){
+        $('#itemall').prop("checked", false);
+    });
+    //单项选择效果
+    $('.hasitemlist').click(function(){
+        $('#hasitemall').prop("checked", false);
+    });
+    //单项单个添加
+    $('.item_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量添加
+    $('#item-add-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertItemUrl) ? $sInsertItemUrl : '' ?>?iBalanceID=<?php echo !empty($iBalanceID) ? $iBalanceID : 0 ?>&id=';
+        $('.itemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的订单');
+            return false;
+        }
+        select_item = select_item.substring(0,select_item.length-1);
+        url += select_item;
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.href = ret.url;
+            }
+        }, 'json');
+    });
+    //单项单个删除
+    $('.hasitem_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该订单吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量删除
+    $('#item-delete-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteItemUrl) ? $sDeleteItemUrl : '' ?>?iBalanceID=<?php echo !empty($iBalanceID) ? $iBalanceID : 0 ?>&id=';
+        $('.hasitemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item += $(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的订单');
+            return false;
+        }
+        select_item = select_item.substring(0,select_item.length-1);
+        url += select_item;
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.reload();
+            }
+        }, 'json');
+    });
+    $('#next').click(function(){
+        location.href = $(this).data('url');
+    })
+</script>

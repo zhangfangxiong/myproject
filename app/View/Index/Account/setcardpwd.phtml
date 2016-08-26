@@ -1,0 +1,91 @@
+<div class="div_welcome_picbg">
+    <div class="div_welcome_cen_picbg">
+        <div class="div_welcome_big_banner">
+        </div>
+    </div>
+    <!-- banner end -->
+</div>
+<!-- 中间  -->
+<form id='myform' method="post" />
+<div id="public_c" class="margin_1">
+    <div class="public_c">
+        <!-- 文本信息  -->
+        <div id="main_tblPwd" class="w_950 margin_1 float_l">
+            <table cellpadding="0" cellspacing="0" width="100%" border="0" class="ListInfo">
+                <colgroup>
+                    <col style="width: 40%" />
+                    <col style="width: 60%" />
+                </colgroup>
+                <tr>
+                    <td colspan="2" style="font-size: 18px; font-weight: bold;">
+                        <span id="main_Label1" style="color:Gray;font-size:13px;font-weight:normal;"></span>
+                        设置体检卡密码 </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="font-size: 14px; text-align:center;">
+                        为保证您的隐私，请设置您的的体检卡密码。
+                    </td>
+                </tr>
+                <tr>
+                    <th align="right">
+                        体检卡号
+                    </th>
+                    <td align="left">
+                        <span id="main_txtCardId2"><?php echo $aCard['sCardCode']?></span>
+                        <input type="hidden" name="sCardCode" value="<?php echo $aCard['sCardCode']?>">
+                    </td>
+                </tr>
+                <tr id="main_Tr1">
+                    <th align="right">
+                        <span class="f_c_f63 f20">*</span>输入密码
+                    </th>
+                    <td align="left">
+                        <input name="sCardPwd" type="password" id="main_txtPwd" class="input_text" style="height:23px;width:200px;" />
+                        
+                    </td>
+                </tr>
+                <tr id="main_Tr1">
+                    <th align="right">
+                        <span class="f_c_f63 f20">*</span>再次输入密码
+                    </th>
+                    <td align="left">
+                        <input name="sConfirmCardPwd" type="password" id="main_txtPwd" class="input_text" style="height:23px;width:200px;" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td  style="text-align: center; height:30px;" colspan="2">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" colspan="2">
+                        <button id="save" class="btn btn-primary">确定</button>
+                        <a href="/index/account/nosetcardpwd/id/<?php echo $aCard['iAutoID'] ?>" class="btn btn-primary">跳过</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- 文本信息 over-->
+        <div class="clear">
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+</form>
+
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+                location.href = ret.url;
+            }
+        }, 'json');
+
+        return false;
+    }});
+});
+</script>

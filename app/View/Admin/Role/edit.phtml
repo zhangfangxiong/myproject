@@ -1,0 +1,115 @@
+<div class="pheader clearfix"><?php echo isset($aRole['iRoleID']) ? '编辑' : '增加' ?>权限</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iRoleID" type="hidden" value="<?php echo isset($aRole['iRoleID']) ? $aRole['iRoleID'] : '' ?>">
+
+        <div class="form-group">
+            <label for="sRoleName" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 权限名称：</label>
+
+            <div class="col-sm-10">
+                <input name="sRoleName" validate="!length:2-20" type="text"
+                       value="<?php echo isset($aRole['sRoleName']) ? $aRole['sRoleName'] : '' ?>"
+                       class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="iType" class="col-sm-2 control-label">权限类型：</label>
+
+            <div class="col-sm-10">
+                <select name="iType" id="iType" class="form-control input-validate">
+                    <?php foreach ($aType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($iType) && $iType == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="iStatus" class="col-sm-2 control-label">是否启用：</label>
+
+            <div class="col-sm-10">
+                <select name="iStatus" class="form-control input-validate">
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aRole['iStatus']) && $aRole['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+            <div class="form-group">
+                <label for="sRealName" class="col-sm-2 control-label">权限选择：</label>
+
+                <div class="col-sm-10">
+                	<ul class="nav" style="float:left;padding:5px;margin-right:20px;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;border: 1px solid #cccccc;">
+                    <?php foreach ($aMenuList as $k => $mv) { ?>
+                    	<li cid="<?= $mv['iMenuID'] ?>" pid="<?= $mv['iParentID'] ?>" id="menu<?= $mv['iMenuID'] ?>"
+                            class="menupp<?= $mv['iParentID'] ?> <?= $mv['sPath'] ?> menup<?= $mv['iParentID'] ?> <?php echo $mv['iLevel']>0?'hide':''?>">
+                            <?php echo str_repeat('&nbsp;', 3 * $mv['iLevel']) ?>
+                            <?php if ($mv['bIsLeaf'] && isset($aPermissionList[$mv['iMenuID']])==false){?><i class="fa fa-minus-square"></i><?php }else{?><i class="fa fa-plus-square mopenbtn"></i><?php }?>
+                            <input name="aModule[]" value="<?= $mv['iMenuID'] ?>" class="rpcheckbox checkbox-inline"
+                                   type="checkbox" <?php echo isset($aRole['aModule']) && in_array($mv['iMenuID'], $aRole['aModule']) ? 'checked' : '' ?>>
+                            <?php echo $mv['sMenuName'] ?>
+                        </li>
+
+                        <?php if (isset($aPermissionList[$mv['iMenuID']])) {
+                            foreach ($aPermissionList[$mv['iMenuID']] as $pv) { ?>
+                                <li pid="<?= $pv['iMenuID'] ?>"
+                                    class="menupp<?= $pv['iMenuID'] ?> <?= $mv['sPath'] ?>  menup<?= $mv['iMenuID'] ?> hide">
+                                    <?php echo str_repeat('&nbsp;', 3 * (2 + $mv['iLevel'])) ?>
+                                    <input name="aPermission[]" class="rpcheckbox checkbox-inline" type="checkbox"
+                                           value="<?= $pv['iPermissionID'] ?>" <?php echo isset($aRole['aPermission']) && in_array($pv['iPermissionID'], $aRole['aPermission']) ? 'checked' : '' ?>>
+                                    <?php echo $pv['sPermissionName'] ?>
+                                </li>
+                            <?php }
+                        } ?>
+                    <?php } ?>
+                    </ul>
+                </div>
+            </div>
+        <div class="btn-toolbar text-center">
+            <button id="save" class="btn btn-primary">保存</button>
+            <button id="cancel" class="btn" onclick="location.href='/admin/role/list/';return false;">取消</button>
+        </div>
+    </form>
+</div>
+<script>
+    var url = '<?php echo isset($aRole['iRoleID']) ? '/admin/role/edit/id/'.$aRole['iRoleID'].'/' : '/admin/role/add/'?>';
+    $(function () {
+        $('.mopenbtn').click(function () {
+            var ptr = $(this).parent();
+            if ($(this).hasClass('fa-plus-square')) {
+                $('.menupp' + ptr.attr('cid')).removeClass('hide');
+                $(this).removeClass('fa-plus-square').addClass('fa-minus-square');
+            } else {
+                $('.menup' + ptr.attr('cid')).addClass('hide');
+                $(this).removeClass('fa-minus-square').addClass('fa-plus-square');
+                $('.menupp' + ptr.attr('cid') + ' .mopenbtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+            }
+        });
+        $('.rpcheckbox').click(function () {
+            var ptr = $(this).parent();
+            var checked = this.checked;
+            $('.menup' + ptr.attr('cid') + ' > .checkbox-inline').each(function () {
+                this.checked = checked;
+            });
+            if (checked) {
+                while ($('#menu' + ptr.attr('pid')).length > 0) {
+                    $('#menu' + ptr.attr('pid') + ' > .checkbox-inline').get(0).checked = true;
+                    ptr = $('#menu' + ptr.attr('pid'));
+                }
+            }
+        });
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    alert(ret.data);
+                    if (ret.status) {
+                        location.href = '/admin/role/list/';
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

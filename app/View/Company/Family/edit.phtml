@@ -1,0 +1,116 @@
+<div class="pheader clearfix"><?php echo isset($aFamily['iAutoID'])?'编辑':'增加'?>员工家属信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iFamilyID" type="hidden" value="<?php echo isset($aFamily['iAutoID'])?$aFamily['iAutoID']:''?>">
+        <input name="iEmployeeID" type="hidden" value="<?php echo isset($aFamily['iEmployeeID'])?$aFamily['iEmployeeID']:''?>">
+        <div class="form-group col-sm-10">
+            <label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>姓名：</label>
+            <div class="col-sm-9">
+                <input name="sRealName" type="text" value="<?php echo isset($aFamily['sRealName'])?$aFamily['sRealName']:''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>       
+
+        <div class="form-group col-sm-10">
+            <label for="iSex" class="col-sm-3 control-label"> <span class="tubiao">*</span>性别：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iSex' value='1' 
+                <?php echo 1 == $aFamily['iSex'] ? 'checked': '';?>>男</input>
+                <input type='radio' name='iSex' value='2'
+                <?php echo 2 == $aFamily['iSex'] ? 'checked': '';?>>女</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="iDocumentTypeID" class="col-sm-3 control-label"> <span class="tubiao">*</span>证件类型：</label>
+            <div class="col-sm-9">
+                <select name="iDocumentTypeID" class="form-control input-validate">
+                    <?php foreach ($aCardType as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aFamily['iDocumentTypeID'])&&$aFamily['iDocumentTypeID']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="sDocumentNumber" class="col-sm-3 control-label">证件号码：</label>
+            <div class="col-sm-9">
+                <input name="sDocumentNumber" type="text" value="<?php echo !empty($aFamily['sDocumentNumber']) ? $aFamily['sDocumentNumber'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+         <div class="form-group col-sm-10">
+            <label for="sBirthDate" class="col-sm-3 control-label">生日：</label>
+            <div class="col-sm-9">
+                <input id="sBirthDate" name="sBirthDate" type="text" value="<?php echo !empty($aFamily['sBirthDate']) ? $aFamily['sBirthDate'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="sMobile" class="col-sm-3 control-label"> 手机号码：</label>
+            <div class="col-sm-9">
+                <input name="sMobile" type="text" value="<?php echo isset($aFamily['sMobile'])?$aFamily['sMobile']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="sCall" class="col-sm-3 control-label"> 固定电话：</label>
+            <div class="col-sm-9">
+                <input name="sCall" type="text" value="<?php echo isset($aFamily['sCall'])?$aFamily['sCall']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="iPositionID" class="col-sm-3 control-label"> 职位：</label>
+            <div class="col-sm-9">
+                <select name="iPositionID" class="form-control input-validate">
+                    <?php foreach ($aPosition as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aFamily['iPositionID'])&&$aFamily['iPositionID']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-10">
+            <label for="iRelationID" class="col-sm-3 control-label">和本人的关系：</label>
+            <div class="col-sm-9">
+                <select name="iRelationID" class="form-control input-validate">
+                    <?php foreach ($aRelation as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aFamily['iRelationID'])&&$aFamily['iRelationID']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">保存</button>
+            <a class="text-right btn btn-default" href='/company/employee/detail?iEmployeeID=<?php echo $aFamily['iEmployeeID']?>'>取消</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = '/company/employee/detail?iEmployeeID=<?php echo $aFamily['iEmployeeID']?>';
+            }
+        }, 'json');
+        return false;
+    }});
+
+    laydate({
+        elem: '#sBirthDate',
+        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+        festival: true, //显示节日
+        choose: function(datas){ //选择日期完毕的回调
+        }
+    });
+});
+</script>

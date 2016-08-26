@@ -1,0 +1,97 @@
+<div class="pheader clearfix">
+    按城市导入门店代码 <?php echo $aProduct['sProductName'] ?>
+</div>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <div class="form-group">
+            <label for="sCode" class="col-sm-2 control-label">选择城市：</label>
+
+            <div class="col-sm-6">
+               <!-- <span class="cityall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>-->
+                <?php if (!empty($aCity)) {
+                    foreach ($aCity as $key => $value) {
+                        if ($key==0) continue;
+                        ?>
+                        <span class="city <?php echo in_array($key,$aParam['aCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                        <input <?php echo in_array($key,$aParam['aCity']) ? 'checked' : '' ?> type="checkbox" class="aCity" id="aCity_<?php echo $key; ?>" name="aCityID[<?php echo $key; ?>]">
+                    <?php
+                    }
+                } ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sCode" class="col-sm-2 control-label">产品代码：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sCode" placeholder="请填写产品代码" type="text"
+                       value="<?php echo !empty($aStoreCode['sCode']) ? $aStoreCode['sCode'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sSupplierPrice" class="col-sm-2 control-label">供应商结算价：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sSupplierPrice" placeholder="请填写供应商结算价" type="text"
+                       value="<?php echo !empty($aStoreCode['sSupplierPrice']) ? $aStoreCode['sSupplierPrice'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sChannelPrice" class="col-sm-2 control-label">渠道结算价：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sChannelPrice" placeholder="请填写渠道结算价" type="text"
+                       value="<?php echo !empty($aStoreCode['sChannelPrice']) ? $aStoreCode['sChannelPrice'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+
+        <div class="btn-toolbar text-center">
+            <input type="submit" id="next" class="btn btn-primary"
+                   value="保存">
+            <input type="button" value="取消" id="cancel" class="btn"
+                   onclick="history.back()">
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        //console.log(ret.data.replace(/\|/g,"\n"));
+                        alert(ret.data.replace(/\|/g,"\n"));
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        //城市点击效果
+        $('.city').click(function(){
+            var key = $(this).data('key');
+            if ($('#aCity_'+key).prop("checked")) {
+                $(this).removeClass('pbold');
+                $('#aCity_'+key).prop("checked",false);
+            } else {
+                $(this).addClass('pbold');
+                $('#aCity_'+key).prop("checked",true);
+            }
+        });
+        //城市全部点击效果
+        $('.cityall').click(function(){
+            $(this).addClass('pbold').removeClass('pcursor');
+            $('.city').addClass('pcursor').removeClass('pbold');
+            $('.aCity').prop("checked", false);
+        });
+    });
+</script>

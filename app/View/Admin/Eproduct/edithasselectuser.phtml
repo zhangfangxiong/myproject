@@ -1,0 +1,177 @@
+<?php if (!empty($iHeaderType)) {
+    include('productheader.phtml');
+    //搜索url
+    $sSearchUrl = ($iHeaderType == 2) ? $aEditHeaderInfo[$iEditHeaderIndex]['editurl'] : $aEditHeaderInfo[$iEditHeaderIndex]['viewurl'];
+} else {
+    ?>
+    <div class="pheader clearfix">编辑已选择客户</div>
+<?php
+} ?>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已添加的客户(共<span class="red"><?php echo !empty($aData['iTotal']) ? $aData['iTotal'] : 0; ?></span>个)</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo !empty($sSearchUrl) ? $sSearchUrl : $sAddHasSelectUserUrl ?>?id=<?php echo !empty($iProductID) ? $iProductID : ''?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle">类型</div>
+                <div class="col-sm-11">
+                    <?php if (!empty($aType)) {
+                        foreach ($aType as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <label class="type <?php echo $aParam['iType'] == $key ? 'pbold' : 'pcursor' ?>">
+                                <?php echo $value ?>
+                                <input <?php echo $aParam['iType'] == $key ? 'checked' : '' ?> type="radio" class="iType" name="iType" value="<?php echo $key; ?>">
+                            </label>
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">渠道</div>
+                <div class="col-sm-11">
+                    <?php if (!empty($aChannel)) {
+                        foreach ($aChannel as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <label class="channel <?php echo $aParam['iChannel'] == $key ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>">
+                                <?php echo $value ?><input <?php echo $aParam['iChannel'] == $key ? 'checked' : '' ?> type="radio" class="iType" name="iChannel" value="<?php echo $key; ?>">
+                            </label>
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索客户名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">客户名称</th>
+                <th class="text-center">价格（男）</th>
+                <th class="text-center">门店数量</th>
+                <th class="text-center">升级产品</th>
+                <th class="text-center">加项包</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aData['aList'])) {
+                foreach ($aData['aList'] as $value) {?>
+                    <tr>
+                        <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iStoreNum']) ? $value['iStoreNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iUpgradeNum']) ? $value['iUpgradeNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iAddtionNum']) ? $value['iAddtionNum'] : 0 ?></td>
+                        <?php if (empty($iHeaderType) ||  $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="hasSelectUser_add" href="javascript:;" data-url="<?php echo !empty($sEditBasePriceUrl) ? $sEditBasePriceUrl : '' ?>id/<?php echo !empty($iProductID) ? $iProductID : 0 ?>/uid/<?php echo $value['iUserID'] ?>/tid/<?php echo $aParam['iType']; ?>/cid/<?php echo $aParam['iChannel']; ?>" title="编辑"><i
+                                        class="fa fa-pencil fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">
+            <?php if (!empty($iHeaderType) && $iHeaderType == 1) {
+                ?>
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($aEditHeaderInfo[4]['editurl']) ? $aEditHeaderInfo[4]['editurl'] : '' ?>?id=<?php echo $aProduct['iProductID'] ?>">
+            <?php
+            } else {
+                ?>
+                <input type="button" data-url="<?php echo !empty($sNextUrl) ? $sNextUrl : 'javascript:;' ?>" id="next" class="btn btn-primary"
+                       value="<?php echo !empty($iHeaderType) ? '保存' : '完成' ?>">
+            <?php
+            } ?>
+            <input type="button" value="返回列表" id="cancel" class="btn" onclick="location.href='<?php echo !empty($sEpListUrl) ? $sEpListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+<!--
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+-->
+<script type="text/javascript">
+    //客户渠道点击效果
+    $('.channel').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $(this).siblings('.channel').addClass('pcursor').removeClass('pbold');
+    });
+    //客户种类点击效果
+    $('.type').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $(this).siblings('.type').addClass('pcursor').removeClass('pbold');
+    });
+    //全选效果
+    $('#hasSelectUserall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasSelectUserlist').prop("checked", false);
+        } else {
+            $('.hasSelectUserlist').prop("checked", true);
+        }
+    });
+    //客户选择效果
+    $('.hasSelectUserlist').click(function(){
+        $('#hasSelectUserall').prop("checked", false);
+    });
+    //客户单个添加
+    $('.hasSelectUser_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要编辑该客户吗？")) {
+            location.href = url;
+        }
+    });
+    //客户批量添加
+    $('#hasSelectUser-add-select').click(function(){
+        var select_hasSelectUser = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sEditBasePriceUrl) ? $sEditBasePriceUrl : '' ?>?id=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&uid=';
+        $('.hasSelectUserlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_hasSelectUser +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要编辑的客户');
+            return false;
+        }
+        select_hasSelectUser=select_hasSelectUser.substring(0,select_hasSelectUser.length-1);
+        url += select_hasSelectUser;
+        if (confirm("您确认要编辑选中的"+count_num+"个客户吗？")) {
+            location.href = url;
+        }
+    });
+    $('#next').click(function(){
+        var ifLocation = <?php echo !empty($iHeaderType) ? 0 : 1 ?>;
+        var operationType = '<?php echo !empty($iHeaderType) ? '保存' : '添加' ?>';
+        if (ifLocation) {
+            location.href = $(this).data('url');
+        } else {
+            alert(operationType+'成功!');
+        }
+    });
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+</script>

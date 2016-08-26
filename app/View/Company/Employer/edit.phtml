@@ -1,0 +1,55 @@
+<div class="pheader clearfix"><?php echo isset($aDept['iAutoID'])?'编辑':'增加'?>公司架构</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iDeptID" type="hidden" value="<?php echo isset($aDept['iAutoID']) ? $aDept['iAutoID'] : ''?>">
+
+		<div class="form-group col-sm-9">
+			<label for="iParentID" class="col-sm-3 control-label">上级机构：</label>
+			<div class="col-sm-9">
+				<select name="iParentID" class="form-control input-validate" <?php echo $selectable; ?>>
+					<?php if(empty($aDept['iParentID'])) { ?>
+					<option value="0" <?php echo $aDept['iParentID'] == 0 ? 'selected' : ''?>>--</option>
+					<?php }?>					
+					<?php foreach ($aDeptSet as $k => $v) { ?>
+						<option value="<?php echo $k?>" <?php echo isset($aDept['iParentID']) && $aDept['iParentID'] == $k ? 'selected' : ''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>	
+
+		<div class="form-group col-sm-9">
+			<label for="sDeptName" class="col-sm-3 control-label"> <span class="tubiao">*</span>机构名称：</label>
+			<div class="col-sm-9">
+				<input name="sDeptName" validate="!clength:1-20" placeholder="请输入机构名称" type="text" value="<?php echo isset($aDept['sDeptName']) ? $aDept['sDeptName'] : ''?>" class="form-control input-validate" <?php echo $readable; ?>>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-9">
+			<label for="sRemark" class="col-sm-3 control-label"> 备注：</label>
+			<div class="col-sm-9">
+				<textarea name="sRemark" class="form-control input-validate"><?php echo isset($aDept['sRemark']) 
+				? $aDept['sRemark'] : ''?></textarea>
+			</div>
+		</div>
+
+    	<div class="form-groupbtn-toolbar text-center col-sm-9">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/company/employer/index/iDeptID/<?php echo $aDept['iAutoID']?>';return false;">取消</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	           location.href = '/company/employer?iDeptID=<?php echo $aDept['iAutoID']?>';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

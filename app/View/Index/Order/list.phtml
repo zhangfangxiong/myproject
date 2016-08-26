@@ -1,0 +1,43 @@
+<?php include 'menu.phtml'; ?>
+<div class="pbody clearfix">  
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <!-- <div class="col-sm-12 form-group">
+            <div class="col-sm-3">                
+                <label>产品类型：</label>
+                <select name="iType" class="form-control" style="width: 100px">
+                    <option value="0" <?php echo empty($aParam['iType'])  ? 'selected' : '' ?>>全部</option>
+                    <option value="1" <?php echo $aParam['iType']=='1'  ? 'selected' : '' ?>>体检预约</option>
+                    <option value="2" <?php echo $aParam['iType']=='2'  ? 'selected' : '' ?>>体检卡</option>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div> -->
+    </form>  
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">产品名称</th>
+            <th class="text-center">产品类型</th>
+            <th class="text-center">订购时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aList['iTotal'] > 0) {
+            foreach ($aList['aList'] as $key => $aOrder) { ?>
+                <tr>                    
+                    <td class="text-center"><?php echo $aOrder['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aOrder['sType'] ?></td>
+                    <td class="text-center"><?php echo $aOrder['sCreateTime'] ?></td>
+                    <td class="text-center">
+                        <a href="<?php echo $aOrder['sLink'] ?>"><?php echo $aOrder['sDesc'] ?></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>

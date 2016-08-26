@@ -1,0 +1,33 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div id="container"></div>
+</div>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4bfffe2dca93bbf875de0181774419c4&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+<script>
+    AMap.service('AMap.Geocoder',function(){//回调函数
+        //实例化Geocoder
+        geocoder = new AMap.Geocoder({
+            city: ""//城市，默认全国
+        });
+    })
+
+    if ($('#container').length) {
+        var map = new AMap.Map('container', {
+            resizeEnable: true,
+            center: [<?php echo $aStore['iX']?>, <?php echo $aStore['iY']?>],
+            zoom: 13
+        });
+        var marker = new AMap.Marker({
+            position: map.getCenter()
+        });
+        marker.setMap(map);
+
+        // 设置鼠标划过点标记显示的文字提示
+        // marker.setTitle('');
+        // 设置label标签
+        marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+    });
+    }
+</script>

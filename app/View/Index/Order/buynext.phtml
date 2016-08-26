@@ -1,0 +1,48 @@
+<div class="search_con" style="margin-top: 50px;">
+    <table class="table_dailiList" style="margin-top: 10px; margin-bottom: 10px; border-bottom: none;">
+    <input type="hidden" name="plan" value="<?php echo $plan?>">
+        <?php foreach ($aOP as $key => $value) { ?>
+        <tr>
+            <td style="width: 150px; padding-right: 10px; text-align: center;">
+                <img id="" src="<?php echo $value['sPImg'] ?>" style="height:150px;width:150px;" />
+                <p style="color: #0D8FE3; font-weight: bold; font-size: 13px; margin-top: 10px;">
+                    <span id=""><?php echo $value['sPCnt'] ?></span>人已预订
+                </p>
+            </td>
+            <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <td style="width: 60%">
+                                <strong class="cnName" style="width: 300px">
+                                    <a id="" href="<?php echo $value['sPPUrl'] ?>" style="color: #0D8FE3; text-decoration: none; font-size: 16px;"><?php echo $value['sPName'] ?></a></strong>
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="color: #808080; padding-top: 5px; padding-bottom: 5px;">(本产品可在全国<?php echo $value['sPSCnt'] ?></span>家体检门店预约使用)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" style="line-height: 25px; font-size: 13px;">体检内容简介：<span id=""><?php echo $value['sPDesc'] ?></span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 80%; color: #CCCCCC;"></td>
+                            <td style="width: 20%; text-align: right;">
+                                <a class="btn btn-warning" href="<?php echo $value['sPPUrl'] ?>">查看详情</a>
+                            </td>
+                            <td style="width: 20%; text-align: right;">                                
+                                <a class="btn btn-primary" href="<?php echo $value['sNextUrl'] ?>">立即预约</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        <?php } ?>
+    </table>
+    <br />
+    <div style="border-bottom: 3px solid orange"></div><br /><br /><br />
+</div>

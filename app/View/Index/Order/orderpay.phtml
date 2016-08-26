@@ -1,0 +1,81 @@
+<!-- <form action='http://51joying.iyaoshow.com/payment/weixin/pay/' /> -->
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/backend/css/soa.css" type="text/css" />
+<input name="ordercode" id="ordercode" type='hidden' value="<?php echo $aOrder['sOrderCode'] ?>" />
+<input id='formto' type='hidden' value="/payment/alipay/pay" />
+<div class="buy_pro_main">
+    <ol class="progress_bar" id="lineBaoXian">
+        <li><i></i>1-选择产品</li>
+        <li><i></i>2-填写与核对</li>
+        <li class="complete"><i></i>3-支付</li>
+        <li><i></i>4-完成订单</li>
+    </ol>
+    <div class="wrapper" style="margin-top: 35px;">
+        <div class="payinfo">
+            <strong>需要支付金额：</strong> 
+            <span class="price" style="margin-right: 100px;">
+                <dfn>¥</dfn>
+                <span style="font-size:20px;font-weight:bold;"><?php echo $iAmount ?></span>
+            </span>
+            <strong>订购产品名称：</strong>
+            <span class="price" style="font-weight:bold;">
+            <?php echo $sOrderName ?>
+            </span>
+        </div>
+    </div>
+    <div class="payarea" id="divPayCatalogArea" style="">
+        <input type="hidden" id="hidLastPayCatalog" value="CreditCard" />
+        <input type="hidden" id="hidLastPayWayID" value="CC_CMB" />
+        <ul id="ulAllPayCatalog" class="paytab">
+            <li class="catalogcodev2 current" id="li_paycatalog_ThirdPay" onclick="selectTab('div_payway_ThirdPay',this)">
+                <a href="javascript:;">第三方支付 </a></li>
+        </ul>
+        
+        <div id="div_payway_ThirdPay" class="paybox">
+            <ul class="paylist basefix">
+                <li class="commonpaywayliv2" title="">
+                    <input id="main_rbAlipay"   data-url='/payment/alipay/pay'  type="radio" name="radio" value="rbAlipay" checked="checked" onclick="change(this)" />
+                    <label id="pay_lbl_ThirdPay_Alipay" for="main_rbAlipay" Checked="true" title="支付宝" class="more_alipay">
+                    </label>
+                <li class="commonpaywayliv2" title="" style="">
+                    <input id="main_rbKuaiQian" data-url='/payment/weixin/pay' type="radio" name="radio" value="rbKuaiQian" onclick="change(this)"/>
+                    <label id="pay_lbl_ThirdPay_KuaiQian" for="main_rbKuaiQian" title="微信支付" class="more_wxpay">
+                    </label>
+                </li>                
+            </ul>
+        </div>
+        
+    </div>
+    <div class="paysubmit" style="margin-top: 10px;">
+        <input type="submit" name="" value="前往支付" id="main_btnPay" class="masking_button" onclick="submitform()" />
+    </div>
+</div>
+<script>
+function change(th)
+{
+    url = $(th).data('url');
+    $('#formto').val(url);
+}
+
+function submitform ()
+{
+    var redirct = $('#formto').val();
+    location.href = redirct + '/ordercode/' + $('#ordercode').val();
+    // $.ajax({
+    //     url : redirct,
+    //     type : 'post',
+    //     dataType : 'html',
+    //     data : {
+    //         ordercode : $('#ordercode').val()
+    //     },
+    //     success : function(ret) {
+    //         console.log(ret);
+    //         if (ret.url != '') {
+    //            // location.href = ret.url; 
+    //         }
+    //     },
+    //     error : function(rets) {
+    //         console.log(rets)
+    //     }
+    // });
+}
+</script>

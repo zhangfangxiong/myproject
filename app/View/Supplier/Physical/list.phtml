@@ -1,0 +1,65 @@
+<div class="pheader clearfix">体检人员名单</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label>员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>" class="form-control" name="sRealName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-8">
+                <label>体检日期：</label>
+                <input onclick="laydate({format: 'YYYY-MM-DD'})" name="sStartDate" type="text" value="<?php echo $aParam['sStartDate']?>" class="form-control"> 
+                到
+                <input onclick="laydate({format: 'YYYY-MM-DD'})" name="sEndDate" type="text" value="<?php echo $aParam['sEndDate']?>" class="form-control"> 
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>账号状态：</label>
+                <select name="iStatus" class="form-control" style="width: 100px">
+                    <option value="-1" <?php echo empty($aParam['iStatus'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-5">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">性别</th>
+            <th class="text-center">体检产品</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">预订日期</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aList['aList']) {
+            foreach ($aList['aList'] as $key => $aUser) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aUser['sUserName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sSex'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sOrderDate'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sCreateTime'] ?></td>                    
+                    <td class="text-center"><?php echo $aUser['sStatus'] ?></td>
+                    <td class="text-center">
+                        <a href="/supplier/physical/detail/id/<?php echo $aUser['iAutoID']?>">查看</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>

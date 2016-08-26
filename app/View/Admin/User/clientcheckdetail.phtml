@@ -1,0 +1,258 @@
+<div class="pheader clearfix">客户详细信息</div>
+<div class="pbody clearfix">
+
+    <div class="form-group col-sm-6">
+        <label for="sRealName" class="col-sm-5 ">客户名称：</label>
+
+        <div class="col-sm-7">
+            <?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sUserName" class="col-sm-5 ">客户编号/账号：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aUser['sUserName']) ? $aUser['sUserName'] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sUserShortName" class="col-sm-5 ">客户简称：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aUser['sUserShortName']) ? $aUser['sUserShortName'] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sUserEngName" class="col-sm-5 "> 客户英文名：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aUser['sUserEngName']) ? $aUser['sUserEngName'] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoIndustry" class="col-sm-5 ">客户行业：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aIndustry[$aUser['sCoIndustry']]) ? $aIndustry[$aUser['sCoIndustry']] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iProperty" class="col-sm-5 ">客户性质：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aProperty[$aUser['iProperty']]) ? $aProperty[$aUser['iProperty']] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iChannel" class="col-sm-5 ">客户渠道：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aChannel[$aUser['iChannel']]) ? $aChannel[$aUser['iChannel']] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iUserNum" class="col-sm-5 ">员工数量：</label>
+
+        <div class="col-sm-7">
+            <?php echo isset($aUser['iUserNum']) ? $aUser['iUserNum'] : '' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sEmail" class="col-sm-5 ">邮箱：</label>
+        <?php echo isset($aUser['sEmail']) ? $aUser['sEmail'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sMobile" class="col-sm-5 "> 手机号码：</label>
+        <?php echo isset($aUser['sMobile']) ? $aUser['sMobile'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoAddress" class="col-sm-5 "> 通讯地址：</label>
+        <?php echo isset($aUser['sCoAddress']) ? $aUser['sCoAddress'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoMobile" class="col-sm-5 "> 公司电话：</label>
+        <?php echo isset($aUser['sCoMobile']) ? $aUser['sCoMobile'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoFex" class="col-sm-5 "> 传真：</label>
+        <?php echo isset($aUser['sCoFex']) ? $aUser['sCoFex'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoWebsite" class="col-sm-5 "> 网址：</label>
+        <?php echo isset($aUser['sCoWebsite']) ? $aUser['sCoWebsite'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sCoZipCode" class="col-sm-5 "> 邮政编码：</label>
+        <?php echo isset($aUser['sCoZipCode']) ? $aUser['sCoZipCode'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sAFManagerName" class="col-sm-5 "> AF经理姓名：</label>
+        <?php echo isset($aUser['sAFManagerName']) ? $aUser['sAFManagerName'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sAFMangaerEmail" class="col-sm-5 "> AF经理邮箱：</label>
+        <?php echo isset($aUser['sAFMangaerEmail']) ? $aUser['sAFMangaerEmail'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sAFMangerMobile" class="col-sm-5 "> AF经理手机：</label>
+        <?php echo isset($aUser['sAFMangerMobile']) ? $aUser['sAFMangerMobile'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iSendMassage" class="col-sm-5 ">发送体检通知：</label>
+        <?php echo isset($aSendMassage[$aUser['iSendMassage']]) ? $aSendMassage[$aUser['iSendMassage']] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iLockUser" class="col-sm-5 ">是否锁定HR账号：</label>
+        <?php echo isset($aLockUser[$aUser['iLockUser']]) ? $aLockUser[$aUser['iLockUser']] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iLockUser" class="col-sm-5 ">企业联系人：</label>
+        <?php echo isset($aUser['sHrName']) ? $aUser['sHrName'] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iLockUser" class="col-sm-5 ">审核状态：</label>
+        <?php echo isset($aIsCheck[$aUser['iIsCheck']]) ? $aIsCheck[$aUser['iIsCheck']] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iLockUser" class="col-sm-5 ">入库人：</label>
+        <?php echo isset($aCustomerManager[$aUser['iCustomerManager']]) ? $aCustomerManager[$aUser['iCustomerManager']] : '' ?>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iLockUser" class="col-sm-5 ">入库时间：</label>
+        <?php echo isset($aUser['iCreateTime']) ? date('Y-m-d H:i:s', $aUser['iCreateTime']) : '' ?>
+    </div>
+
+    <div class="form-group col-sm-7">
+        <label for="sRemark" class="col-sm-2 "> 备注：</label>
+        <?php echo isset($aUser['sRemark']) ? $aUser['sRemark'] : '' ?>
+    </div>
+</div>
+<div class="pheader clearfix">其他联系人信息</div>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">称谓</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">工作电话</th>
+            <th class="text-center">移动电话</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sAppellation']) ? $value['sAppellation'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sEmail']) ? $value['sEmail'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sJobPhone']) ? $value['sJobPhone'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sMobile']) ? $value['sMobile'] : '' ?></td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<div class="pheader clearfix">客户审核</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>">
+
+        <div class="form-group">
+            <label for="sRealName" class="col-sm-5 ">客户名称：</label>
+
+            <div class="col-sm-7">
+                <?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sRealName" class="col-sm-5 ">分配客户经理：</label>
+
+            <div class="col-sm-7">
+                <select name="iCustomerManager" class="form-control input-validate">
+                    <?php foreach ($aCustomerManager as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aUser['iCustomerManager']) && $aUser['iCustomerManager'] == $v ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRealName" class="col-sm-5 ">是否发送账号：</label>
+
+            <div class="col-sm-7">
+                <input type="radio" name="iIfSendAccount" value="1">发送
+                <input type="radio" checked name="iIfSendAccount" value="0">不发送
+            </div>
+        </div>
+        <div class="btn-toolbar text-center col-sm-12">
+            <input type="hidden" name="iIsCheck" id="iIsCheck" value="0">
+            <button id="agree" class="btn btn-primary">通过</button>
+            <button id="fefuse" class="btn btn-primary">拒绝</button>
+            <button id="cancel" class="btn" onclick="location.href='/admin/user/clientcheck/';return false;">返回</button>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript">
+    $('#agree').click(function () {
+        $('#iIsCheck').val(1);
+        if (confirm("您确认要通过该用户吗？")) {
+
+            $("#myform").validate({
+                submitHandler: function (form) {
+                    $.post(form.action, $(form).serialize(), function (ret) {
+                        alert(ret.data);
+                        if (ret.status) {
+                            location.href = '/admin/user/clientcheck/';
+                        }
+                    }, 'json');
+                    return false;
+                }
+            });
+        }
+    });
+    $('#fefuse').click(function () {
+        $('#iIsCheck').val(2);
+        if (confirm("您确认要拒绝该用户吗？")) {
+            $("#myform").validate({
+                submitHandler: function (form) {
+                    $.post(form.action, $(form).serialize(), function (ret) {
+                        alert(ret.data);
+                        if (ret.status) {
+                            location.href = '/admin/user/clientcheck/';
+                        }
+                    }, 'json');
+                    return false;
+                }
+            });
+        }
+    });
+</script>

@@ -1,0 +1,60 @@
+<div class="pheader clearfix">编辑菜单</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input type="hidden" class="form-control" name="iMenuID" value="<?php echo isset($aMenu['iMenuID'])?$aMenu['iMenuID']:''?>">
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong> 菜单名称：</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control input-validate" validate="!length:2-20" name="sMenuName" value="<?php echo isset($aMenu['sMenuName'])?$aMenu['sMenuName']:''?>">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong> 父级菜单：</label>
+			<div class="col-sm-10">
+				<select name="iParentID" class="form-control input-validate col-sm-10">
+					<option value="0">顶级菜单</option>
+					<?php 
+					if(!empty($aTree)){
+					    $iMenuID = isset($aMenu['iParentID'])?$aMenu['iParentID']:'';
+					    foreach ($aTree as $v){
+                    ?>
+					<option value="<?php echo $v['iMenuID']?>" <?php echo $v['iMenuID']==$iMenuID?'selected':'';?>><?php echo ($v['iLevel']>0?'└'.str_repeat('─', $v['iLevel'] * 2):'') . $v['sMenuName']?></option>
+					<?php }}?>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong> 菜单URL：</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control input-validate" validate="!url:true" name="sUrl" value="<?php echo isset($aMenu['sUrl'])?$aMenu['sUrl']:''?>">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">菜单图标：</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control input-validate" validate="length:5-50" name="sIcon" value="<?php echo isset($aMenu['sIcon'])?$aMenu['sIcon']:''?>">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="btn-toolbar text-center">
+			<input type="submit" class="btn btn-primary" value="保存">
+    	    <button id="cancel"class="btn" onclick="location.href='/admin/menu/list/';return false;">取消</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            location.href = '/admin/menu/list/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+
+});
+</script>

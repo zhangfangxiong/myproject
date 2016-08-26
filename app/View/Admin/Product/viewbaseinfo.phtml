@@ -1,0 +1,123 @@
+<?php include('productheader.phtml'); ?>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iProductID" type="hidden"
+               value="<?php echo !empty($aProduct['iProductID']) ? $aProduct['iProductID'] : '' ?>">
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="sProductName" class="col-sm-2"> 产品名称：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['sProductName']) ? $aProduct['sProductName'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="sProductCode" class="col-sm-2"> 产品编号：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['sProductCode']) ? $aProduct['sProductCode'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="iProductType" class="col-sm-2">产品类型：</label>
+
+            <div class="col-sm-3">
+                <?php echo !empty($aProductType[$aProduct['iProductType']]) ? $aProductType[$aProduct['iProductType']] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group" id="iSpecialCheck">
+            <div class="col-sm-2"></div>
+            <label for="iProductType" class="col-sm-2">选择专项：</label>
+
+            <div class="col-sm-3">
+                <?php echo !empty($aSpecialCheck[$aProduct['iSpecialCheck']]) ? $aSpecialCheck[$aProduct['iSpecialCheck']] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="iManPrice" class="col-sm-2"> 价格（男）：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['iManPrice']) ? $aProduct['iManPrice'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="iWomanPrice1" class="col-sm-2"> 价格（女-未婚）：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['iWomanPrice1']) ? $aProduct['iWomanPrice1'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="iWomanPrice2" class="col-sm-2"> 价格（女-已婚）：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['iWomanPrice2']) ? $aProduct['iWomanPrice2'] : '' ?>
+            </div>
+        </div>
+<!--
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="iStatus" class="col-sm-2">产品状态：</label>
+
+            <div class="col-sm-3">
+                <?php echo !empty($aStatus[$aProduct['iStatus']]) ? $aStatus[$aProduct['iStatus']] : '' ?>
+            </div>
+        </div>
+        -->
+        <div class="form-group" id="iSpecialCheck">
+            <div class="col-sm-2"></div>
+            <label for="iProductType" class="col-sm-2">产品图片：</label>
+
+            <div class="col-sm-3">
+                <img id="sImageShow" style="width:160px;height:120px;"
+                     src="<?php if (!empty($aProduct['sImage'])) {
+                         echo Util_Uri::getDFSViewURL($aProduct['sImage']);
+                     } else {
+                         echo '';
+                     } ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-2"></div>
+            <label for="sRemark" class="col-sm-2"> 产品简介：</label>
+
+            <div class="col-sm-6">
+                <?php echo !empty($aProduct['sRemark']) ? $aProduct['sRemark'] : '' ?>
+            </div>
+        </div>
+        <div class="btn-toolbar">
+            <div class="col-sm-2"></div>
+            <div class="col-sm-6">
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($sEditBaseInfoUrl) ? $sEditBaseInfoUrl : '' ?>?id=<?php echo $aProduct['iProductID'] ?>">
+                <input type="button" value="返回列表" id="cancel" class="btn"
+                       onclick="location.href='<?php echo !empty($sListUrl) ? $sListUrl : 'javascript:;' ?>';return false;">
+            </div>
+        </div>
+    </form>
+</div>
+<!--
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+-->
+<script type="text/javascript">
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+</script>

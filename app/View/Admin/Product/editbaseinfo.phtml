@@ -1,0 +1,162 @@
+<?php if (!empty($aEditHeaderInfo)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix">第一步：增加基本信息</div>
+<?php
+} ?>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iProductID" type="hidden"
+               value="<?php echo !empty($aProduct['iProductID']) ? $aProduct['iProductID'] : '' ?>">
+
+        <div class="form-group">
+            <label for="sProductName" class="col-sm-2 control-label"> <span class="tubiao">*</span>产品名称：</label>
+
+            <div class="col-sm-6">
+                <input name="sProductName" validate="!required:true" placeholder="请填写产品名称" type="text"
+                       value="<?php echo !empty($aProduct['sProductName']) ? $aProduct['sProductName'] : '' ?>"
+                       class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sProductCode" class="col-sm-2 control-label"> 产品编号：</label>
+
+            <div class="col-sm-6">
+                <input name="sProductCode"
+                       type="text" disabled
+                       value="<?php echo !empty($aProduct['sProductCode']) ? $aProduct['sProductCode'] : '自动生成' ?>"
+                       class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">产品类型：</label>
+
+            <div class="col-sm-3">
+                <select name="iProductType" class="form-control input-validate" id="iProductType">
+                    <?php foreach ($aProductType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iProductType']) && $aProduct['iProductType'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="iSpecialCheckDiv">
+            <label for="iProductType" class="col-sm-2 control-label">选择专项：</label>
+
+            <div class="col-sm-3">
+                <select name="iSpecialCheck" class="form-control input-validate">
+                    <?php foreach ($aSpecialCheck as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iSpecialCheck']) && $aProduct['iSpecialCheck'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iManPrice" class="col-sm-2 control-label"> 价格（男）：</label>
+
+            <div class="col-sm-6">
+                <input name="iManPrice" type="text"
+                       value="<?php echo !empty($aProduct['iManPrice']) ? $aProduct['iManPrice'] : '' ?>"
+                       class="form-control input-validate onlycanint">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iWomanPrice1" class="col-sm-2 control-label"> 价格（女-未婚）：</label>
+
+            <div class="col-sm-6">
+                <input name="iWomanPrice1" type="text"
+                       value="<?php echo !empty($aProduct['iWomanPrice1']) ? $aProduct['iWomanPrice1'] : '' ?>"
+                       class="form-control input-validate onlycanint">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iWomanPrice2" class="col-sm-2 control-label"> 价格（女-已婚）：</label>
+
+            <div class="col-sm-6">
+                <input name="iWomanPrice2" type="text"
+                       value="<?php echo !empty($aProduct['iWomanPrice2']) ? $aProduct['iWomanPrice2'] : '' ?>"
+                       class="form-control input-validate onlycanint">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 默认图片：</label>
+            <div class="col-sm-10">
+                <input type="hidden" validate="!required:请上传默认图片" id="sImage" name="sImage" value="<?php echo isset($aProduct['sImage']) ? $aProduct['sImage'] : '' ?>">
+                <img id="sImageShow" style="width:160px;height:120px;" src="<?php if (isset($aProduct['sImage']) && !empty($aProduct)) { echo Util_Uri::getDFSViewURL($aProduct['sImage']); }else{ echo '';}?>">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow">
+                <span class="text-muted">请上传大小≤100K，支持png、jpg图片</span>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 产品简介：</label>
+
+            <div class="col-sm-6">
+                <textarea class="form-control input-validate"
+                          name="sRemark"><?php echo !empty($aProduct['sRemark']) ? $aProduct['sRemark'] : '' ?></textarea>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center">
+            <input type="submit" id="next" class="btn btn-primary"
+                   value="<?php echo !empty($aEditHeaderInfo) ? '保存' : '下一步' ?>">
+            <input type="button" value="取消" id="cancel" class="btn"
+                   onclick="location.href='<?php echo !empty($sListUrl) ? $sListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+    function changeStatus() {
+        if ($('#iProductType').val() == 1) {
+            $('#iSpecialCheckDiv').show();
+        } else {
+            $('#iSpecialCheckDiv').hide();
+        }
+    }
+    changeStatus();
+    $('#iProductType').change(function () {
+        changeStatus();
+    });
+
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+    $('.onlycanint').keyup(function(){
+        var c=$(this);
+        if(/[^\d]/.test(c.val())){//替换非数字字符
+            var temp_amount=c.val().replace(/[^\d.]/g,'');
+            $(this).val(temp_amount);
+        }
+    });
+</script>

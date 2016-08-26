@@ -1,0 +1,63 @@
+<div class="pheader clearfix">敏感词列表</div>
+<div class="pbody clearfix">
+	<form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/badword/list.html">
+        <div class="row sousuo_now">
+            <div class="form-group">
+                <label>敏感词：</label>
+    		    <input type="text" value="<?php echo isset($aParam['sWord']) ? $aParam['sWord'] : '' ?>" class="form-control" name="sWord" style="width: 200px">
+        	</div>
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+    	<button class="btn btn-primary" id="badword_add">
+    		<i class="fa fa-plus"></i> 增加敏感词
+    	</button>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="text-center">敏感词</th>
+    			<th class="text-center">更新时间</th>
+    			<th class="text-center">创建时间</th>
+    			<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $v) {?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $v['iAutoID']?></td>
+    			<td class="text-center"><?php echo $v['sWord']?></td>
+    			<td class="text-center"><?php echo ((isset($v['iUpdateTime']) && $v['iUpdateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iUpdateTime'])) : '');?></td>
+    			<td class="text-center"><?php echo ((isset($v['iCreateTime']) && $v['iCreateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iCreateTime'])) : '');?></td>
+    			<td class="text-center">
+    			    <a href="/admin/badword/edit?id=<?php echo $v['iAutoID']?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    			    <a class="badword_delete" href="/admin/badword/del?id=<?php echo $v['iAutoID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$('.badword_delete').click(function() {
+	var url = this.href;
+	if (confirm("您确认要删除该敏感词吗？")) {
+		$.get(url, function(ret) {
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+$('#badword_add').click(function(){
+	location.href = '/admin/badword/add';
+});
+</script>

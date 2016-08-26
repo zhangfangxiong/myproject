@@ -1,0 +1,81 @@
+
+<div class="pheader clearfix">新增消息</div>
+<div class="pbody clearfix">
+        <form id="myform" class="form-horizontal" role="form" method="post">
+            <div class="form-group">
+                <label for="sPassword" class="col-sm-2 control-label"><span style="color:red;">*</span> 投放用户：</label>
+                <div class="col-sm-10">
+                  <input type="radio" name="type" value="0">  全体用户
+                   <input type="radio" name="type" value="1">  广告主
+                    <input type="radio" name="type" value="2">  自媒体
+                    <input type="radio" name="type" value="3">  自定义
+                    <input type="text" name="ID" id="ID" value="">
+                    <select multiple  id="zidingyi" style=" position: relative;top: -20px;left:500px;display:none">
+                        <?php foreach($User as $k=>$v){  ?>
+                            <option  value="<?php
+                            $zhonglei='';
+                            if($v['iType']==1){
+                               $zhonglei='广告主';
+                            }else{
+                                $zhonglei='自媒体';
+                            }
+                            echo $v['iUserID']?>"><?php echo $zhonglei.'----'.$v['sEmail']?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+            </div>
+        <div class="form-group">
+            <label for="sAdminName" class="col-sm-2 control-label"><span style="color:red;">*</span> 标题：</label>
+            <div class="col-sm-10">
+                <input name="title" type="text" validate="!length:3-50" value="" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sPassword" class="col-sm-2 control-label"><span style="color:red;">*</span> 内容：</label>
+            <div class="col-sm-10">
+                <textarea name="content" placeholder="请输入内容"  validate="!length:3-50" class="form-control input-validate"></textarea>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+
+
+        <div class="btn-toolbar text-center">
+            <button id="save" class="btn btn-primary">保存</button>
+            <button id="cancel"class="btn" onclick="location.href='/admin/user/list/';return false;">取消</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('input[name="type"]').click(function () {
+                          if($('input[name="type"]:checked').val()==3){
+                              $('#zidingyi').css('display','block');
+                          } else{
+                              $('#zidingyi').css('display','none');
+                          }
+        }) ;
+        $(window).ready(function () {
+            if($('input[name="type"]:checked').val()==3){
+                $('#zidingyi').css('display','block');
+            } else{
+                $('#zidingyi').css('display','none');
+            }
+        }) ;
+         $('#zidingyi').dblclick(function () {
+             $('#ID').val($('#ID').val()+$('#zidingyi').val()+',')
+         })
+
+
+        $("#myform").validate({submitHandler: function(form) {
+            $.post(form.action, $(form).serialize(), function(ret){
+                alert(ret.data);
+                if (ret.status) {
+                    location.href = '/admin/news/list/';
+                }
+            }, 'json');
+            return false;
+        }});
+    });
+</script>

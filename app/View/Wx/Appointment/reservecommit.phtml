@@ -1,0 +1,304 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div class="reservestore-content">
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">体检人：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <div><?php echo!empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?></div>
+                <div><?php echo!empty($aSex[$aUser['iSex']]) ? $aSex[$aUser['iSex']] : '性别未知' ?>
+                    （<?php echo!empty($aMarriage[$aUser['iMarriage']]) ? $aMarriage[$aUser['iMarriage']] : '婚姻状况未知' ?>）
+                </div>
+                <div><?php echo!empty($aUser['sIdentityCard']) ? $aUser['sIdentityCard'] : '' ?></div>
+                <div class="detail-pointer">
+                    <a href="<?php echo $sUserInfoEditUrl . 'id/' . $aParam['id'] . '/pid/' . $aParam['pid'] . '/sid/' . $aParam['sid'] . '/upid/' . $aParam['upid']; ?>" class="detail-pointer-herf">查看详情</a>
+                    <i class="fa fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">体检卡号：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo!empty($aCard['sCardCode']) ? $aCard['sCardCode'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">体检类型：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo!empty($aProductType[$aProduct['iProductType']]) ? $aProductType[$aProduct['iProductType']] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">体检机构：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo!empty($aStore['sName']) ? $aStore['sName'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">体检套餐：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo!empty($aUpProduct['sProductName']) ? !empty($aUpProduct['sAlias']) ? $aUpProduct['sAlias'] : $aUpProduct['sProductName'] : '' ?>
+            </div>
+        </div>
+        <div class="border-bottom2"></div>
+        <form id="myform" class="form-horizontal" role="form" method="post">
+            <div class="form-group clearfix" style="margin-top: 20px;">
+                <label for="iProductType" class="col-xs-4 control-label reserve-commit-label">体检日期：</label>
+
+                <div class="col-xs-7 store-select-div physical-time">
+                    <input name="iOrderTime" id="iOrderTime" validate="!date:true" placeholder="请选择体检日期" type="text" value="<?php echo!empty($aCard['iOrderTime']) ? date('Y-m-d', $aCard['iOrderTime']) : '' ?>" class="readonly form-control input-validate">
+                    <i class="fa fa-calendar"></i>
+                    <!--<span aria-hidden="true" class="glyphicon glyphicon-ok form-control-feedback"></span>-->
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label reserve-commit-label">体检书面报告获取方式：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="iGetReportType" value="0" <?php echo $aCard['iGetReportType'] == 0 ? 'checked' : '' ?>>
+                            自取（体检报告出具后，请带好参检者身份证原件前往体检门店自行提取）
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="iGetReportType" value="1" <?php echo $aCard['iGetReportType'] == 1 ? 'checked' : '' ?>>
+                            快递（体检当日到体检门店前台填写快递单并支付快递费用）
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="border-bottom2"></div>
+            <div class="form-group clearfix" style="margin-top: 20px;">
+                <label for="iProductType" class="col-xs-4 control-label">门店地址：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo!empty($aStore['sAddress']) ? $aStore['sAddress'] : '' ?>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">联系电话：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo!empty($aStore['sTel']) ? $aStore['sTel'] : '' ?>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">营业时间：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo!empty($aStore['sWorktime']) ? $aStore['sWorktime'] : '' ?>
+                </div>
+            </div>
+            <div class="border-bottom1"></div>
+            <div class="jiesuan clearfix">
+                <div class="col-xs-5">
+                    <input type="submit" value="提交预约申请" class="form-control btn-warning">
+                </div>
+                <div class="col-xs-5 col-xs-offset-1">
+                    <input class="form-control" value="返回" type="button" onclick="window.history.back()">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel">选择体检日期</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert"
+                 style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <table class="calendar_table">
+                    <tbody id="calendar_table">
+                        <tr class="calendar_head">
+                            <td>周一</td>
+                            <td>周二</td>
+                            <td>周三</td>
+                            <td>周四</td>
+                            <td>周五</td>
+                            <td>周六</td>
+                            <td>周日</td>
+                        </tr>
+                        <?php
+                        if (!empty($aReserDateList)) {
+                            $iTime = time();
+                            foreach ($aReserDateList as $key => $value) {
+                                ?>
+                                <tr class="calendar_body">
+                                    <?php foreach ($value as $k => $val) {
+                                        ?>
+                                        <td <?php echo $k == date('Ymd', $iTime) ? 'style="background-color:#f0ad4e"' : '' ?> data-date="<?php echo date('Y-m-d', strtotime($k)); ?>" class="<?php echo $val == 1 ? 'calendar_cell' : 'calendar_cell_none' ?>"><?php echo $k == date('Ymd', $iTime) ? '今天' : date('Y-m-d', strtotime($k)); ?><br>(<?php echo!empty($aReserveStatus[$val]) ? $aReserveStatus[$val] : ''; ?>)</td>
+                                    <?php }
+                                    ?>
+                                </tr>
+                                <?php
+                            }
+                        }
+                        ?>
+                        <tr class="calendar_body"></tr>
+                    </tbody>
+                </table>
+                <div class="calendar-month clearfix">
+                    <input type="hidden" id="sSupplierCode" value="<?php echo $sSupplierCode; ?>">
+                    <input type="hidden" id="sStoreCode" value="<?php echo $sStoreCode; ?>">
+                    <input type="hidden" id="iPhysicalType" value="<?php echo $aCard['iPhysicalType']; ?>">
+                    <div class="col-xs-3 col-xs-offset-2">
+                        <input type="button" value="上一月" id="main_btnPrevMonth" data-date="<?php echo date('Ymd', strtotime($k) - 86400 * 69) ?>" class="form-control btn-warning">
+                    </div>
+                    <div class="col-xs-3 col-xs-offset-2">
+                        <input type="button" value="下一月" id="main_btnNextMonth" data-date="<?php echo date('Ymd', strtotime($k) + 86400) ?>" class="form-control btn-warning">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function getLocalTime(nS) {
+        var dataArray = new Date(parseInt(nS) * 1000).toLocaleDateString().split("/");
+        dataArray[1] < 10 ? dataArray[1] = "0" + dataArray[1] : dataArray[1] = dataArray[1];
+        dataArray[2] < 10 ? dataArray[2] = "0" + dataArray[2] : dataArray[2] = dataArray[2];
+        return dataArray.join("");
+    }
+    function formateData(date) {
+        var year = date.substr(0, 4), month = date.substr(4, 2), date = date.substr(6);
+        var formatdate = year + "-" + month + "-" + date;
+        return formatdate;
+    }
+    //日期转为时间戳函数
+    function transformTime(str) {
+        str = str.replace(/-/g, '/');
+        var time = (new Date(str)).getTime();
+        return time / 1000;
+    }
+    //生成类似20160506这种类型的日期传入2016年5月23日字符串
+    function newjxDate(str) {
+        str=str.replace(/年|月/g, "/").replace(/日/g,"");
+        var month = (new Date(str)).getMonth() + 1;
+        var year = (new Date(str)).getFullYear();
+        var date = (new Date(str)).getDate();
+        if (month < 10) {
+            month = '0' + month;
+        }
+        if (date < 10) {
+            date = '0' + date;
+        }
+        return year + month + date;
+    }
+    $(function () {
+        var sReserveDetailUrl = '<?php echo $sReserveDetailUrl . 'id/' . $aParam['id'] . '/pid/' . $aParam['pid']; ?>';
+        var sWxjsUpgradePayUrl = '<?php echo $sWxjsUpgradePayUrl; ?>';
+        $('#iOrderTime').click(function () {
+            $('#selectModal').modal('show');
+        });
+        $("#calendar_table").on("click", ".calendar_cell", function () {
+            $('#iOrderTime').val($(this).data('date'));
+            $('#selectModal').modal('hide');
+        })
+
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        location.href = sReserveDetailUrl;
+                    } else {
+                        if (ret.data == 'upgrade') {
+                            location.href = sWxjsUpgradePayUrl + '?ordercode=' + ret.url;
+                            return false;
+                        } else if (ret.data == 'pay') {
+                            location.href = sWxjsUpgradePayUrl + '?ordercode=' + ret.url;
+                            return false;
+                        }
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        //下一月上一月todo @yabo
+        $("#main_btnPrevMonth,#main_btnNextMonth").on("click", function () {
+            var _this = this;
+            var sdate = $(_this).attr("data-date");
+            var sSupplierCode = $("#sSupplierCode").val();
+            var sStoreCode = $("#sStoreCode").val();
+            var iPhysicalType = $('#iPhysicalType').val();
+            $.ajax({
+                url: "/wx/appointment/getreservedate",
+                type: "post",
+                dataType: "json",
+                data: {
+                    sSupplierCode: sSupplierCode, 
+                    sStoreCode: sStoreCode, 
+                    sdate: sdate,
+                    iPhysicalType: iPhysicalType
+                },
+                success: function (res) {
+                    var dataLength = res.data.length;
+                    if (dataLength > 0) {
+                        var index = dataLength - 1;
+                        var sdates = res.data[index];
+                        var objlength = 0;
+                        var newLastDataArray = [];
+                        $.each(sdates, function (key, value) {
+                            objlength++;
+                            newLastDataArray.push(key);
+                        })
+                        var prevData = newLastDataArray[objlength - 1];
+                        var year = prevData.substr(0, 4), month = prevData.substr(4, 2), data = prevData.substr(6);
+                        var formatdate = year + "/" + month + "/" + data;
+                        var prevData = getLocalTime(transformTime(formatdate) - 86400 * 69);
+                        var nextData = getLocalTime(transformTime(formatdate) + 86400);
+                        if (prevData.indexOf("年") != -1) {
+                            //prevData=prevData.replace(/年|月|日/g, "");
+                            prevData=newjxDate(prevData);
+                        }
+                        if (nextData.indexOf("年") != -1) {
+                            //nextData=nextData.replace(/年|月|日/g, "");
+                             nextData=newjxDate(nextData);
+                        }
+                        $("#main_btnPrevMonth").attr("data-date", prevData);
+                        $("#main_btnNextMonth").attr("data-date", nextData);
+                        var trArray = [];
+                        for (var i = 0; i < dataLength; i++) {
+                            var tdArray = [];
+                            $.each(res.data[i], function (key, value) {
+                                var tdate = formateData(key);
+//                                var comparedata=(Date.parse(tdate)+"").substr(0,5);
+//                                var comparenow=(Date.parse(new Date())+"").substr(0,5);
+//                                var style=(comparedata ==comparenow)?'style="background-color:#f0ad4e"':"";
+                                var syy = (value == 1) ? "可以预约" : "不可预约";
+                                var syyclass = (value == 1) ? "calendar_cell" : "calendar_cell_none";
+                                tdArray.push('<td  data-date="' + tdate + '" class="' + syyclass + '">' + tdate + '<br>(' + syy + ')</td>');
+                            })
+                            trArray[i] = '<tr class="calendar_body">' + tdArray.join("") + ' </tr>';
+                        }
+                        var headHtml = '<tr class="calendar_head"><td>周一</td><td>周二</td><td>周三</td><td>周四</td> <td>周五</td> <td>周六</td><td>周日</td></tr>';
+                        var footHtml = '<tr class="calendar_body"></tr>';
+                        $("#calendar_table").html(headHtml + trArray.join("") + footHtml);
+                    }
+                }
+            })
+
+
+        })
+    })
+</script>

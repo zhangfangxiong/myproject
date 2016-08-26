@@ -1,0 +1,68 @@
+<div class="pheader clearfix">banner滚动列表</div>
+<div class="pbody clearfix">
+	<form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/banner/list.html">
+        <div class="row sousuo_now">
+            <div class="form-group">
+                <label>名称：</label>
+    		    <input type="text" value="<?php echo isset($aParam['title']) ? $aParam['title'] : '' ?>" class="form-control" name="title" style="width: 200px">
+        	</div>
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+    	<button class="btn btn-primary" id="banner_add">
+    		<i class="fa fa-plus"></i> 增加banner滚动
+    	</button>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="text-center">名称</th>
+    			<th class="text-center">图片</th>
+    			<th class="text-center">链接</th>
+    			<th class="text-center">顺序</th>
+    			<th class="text-center">更新时间</th>
+    			<th class="text-center">创建时间</th>
+    			<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $v) {?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $v['iAutoID']?></td>
+    			<td class="text-center"><?php echo $v['title']?></td>
+    			<td class="text-center"><img src="<?php echo Util_Uri::getDFSViewURL($v['imgurl'], 130, 130)?>"></td>
+    			<td class="text-center"><?php echo $v['link']?></td>
+    			<td class="text-center"><?php echo $v['rank']?></td>
+    			<td class="text-center"><?php echo ((isset($v['iUpdateTime']) && $v['iUpdateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iUpdateTime'])) : '');?></td>
+    			<td class="text-center"><?php echo ((isset($v['iCreateTime']) && $v['iCreateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iCreateTime'])) : '');?></td>
+    			<td class="text-center">
+    			    <a href="/admin/banner/edit?id=<?php echo $v['iAutoID']?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    			    <a class="banner_delete" href="/admin/banner/del?id=<?php echo $v['iAutoID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$('.banner_delete').click(function() {
+	if (confirm("您确认要删除该banner滚动吗？")) {
+		$.get(this.href, function(ret){
+			alert(ret.data);
+		    if (ret.status) {
+			    location.reload();
+		    }
+		}, 'json');
+	}
+	return false;
+});
+$('#banner_add').click(function(){
+	location.href = '/admin/banner/add';
+});
+</script>

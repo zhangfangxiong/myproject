@@ -1,0 +1,149 @@
+<form id='myform' method='post'>
+<div class="buy_pro_main">
+    <div class="page_location">
+        <a href="/">首页</a><span class="location_next"> &gt; </span>
+        <a href="#">密码重置操作</a>
+    </div>
+    <div class="mb10 bs02">
+        <div class="pr pd02 bs03 pdr10">
+            <h3 class="tit_siller">
+                <strong>密码重置</strong></h3>
+            <div style="float: right; padding-right: 20px;">
+            </div>
+        </div>
+        <div class="timeline_noresult">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+                <colgroup>
+                    <col style="width: 30%" />
+                    <col style="width: 70%" />
+                </colgroup>
+                <tr>
+                    <th>
+                        <span class="f_c_f63 20">*</span>新密码：
+                    </th>
+                    <td>
+                        <input name="sPassword" type="password" class="input_text" style="width:280px;" />
+                        <span class="f_c_f63 12" id="errorUserNo"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <span class="f_c_f63 20">*</span>身份证号码:
+                    </th>
+                    <td>
+                        <input name="sIdentityCard" class="input_text" style="width:280px;" />
+                        <span class="f_c_f63 12" id="errorUserNo"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <span class="f_c_f63 20">*</span>手机号：
+                    </th>
+                    <td>
+                        <input name="sMobile" type="text" id="sMobile"  class="input_text" style="width:280px;" />
+                        <input type="button" name="" value="发送验证码" id="again" class="reg_btn" style="font-size:15px; width:100px; height:35px;">
+                        <span class="f_c_f63 12" id="errorUserNo"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>
+                        <span class="f_c_f63 20">*</span>短信验证码：
+                    </th>
+                    <td>
+                        <input name="iPhoneCode" type="text" maxlength="6" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;">
+                        <span class="f_c_f63 12" id="errorUserNo"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <td  colspan="2">
+                        <input class="btn btn-primary" type="submit" name="" value="确定" id="login" />
+                    </td>
+                </tr>
+                <tr>
+                    <td id="main_divError" colspan="2" align="center" style="padding-bottom: 30px; font-size: 15px; text-align:center;">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = ret.url;
+            }
+        }, 'json');
+        return false;
+    }});
+</script>
+
+<script type="text/javascript" language="javascript">
+
+    function fGetCode() {
+        if (document.getElementById("getcode")) {
+            document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+        }
+    }
+    fGetCode();
+
+    function BindButtonTime() {
+        var tc = 90;
+        var tid = 0;
+
+        var timer1 = function () {
+            tc--;
+            if (tc > 0) {
+                $('#main_btnSend').attr('disabled', "true"); //添加disabled属性
+                $("#main_btnSend").val(tc + '秒后可获取');
+                tid = setTimeout(timer1, 1000);
+            }
+            else {
+                $('#main_btnSend').removeAttr("disabled"); //移除disabled属性
+                $("#main_btnSend").val('获取验证码');
+                //$("#main_btnSend").button('reset');
+            }
+        }
+
+        timer1();
+    }
+    
+    var UcenterUrl = '/index/account/publiclogin';
+    function codeChange()
+    {
+        var CodeUrl = '/index/account/sendcode/type/<?php echo $iCodeType ?>/mobile/';
+        var Mobile = $('#sMobile').val();
+        if (!Mobile) {
+            alert('请输入手机号');
+            return false;
+        }
+        CodeUrl = CodeUrl + Mobile;
+        $.get(CodeUrl, function(data){
+            alert(data.data);
+        });
+    }
+    $('#again').click(function(){
+        codeChange();
+    });
+    $('#login').click(function(){
+        var CanSummit = 1;
+        var form = $('#myform');
+        if (CanSummit) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                if (ret.status) {
+                    //跳转到个人中心
+                    alert('修改成功!');
+                    window.location = UcenterUrl;
+                    return true;
+                } else {
+                    alert(ret.data);
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    })
+
+</script>

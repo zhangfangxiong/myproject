@@ -1,0 +1,109 @@
+<style>
+    .need-input {
+        font-weight: bold;
+        color: red;
+        padding-left: 10px;
+        padding-top: 8px;
+    }
+</style>
+<div class="pbody clearfix">
+    <?php include('rcardheader.phtml'); ?>
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">体检卡类别：</label>
+
+            <div class="col-sm-3">
+                <select name="iPCard" class="form-control input-validate" id="iProductType">
+                    <?php unset($aPCard[0]); foreach ($aPCard as $k => $v) { ?>
+                        <option value="<?php echo $k ?>"><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="iSpecialCheckDiv">
+            <label for="iProductType" class="col-sm-2 control-label">体检卡渠道：</label>
+
+            <div class="col-sm-3">
+                <select name="iCardType" id="iSpecialCheck" class="form-control input-validate">
+                    <?php foreach ($aCardType as $k => $v) { ?>
+                        <option value="<?php echo $k ?>"><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">生成批次号：</label>
+
+            <div class="col-sm-3">
+                <input type="text" name="sInitNo" class="form-control input-validate" validate="!required:true"
+                       placeholder="请填写生成批次号"><label class="need-input">*</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">有效日期(选填)：</label>
+
+            <div class="col-sm-9">
+                <input type="text" name="sStartDate" format="YYYY-MM-DD"
+                       class="laydatetime form-control input-width input-inline"
+                       value="<?php echo (empty($aProduct['sStartDate']) || $aProduct['sStartDate'] == '0000-00-00') ? date('Y-m-d', time()) : $aProduct['sStartDate'] ?>">
+                至
+                <input type="text" name="sEndDate" format="YYYY-MM-DD"
+                       class="laydatetime form-control input-width input-inline"
+                       value="<?php echo (empty($aProduct['sEndDate']) || $aProduct['sEndDate'] == '0000-00-00') ? '' : $aProduct['sEndDate'] ?>">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">数量：</label>
+
+            <div class="col-sm-3">
+                <input type="text" name="sNum" class="form-control input-validate" validate="!required:true"
+                       placeholder="请填写数量"><label class="need-input">*</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 备注：</label>
+
+            <div class="col-sm-6">
+                <textarea class="form-control input-validate"
+                          name="sRemark"
+                          id="sRemark"><?php echo !empty($aProduct['sRemark']) ? $aProduct['sRemark'] : '' ?></textarea>
+            </div>
+        </div>
+        <div class="btn-toolbar">
+
+            <label class="col-sm-2 control-label"></label>
+
+            <div class="col-sm-6">
+                <input type="submit" id="next" class="btn btn-primary"
+                       value="生成体检卡">
+                <input type="button" value="取消" id="cancel" class="btn"
+                       onclick="location.href='<?php echo !empty($sEpListUrl) ? $sEpListUrl : 'javascript:;' ?>';return false;">
+            </div>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

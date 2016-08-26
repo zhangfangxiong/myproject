@@ -1,0 +1,98 @@
+<form action='/order/orderpay' method='post'>
+<input type='hidden' name='iOrderID' value="<?php echo $iOrderID ?>" />
+<div id="wrap">
+    <div class="row c mb25 bs02 mt10">
+        <div class="pr pd02 bs03 pdr10 pb10">
+            <table width="100%">
+                <tr>
+                    <td style="font-size: 15px; font-weight: bold;">体检卡采购</td>
+                    <td style="font-size: 15px; text-align: right;"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="timeline_noresult">
+            <ol class="progress_bar">
+                <li class="<?php echo $class1?>" style="width:33%"><i></i>1.信息核对</li>
+                <li class="<?php echo $class2?>" style="width:33%"><i></i>2.支付费用</li>
+                <li class="<?php echo $class3?>" style="width:33%"><i></i>3.发送体检卡</li>
+            </ol>
+            <div style="padding-top:50px;">
+                <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                    <th style="width: 40%">体检产品</th>
+                    <th style="width: 20%">单价</th>
+                    <th style="width: 20%">购买数量</th>
+                    <th style="width: 20%">小计</th>
+                    <?php if($aOP) { 
+                    foreach ($aOP as $key => $value) { ?>
+                    <tr>
+                        <td>
+                            <span id="main_RepList_lblProductName_0"><?php echo $value['sProductName']?></span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="main_RepList_lblSaleValue_0"><?php echo $value['sProductPrice']?></span>
+                        </td>
+                        <td style="text-align: center;">
+                            <span id="main_RepList_lblCount_0"><?php echo $value['iProductNumber']?></span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="main_RepList_lblAllSaleValue_0"><?php echo $value['sTotalPrice']?></span>
+                        </td>
+                    </tr>
+                    <?php } } ?>            
+                </table>
+                    
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="bx_item_table" style="border-top: 0px">
+                    <tr>
+                        <td style="width: 40%"></td>
+                        <td style="width: 20%"></td>
+                        <td colspan="2" style="width: 40%; text-align: right;">合计：
+                            <span id=""><?php echo $iAmount ?></span>
+                            <span id=""></span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                    <tr>
+                        <th style="width: 40%">体检卡类型：</th>
+                        <td style="width: 60%">
+                            <span id="">电子卡</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的姓名：</th>
+                        <td>
+                            <span id=""><?php echo $aOrder['sConsignee'] ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的手机：</th>
+                        <td>
+                            <span><?php echo $aOrder['sMobile'] ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的邮箱：</th>
+                        <td>
+                            <span><?php echo $aOrder['sEmail'] ?></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>支付方式：</th>
+                        <td>
+                            <span>在线支付</span>
+                        </td>
+                    </tr>
+                </table>
+                
+            <div style="text-align: center; font-weight:bold; font-size:14px; color:orangered; padding: 20px;">
+                请注意，本网站所列体检产品，仅提供“上海中盈保险经纪有限公司”开具的“服务费”发票，恕不提供各体检中心发票，请知晓。
+            </div>
+                <div style="text-align: center; padding: 15px;">
+                    <input type="submit" name="" value="前往支付" id="" class="reg_btn" style="background-color:Orange;width:140px;" />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

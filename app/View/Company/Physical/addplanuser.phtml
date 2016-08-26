@@ -1,0 +1,239 @@
+<?php if (!isset($opt) || $opt != 'edit') { ?>
+<div class="pheader clearfix">第三步：选择体检员工</div>
+<?php } ?>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已选择的员工(共<span class="red"><?php echo count($aHasItem); ?></span>个)
+    <?php if (!empty($aHasItem)) {?>
+    <?php if (!isset($opt) || $opt != 'edit') { ?>
+    <input type="button" value="下一步" class="btn btn-primary" onclick="location.href='<?php echo $sNextUserUrl?>/stype/2/iPlanID/<?php echo $iPlanID?>';return false;">
+    <?php }?>
+    <?php }?>
+    </div>
+    <?php if (!empty($aHasItem)) { ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="hasitemall"></th>
+                <th class="text-center">员工编号</th>
+                <th class="text-center">员工姓名</th>
+                <th class="text-center">机构名称</th>
+                <th class="text-center">邮箱</th>
+                <th class="text-center">联系电话</th>
+                <th class="text-center">职级</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasItem as $aUser) {?>
+                    <tr>
+                        <td class="text-center"><input class="hasitemlist" type="checkbox" name="hasitemlist[]" value="<?php echo !empty($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo $aUser['sUserName'] ?></td>
+                        <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                        <td class="text-center"><?php echo $aDeptSet[$aUser['iDeptID']] ?></td>
+                        <td class="text-center"><?php echo $aUser['sEmail'] ?></td>
+                        <td class="text-center"><?php echo $aUser['sMobile'] ?></td>
+                        <td class="text-center"><?php echo $aLevel[$aUser['iJobGradeID']] ?></td>
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加员工，请从下面的表格中选择需要添加的员工，添加之后单项信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php } ?>
+    <div class="btn-toolbar text-center">
+        <?php if (!empty($aHasItem)) {?>
+            <input type="button" value="删除选中员工" class="btn btn-primary input-margin-left" id="item-delete-select">
+        <?php }?>
+    </div>
+
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的员工</div>
+    <div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label>员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>" class="form-control" name="sRealName" style="width: 100px">
+            </div>
+             <div class="form-group col-sm-3">
+                <label>所属机构：</label>
+                <select name="iDeptID" class="form-control" style="width: 100px">
+                    <option value="0" <?php echo empty($aParam['iDeptID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aDeptSet as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iDeptID']) && $aParam['iDeptID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label>员工职级：</label>
+                <select name="iJobGradeID" class="form-control" style="width: 100px">
+                    <option value="0" <?php echo empty($aParam['iJobGradeID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aLevel as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iJobGradeID']) && $aParam['iJobGradeID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>          
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+            <div class="form-group col-sm-12">
+                <input type="checkbox" id='iIsAll' name='iIsAll' value="<?php echo $iIsAll ? 1: 0;?>" <?php echo $iIsAll ? 'checked': '';?>/>
+                显示全部员工【默认情况下仅显示最近三个月未参加过该体检的员工信息】
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+                <th class="text-center">员工编号</th>
+                <th class="text-center">员工姓名</th>
+                <th class="text-center">机构名称</th>
+                <th class="text-center">邮箱</th>
+                <th class="text-center">联系电话</th>
+                <th class="text-center">职级</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aEmpolyee['aList'])) {
+                foreach ($aEmpolyee['aList'] as $aUser) {?>
+                    <tr>
+                        <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]" value="<?php echo !empty($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo $aUser['sUserName'] ?></td>
+                        <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                        <td class="text-center"><?php echo $aDeptSet[$aUser['iDeptID']] ?></td>
+                        <td class="text-center"><?php echo $aUser['sEmail'] ?></td>
+                        <td class="text-center"><?php echo $aUser['sMobile'] ?></td>
+                        <td class="text-center"><?php echo $aLevel[$aUser['iJobGradeID']] ?></td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aEmpolyee['aPager']) ? $aEmpolyee['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">            
+            <input type="button" value="添加选中员工" class="btn btn-primary" id="item-add-select">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    $('#iIsAll').click(function() {
+        var is_checked = $(this).prop('checked');
+        if (!is_checked) {
+            $(this).val(0);    
+        } else {
+            $(this).val(1);
+        }
+       $("#myform").submit();
+    });
+
+    //全选效果
+    $('#itemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasitemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasitemlist').prop("checked", false);
+        } else {
+            $('.hasitemlist').prop("checked", true);
+        }
+    });
+    //单项选择效果
+    $('.itemlist').click(function(){
+        $('#itemall').prop("checked", false);
+    });
+    //单项选择效果
+    $('.hasitemlist').click(function(){
+        $('#hasitemall').prop("checked", false);
+    });
+    //单项单个添加
+    $('.item_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量添加
+    $('#item-add-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertUserUrl) ? $sInsertUserUrl : '' ?>?pid=<?php echo !empty($iPlanID) ? $iPlanID : 0 ?>&id=';
+        $('.itemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的员工');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+
+        <?php if (isset($opt) && $opt == 'edit') { ?>
+        url += '&&addtype=2';
+        <?php }?>
+
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.reload();
+            }
+        }, 'json');
+    });
+    //单项单个删除
+    $('.hasitem_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量删除
+    $('#item-delete-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteUserUrl) ? $sDeleteUserUrl : '' ?>?pid=<?php echo !empty($iPlanID) ? $iPlanID : 0 ?>&id=';
+        $('.hasitemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的单项');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.reload();
+            }
+        }, 'json');
+    });
+    $('#next').click(function(){
+        location.href = $(this).data('url');
+    })
+</script>

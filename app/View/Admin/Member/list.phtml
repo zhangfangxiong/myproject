@@ -1,0 +1,154 @@
+<div class="pheader clearfix">用户列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row sousuo_now">
+        	<div class="form-group">
+                <label>类型：</label>
+    		    <select name="iType" class="form-control">
+    		        <option value="">选择类型</option>
+    		        <option value="2" <?php echo isset($aParam['iType'])&&$aParam['iType']=='2'?'selected':''?>>自媒体</option>
+    		        <option value="1" <?php echo isset($aParam['iType'])&&$aParam['iType']=='1'?'selected':''?>>广告主</option>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <label>行业：</label>
+    		    <select name="iCoIndustry" class="form-control">
+    		        <option value="">选择行业</option>
+    		    <?php foreach ($aBusiness as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aParam['iCoIndustry'])&&$aParam['iCoIndustry']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <label>登录账户：</label>
+    		    <input type="text" value="<?php echo isset($aParam['sEmail']) ? $aParam['sEmail'] : '' ?>" class="form-control" name="sEmail" style="width: 100px">
+        	</div>
+            <div class="form-group">
+                <label>手机：</label>
+                <input type="text" value="<?php echo isset($aParam['sMobile']) ? $aParam['sMobile'] : '' ?>" class="form-control" name="sMobile" style="width: 100px">
+            </div>
+           <div class="form-group">
+                <label>状态：</label>
+    		    <select name="iStatus" class="form-control">
+    		        <option value="">选择状态</option>
+    		        <option value="1" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='1'?'selected':''?>>已激活</option>
+    		        <option value="2" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='2'?'selected':''?>>未激活</option>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <input type="hidden" id="fOrder" name="sOrder" value="<?php echo isset($aParam['sOrder']) ? $aParam['sOrder'] : '' ?>">
+                <!-- <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索"> -->
+                <button class="btn btn-default btn-sm" id="formquerybtn">搜索</button>
+                <button class="btn btn-default btn-sm" id="formexplodebtn">导出</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+<!--    	<button class="btn btn-primary" id="member_add">-->
+<!--    		<i class="fa fa-plus"></i> 增加用户-->
+<!--    	</button>-->
+		<form  style="width: 100px;float: left; " role="form" method="post" id="myform1" action="">
+			<input type="hidden" value="1" name="iType">
+			<button id="formquerybtn1">广告主</button>
+		</form>
+		<form style="width: 100px;float: left;" role="form" method="post" id="myform2" action="">
+			<input type="hidden" value="2" name="iType">
+			<button id="formquerybtn2">自媒体</button>
+		</form>
+
+    	<div style="float:right">
+            <label> 排序方式：</label>
+            <select class="input-sm" id="sOrder">
+				<option value="iCreateTime DESC" <?php echo isset($aParam['sOrder'])&&'iCreateTime DESC'==$aParam['sOrder']?'selected':''?>>按创建时间排序</option>
+                <option value="iUserID ASC" <?php echo isset($aParam['sOrder'])&&'iUserID ASC'==$aParam['sOrder']?'selected':''?>>按城市排序</option>
+                <option value="sEmail ASC" <?php echo isset($aParam['sOrder'])&&'sEmail ASC'==$aParam['sOrder']?'selected':''?>>按登录账户排序</option>
+                <option value="iIncome DESC" <?php echo isset($aParam['sOrder'])&&'iIncome DESC'==$aParam['sOrder']?'selected':''?>>按收入排序</option>
+                <option value="iMoney ASC" <?php echo isset($aParam['sOrder'])&&'iMoney ASC'==$aParam['sOrder']?'selected':''?>>按余额排序</option>
+
+            </select>
+        </div>
+		<div style="float: none;clear: both;width: 0;height: 0;"></div>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">用户id</th>
+    			<th class="text-center">类型</th>
+				<th class="text-center">所属行业</th>
+    			<th class="text-center">用户名</th>
+    			<th class="text-center">手机号</th>
+    			<th class="text-center">联系人</th>
+    			<th class="text-center">QQ</th>
+    			<th class="text-center">微信</th>
+				<th class="text-center">收入</th>
+    			<th class="text-center">余额</th>
+    			<th class="text-center">状态</th>
+    			<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $aUser) {?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $aUser['iUserID'];?></td>
+    			<td><?php echo (isset($aUser['iType']) && $aUser['iType'] == '2') ? '自媒体' : '广告主';?></td>
+				<td class="text-center"><?php echo $aBusiness[$aUser['iCoIndustry']];?></td>
+    			<td class="text-center"><?php echo $aUser['sEmail'];?></td>
+    			<th class="text-center"><?php echo $aUser['sMobile'];?></th>
+    			<td class="text-center"><?php echo $aUser['sRealName'];?></td>
+				<td class="text-center"><?php echo $aUser['sQQ'];?></td>
+				<td class="text-center"><?php echo $aUser['sWeixin'];?></td>
+    			<td><?php echo $aUser['iIncome'];?></td>
+    			<td><?php echo $aUser['iMoney'];?></td>
+    			<td><?php echo (isset($aUser['iStatus']) && $aUser['iStatus'] == '1') ? '已激活' : '未激活';?></td>
+    			<td class="text-center">
+<!--    				<a href="/admin/media/list.html?iUserID=--><?php //echo $aUser['iUserID']?><!--" title="资源列表"><i class="fa fa-th-list fa-large"></i></a>-->
+<!--    				<a href="/admin/finance/list.html?iUserID=--><?php //echo $aUser['iUserID']?><!--" title="财务列表"><i class="fa fa-list fa-large"></i></a>-->
+<!--    				<a href="/admin/mediaorder/list.html?iUserID=--><?php //echo $aUser['iUserID']?><!--" title="资源订单列表"><i class="fa fa-list-ol fa-large"></i></a>-->
+<!--    				<a href="/admin/ad/list.html?iUserID=--><?php //echo $aUser['iUserID']?><!--" title="广告列表"><i class="fa fa-list-ul fa-large"></i></a>-->
+    			    <a href="/admin/member/edit.html?id=<?php echo $aUser['iUserID']?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    			    <a class="member_delete" href="/admin/member/del?id=<?php echo $aUser['iUserID']?>" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$("#formquerybtn").bind("click", function() {  
+    var url = "/admin/member/list.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$("#formexplodebtn").bind("click", function() {  
+    var url = "/admin/member/explode.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$('#formbtn').click(function(){
+    $('#fOrder').val($('#sOrder').val());
+});
+$('#sOrder').change(function(){
+    $('#fOrder').val($('#sOrder').val());
+    $('#myform').submit();
+});
+$('.member_delete').click(function() {
+	if (confirm("您确认要删除该用户吗？")) {
+		$.get(this.href, function(ret){
+			alert(ret.data);
+		    if (ret.status) {
+			    location.reload();
+		    }
+		}, 'json');
+	}
+	return false;
+});
+$('#member_add').click(function(){
+	location.href = '/admin/member/add';
+});
+</script>

@@ -1,0 +1,94 @@
+<div class="pheader clearfix">用户列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/user/log.html">
+        <div class="row sousuo_now">
+            <div class="form-group">
+                <label>前后台：</label>
+    		    <select name="iRoleID" class="form-control">
+    		        <option value="0">全部</option>
+    		    <?php foreach ($aType as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aParam['iType'])&&$aParam['iType']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <label>用户：</label>
+                <input type="text"
+                       value="<?php echo isset($aParam['sUserName']) ? $aParam['sUserName'] : '' ?>"
+                       class="form-control" name="sUserName" style="width: 100px">
+            </div>
+            <div class="form-group">
+                <label>参数：</label>
+                <input type="text" value="<?php echo isset($aParam['sParam']) ? $aParam['sParam'] : '' ?>"
+                       class="form-control" name="sParam" style="width: 100px">
+            </div>
+            <div class="form-group">
+                <label>SQL：</label>
+                <input type="text" value="<?php echo isset($aParam['sSQL']) ? $aParam['sSQL'] : '' ?>"
+                       class="form-control" name="sSQL" style="width: 100px">
+            </div>
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+    	<div style="float:right">
+            <label> 排序方式：</label>
+            <select class="input-sm" id="sOrder">
+                <option value="iCreateTime DESC" <?php echo isset($aParam['sOrder'])&&'iCreateTime DESC'==$aParam['sOrder']?'selected':''?>>按创建时间排序</option>
+            </select>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="text-center">执行功能</th>
+    			<th class="text-center">脚本执行时间</th>
+    			<th class="text-center">脚本路径</th>
+            </tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $aUser) {?>
+            <tr style="text-align: center" class="minitip" title="<?php echo $aUser['sSQL']?>">
+    			<td class="col-sm-1 text-center"><?php echo $aUser['log_id']?></td>
+    			<td><?php echo $aUser['remark']?></td>
+    			<td class="text-center"><?php echo date('Y-m-d-H-i-s',$aUser['log_time'])?></td>
+    			<td class="text-center"><?php echo $aUser['script_name']?></td>
+
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<link href="/minitip/minitip.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/minitip/minitip.js"></script>
+<script>
+$(function(){
+    $('#formbtn').click(function(){
+        $('#fOrder').val($('#sOrder').val());
+    });
+    $('#sOrder').change(function(){
+        $('#fOrder').val($('#sOrder').val());
+        $('#myform').submit();
+    });
+    $('.user_delete').click(function() {
+    	if (confirm("您确认要删除该用户吗？")) {
+    		$.get(this.href, function(ret){
+    			alert(ret.data);
+    		    if (ret.status) {
+    			    location.reload();
+    		    }
+    		}, 'json');
+    	}
+    	return false;
+    });
+    $('#user_add').click(function(){
+    	location.href = '/admin/user/add';
+    });
+    $('.minitip').miniTip();
+});
+</script>

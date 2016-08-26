@@ -1,0 +1,94 @@
+/* Window/WindowHorizontalSprites.gif */
+.RadWindow_HrShopAlert {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  border: 0px solid #cdcdcd;
+  /* When ShowContentDuringLoad="false" */ }
+  .RadWindow_HrShopAlert .rwStatusbarRow .rwCorner,
+  .RadWindow_HrShopAlert .rwStatusbarRow .rwStatusbar {
+    border-top: 1px solid #cdcdcd; }
+  .RadWindow_HrShopAlert .rwTopLeft,
+  .RadWindow_HrShopAlert .rwTopRight,
+  .RadWindow_HrShopAlert .rwTitlebar,
+  .RadWindow_HrShopAlert .rwTopResize {
+    background: #71B2DB !important; }
+  .RadWindow_HrShopAlert .rwBodyLeft,
+  .RadWindow_HrShopAlert .rwBodyRight,
+  .RadWindow_HrShopAlert tr td.rwStatusbar input,
+  .RadWindow_HrShopAlert .rwStatusbar td,
+  .RadWindow_HrShopAlert .rwFooterRow .rwCorner,
+  .RadWindow_HrShopAlert .rwFooterCenter,
+  .RadWindow_HrShopAlert .rwStatusbar td {
+    background-color: #71B2DB !important; }
+  .RadWindow_HrShopAlert iframe {
+    display: block; }
+  .RadWindow_HrShopAlert a.rwIcon,
+  .RadWindow_HrShopAlert .rwShadow a.rwIcon {
+    background: url('Window/Icon.gif') no-repeat center;
+    margin: 3px 5px 0 0; }
+  .RadWindow_HrShopAlert ul.rwControlButtons {
+    margin: 0; }
+  .RadWindow_HrShopAlert .rwControlButtons a {
+    background-color: #71B2DB;
+    background-image: url('Window/CommandButtonSprites.gif');
+    width: 29px;
+    height: 19px;
+    border: 1px solid #71B2DB; }
+  .RadWindow_HrShopAlert table.rwTitlebarControls em {
+    color: white;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: normal;
+    padding: 1px 0 0 1px; }
+  .RadWindow_HrShopAlert td.rwStatusbar div {
+    background-image: url('Window/rwResize.gif');
+    background-position: 10px 8px;
+    margin: 0 -4px -7px 0;
+    *margin: 0 -1px -4px 0; }
+  .RadWindow_HrShopAlert input.rwDialogInput {
+    border: 1px solid #cdcdcd; }
+  .RadWindow_HrShopAlert input.rwDialogInput:hover {
+    border: 1px solid #767676; }
+  .RadWindow_HrShopAlert td.rwWindowContent.rwLoading {
+    background-image: url('Common/loading.gif'); }
+  .RadWindow_HrShopAlert input.rwLoading {
+    background-image: url('Common/loading_small.gif'); }
+  .RadWindow_HrShopAlert .rwDialogPopup a.rwPopupButton {
+    background: white;
+    border: 1px solid #cdcdcd; }
+  .RadWindow_HrShopAlert .rwDialogPopup a.rwPopupButton:hover {
+    background: #e8e8e8;
+    border: 1px solid #767676; }
+
+div.RadWindow_HrShopAlert tr td.rwLoading {
+  background-color: white; }
+
+div.RadWindow_HrShopAlert a.rwCancel,
+div.RadWindow_HrShopAlert a.rwCancel span {
+  background: none !important;
+  cursor: pointer;
+  border: 0 !important; }
+
+div.RadWindow_HrShopAlert a.rwCancel span span,
+div.RadWindow_HrShopAlert a.rwCancel:hover span span {
+  color: black;
+  text-decoration: underline; }
+
+/*override*/
+
+.RadWindow .rwCorner {
+    width: 4px !important;
+}
+.RadWindow .rwTopLeft, .RadWindow .rwTopRight, .RadWindow .rwTitlebar, .RadWindow .rwFooterLeft, .RadWindow .rwFooterRight, .RadWindow .rwFooterCenter {
+	height:4px !important;
+}
+
+/*new*/
+.rwAlertTitle {
+	font-size:16px !important; font-weight:bold !important; color:#71B2DB !important; border-bottom:1px solid #ddd !important; padding-bottom:10px !important; margin-bottom:15px !important;
+}
+
+.DialogStyle .topToolbar{ position:absolute; right:10px; top:10px; text-align:right;}
+.DialogStyle .topToolbar A img{width:23px; height:23px; vertical-align:middle; margin-right:5px;}
+.DialogStyle .topToolbar A{ cursor:pointer; color:#657a91;vertical-align:middle; margin-right:15px;}
+.DialogStyle .topToolbar A:hover{ color:#2bbdff; }

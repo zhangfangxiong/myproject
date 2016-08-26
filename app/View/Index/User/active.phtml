@@ -1,0 +1,22 @@
+<div class="activate_w cf2">
+    <dl class="activate_w">
+        <dt>
+            <img src="/front/images/tool/icon_succeed.png" class="png" alt="ok">
+        </dt>
+        <dd>
+            <h4>恭喜，激活成功！</h4>
+            <p>
+                您已经成为我们的认证会员<br>现在，您可以：
+            </p>
+            <div>
+                <?php if ($aUser['iType'] == Model_User::TYPE_AD) {?>
+                    <a href="/ad/add.html" class="red_btn_t">添加推广</a>
+                    <a href="/acenter/index.html" class="gray_btn">查看个人中心</a>
+                <?php } else {?>
+                    <a href="/media/add.html" class="red_btn_t">添加账号接单</a>
+                    <a href="/mcenter/index.html" class="gray_btn">查看个人中心</a>
+                <?php }?>
+            </div>
+        </dd>
+    </dl>
+</div>

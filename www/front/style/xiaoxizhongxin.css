@@ -1,0 +1,56 @@
+@charset "utf-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+body { background:#fff; color:#000; font-size:16px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+td,th,caption { font-size:14px; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal;}
+a { color:#000; text-decoration:none; }
+a:hover { text-decoration:underline; }
+img { border:none; }
+ol,ul,li { list-style:none; }
+input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
+table { border-collapse:collapse; }
+html {overflow-y: scroll;}
+/* css common */
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+.clear{ clear:both;}
+.cursor{cursor: pointer;}
+.red{color: red;}
+/*.cut{background-color: #ce1e1d;color: #fff;}*/
+
+
+body{width: 100%;min-width: 1200px; font-family: "Microsoft YaHei" ! important;}
+
+
+
+
+/*tab*/
+.tab{width: 100%;height:34px;margin-top: 40px;border-bottom: 1px solid #ce1e1d;}
+.tab .tab_div{width: 1200px;margin: 0 auto;}
+.tab .tab_div .tab_ul{margin-left: 30px;}
+.tab .tab_div .tab_ul img{position: relative;top:6px;left: 10px;}
+.tab .tab_div .tab_ul li span{position: relative;top:0px;left: 22px;}
+.tab .tab_div .tab_ul li{width:120px;height:34px;float:left;margin-left: 10px;line-height: 34px;border-top-left-radius:4px;;border-top-right-radius:4px;}
+.ment{background-color: #ce1e1d;}
+.ment a{color: #fff;}
+
+
+/*table*/
+.tab1 .table{margin-top: 60px;}
+.tab1 .table_div{width: 1200px;margin: 30px auto;}
+.tab1 .table_div table{width: 1200px;color: #8d8d8d;}
+.tab1 .table_div table tr:first-child{background-color: #f5f5f5;}
+.tab1 .table_div table tr{height: 45px;width: 100%;}
+.tab1 .table_div table tr th{border: 1px solid #e6e6e6;}
+.tab1 .table_div table tr td{border: 1px solid #e6e6e6;text-align: center;font-size: 14px;}
+.tab1 .table_div table tr td div{display: inline;width: 72px;height: 23px;border-radius:2px;background-color: #ce1e1d;}
+.tab1 .table_div table tr td div:last-child{margin-left: 16px;}
+.tab1 .table_div table tr td div img{position: relative;top:3px;width: 24px;width: 24px;}
+.tab1 .table_div table tr td div span{position:relative;top:-1px;left:-2px;font-size:14px;color: #fff;}
+.tab1 .table_div .check{width: 134px;margin-left:60px;display:inline;line-height: 45px;font-size: 14px;}
+.tab1 .table_div .check span{margin-left: 10px;}
+.tab1 .table_div .del{width:90px;height:30px;border-radius:4px;margin:10px 0 auto auto;float: right;margin-right:50px;line-height: 30px;background-color: #ce1e1d;color: #fff;}
+.tab1 .table_div .del img{position: relative;top:4px;left: 6px;}
+.tab1 .table_div .del span{position: relative;left: 10px;}

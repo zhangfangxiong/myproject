@@ -1,0 +1,38 @@
+<div class="pheader clearfix">第三步：邮寄请款发票</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <div class="form-group text-center">
+            <label for="sExpress" class="col-sm-2 control-label"> 快递公司：</label>
+            <div class="col-sm-6">
+                <input name="sExpress" type="text" value="<?php echo !empty($aBalance['sExpress']) ? $aBalance['sExpress'] : '';?>" class="form-control input-validate">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sExpressCode" class="col-sm-2 control-label"> 快递单号：</label>
+            <div class="col-sm-6">
+                <input name="sExpressCode" type="text" value="<?php echo !empty($aBalance['sExpressCode']) ? $aBalance['sExpressCode'] : '';?>" class="form-control input-validate">
+            </div>
+        </div>
+        
+        <div class="btn-toolbar text-center">            
+            <button id="save" class="btn btn-primary">完成</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function () {
+    $("#myform").validate({
+        submitHandler: function (form) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.href = ret.url;
+                }
+            }, 'json');
+            return false;
+        }
+    });
+});
+</script>

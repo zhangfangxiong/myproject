@@ -1,0 +1,75 @@
+<div class="pheader clearfix"><?php echo isset($aBanner['iAutoID'])?'编辑':'增加'?>Banner滚动</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iAutoID" type="hidden" value="<?php echo isset($aBanner['iAutoID'])?$aBanner['iAutoID']:''?>">
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 标题：</label>
+			<div class="col-sm-10">
+				<input name="title" type="text" validate="!length:1-50" value="<?php echo isset($aBanner['title'])?$aBanner['title']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 链接：</label>
+			<div class="col-sm-10">
+				<input name="link" type="text" validate="!length:1-50" value="<?php echo isset($aBanner['link'])?$aBanner['link']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 顺序：</label>
+			<div class="col-sm-10">
+				<input name="rank" type="text" validate="!length:1-50" value="<?php echo isset($aBanner['rank'])?$aBanner['rank']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sQRCode" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 图片：</label>
+			<div class="col-sm-10">
+				<input type="hidden" id="imgurlImg" name="imgurl" value="<?php echo isset($aBanner['imgurl'])?$aBanner['imgurl']:''?>">
+				<img id="imgurlShow" style="width:120px;height:90px;" src="<?php echo isset($aBanner['imgurl'])?Util_Uri::getDFSViewURL($aBanner['imgurl'], 130, 130):''?>">
+				<input type="button" value="选择" class="plupload" data-target="#simgurlImg" data-img="#imgurlShow">
+			</div>
+		</div>
+		<?php if(isset($aBanner['iAutoID'])){ ?>
+    	<?php if(isset($aBanner['iUpdateTime']) && $aBanner['iUpdateTime'] > 0){ ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 更新时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aBanner['iUpdateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 创建时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aBanner['iCreateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/banner/list/';return false;">取消</button>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            location.href = '/admin/banner/list/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

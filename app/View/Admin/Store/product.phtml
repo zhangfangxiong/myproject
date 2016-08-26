@@ -1,0 +1,29 @@
+<?php include 'menu.phtml'; ?>
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">产品编号</th>
+            <th class="text-center">产品名称</th>
+            <th class="text-center">价格</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aList['iTotal'] > 0) {
+            foreach ($aList['aList'] as $key => $aExpand) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aExpand['sProductCode'] ?></td>
+                    <td class="text-center"><?php echo $aExpand['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aExpand['sCostPrice'] ?></td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>

@@ -1,0 +1,77 @@
+<div class="dialog" style="width:500px">
+    <div class="panel panel-default">
+        <p class="panel-heading text-center"><strong><?php echo !empty($aLoginType[$iType]['name']) ? $aLoginType[$iType]['name'] : '' ?>登录</strong></p>
+
+        <div class="panel-body">
+            <form class="form-horizontal" method="post" action="/admin/signin" role="form" id="myform">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">帐号：</label>
+
+                    <div class="col-sm-8">
+                        <input id="username" name="username" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">密码：</label>
+
+                    <div class="col-sm-8">
+                        <input id="password" name="password" type="password" class="form-control">
+                    </div>
+                </div>
+                <?php if (!empty($aLoginType)) {
+                ?>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">后台：</label>
+
+                    <div class="col-sm-8">
+                        <select name="entrance" id="entrance" class="form-control input-validate">
+                            <?php foreach ($aLoginType as $k => $v) { ?>
+                                <option
+                                        value="<?php echo $v['url'] ?>" <?php echo isset($iType) && $iType == $k ? 'selected' : '' ?>><?php echo $v['name'] ?></option>
+                            <?php } ?>
+                        </select>
+                    </div>
+                </div>
+                <?php
+                } ?>
+                <div class="form-group text-center">
+                    <label class="col-sm-4 control-label">
+                        <input name="remember" type="checkbox"> 记住密码
+                    </label>
+
+                    <div class="col-sm-3">
+                        <input type="hidden" value="<?php echo !empty($iType) ? $iType : 1 ?>" name="type">
+                        <input type="button" id="signin" class="btn btn-primary pull-right" value="登录">
+                    </div>
+                </div>
+                <div class="clearfix"></div>
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $('#signin').click(function () {
+        if ($('#username').val().trim().length < 3) {
+            alert('请输入用户名！');
+            $('#username').focus();
+            return false;
+        }
+        if ($('#password').val().trim().length < 3) {
+            alert('请输入用户密码！');
+            $('#password').focus();
+            return false;
+        }
+        var form = $("#myform");
+        $.post(form.attr('action'), form.serialize(), function (ret) {
+            if (ret.status) {
+                location.href = ret.data.sUrl;
+            } else {
+                alert(ret.data);
+            }
+        }, 'json');
+        return false;
+    });
+    $('#entrance').change(function(){
+        location.href = $(this).val();
+    })
+</script>

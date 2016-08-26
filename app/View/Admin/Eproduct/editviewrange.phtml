@@ -1,0 +1,292 @@
+<div class="pheader clearfix">选择<?php if ($aProductChannel['iType'] == 1) {
+        echo '公司';
+    } elseif ($aProductChannel['iType'] == 2) {
+        echo '个人';
+    } ?><?php echo !empty($aChannel[$aProductChannel['iChannelID']]) ? $aChannel[$aProductChannel['iChannelID']] : '' ?>
+    渠道<?php if ($aProductChannel['iViewRange'] == 1) {
+        echo '可见客户';
+    } elseif ($aProductChannel['iViewRange'] == 2) {
+        echo '不可见客户';
+    } ?></div>
+
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已添加的渠道客户(共<span class="red"><?php echo count($aHasViewrange); ?></span>个)
+        <?php if (!empty($aHasViewrange) && (empty($iHeaderType) || $iHeaderType == 2)) { ?>
+            <input type="button" value="删除选中渠道客户" class="btn btn-primary input-margin-left"
+                   id="viewrange-delete-select">
+        <?php } ?>
+    </div>
+    <?php if (!empty($aHasViewrange)) {
+        ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="hasviewrangeall"></th>
+                <?php
+                } ?>
+                <th class="text-center">渠道客户名称</th>
+                <th class="text-center">渠道客户编号</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+            foreach ($aHasViewrange as $value) { ?>
+                <tr>
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <td class="text-center"><input class="hasviewrangelist" type="checkbox"
+                                                       name="hasviewrangelist[]"
+                                                       value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>">
+                        </td>
+                    <?php
+                    } ?>
+                    <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sUserName']) ? $value['sUserName'] : '' ?></td>
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <td class="text-center">
+                            <a class="hasviewrange_del" href="javascript:;"
+                               data-url="<?php echo !empty($sDeleteViewrangeUrl) ? $sDeleteViewrangeUrl : '' ?>?pid=<?php echo !empty($iProductChannelID) ? $iProductChannelID : 0 ?>&id=<?php echo $value['iAutoID'] ?>"
+                               title="删除"><i
+                                    class="fa fa-trash fa-large"></i></a>
+                        </td>
+                    <?php
+                    } ?>
+                </tr>
+            <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } else {
+        ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加体检渠道客户，请从下面的表格中选择需要添加的项目，添加之后渠道客户信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php
+    } ?>
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的渠道客户</div>
+    <form id="myform" class="form-horizontal" role="form" method="post"
+          action="<?php echo !empty($sAddViewrangeUrl) ? $sAddViewrangeUrl : '' ?>?id=<?php echo !empty($iProductChannelID) ? $iProductChannelID : '' ?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">关键字</div>
+                <div>
+                    <input placeholder="支持搜索渠道客户名称或编号" name="sKeyword" type="text"
+                           value="<?php echo !empty($sKeyword) ? $sKeyword : '' ?>"
+                           class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <input type="button" value="添加选中渠道客户" class="btn btn-primary" id="viewrange-add-select">
+                    <?php
+                    } ?>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="viewrangeall"></th>
+                <?php
+                } ?>
+                <th class="text-center">渠道客户名称</th>
+                <th class="text-center">渠道客户编号</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aViewrange['aList'])) {
+                foreach ($aViewrange['aList'] as $value) { ?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="viewrangelist" type="checkbox" name="viewrangelist[]"
+                                                           value="<?php echo !empty($value['iUserID']) ? $value['iUserID'] : '' ?>">
+                            </td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sUserName']) ? $value['sUserName'] : '' ?></td>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="viewrange_add" href="javascript:;"
+                                   data-url="<?php echo !empty($sInsertViewrangeUrl) ? $sInsertViewrangeUrl : '' ?>?pid=<?php echo !empty($iProductChannelID) ? $iProductChannelID : 0 ?>&id=<?php echo $value['iUserID'] ?>"
+                                   title="添加"><i
+                                        class="fa fa-plus fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aViewrange['aPager']) ? $aViewrange['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductChannelID" id="iProductChannelID" type="hidden"
+                   value="<?php echo !empty($iProductChannelID) ? $iProductChannelID : 0 ?>">
+            <?php if (!empty($iHeaderType) && $iHeaderType == 1) {
+                ?>
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($aEditHeaderInfo[2]['editurl']) ? $aEditHeaderInfo[2]['editurl'] : '' ?>?id=<?php echo $aProduct['iProductChannelID'] ?>">
+            <?php
+            } else {
+                ?>
+                <input type="button" data-url="<?php echo !empty($sNextUrl) ? $sNextUrl : 'javascript:;' ?>" id="next"
+                       class="btn btn-primary"
+                       value="<?php echo !empty($iHeaderType) ? '确定' : '确定' ?>">
+            <?php
+            } ?>
+        </div>
+    </form>
+</div>
+<!--
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+-->
+<script type="text/javascript">
+    //分类渠道客户点击效果
+    $('.category').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cateall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCategory_' + key).prop("checked", true);
+    });
+    //分类全部点击效果
+    $('.cateall').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.category').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+    //全选效果
+    $('#viewrangeall').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('.viewrangelist').prop("checked", false);
+        } else {
+            $('.viewrangelist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasviewrangeall').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('.hasviewrangelist').prop("checked", false);
+        } else {
+            $('.hasviewrangelist').prop("checked", true);
+        }
+    });
+    //渠道客户选择效果
+    $('.viewrangelist').click(function () {
+        $('#viewrangeall').prop("checked", false);
+    });
+    //渠道客户选择效果
+    $('.hasviewrangelist').click(function () {
+        $('#hasviewrangeall').prop("checked", false);
+    });
+    //渠道客户单个添加
+    $('.viewrange_add').click(function () {
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该渠道客户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //渠道客户批量添加
+    $('#viewrange-add-select').click(function () {
+        var select_viewrange = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertViewrangeUrl) ? $sInsertViewrangeUrl : '' ?>?type=1&pid=<?php echo !empty($iProductChannelID) ? $iProductChannelID : 0 ?>&id=';
+        $('.viewrangelist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_viewrange += $(dom).val() + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的渠道客户');
+            return false;
+        }
+        select_viewrange = select_viewrange.substring(0, select_viewrange.length - 1);
+        url += select_viewrange;
+        if (confirm("您确认要添加选中的" + count_num + "个渠道客户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //渠道客户单个删除
+    $('.hasviewrange_del').click(function () {
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该渠道客户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //渠道客户批量删除
+    $('#viewrange-delete-select').click(function () {
+        var select_viewrange = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteViewrangeUrl) ? $sDeleteViewrangeUrl : '' ?>?type=1&pid=<?php echo !empty($iProductChannelID) ? $iProductChannelID : 0 ?>&id=';
+        $('.hasviewrangelist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_viewrange += $(dom).val() + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的渠道客户');
+            return false;
+        }
+        select_viewrange = select_viewrange.substring(0, select_viewrange.length - 1);
+        url += select_viewrange;
+        if (confirm("您确认要删除选中的" + count_num + "个渠道客户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#next').click(function () {
+        var ifLocation = <?php echo !empty($iHeaderType) ? 0 : 1 ?>;
+        if (ifLocation) {
+            location.href = $(this).data('url');
+        } else {
+            alert('保存成功!');
+        }
+    });
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+</script>

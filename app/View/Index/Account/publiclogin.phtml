@@ -1,0 +1,117 @@
+<form id="myform" action="" method="post">
+<div class="wrap-login container" style="margin-top: 30px;">
+    <div class="login_l">
+        <a href="javascript:void(0);">
+            <img src="<?php echo $sStaticRoot?>/backend/img/qydl_pic.png" alt="" width="466" height="326" /></a>
+    </div>
+    <div class="loginbox">
+        <h3 class="clearfix title-login" style="text-align:right; padding-right:30px;">
+            <span class="l"></span>
+            <a id="main_hlLoginMobile" href="/index/account/identitycardlogin">短信登录</a>
+            <span style="font-size:14px;">/</span>
+            <a id="main_hlLogin" href="/index/account/publiclogin">用户名登录</a>
+            <span style="font-size:14px;">/</span>
+            <a id="main_hlLogin" href="/index/account/medicalcardlogin">体检卡登录</a>
+        </h3>
+        <!-- normal start -->
+        <div class="input-container">
+            <div id="msg_login" class="login-message">
+            </div>
+            <p class="p-input clearfix">
+                <span class="l input-label" style="width:58px;">用户名：</span>
+                <input name="sUserName" type="text" maxlength="30" id="" tabindex="1" class="l input-common" style="width:230px;" />
+                <i id="empty-username" class="btn-clear" style="display: none;"></i>
+            </p>
+            <div id="p-psw1" class="p-input clearfix" style="">
+                <span class="l input-label" style="width:58px;">密码：</span><span class="wrap-verify">
+                    <input type="password" name="sPassword" type="text" maxlength="30" tabindex="2" class="l input-common" style="width:130px;" />
+                </span>
+                
+            </div>
+            <div id="login_passcode" class="p-input clearfix" style="">
+                <span class="l input-label" style="width:58px;">验证码：</span><span class="wrap-verify">
+                    <input name="sCode" type="text" maxlength="6" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;">
+                    <img width="80" height="36" class="l" id="sCode" alt="看不清楚.点击更换" style="cursor: pointer; margin-left:5px;" src=".">
+                </span>
+            </div>
+            <p class="p-btn p-submit">
+                <input id="login" name="" value="登录" style="padding-left:50px" class="masking_button" />
+            </p>
+        </div>
+        <!-- normal end -->
+        <div class="login_uniom" style="padding-left:88px;">
+            <a href="/index/account/forgetpwd" class="btn-forgot green">忘记密码？</a>
+            <a href="/index/account/register" class="btn-forgot green">免费注册</a>
+            <span style="display:none;" title="1.如您是企业员工用户，请联系您公司的HR，使用贵公司的专用地址进行登录  2.如果您是网站注册用户，可点击【忘记密码】来进行密码重置操作。">无法登录？</span>
+
+        </div>
+    </div>
+</div>
+</form>
+
+<script type="text/javascript" language="javascript">
+
+    function fGetCode() {
+        if (document.getElementById("getcode")) {
+            document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+        }
+    }
+    fGetCode();
+
+    function BindButtonTime() {
+        var tc = 90;
+        var tid = 0;
+
+        var timer1 = function () {
+            tc--;
+
+            if (tc > 0) {
+                $('#main_btnSend').attr('disabled', "true"); //添加disabled属性
+                $("#main_btnSend").val(tc + '秒后可获取');
+                tid = setTimeout(timer1, 1000);
+            }
+            else {
+                $('#main_btnSend').removeAttr("disabled"); //移除disabled属性
+                $("#main_btnSend").val('获取验证码');
+                //$("#main_btnSend").button('reset');
+            }
+        }
+
+        timer1();
+    }
+</script>
+
+<script>
+var CodeUrl = '/index/verify/image?type=<?php echo $iCodeType ?>';
+var UcenterUrl = '/index/web/list';
+function codeChange()
+{
+    $('#sCode').attr('src',CodeUrl+'&'+Math.random());
+}
+codeChange();
+$('#sCode').click(function(){
+    codeChange();
+});
+$('#login').click(function(){
+    var CanSummit = 1;
+    var form = $('#myform');
+    if (CanSummit) {
+        $.post(form.action, $(form).serialize(), function (ret) {
+            if (ret.status) {
+                //跳转第二步
+                alert('登陆成功！');
+                window.location = UcenterUrl;
+                return true;
+            } else {
+                alert(ret.data);
+                codeChange();
+                return false;
+            }
+        }, 'json');
+    }
+    return false;
+})
+
+</script>
+
+

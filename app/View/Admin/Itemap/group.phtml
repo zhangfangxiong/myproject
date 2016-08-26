@@ -1,0 +1,107 @@
+<?php include 'header.phtml'; ?>
+
+<form id="myform" class="form-horizontal" role="form" method="post" action="">
+    <div class="pcate clearfix">
+        <div class="pmargin clearfix">
+            <div class="catetitle col-sm-1 text-center">关键字</div>
+            <div>
+                <input placeholder="支持搜索加项、单项名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                <a class='text-right btn btn-default' href="/admin/itemap/addgroup">新建组合单项</a>
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">组合单项名称</th>
+            <th class="text-center">包含单项</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aList['aList'])) {
+            foreach ($aList['aList'] as $value) {?>
+                <tr>
+                    <td class="text-center"><?php echo $value['sName']?></td>
+                    <td class="text-center"><?php echo @$value['sItems'] ?></td>                    
+                    <td class="text-center">
+                        <a href='javascript:void(0)' class='import' data-id='<?php echo $value['iAddtionID']?>'>导入价格</a>
+                        <a href="/admin/itemap/editprice?id=<?php echo $value['iAddtionID']?>">编辑价格</a>
+                        <a href="/admin/itemap/editgroup?id=<?php echo $value['iAddtionID']?>">编辑</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>        
+</form>
+
+<div class="modal fade" id="iModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body form-group col-sm-12">
+            <input id='addId' value='' type='hidden'/>
+            <input type='' id='sFileKeyExt' name='sFile' value=''></input>
+            <label class="col-sm-3 control-label" for="file">请选择导入文件：</label>
+            <input type='button' value="选择文件" class='plupload' data-target='#sFileKeyExt'></input>
+            <a href="<?php echo $sStaticRoot . '/doc/itemgroupdemo.xls'?>" target="_blank" style="color: Blue">（点击此处下载导入模版）</a>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="jSave">完成<tton>
+            <button type="button" class="btn btn-default" id='close' data-dismiss="modal">关闭<tton>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+
+<script type="text/javascript">
+    $('.import').on('click', function() {
+        id = $(this).data('id');
+        $('#iModal').modal('show');
+        $('#addId').val(id);
+    });
+
+    $('#close').on('click', function() {
+        window.location.reload();
+    })
+
+    $('#jSave').on('click', function() {
+        var id = $('#addId').val();
+        var file = $('#sFileKeyExt').val();
+        if (!id || !file) {
+            alert('请选择导入文件和导入加项');
+            return false;
+        }
+        submitExcel();
+    });
+
+    function submitExcel() {
+        $.ajax({
+            url : '/admin/itemap/excelimport',
+            type : 'post',
+            data : {
+                id : $('#addId').val(),
+                file : $('#sFileKeyExt').val()        
+            },
+            dataType : 'json',
+            success : function(ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    window.location.reload();
+                }
+            }
+        });
+    };
+</script>

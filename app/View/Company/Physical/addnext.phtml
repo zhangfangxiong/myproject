@@ -1,0 +1,196 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+    .hideselect{line-height: 1.2;font-size:12px;font-weight: normal; display: none;position: absolute;top:36px;left:0;width:100%;text-align: center;background: #fff;box-shadow: 1px 1px 2px #ddd;}
+    .hideselect p{cursor:pointer;}
+    .normal_tj,.baogao_yes,.pay_gs{margin-bottom:2px;margin-top:10px;}
+    .hoverChildren{position: relative;}
+    .hoverChildren:hover .hideselect{display: block;}
+</style>
+<?php if (!isset($opt) || $opt != 'edit') { ?>
+<div class="pheader clearfix"><?php echo $stype==2 ? '第四步：' : ''?>确认体检有效期</div>
+<?php } ?>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <?php if($stype == 1){ ?>
+        <div>体检产品：安心入职套餐（通用产品）</div>        
+        <hr>
+        <?php } ?>
+    
+        <table class="table table-bordered table-hover table-responsive">
+            <thead>
+            <tr>            
+                <th class="text-center">姓名</th>
+                <th class="text-center">性别</th>
+                <th class="text-center">手机</th>
+                <th class="text-center">身份证</th>
+                <?php if($stype == 2){ ?>
+                <th class="text-center">指定产品</th>
+                <th class="text-center" width="7%">使用方式</th>
+                <?php } ?>
+                <th class="text-center" width="7%">产品性别</th>
+                <th class="text-center hoverChildren" width="9%" data-class="tijian_type">
+                    体检类型
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    <div class="hideselect">
+                        <p class="normal_tj" data-type="putong">普通体检</p>
+                        <p class="ruzhi_tj" data-type="ruzhi">入职体检</p>
+                    </div> 
+                </th>
+                <th class="text-center hoverChildren" width="7%" data-class="baogao_ornot">
+                    纸质报告
+                    <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    <div class="hideselect">
+                        <p class="baogao_yes" data-type="tigong">提供</p>
+                        <p class="baogao_no" data-type="butigong">不提供</p>
+                    </div> 
+                </th>
+                <th class="text-center hoverChildren" width="9%" data-class="pay_method">
+                    付款方式
+                     <i class="fa fa-caret-down" aria-hidden="true"></i>
+                    <div class="hideselect">
+                        <p class="pay_gs" data-type="gongsi">公司付款</p>
+                        <p class="pay_gr" data-type="geren">个人付款</p>
+                    </div> 
+                </th>
+                <th class="text-center">开始日期</th>
+                <th class="text-center">截止日期</th>
+                <?php if (isset($opt) && $opt == 'edit') { ?>
+                <th class="text-center">操作</th>
+                <?php }?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if ($aEmployee) {
+                foreach ($aEmployee as $key => $aUser) { ?>
+                    <tr>  
+                        <td style='display: none'>
+                        <input type='hidden' name="aUserID[<?php echo $key?>]" 
+                                value="<?php echo $aUser['iUserID'] ?>"/>
+                        </td>                                       
+                        <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                        <td class="text-center"><?php echo (1 == $aUser['iSex']) ? '男' : '女' ?></td>
+                        <td class="text-center"><?php echo $aUser['sMobile'] ?></td>
+                        <td class="text-center"><?php echo $aUser['sIdentityCard'] ?></td>
+                        <?php if($stype == 2){ ?>
+                        <td class="text-center">
+                            <select name="aProductID[<?php echo $aUser['iUserID']?>]" class="form-control" style="width: 100px">
+                                <option value="0">全部可选</option>
+                                <?php foreach ($aSelProduct as $k => $v) { ?>
+                                    <option value="<?php echo $k ?>" <?php echo $k == $aUser['iProductID'] ? 'selected' : '';?>><?php echo $v ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td class="text-center">
+                            <input type="radio" name="aUseType[<?php echo $aUser['iUserID']?>]" value="1" <?php echo empty($aUser['iUseType']) || 1 == $aUser['iUseType'] ? 'checked' : '';?> />OR
+                            <br/>
+                            <input type="radio" name="aUseType[<?php echo $aUser['iUserID']?>]" value="2" <?php echo 2 == $aUser['iUseType'] ? 'checked' : '';?> />AND
+                        </td>
+                        <?php } ?>
+                        <td class="text-center">
+                            <input type="radio" name="aAttribute[<?php echo $aUser['iUserID']?>]" value="1" <?php echo empty($aUser['iAttribute']) || 1 == $aUser['iAttribute'] ? 'checked' : '';?> />男性
+                            <br/>
+                            <input type="radio" name="aAttribute[<?php echo $aUser['iUserID']?>]" value="2" <?php echo 2 == $aUser['iAttribute'] ? 'checked' : '';?> />女未婚
+                            <br/>
+                            <input type="radio" name="aAttribute[<?php echo $aUser['iUserID']?>]" value="3" <?php echo 3 == $aUser['iAttribute'] ? 'checked' : '';?> />女已婚
+                        </td>
+                        <td class="text-center tijian_type">
+                            <input type="radio" name="aPhysicalType[<?php echo $aUser['iUserID']?>]" value="1" data-type="putong" <?php echo empty($aUser['iPhysicalType']) || 1 == $aUser['iPhysicalType'] ? 'checked' : '';?> />普通体检
+                            <br/>
+                            <input type="radio" name="aPhysicalType[<?php echo $aUser['iUserID']?>]" value="2"  data-type="ruzhi" <?php echo 2 == $aUser['iPhysicalType'] ? 'checked' : '';?> />入职体检
+                        </td>
+                        <td class="text-center baogao_ornot">
+                            <input type="radio" name="aPaperReport[<?php echo $aUser['iUserID']?>]" value="0"  data-type="butigong" <?php echo empty($aUser['iPaperReport']) ? 'checked' : '';?> />不提供
+                            <br/>
+                            <input type="radio" name="aPaperReport[<?php echo $aUser['iUserID']?>]" value="1" data-type="tigong"
+                            <?php echo 1 == $aUser['iPaperReport'] ? 'checked' : '';?>/>提供
+                        </td>
+                        <td class="text-center pay_method">
+                            <input type="radio" name="aPayType[<?php echo $aUser['iUserID']?>]" value="2"  data-type="gongsi" <?php echo empty($aUser['iPayType']) || 2 == $aUser['iPayType'] ? 'checked' : '';?> />公司付款
+                            <br/>
+                            <input type="radio" name="aPayType[<?php echo $aUser['iUserID']?>]" value="1" data-type="geren" <?php echo 1 == $aUser['iPayType'] ? 'checked' : '';?> />个人付款
+                        </td> 
+                        <td class="text-center">
+                            <input onclick="laydate({format: 'YYYY-MM-DD'})" style="width:100px" name="aStartDate[<?php echo $aUser['iUserID']?>]" value="<?php echo !empty($aUser['sStartDate']) ? $aUser['sStartDate'] : date('Y-m-d', time());?>" />
+                        </td>
+                        <td class="text-center">
+                            <input onclick="laydate({format: 'YYYY-MM-DD'})" style="width:100px" name="aEndDate[<?php echo $aUser['iUserID']?>]" value="<?php echo !empty($aUser['sEndDate']) ? $aUser['sEndDate'] : '';?>" />
+                        </td>                       
+                        <?php if (isset($opt) && $opt == 'edit') { ?>
+                        <td class="text-center"><a href="/company/physical/detail/type/2/id/<?php echo $aUser['iPhysicalProductID'] ?>">查看</a></td>                        
+                        <?php } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php if (!isset($opt) || $opt != 'edit') { ?>
+        <div class="form-group col-sm-6">
+            <input type="radio" name="iSend" value="1" checked />立即发送体检通知 
+            <input type="radio" name="iSend" value="2" />稍后发送
+        </div>
+        <div class="btn-toolbar text-center col-sm-12">
+            <input type="submit" id="formbtn" class="btn btn-primary" value="完成"/>
+            <a target='_blank' href='/company/physical/dlplan/iPlanID/<?php echo $iPlanID ?>'/>
+                <input type="button" id="download" class="btn" value="下载体检通知"/>
+            </a>
+            <?php  if (!empty($iPlanID) && $iEnterpriseId != $aCurrUser['iUserID']) {  ?>
+            <input type="button" id="sendhr" class="btn" value="发送HR体检通知"/>
+            <?php } ?>
+        </div> 
+        <?php } else { ?>
+        <div class="btn-toolbar text-center col-sm-12">
+            <input type="submit" id="formbtn" class="btn btn-primary" value="保存修改"/>
+            <a target='_blank' href='/company/physical/dlplan/iPlanID/<?php echo $iPlanID ?>'/>
+                <input type="button" id="download" class="btn" value="下载体检通知"/>
+            </a>
+            <?php if (!empty($iPlanID) && $iEnterpriseId != $aCurrUser['iUserID']) {  ?>
+            <input type="button" id="sendhr" class="btn" value="发送HR体检通知"/>
+            <?php } ?>
+        </div> 
+        <?php } ?>
+
+        <input type='hidden' name='opt' value=<?php echo !empty($opt) ? $opt : '';?>>
+    </form>    
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.dev.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){   
+            if (ret.status) {
+                window.location.href = ret.data;
+            } else {
+                alert(ret.data);
+            }
+        }, 'json');
+        return false;
+    }});
+
+    $(".hideselect").on("click","p",function(){
+        var className=$(this).parents("th").data("class");
+        var typeName=$(this).data("type");
+        var select="input[data-type="+typeName+"]";
+        $("."+className+" "+select).click();
+    })
+
+    $('#sendhr').click(function(){
+        $.ajax({
+            url : '/company/physical/sendhrplan/',
+            type : 'post',
+            data : {
+                planId : <?php echo $iPlanID ? $iPlanID : 0 ?>
+            },
+            dataType : 'json',
+            success: function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    window.location.href = window.location.href;
+                }
+            }
+        });
+    });
+
+});
+</script>

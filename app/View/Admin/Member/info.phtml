@@ -1,0 +1,136 @@
+<div class="pheader clearfix"><?php echo isset($aUser['iUserID'])?'编辑':'增加'?>用户</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aUser['iUserID'])?$aUser['iUserID']:''?>">
+        <div class="form-group">
+    		<label for="iType" class="col-sm-2 control-label"><span style="color:red;">*</span> 账号类型：</label>
+    		<div class="col-sm-10">
+    			<select name="iType" class="form-control">
+    		        <option value="">选择类型</option>
+    		        <option value="1" <?php echo isset($aUser['iType'])&&$aUser['iType']=='1'?'selected':''?>>自媒体</option>
+    		        <option value="2" <?php echo isset($aUser['iType'])&&$aUser['iType']=='2'?'selected':''?>>广告主</option>
+    		    </select>
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sEmail" class="col-sm-2 control-label"><span style="color:red;">*</span> 登录账户：</label>
+    		<div class="col-sm-10">
+    			<input name="sEmail" type="text" validate="!email:true" value="<?php echo isset($aUser['sEmail'])?$aUser['sEmail']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sMobile" class="col-sm-2 control-label"><span style="color:red;">*</span> 手机号码：</label>
+    		<div class="col-sm-10">
+    			<input name="sMobile" type="text" validate="!mobile:true" value="<?php echo isset($aUser['sMobile'])?$aUser['sMobile']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sRealName" class="col-sm-2 control-label"><span style="color:red;">*</span> 联系人名称：</label>
+    		<div class="col-sm-10">
+    			<input name="sRealName" type="text" validate="!length:3-50" value="<?php echo isset($aUser['sRealName'])?$aUser['sRealName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sPassword" class="col-sm-2 control-label"><?php if(!isset($aUser['iUserID'])):?><span style="color:red;">*</span> <?php endif;?>登录密码：</label>
+    		<div class="col-sm-10">
+    			<input name="sPassword" type="password" validate="<?php if(!isset($aUser['iUserID'])){?>!length:6-20<?php }else{?>length:6-20<?php } ?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sCoName" class="col-sm-2 control-label"><span style="color:red;">*</span> 公司名称：</label>
+    		<div class="col-sm-10">
+    			<input name="sCoName" type="text" validate="!length:3-50" value="<?php echo isset($aUser['sCoName'])?$aUser['sCoName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="iCoIndustry" class="col-sm-2 control-label"><span style="color:red;">*</span> 所属行业：</label>
+    		<div class="col-sm-10">
+    			<select name="iCoIndustry" class="form-control">
+    		    <?php foreach ($aBusiness as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aUser['iCoIndustry'])&&$aUser['iCoIndustry']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sCoAddress" class="col-sm-2 control-label"><span style="color:red;">*</span> 公司地址：</label>
+    		<div class="col-sm-10">
+    			<input name="sCoAddress" type="text" validate="!chinese:2-20" value="<?php echo isset($aUser['sCoAddress'])?$aUser['sCoAddress']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sCoWebSite" class="col-sm-2 control-label"><span style="color:red;">*</span> 公司网址：</label>
+    		<div class="col-sm-10">
+    			<input name="sCoWebSite" type="text" validate="!url:true" value="<?php echo isset($aUser['sCoWebSite'])?$aUser['sCoWebSite']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sCoDesc" class="col-sm-2 control-label"> 公司介绍：</label>
+    		<div class="col-sm-10">
+    			<textarea name="sCoDesc" class="form-control input-validate" rows="3" cols="20"><?php echo isset($aUser['sCoDesc'])?$aUser['sCoDesc']:''?></textarea>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sWeixin" class="col-sm-2 control-label"> 微信：</label>
+    		<div class="col-sm-10">
+    			<input name="sWeixin" type="text" validate="!length:3-50" value="<?php echo isset($aUser['sWeixin'])?$aUser['sWeixin']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sQQ" class="col-sm-2 control-label"> QQ：</label>
+    		<div class="col-sm-10">
+    			<input name="sQQ" type="text" validate="!digit:true" value="<?php echo isset($aUser['sQQ'])?$aUser['sQQ']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="iIncome" class="col-sm-2 control-label"> 收入：</label>
+    		<div class="col-sm-10">
+    			<input name="iIncome" type="text" validate="!float:true" value="<?php echo isset($aUser['iIncome'])?$aUser['iIncome']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 余额：</label>
+    		<div class="col-sm-10">
+    			<input name="iMoney" type="text" validate="!float:true" value="<?php echo isset($aUser['iMoney'])?$aUser['iMoney']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sQQ" class="col-sm-2 control-label"> 状态：</label>
+    		<div class="col-sm-10">
+    			<select name="iStatus" class="form-control">
+    		        <option value="">选择状态</option>
+    		        <option value="1" <?php echo isset($aUser['iStatus'])&&$aUser['iStatus']=='1'?'selected':''?>>已激活</option>
+    		        <option value="2" <?php echo isset($aUser['iStatus'])&&$aUser['iStatus']=='2'?'selected':''?>>未激活</option>
+    		    </select>
+    		</div>
+    	</div>
+    	<?php if(isset($aUser['iUserID'])){ ?>
+    	<?php if(isset($aUser['iUpdateTime']) && $aUser['iUpdateTime'] > 0){ ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 更新时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aUser['iUpdateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 创建时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aUser['iCreateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    </form>
+</div>

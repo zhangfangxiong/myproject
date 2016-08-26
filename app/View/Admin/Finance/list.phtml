@@ -1,0 +1,204 @@
+<div class="pheader clearfix">财务列表</div>
+<div class="pbody clearfix">
+	<form class="form-inline search-form" role="form" method="post"
+		id="myform" action="">
+		<input name="iUserID" type="hidden"
+			value="<?php echo isset($aParam['iUserID'])?$aParam['iUserID']:''?>">
+		<div class="row sousuo_now">
+			<div class="form-group">
+				<label>用户名称：</label>
+				<input type="text"
+					value="<?php echo isset($aParam['sUserRealName']) ? $aParam['sUserRealName'] : '' ?>"
+					class="form-control" name="sUserRealName" style="width: 200px">
+			</div>
+			<div class="form-group">
+				<label>收支情况：</label>
+				<select name="iPayment" class="form-control">
+					<option value="">全部</option>
+					<option value="1"
+						<?php echo isset($aParam['iPayment'])&&$aParam['iPayment']=='1'?'selected':''?>>收入</option>
+					<option value="2"
+						<?php echo isset($aParam['iPayment'])&&$aParam['iPayment']=='2'?'selected':''?>>支出</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>事件来源：</label>
+				<select name="iSource" class="form-control">
+					<option value="">全部</option>
+					<option value="1"
+						<?php echo isset($aParam['iSource'])&&$aParam['iSource']=='1'?'selected':''?>>自主充值</option>
+					<option value="2"
+						<?php echo isset($aParam['iSource'])&&$aParam['iSource']=='2'?'selected':''?>>付款充值</option>
+					<option value="3"
+						<?php echo isset($aParam['iSource'])&&$aParam['iSource']=='3'?'selected':''?>>拒单退款</option>
+					<option value="4"
+						<?php echo isset($aParam['iSource'])&&$aParam['iSource']=='4'?'selected':''?>>取现</option>
+					<option value="5"
+						<?php echo isset($aParam['iSource'])&&$aParam['iSource']=='5'?'selected':''?>>广告费用</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>申请人：</label>
+				<input type="text"
+					value="<?php echo isset($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+					class="form-control" name="sRealName" style="width: 200px">
+			</div>
+			<div class="form-group">
+				<label>支付类型：</label>
+				<select name="iPayType" class="form-control">
+					<option value="">全部</option>
+					<option value="1"
+						<?php echo isset($aParam['iPayType'])&&$aParam['iPayType']=='1'?'selected':''?>>支付宝</option>
+					<option value="2"
+						<?php echo isset($aParam['iPayType'])&&$aParam['iPayType']=='2'?'selected':''?>>微信</option>
+					<option value="3"
+						<?php echo isset($aParam['iPayType'])&&$aParam['iPayType']=='3'?'selected':''?>>银行卡</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<label>支付状态：</label>
+				<select name="iPayStatus" class="form-control">
+					<option value="">全部</option>
+					<option value="0"
+						<?php echo isset($aParam['iPayStatus'])&&$aParam['iPayStatus']=='0'?'selected':''?>>未支付</option>
+					<option value="1"
+						<?php echo isset($aParam['iPayStatus'])&&$aParam['iPayStatus']=='1'?'selected':''?>>已支付</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<!-- <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索"> -->
+				<button class="btn btn-default btn-sm" id="formquerybtn">搜索</button>
+				<button class="btn btn-default btn-sm" id="formexplodebtn">导出</button>
+			</div>
+		</div>
+	</form>
+	<hr>
+	<div class="btn-toolbar list-toolbar">
+		<!-- <button class="btn btn-primary" id="finance_add">
+    		<i class="fa fa-plus"></i> 增加财务
+
+    	</button> -->
+		<form style="width: 100px; float: left;" role="form" method="post"
+			id="myform1" action="">
+			<input type="hidden" value="1" name="iPayment">
+			<button id="formquerybtn1">收入</button>
+		</form>
+		<form style="width: 100px; float: left;" role="form" method="post"
+			id="myform2" action="">
+			<input type="hidden" value="2" name="iPayment">
+			<button id="formquerybtn2">支出</button>
+		</form>
+		<div style="float: none; clear: both; width: 0; height: 0;"></div>
+	</div>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-1 text-center">#</th>
+				<th class="text-center">用户名称</th>
+				<th class="text-center">收支情况</th>
+				<th class="text-center">事件来源</th>
+				<th class="text-center">申请人</th>
+				<th class="text-center">支付类型</th>
+				<th class="text-center">本次金额</th>
+				<th class="text-center">用户余额</th>
+				<th class="text-center">更新时间</th>
+				<th class="text-center">创建时间</th>
+				<th class="text-center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+        <?php
+        foreach ($aList['aList'] as $v) {
+			$sRealName = isset($aData[$v['iUserID']]['sRealName']) ? $aData[$v['iUserID']]['sRealName'] : '';
+			$iPayment = (($v['iPayment'] == '1') ? '收入' : '支出');
+			$iSource = '';
+			if ($val['iSource'] == '1') {
+				$iSource = '自主充值';
+			} elseif ($val['iSource'] == '2') {
+				$iSource = '付款充值';
+			} elseif ($val['iSource'] == '3') {
+				$iSource = '拒单退款';
+			} elseif ($val['iSource'] == '4') {
+				$iSource = '取现';
+			} elseif ($val['iSource'] == '5') {
+				$iSource = '广告费用';
+			}
+			$iPayType = '';
+			if ($val['iPayType'] == '0') {
+				$iPayType = '无';
+			} elseif ($val['iPayType'] == '1') {
+				$iPayType = '支付宝';
+			} elseif ($val['iPayType'] == '2') {
+				$iPayType = '微信';
+			} elseif ($val['iPayType'] == '3') {
+				$iPayType = '银行卡';
+			}
+        ?>
+            <tr>
+				<td class="col-sm-1 text-center"><?php echo $v['iAutoID']?></td>
+				<td class="text-center"><?php echo $sRealName?></td>
+				<td class="text-center"><?php echo $iPayment;?></td>
+				<td class="text-center"><?php echo $iSource;?></td>
+				<td class="text-center"><?php echo $v['sRealName']?></td>
+				<td class="text-center"><?php echo $iPayType;?></td>
+				<td class="text-center"><?php echo $v['iPayMoney']?></td>
+				<td class="text-center"><?php echo $v['iUserMoney']?></td>
+				<td class="text-center"><?php echo ((isset($v['iUpdateTime']) && $v['iUpdateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iUpdateTime'])) : '');?></td>
+				<td class="text-center"><?php echo ((isset($v['iCreateTime']) && $v['iCreateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iCreateTime'])) : '');?></td>
+				<td class="text-center">
+					<a href="/admin/finance/edit?id=<?php echo $v['iAutoID']?>"
+						title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+					<!-- <a class="finance_delete" href="/admin/finance/del?id=<?php echo $v['iAutoID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a> -->
+				</td>
+			</tr>
+        <?php }?>
+    	</tbody>
+	</table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$("#formquerybtn").bind("click", function() {  
+    var url = "/admin/finance/list.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$("#formquerybtn1").bind("click", function() {
+	var url = "/admin/finance/list.html";
+	//更改form的action
+	$("#myform1").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform1").submit();
+});
+
+$("#formquerybtn2").bind("click", function() {
+	var url = "/admin/finance/list.html";
+	//更改form的action
+	$("#myform2").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform2").submit();
+});
+
+$("#formexplodebtn").bind("click", function() {  
+    var url = "/admin/finance/explode.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$('.finance_delete').click(function() {
+	if (confirm("您确认要删除该财务吗？")) {
+		$.get(this.href, function(ret){
+			alert(ret.data);
+		    if (ret.status) {
+			    location.reload();
+		    }
+		}, 'json');
+	}
+	return false;
+});
+$('#finance_add').click(function(){
+	location.href = '/admin/finance/add';
+});
+</script>

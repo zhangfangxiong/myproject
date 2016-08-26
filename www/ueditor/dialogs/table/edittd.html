@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script type="text/javascript" src="../internal.js"></script>
+    <style type="text/css">
+        .section {
+            text-align: center;
+            margin-top: 10px;
+        }
+        .section input {
+            margin-left: 5px;
+            width: 70px;
+        }
+ 		.section select {
+            margin-left: 5px;
+            width: 75px;
+        }
+    </style>
+</head>
+<body>
+<div class="section">
+    <span><var id="lang_tdBkColor"></var></span>
+    <input type="text" id="J_tone"/><br>
+    <span><var id="lang_tdBkAlign"></var></span>
+    <select id="J_align">
+    	<option value="left">Left</option>
+    	<option value="center">Center</option>
+    	<option value="right">Right</option>
+    </select>
+</div>
+<script type="text/javascript">
+    var tone = $G("J_tone"),
+            colorPiker = new UE.ui.ColorPicker({
+                editor:editor
+            }),
+            colorPop = new UE.ui.Popup({
+                editor:editor,
+                content:colorPiker
+            });
+    var talign = $G("J_align");
+    domUtils.on(tone, "click", function () {
+        colorPop.showAnchor(tone);
+    });
+    domUtils.on(document, 'mousedown', function () {
+        colorPop.hide();
+    });
+    colorPiker.addListener("pickcolor", function () {
+        tone.value = arguments[1];
+        colorPop.hide();
+    });
+    colorPiker.addListener("picknocolor", function () {
+        tone.value="";
+        colorPop.hide();
+    });
+    dialog.onok=function(){
+        editor.execCommand("edittd",tone.value,talign.value);
+    };
+
+    var start = editor.selection.getStart(),
+        cell = start && domUtils.findParentByTagName(start, ["td", "th"], true);
+    if(cell){
+        var color = domUtils.getComputedStyle(cell,'background-color');
+        if(/^#/.test(color)){
+            tone.value = color
+        }
+        var align = domUtils.getComputedStyle(cell,'text-align');
+        for (var i = 0; i < talign.options.length; i++)
+        {
+        	if (talign.options[i].value == align) {
+        		talign.options[i].selected = true;
+        	} else {
+        		talign.options[i].selected = false;
+        	}
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,132 @@
+<div class="mb10 bs02">
+    <div class="pr pd02 bs03 pdr10">
+        <h3 class="tit_siller">
+            <strong>体检人员</strong></h3>
+    </div>
+    <div id="main_main_divProduct" class="timeline_noresult">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+            <colgroup>
+                <col style="width: 15%" />
+                <col style="width: 25%" />
+                <col style="width: 15%" />
+                <col style="width: 25%" />
+            </colgroup>
+            <?php if ($aEmployee) { ?>
+            <tr>
+                <th>姓名：</th>
+                <td>
+                    <span id="main_main_lblEmployeeName"><?php echo $aEmployee['sRealName'] ?></span>
+                </td>
+                <th>性别：</th>
+                <td>
+                    <span id="main_main_lblEmployeeSex"><?php echo ($aEmployee['iSex']==2) ? '女' : '男' ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>身份证：</th>
+                <td>
+                    <span id="main_main_lblEmployeeIdNum"><?php echo $aEmployee['sIdentityCard'] ?></span>
+                </td>
+                <th>手机号：</th>
+                <td>
+                    <span id="main_main_lblEmployeeEmail"><?php echo $aEmployee['sMobile'] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>体检卡号：</th>
+                <td>
+                    <span id=""><?php echo $aCard['sCardCode'] ?></span>
+                </td>
+                <th>状态：</th>
+                <td>
+                    <span id="main_main_lblStatus" style="color:Orange;font-weight:bold;"><?php echo $aStatus[$aCard['iBookStatus']] ?></span>
+                    <span id="main_main_lblIsCheck" style="color:Orange;font-weight:bold;"></span>
+                </td>
+            </tr>
+            <?php } ?>
+            
+        </table>
+    </div>
+</div>
+
+<div class="mb10 bs02">
+    <div class="pr pd02 bs03 pdr10">
+        <h3 class="tit_siller">
+            <strong>预约信息</strong></h3>
+    </div>
+    <div id="main_main_div1" class="timeline_noresult">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+            <colgroup>
+                <col style="width: 15%" />
+                <col style="width: 25%" />
+                <col style="width: 15%" />
+                <col style="width: 25%" />
+            </colgroup>
+            <?php if ($aStore) { ?>
+            <tr>
+                <th>体检项目：</th>
+                <td>
+                    <span id="main_main_lblProductName"><?php echo $aProduct['sProductName'] ?></span>
+                </td>
+                <th>预约日期：
+                </th>
+                <td>
+                    <span id="main_main_lblTiJianDate"><?php echo date('Y-m-d', $aCard['iOrderTime'])?></span>&nbsp;&nbsp;
+                    
+                </td>
+            </tr>
+            <tr>
+                <th>体检机构：
+                </th>
+                <td>
+                    <span id="main_main_lblCompanyName"><?php echo $aStore['sName']?></span>
+                </td>
+                <td style="text-align: left; padding-left: 40px;" colspan="2">
+                    <span style="cursor: pointer" onclick="ShowMap('<?php echo $aStore['sName']?>', <?php echo $aStore['iX']?>, <?php echo $aStore['iY']?>)">
+                        <img src="<?php echo $sStaticRoot?>/backend/img/dw.gif" alt="" />查看地图
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <th>具体地址：
+                </th>
+                <td colspan="3">
+                    <span id="main_main_lblAddress"><?php echo $aStore['sAddress']?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>联系电话：
+                </th>
+                <td colspan="3">
+                    <span id="main_main_lblPhone"><?php echo $aStore['sTel']?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>营业时间：
+                </th>
+                <td colspan="3">
+                    <span id="main_main_lblWorkDay"><?php echo $aStore['sWorktime']?></span>
+                </td>
+            </tr>
+            <tr>
+                <th style="vertical-align: top;">附近交通：
+                </th>
+                <td colspan="3">
+                    <span id="main_main_lblTrafficLine"><?php echo $aStore['sTraffic']?></span>
+                </td>
+            </tr>
+            <?php } ?>
+        </table>
+    </div>
+    <div class="base_pop" id="divMap" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3><span id="main_lblCompanyName2">Label</span></h3>
+            <div class="input-container" id="showmap" style="height:480px;">
+            </div>
+        </div>
+    </div>
+</div>
+<div style="text-align: center; margin-bottom: 40px; width: 650px;" class="tab_r_view div_1000px">
+    <a href="/index/record/list"><input type="button" name="" value="返回个人中心" class="btn_submit" /></a>
+</div>

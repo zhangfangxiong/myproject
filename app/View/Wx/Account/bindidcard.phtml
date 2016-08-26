@@ -1,0 +1,120 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert" style="display: none">
+        <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+        <span class="phone-warn-msg"></span>
+    </div>
+    <div class="reservestore-content">
+        <div class="bind-phone-title">绑定身份证后，为您提供更加专业的安心服务!</div>
+        <!--
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-2 control-label">昵称：</label>
+
+            <div class="col-xs-9 store-select-div">
+                <?php echo !empty($aUser['nickname']) ? $aUser['nickname'] : '' ?>
+            </div>
+        </div>
+        -->
+        <div class="clearfix">
+            <div class="form-group verify-input-width">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="text" placeholder="请输入您的身份证" class="form-control" id="sIdentityCard"
+                           aria-describedby="verifyStatus">
+                </div>
+                <div id="verify-msg3" class="verify-msg text-danger">请输入您的身份证</div>
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="form-group verify-input-width">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="text" placeholder="请输入您的真实姓名" class="form-control" id="sRealName"
+                           aria-describedby="verifyStatus">
+                </div>
+                <div id="verify-msg4" class="verify-msg text-danger">请输入您的真实姓名</div>
+            </div>
+        </div>
+        <div class="modal-footer clearfix">
+            <input type="hidden" id="sOpenID" value="<?php echo $sCurrOpenID ?>">
+            <button type="button" id="bind-query" class="btn btn-warning col-xs-4 col-xs-offset-1">提交</button>
+            <!--<button type="button" id="bind-skip" class="btn btn-default col-xs-4 col-xs-offset-1">跳过</button>-->
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $('#bind-query').click(function () {
+            if (idcardCheck() && realnameCheck()) {
+                var idcard = $('#sIdentityCard').val();
+                var realname = $('#sRealName').val()
+                var openid = $('#sOpenID').val();
+                $.ajax({
+                    url: '<?php echo $sBindIdCardUrl ?>',
+                    type: 'post',
+                    async: false,
+                    data: {openid:openid,idcard:idcard,realname:realname},
+                    dataType: 'json',
+                    success: function (ret) {
+                        if (ret.status) {
+                            alert(ret.data);
+                            window.location.href = '<?php echo $sIndexUrl ?>';
+                        } else {
+                            $('.alert').show();
+                            $('.phone-warn-msg').html(ret.data);
+                        }
+                    }
+                });
+            }
+        });
+
+        $('#bind-skip').click(function(){
+           window.history.back();
+        });
+        $('#sIdentityCard').blur(function () {
+            idcardCheck();
+        });
+        $('#sRealName').blur(function () {
+            realnameCheck();
+        });
+
+        //身份证规则验证
+        function isIdcard(s) {
+            var patrn = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
+            if (!patrn.test(s)) {
+                return false;
+            }
+            return true;
+        }
+
+        //身份证验证
+        function idcardCheck() {
+            if (isIdcard($('#sIdentityCard').val())) {
+                $('#sIdentityCard').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#verify-msg3').hide();
+                return true;
+            } else {
+                $('#sIdentityCard').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#verify-msg3').show();
+                return false;
+            }
+        }
+
+        //姓名验证
+        function realnameCheck() {
+            if ($('#sRealName').val().length != 0) {
+                $('#sRealName').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#verify-msg4').hide();
+                return true;
+            } else {
+                $('#sRealName').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#verify-msg4').show();
+                return false;
+            }
+        }
+
+        $('.close').click(function () {
+            $('.alert').hide();
+        });
+    })
+</script>

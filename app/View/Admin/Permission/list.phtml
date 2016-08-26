@@ -1,0 +1,71 @@
+<div class="pheader clearfix">权限点管理</div>
+<div class="pbody clearfix">
+    <div class="btn-toolbar list-toolbar">
+    	<button class="btn btn-primary" id="permission_add">
+    		<i class="fa fa-plus"></i> 增加权限点
+    	</button>
+    	<button class="btn btn-primary" id="permission_make">
+    		<i class="fa fa-cloud-download"></i> 生成权限点
+    	</button>
+    	<form class="form-inline" style="float: right" role="form" method="post" action="/admin/permission/list/">
+        	<input type="text" name="qkey" class="form-control input-sm" value="<?php echo $oRequest->getParam('qkey')?>">
+        	<input type="submit" class="btn btn-primary" value="搜索">
+    	</form>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th>功能模块</th>
+    			<th>权限名</th>
+    			<th>权限点</th>
+    			<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $aPermission) {?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $aPermission['iPermissionID']?></td>
+    			<td><?php echo $aMenuList[$aPermission['iMenuID']]['sMenuName']?></td>
+    			<td><?php echo $aPermission['sPermissionName']?></td>
+    			<td><?php echo $aPermission['sPath']?></td>
+    			<td class="text-center">
+    			    <a href="/admin/permission/edit?id=<?php echo $aPermission['iPermissionID']?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    			    <a class="permission_delete" href="/admin/permission/del?id=<?php echo $aPermission['iPermissionID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/xcConfirm.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/js/xcConfirm.css"/>
+<style type="text/css">
+.sgBtn{width: 135px; height: 35px; line-height: 35px; margin-left: 10px; margin-top: 10px; text-align: center; background-color: #0095D9; color: #FFFFFF; float: left; border-radius: 5px;}
+</style>
+<script>
+$('.permission_delete').click(function() {
+	var url = this.href;
+	if (confirm("您确认要删除该权限点吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+$('#permission_add').click(function(){
+	location.href = '/admin/permission/add';
+});
+$('#permission_make').click(function(){
+	$.get('/admin/permission/make', function(ret){
+		alert(ret.data);
+	    if (ret.status) {
+		    location.reload();
+	    }
+	}, 'json');
+});
+</script>

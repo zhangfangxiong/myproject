@@ -1,0 +1,31 @@
+		<?php if (!empty($aSetting['sForwardUrl'])) {?>
+		<tr>
+			<th>
+				投放链接：
+			</th>
+			<td colspan="3">
+				<div style="width: 700px; word-wrap: break-word; word-break: normal;">
+				<a target="_blank" href="<?php echo $aSetting['sForwardUrl']?>"><?php echo $aSetting['sForwardUrl']?></a>
+				</div>
+			</td>
+		</tr>
+		<?php }?>
+		<tr>
+			<th>
+				投放文字：
+			</th>
+			<td colspan="3">
+				<?php echo empty($aSetting)?'':$aSetting['sForwardText']?>
+				<label class="error sForwardText" style="display: none;"></label>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				投放配图：
+			</th>
+			<td colspan="3">
+			    <?php foreach ($aSetting['aForwardImg'] as $sForwardImg) {?>
+				<img class="imageplus plupload" style="margin-right:20px" src="<?php echo Util_Uri::getDFSViewURL($sForwardImg)?>">
+				<?php }?>
+			</td>
+		</tr>

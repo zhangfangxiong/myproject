@@ -1,0 +1,348 @@
+<style>
+    .sousuo_now {
+        margin: 10px 0px 10px 0px;
+    }
+
+    .list-caozuo {
+        margin-bottom: 10px;
+    }
+</style>
+<div class="pheader clearfix">资讯列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="<?php echo  $sListUrl ?>">
+        <div class="row sousuo_now">
+            <div class="form-group .col-xs-2">
+                &nbsp;&nbsp;&nbsp;&nbsp;ID：
+                <input type="text" value="<?php echo isset($aParam['iArticleID']) ? $aParam['iArticleID'] : '' ?>"
+                       class="form-control input-sm" style="width: 120px;" autocomplete="off" name="iArticleID" id="iArticleID">
+            </div>
+            <div class="form-group .col-xs-2">
+                                        发布开始时间：
+                <input name="iStartTime" autocomplete="off" class="laydatetime form-control" style="width: 140px;" validate="" type="text"
+                       value="<?php echo !empty($aParam['iStartTime']) ? $aParam['iStartTime'] : '' ?>" class="form-control">
+            </div>
+            <div class="form-group .col-xs-2">
+                                        发布结束时间：
+                <input name="iEndTime"  autocomplete="off" class="laydatetime form-control" style="width: 140px;" validate="" type="text"
+                       value="<?php echo !empty($aParam['iEndTime']) ? $aParam['iEndTime'] : '' ?>" class="form-control">
+            </div>
+        </div>
+        <div class="row sousuo_now">
+            <div class="form-group .col-xs-2">
+                <input type="hidden" id="iAuthorID" name="iAuthorID"
+                       value="<?php echo isset($aParam['iAuthorID']) ? $aParam['iAuthorID'] : '' ?>">
+                                        作者：
+                <input id="sAuthor" type="text" style="width: 120px;"
+                       value="<?php echo isset($aParam['sAuthor']) ? $aParam['sAuthor'] : '' ?>"
+                       class="form-control input-sm yyauto" autocomplete="off" name="sAuthor"
+                       source="/admin/type/auto/class/<?php echo $aClass['sAuthor']?>.html" ivalue="sTypeName" ishow="item.sTypeName" iresult="#iAuthorID=iTypeID"
+                       >
+            </div>
+            <?php if (! empty($aClass['sTag'])) {?>
+            <div class="form-group .col-xs-2">
+                <input type="hidden" id="iTagID" name="iTagID"
+                       value="<?php echo isset($aParam['iTagID']) ? $aParam['iTagID'] : '' ?>">
+                                        标签：
+                <input type="text" value="<?php echo isset($aParam['sTagName']) ? $aParam['sTagName'] : '' ?>"
+                       class="form-control input-sm yyauto" autocomplete="off" name="sTagName" id="sTagName"
+                       source="/admin/type/auto/class/<?php echo $aClass['sTag']?>.html" ivalue="sTypeName" ishow="item.sTypeName" iresult="#iTagID=iTypeID"
+                       >
+            </div>
+            <?php }?>
+            <?php if (! empty($aClass['sCategory'])) {?>
+            <div class="form-group .col-xs-2">
+                                        分类：
+                <select class="form-control input-sm" name="iCategoryID">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aCategory as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iCategoryID']) && $k == $aParam['iCategoryID'] ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <?php }?>
+            <div class="form-group .col-xs-2">
+                                        状态：
+                <select class="form-control input-sm" name="iPublishStatus">
+                    <option value="-1">请选择</option>
+                    <option value="1" <?php echo isset($aParam['iPublishStatus']) && 1 == $aParam['iPublishStatus'] ? 'selected' : '' ?>>已发布</option>
+                    <option value="0" <?php echo isset($aParam['iPublishStatus']) && 0 == $aParam['iPublishStatus'] ? 'selected' : '' ?>>未发布</option>
+                </select>
+            </div>
+            <div class="form-group .col-xs-2">
+                <input type="hidden" id="fOrder" name="sOrder"
+                       value="<?php echo isset($aParam['sOrder']) ? $aParam['sOrder'] : '' ?>">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar list-caozuo">
+        <button class="btn btn-primary" id="art_add">
+            <i class="fa fa-plus"></i> 增加资讯
+        </button>
+        <button class="btn btn-primary" id="art_batch_publish">
+            <i class="fa fa-play"></i> 批量发布
+        </button>
+        <button class="btn btn-primary" id="art_batch_off">
+            <i class="fa fa-stop"></i> 批量下架
+        </button>
+        <button class="btn btn-primary" id="art_batch_delete">
+            <i class="fa fa-remove"></i> 批量删除
+        </button>
+        <div style="float:right">
+            <label> 排序方式：</label>
+            <select class="input-sm" id="sOrder">
+                <option value="iPublishTime DESC">按发布时间倒序</option>
+                <option value="iPublishTime ASC" <?php echo isset($aParam['sOrder']) && 'iPublishTime ASC' == $aParam['sOrder'] ? 'selected' : '' ?>>按发布时间正序</option>
+                <option value="iUpdateTime ASC" <?php echo isset($aParam['sOrder']) && 'iUpdateTime ASC' == $aParam['sOrder'] ? 'selected' : '' ?>>按编辑时间正序</option>
+                <option value="iUpdateTime DESC" <?php echo isset($aParam['sOrder']) && 'iUpdateTime DESC' == $aParam['sOrder'] ? 'selected' : '' ?>>按编辑时间倒序</option>
+            </select>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">
+                <input type="checkbox" id="art_all_check" name="art_all_check" value="">
+            </th>
+            <th class="col-sm-1 text-center">ID</th>
+            <th>标题</th>
+            <?php if (! empty($aClass['sCategory'])) {?><th class="text-center">分类</th><?php }?>
+            <th class="text-center">作者</th>
+            <th class="text-center">发布状态</th>
+            <th class="text-center">发布时间</th>
+            <th class="text-center">最后编辑时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($aList['aList'] as $v) { ?>
+            <tr id="tr_<?php echo $v['iArticleID'] ?>">
+                <td class="text-center">
+                    <input type="checkbox" name="art_check_id" id="art_check_id_<?php echo $v['iArticleID'] ?>"
+                           value="<?php echo $v['iArticleID'] ?>">
+                </td>
+                <td class="col-sm-1 text-center"><?php echo $v['iArticleID'] ?></td>
+                <?php
+                if (isset($aCityCode[$v['iCityID']])) {
+                    $sNewCityCode = $aCityCode[$v['iCityID']];
+                } else {
+                    $sNewCityCode = $aCurrCity['sFullPinyin'];
+                }
+                ?>
+                <td><?php if ($v['iPublishStatus']) {?><a target="_blank" href="<?php echo 'http://'.Yaf_G::getConf('art', 'domain').'/'.$sNewCityCode.'/art/detail/'.$v['iArticleID']; ?>"><?php echo $v['sTitle'] ?></a><?php } else { echo $v['sTitle'] ; }?>
+                </td>
+                <?php if (! empty($aClass['sCategory'])) {?><td class="text-center"><?php echo @$aCategory[$v['iCategoryID']] ?></td><?php }?>
+                <td class="text-center"><?php echo $v['sAuthorName'] ?></td>
+                <td class="text-center"
+                    id="status_<?php echo $v['iArticleID'] ?>"><?php echo $v['iPublishStatus'] ? '已发布' : '未发布' ?></td>
+                <td class="text-center"><?php echo date('Y-m-d H:i', $v['iPublishTime']) ?></td>
+                <td class="text-center"><?php echo date('Y-m-d H:i', $v['iUpdateTime']) ?></td>
+                <td class="text-center">
+                    <a class="art_publish art_check_id_<?php echo $v['iArticleID'] ?>"
+                       href="<?php echo $v['iPublishStatus'] ? $sOffUrl : $sPublishUrl ?>?id=<?php echo $v['iArticleID'] ?>"
+                       data-type="<?php echo $v['iPublishStatus'] ?>"
+                       title="<?php echo $v['iPublishStatus'] ? '下架' : '上架' ?>">
+                       <?php if ($v['iPublishStatus']){?>
+                           <i class="fa fa-toggle-off"></i>
+                       <?php } else {?>
+                           <i class="fa fa-toggle-on"></i>
+                       <?php }?>
+                    </a>
+                    <a href="<?php echo  $sEditUrl ?>?id=<?php echo $v['iArticleID'] ?>" title="编辑"><i
+                            class="fa fa-pencil fa-large"></i></a>
+                    <a class="art_delete" href="<?php echo  $sDelUrl ?>?id=<?php echo $v['iArticleID'] ?>" role="button"
+                       data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+                       <?php if(!empty($v['iPublishStatus'])) { ?>
+                    <a class="cp-btn" id="s_<?php echo $v['iArticleID'] ?>" data-id="s_<?php echo $v['iArticleID'] ?>" data-url="<?php echo $v['iPublishStatus'] ? 'http://'.Yaf_G::getConf('art', 'domain').Util_Page::getUrl('/{city}/art/detail/{iArticleID}', ['city' => $aCurrentCity['sFullPinyin'], 'iArticleID' => $v['iArticleID']]) : '';?>" href="javascript:void(0)"
+                       title="复制地址"><i
+                            class="fa fa-copy fa fa-large"></i></a>
+                       <?php } ?>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+    <?php echo $aList['aPager'] ?>
+</div>
+<script>
+        alldomail="<?php echo $sStaticRoot ?>/js/";
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/ZeroClipboard.js"></script>
+<script>
+    var sCityCode = "";
+    $('#formbtn').click(function () {
+        $('#fOrder').val($('#sOrder').val());
+    });
+    $('#sOrder').change(function () {
+        $('#fOrder').val($('#sOrder').val());
+        $('#myform').submit();
+    });
+
+    $('.art_delete').click(function () {
+        if (confirm("您确认要删除该资讯吗？")) {
+            $.get(this.href, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+        return false;
+    });
+
+    $('.art_publish').click(function () {
+        var type = $(this).data('type') == 1 ? '下架' : '上架';
+        var end_type_status = $(this).data('type') == 1 ? 0 : 1;
+        var end_publish_status = $(this).data('type') == 1 ? '未发布' : '已发布';
+        var end_title_status = $(this).data('type') == 1 ? '上架' : '下架';
+        var sOffUrl = "<?php echo $sOffUrl ?>";
+        var sPublishUrl = "<?php echo $sPublishUrl ?>";
+        var end_url = $(this).data('type') == 1 ? sPublishUrl : sOffUrl;
+        var tSrc = "<?php echo $sStaticRoot . '/img/icon/'  ?>";
+        var imgSrc = $(this).data('type') == 1 ? tSrc + "iconfont-tuiguangzhong.png" : tSrc + "iconfont-zanting.png";
+        if (confirm("您确认要" + type + "该资讯吗？")) {
+            $.get(this.href, function (ret) {
+                if (ret.data.fail.length > 0) {
+                    for (var i = 0; i < ret.data.fail.length; i++) {
+                        $("#tr_" + ret.data.fail[i]).addClass('danger');
+                    }
+                }
+                if (ret.data.secc.length > 0) {
+                    for (var i = 0; i < ret.data.secc.length; i++) {
+                        $("#tr_" + ret.data.secc[i]).addClass('success');
+                        $(".art_check_id_" + ret.data.secc[i]).data("type", end_type_status);
+                        $(".art_check_id_" + ret.data.secc[i]).attr({
+                            title: end_title_status,
+                            href: end_url + "?id=" + ret.data.secc[i]
+                        });
+                        $("#status_" + ret.data.secc[i]).html(end_publish_status);
+                        $(".art_check_id_" + ret.data.secc[i]).find("img").attr("src", imgSrc);
+                    }
+                }
+                if (ret.data.fail.length == 0) {
+                    alert(type + "成功");
+                    return true;
+                } else {
+                    alert(type + "失败");
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    });
+
+    $('#art_batch_publish').bind('click', {condition: 0, msg: "没有选中已下架的资讯", url: "<?php echo $sPublishUrl?>"}, piliang);
+    $('#art_batch_off').bind('click', {condition: 1, msg: "没有选中已发布的资讯", url: "<?php echo $sOffUrl?>"}, piliang);
+    $('#art_batch_delete').bind('click', {condition: 2, msg: "没有选中的资讯", url: "<?php echo $sDelUrl?>"}, piliang);
+    function piliang(event) {
+        var condition = event.data.condition;
+        var msg = event.data.msg;
+        var url = event.data.url;
+        var type;
+        if (condition == 0)
+            type = "上架";
+        else if (condition == 1)
+            type = "下架";
+        else
+            type = "删除";
+        if (confirm("您确认要" + type + "该资讯吗？")) {
+            var ids = '';
+            $("input[name='art_check_id']").each(function () {
+                //condition:0:发布,1:下架,2:删除
+                if (condition == 0 || condition == 1) {
+                    if ($(this).prop("checked") && $("." + this.id).data('type') == condition) {
+                        ids += $(this).val() + ",";
+                    }
+                }
+                else {
+                    if ($(this).prop("checked")) {
+                        ids += $(this).val() + ",";
+                    }
+                }
+            })
+            if (ids == '') {
+                alert(msg);
+                return false;
+            }
+            ids = ids.substring(0, ids.length - 1);
+            $.get(url + "?id=" + ids, function (ret) {
+                if (condition == 2)//删除
+                {
+                    alert(ret.data);
+                    if (ret.status) {
+                        location.reload();
+                    }
+                    return false;
+                }
+                var end_type_status = condition == 1 ? 0 : 1;
+                var end_publish_status = condition == 1 ? '未发布' : '已发布';
+                var end_title_status = condition == 1 ? '上架' : '下架';
+                var sOffUrl = "<?php echo $sOffUrl ?>";
+                var sPublishUrl = "<?php echo $sPublishUrl ?>";
+                var end_url = condition == 1 ? sPublishUrl : sOffUrl;
+                var tSrc = "<?php echo $sStaticRoot . '/img/icon/'  ?>";
+                var imgSrc = condition == 1 ? tSrc + "iconfont-tuiguangzhong.png" : tSrc + "iconfont-zanting.png";
+                if (ret.data.fail.length > 0) {
+                    for (var i = 0; i < ret.data.fail.length; i++) {
+                        $("#tr_" + ret.data.fail[i]).addClass('danger');
+                    }
+                }
+                if (ret.data.secc.length > 0) {
+                    for (var i = 0; i < ret.data.secc.length; i++) {
+                        $("#tr_" + ret.data.secc[i]).addClass('success');
+                        $(".art_check_id_" + ret.data.secc[i]).data("type", end_type_status);
+                        $(".art_check_id_" + ret.data.secc[i]).attr({
+                            title: end_title_status,
+                            href: end_url + "?id=" + ret.data.secc[i]
+                        });
+                        $("#status_" + ret.data.secc[i]).html(end_publish_status);
+                        $(".art_check_id_" + ret.data.secc[i]).find("img").attr("src", imgSrc);
+                    }
+                }
+                if (ret.data.fail.length == 0) {
+                    alert(type + "成功");
+                    return true;
+                } else {
+                    alert(type + "失败");
+                    return false;
+                }
+            }, 'json');
+        }
+    }
+
+    $('#art_add').click(function () {
+        location.href = '<?php echo $sAddUrl?>';
+    });
+
+
+    $("#art_all_check").click(function () {
+        var is_checked = $(this).prop("checked");
+        $("input[name='art_check_id']").each(function () {
+            $(this).prop("checked", is_checked);
+        });
+    })
+function initCopy(text,object) {
+	var clip = new ZeroClipboard.Client();
+	clip.setHandCursor( true );
+	clip.setText(text); 
+	clip.addEventListener( "mouseUp", function(client) {
+		alert("复制成功！");
+	});
+	clip.glue(object); 
+}
+    var sClassID = '<?php echo $sClass ?>';
+    var iCityID = '<?php echo $iCurrCityID ?>';
+    //复制到地址到剪切板
+        $(".cp-btn").each(function(){
+            var text=$(this).data("url");
+            var object=$(this).data("id");
+            initCopy(text,object);
+        })
+
+</script>
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.css" type="text/css"/>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/autocomplete.js"></script>

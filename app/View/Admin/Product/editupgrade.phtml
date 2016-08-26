@@ -1,0 +1,270 @@
+<?php if (!empty($iHeaderType)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix">第四步：增加升级产品</div>
+<?php
+} ?>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已添加的产品(共<span class="red"><?php echo count($aHasUpgrade); ?></span>个)
+        <?php if (!empty($aHasUpgrade) && (empty($iHeaderType) || $iHeaderType == 2)) {?>
+            <input type="button" value="删除选中产品" class="btn btn-primary input-margin-left" id="upgrade-delete-select">
+        <?php }?>
+    </div>
+    <?php if (!empty($aHasUpgrade)) {
+        ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="hasupgradeall"></th>
+                <?php
+                } ?>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">门店数量</th>
+                <th class="text-center">状态</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasUpgrade as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="hasupgradelist" type="checkbox" name="hasupgradelist[]" value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iStoreNum']) ? $value['iStoreNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="hasupgrade_del" href="javascript:;" data-url="<?php echo !empty($sDeleteUpgradeUrl) ? $sDeleteUpgradeUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>" title="删除"><i
+                                        class="fa fa-trash fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } else {
+        ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加体检产品，请从下面的表格中选择需要添加的项目，添加之后产品信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php
+    } ?>
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的产品</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo $iHeaderType == 1 ? $sViewUpgradeUrl : $sEditUpgradeUrl ?>?id=<?php echo !empty($iProductID) ? $iProductID : ''?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">关键字</div>
+                <div>
+                    <input placeholder="支持搜索产品名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <input type="button" value="添加选中产品" class="btn btn-primary" id="upgrade-add-select">
+                    <?php
+                    } ?>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="upgradeall"></th>
+                <?php
+                } ?>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">门店数量</th>
+                <th class="text-center">状态</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aUpgrade['aList'])) {
+                foreach ($aUpgrade['aList'] as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="upgradelist" type="checkbox" name="upgradelist[]" value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iStoreNum']) ? $value['iStoreNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="upgrade_add" href="javascript:;" data-url="<?php echo !empty($sInsertUpgradeUrl) ? $sInsertUpgradeUrl : '' ?>?pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=<?php echo $value['iProductID'] ?>" title="添加"><i
+                                        class="fa fa-plus fa-large"></i></a>
+                            </td>                        <?php
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aUpgrade['aPager']) ? $aUpgrade['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">
+            <?php if (!empty($iHeaderType) && $iHeaderType == 1) {
+                ?>
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($aEditHeaderInfo[4]['editurl']) ? $aEditHeaderInfo[4]['editurl'] : '' ?>?id=<?php echo $aProduct['iProductID'] ?>">
+            <?php
+            } else {
+                ?>
+                <input type="button" data-url="<?php echo !empty($sNextUrl) ? $sNextUrl : 'javascript:;' ?>" id="next" class="btn btn-primary"
+                       value="<?php echo !empty($iHeaderType) ? '保存' : '下一步' ?>">
+            <?php
+            } ?>
+            <input type="button" value="返回列表" id="cancel" class="btn" onclick="location.href='<?php echo !empty($sListUrl) ? $sListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+<!--
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+-->
+<script type="text/javascript">
+    //全选效果
+    $('#upgradeall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.upgradelist').prop("checked", false);
+        } else {
+            $('.upgradelist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasupgradeall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasupgradelist').prop("checked", false);
+        } else {
+            $('.hasupgradelist').prop("checked", true);
+        }
+    });
+    //产品选择效果
+    $('.upgradelist').click(function(){
+        $('#upgradeall').prop("checked", false);
+    });
+    //产品选择效果
+    $('.hasupgradelist').click(function(){
+        $('#hasupgradeall').prop("checked", false);
+    });
+    //产品单个添加
+    $('.upgrade_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该产品吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //产品批量添加
+    $('#upgrade-add-select').click(function(){
+        var select_upgrade = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertUpgradeUrl) ? $sInsertUpgradeUrl : '' ?>?type=1&pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=';
+        $('.upgradelist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_upgrade +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的产品');
+            return false;
+        }
+        select_upgrade=select_upgrade.substring(0,select_upgrade.length-1);
+        url += select_upgrade;
+        if (confirm("您确认要添加选中的"+count_num+"个产品吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //产品单个删除
+    $('.hasupgrade_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该产品吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //产品批量删除
+    $('#upgrade-delete-select').click(function(){
+        var select_upgrade = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteUpgradeUrl) ? $sDeleteUpgradeUrl : '' ?>?type=1&pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=';
+        $('.hasupgradelist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_upgrade +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的产品');
+            return false;
+        }
+        select_upgrade=select_upgrade.substring(0,select_upgrade.length-1);
+        url += select_upgrade;
+        if (confirm("您确认要删除选中的"+count_num+"个产品吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#next').click(function(){
+        var ifLocation = <?php echo !empty($iHeaderType) ? 0 : 1 ?>;
+        var operationType = '<?php echo !empty($iHeaderType) ? '保存' : '添加' ?>';
+        if (ifLocation) {
+            location.href = $(this).data('url');
+        } else {
+            alert(operationType+'成功!');
+        }
+    });
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+</script>

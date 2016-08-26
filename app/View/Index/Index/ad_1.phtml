@@ -1,0 +1,110 @@
+
+			<?php if (!empty($aSetting['sImportUrl'])) {?>
+		<tr>
+			<th>
+				导入链接：
+			</th>
+			<td colspan="3">
+				<div style="width: 700px; word-wrap: break-word; word-break: normal;">
+			    <a target="_blank" href="<?php echo $aSetting['sImportUrl']?>"><?php echo $aSetting['sImportUrl']?></a>
+				</div>
+			</td>
+		</tr>
+		<?php }?>
+		<!--
+		<tr>
+			<th>
+				内容上传：
+			</th>
+			<td>
+				<div class="file-box file-box_s">
+					<input type='text' readonly name='sWordFile' id='sWordFile' class='fill_text hover_input' style="width: 400px;" value="<?php echo empty($aSetting)?'':$aSetting['sWordFile']?>" />
+					<input type='button' class='btn gray_btn plupload' value='上传' data-target="#sWordFile" data-ext="docx,doc"/>
+					<label>限Word格式5M以内</label>
+					<label class="error sWordFile" style="display: none;"></label>
+				</div>
+			</td>
+		</tr>
+		-->
+		<tr>
+			<th>
+				标题：
+			</th>
+			<td>
+				<span style="color:crimson;"><?php echo empty($aSetting)?'':$aSetting['sTitle']?> </span>
+			</td>
+			<th rowspan="2">
+				封面图片：
+			</th>
+			<td rowspan="2">
+				<img class="imageplus plupload" src="<?php echo empty($aSetting)?'/front/images/tool/imageplus.png':Util_Uri::getDFSViewURL($aSetting['sCoverImg'])?>" data-target="#sCoverImg" data-img="#sCoverImgShow">
+			</td>
+		</tr>
+		<tr>
+			<th>
+				插入封面：
+			</th>
+			<td colspan="3">
+				<ul class="input_list">
+				<?php if ($aSetting['iIsCover']==1) {?>
+					<li>
+						<label for="b_1">
+							<div class="sel_box sel_box_r">
+								<input type="radio" id="b_1" name="iIsCover" checked />
+								<label for="b_1"></label>
+							</div>
+							是
+						</label>
+					</li>
+				<?php } else {?>
+					<li>
+						<label for="b_2">
+							<div class="sel_box sel_box_r">
+								<input type="radio" id="b_2" name="iIsCover" checked />
+								<label for="b_2"></label>
+							</div>
+							否
+						</label>
+					</li>
+				<?php }?>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				正文摘要：
+			</th>
+			<td colspan="3">
+				<?php echo empty($aSetting)?'无内容':$aSetting['sAbstract']?>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				正文内容：
+			</th>
+			<td colspan="3">
+				<div style="width: 1020px;">
+				<?php echo empty($aSetting)?'':$aSetting['sContent']?>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<th>
+				投放备注：
+			</th>
+			<td colspan="3">
+				<?php echo empty($aAd)?'':$aAd['iBeizhu']?>
+			</td>
+		</tr>
+		<?php if (!empty($aSetting['sOriginalUrl'])) {?>
+		<tr>
+			<th>
+				原文链接：
+			</th>
+			<td colspan="3">
+				<div style="width: 700px; word-wrap: break-word; word-break: normal;">
+				<a target="_blank" style="width: 400px;" href="<?php echo $aSetting['sOriginalUrl']?>"><?php echo $aSetting['sOriginalUrl']?></a>
+				</div>
+			</td>
+		</tr>
+		<?php }?>

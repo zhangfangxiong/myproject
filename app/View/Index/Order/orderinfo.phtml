@@ -1,0 +1,694 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><title>
+	安心服务 www.51joying.com
+</title><meta name="viewport" content="width=device-width, initial-scale=1" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+        <link rel="stylesheet" type="text/css" href="/Skins/HrShop/Window.HrShop.css" />
+        <link rel="stylesheet" type="text/css" href="/Skins/HrShopAlert/Window.HrShopAlert.css" />
+        <link rel="stylesheet" href="/Web/css/HrShop.css" type="text/css" />
+        <link rel="stylesheet" href="/Web/css/panel.css" type="text/css" />
+        <script src="/Content/Script/jquery-1.7.1.min.js" type="text/javascript"></script>
+        <script src="/Content/Script/Common.js" type="text/javascript"></script>
+        <script src="/Web/Script/panel.js" type="text/javascript"></script>
+        <script type="text/javascript" src="../script/public.js"></script>
+        <script type="text/javascript" src="../script/product-tab.js"></script>
+        
+
+    
+    <script type="text/javascript">
+        var timeout = 500;
+        var closetimer = 0;
+        var ddmenuitem = 0;
+
+
+        function jsddm_timer() {
+            closetimer = window.setTimeout(jsddm_close, timeout);
+        }
+
+        function jsddm_canceltimer() {
+            if (closetimer) {
+                window.clearTimeout(closetimer);
+                closetimer = null;
+            }
+        }
+
+
+        function jsddm_open() {
+            $("#divusercenter").addClass("hd_login_hover");
+            $("#usercenter").css("display", "block");
+        }
+
+        function jsddm_close() {
+            $("#divusercenter").removeClass("hd_login_hover");
+            $("#usercenter").css("display", "none");
+        }
+
+        function producttype_open() {
+            $("#allCategoryHeader").css("display", "block");
+        }
+
+        function producttype_close() {
+            $("#allCategoryHeader").css("display", "none");
+        }
+
+        function ul_addborder(obj) {
+            obj.css.addClass("bd_ccc");
+        }
+
+        $(document).ready(function () {
+            $('#jsddm').bind('mouseover', jsddm_open);
+            $('#jsddm').bind('mouseout', jsddm_close);
+            $("#divusercenter").bind('mouseover', jsddm_open);
+            $('#divusercenter ').bind('mouseout', jsddm_close);
+
+            $("#allSortOuterbox").bind('mouseover', producttype_open);
+            $('#allSortOuterbox ').bind('mouseout', producttype_close);
+
+        });
+
+        function addFav() {
+            var url = window.location;
+            var title = document.title + "-" + $("span[id*='lblProductName']").text();
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.indexOf("360se") > -1) {
+                alert("由于360浏览器功能限制，请按 Ctrl+D 手动收藏！");
+            }
+            else if (ua.indexOf("msie 8") > -1) {
+                window.external.AddToFavoritesBar(url, title); //IE8
+            }
+            else if (document.all) {
+                try {
+                    window.external.addFavorite(url, title);
+                } catch (e) {
+                    alert('您的浏览器不支持,请按 Ctrl+D 手动收藏!');
+                }
+            }
+            else if (window.sidebar) {
+                window.sidebar.addPanel(title, url, "");
+            }
+            else {
+                alert('您的浏览器不支持,请按 Ctrl+D 手动收藏!');
+            }
+        }
+
+        function ShowMessage(str)
+        {
+            alert(str);
+        }
+
+    </script>
+    <style type="text/css">
+        .rsf-items {
+            display: block;
+            width: 45px;
+            height: 45px;
+            background: #45CF4D;
+            margin-bottom: 1px;
+            cursor: pointer;
+        }
+        .right-side-flyelem {
+            position: fixed;
+            bottom: 30%;
+            right: 0;
+            z-index: 90;
+            -webkit-transform: translateX(45px);
+            -ms-transform: translateX(45px);
+            transform: translateX(45px);
+            -webkit-transition: -webkit-transform 1s linear;
+            transition: transform 1s linear;
+            -webkit-transition-timing-function: cubic-bezier(0, 0.93, 0.06, 1);
+            transition-timing-function: cubic-bezier(0, 0.93, 0.06, 1);
+        }
+        .right-side-flyelem a{
+            text-decoration:none;
+        }
+        .right-side-flyelem.show {
+            -webkit-transform: translateX(0px);
+            -moz-transform: translateX(0px);
+            -ms-transform: translateX(0px);
+            transform: translateX(0xpx);
+            opacity: 1;
+        }
+        .rsf-items {
+            display: block;
+            width: 45px;
+            height: 45px;
+            background: #45CF4D;
+            margin-bottom: 1px;
+            cursor: pointer;
+        }
+        .side-icon {
+            text-align: center;
+            line-height: 45px;
+            font-size: 24px;
+            color: #ffffff;
+            position: relative;
+        }
+        .side-icon:before {
+            position: relative;
+            z-index: 1;
+        }
+        .side-icon:after {
+            position: absolute;
+            display: block;
+            content: " ";
+            height: 45px;
+            width: 160px;
+            background: #3399FF;
+            top: 0;
+            right: 0;
+            -webkit-transform: translateX(160px);
+            -ms-transform: translateX(160px);
+            transform: translateX(160px);
+            -webkit-transform-origin: right center;
+            -ms-transform-origin: right center;
+            transform-origin: right center;
+            -webkit-transition-property: -webkit-transform, color, text-indent;
+            transition-property: transform, color, text-indent;
+            -webkit-transition-duration: 0.6s, 0.6s, 1s;
+            transition-duration: 0.6s, 0.6s, 1s;
+            -webkit-transition-delay: 0s, 0.2s, 0.2s;
+            transition-delay: 0s, 0.2s, 0.2s;
+            -webkit-transition-timing-function: cubic-bezier(0, 1, 0.09, 1);
+            transition-timing-function: cubic-bezier(0, 1, 0.09, 1);
+        }
+        .side-icon:hover:after {
+            -webkit-transform: translateX(0);
+            -ms-transform: translateX(0);
+            transform: translateX(0);
+            color: #ffffff;
+            text-indent: 10px;
+        }
+        .side-icon:after {
+            line-height: 45px;
+            font-size: 14px;
+            color: #ffffff;
+            text-align: left;
+            text-indent: 30px;
+            font-family: microsoft yahei;
+        }
+        .fa-arrow-circle-up:after {
+            content: "返回顶部";
+        }
+        .fa-qq2:after {
+            content: "QQ客服";
+        }
+        .fa-qq3:after {
+            content: "关注安心服务号微信";
+        }
+        .fa-message:after {
+            content: "线上咨询单";
+        }
+        .fa-question-circle:after {
+            content: "常见问题";
+        }
+        .fa-phone:after {
+            content: "400 816 6768";
+        }
+
+    </style>
+<link href="/WebResource.axd?d=157LcuOuEwzOBeF2scTDzhimXIWheJiJqFG6sTaECkvgVePdXXp0lk9jI8Mh1ZdY1pQWUPQVXwh6HbgT7Y6Qa_oPHF1EYgO7KmLVpKqgX5hN0DPc889ZkW3Nh9PB-0eIokN9s8jYp_c12QmyLOJ3Fg2&amp;t=635900901603582144" type="text/css" rel="stylesheet" class="Telerik_stylesheet" /></head>
+<body>
+    <form method="post" action="TiJianBuyCard.aspx?XNsAE5BuKNMF5cRtqT55QIQw4HIXii72" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKLTQ3OTM4MzIyOA8WAh4RdHRpamlhbmNhcmRFbnRpdHkysAsAAQAAAP////8BAAAAAAAAAAwCAAAAREhyU2hvcC5FbnRpdHksIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBQEAAAAfSHJTaG9wLkVudGl0eS50dGlqaWFuY2FyZEVudGl0eRkAAAADX0lEBV9OYW1lB19Nb2JpbGUGX0VtYWlsCF9BZGRyZXNzCV9Qb3N0Q29kZQZfQ291bnQJX1BheVZhbHVlCV9DYXJkVHlwZQZfSXNQYXkJX0lzQ3JlYXRlB19Jc1NlbmQLX0VtcGxveWVlSUQEX0NJRBNfUHJvZHVjdENvdW50U3RyaW5nC19DcmVhdGVEYXRlDV9Jc05lZWRGYVBpYW8IX09yZGVySUQHX1BheVdheQZfSXNEZWwHX1NvdXJjZRBfT3RoZXJQcm9kdWN0SURzEF9Jc1F1ZXJ5VGVtcGxhdGUOUXVlcnlDb25kaXRpb24bRW50aXR5QmFzZStfSXNRdWVyeVRlbXBsYXRlAAEBAQEBAwMDAwMDAwMBAwMDAwMDAQADAAgMU3lzdGVtLkludDMyDlN5c3RlbS5EZWNpbWFsDFN5c3RlbS5JbnQzMgxTeXN0ZW0uSW50MzIMU3lzdGVtLkludDMyDFN5c3RlbS5JbnQzMgxTeXN0ZW0uSW50MzJuU3lzdGVtLk51bGxhYmxlYDFbW1N5c3RlbS5JbnQzMiwgbXNjb3JsaWIsIFZlcnNpb249NC4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1iNzdhNWM1NjE5MzRlMDg5XV0PU3lzdGVtLkRhdGVUaW1lDFN5c3RlbS5JbnQzMgxTeXN0ZW0uSW50MzIMU3lzdGVtLkludDMyDFN5c3RlbS5JbnQzMm5TeXN0ZW0uTnVsbGFibGVgMVtbU3lzdGVtLkludDMyLCBtc2NvcmxpYiwgVmVyc2lvbj00LjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODldXQGHAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbSHJTaG9wLkNvbW1vbi5TcWxEYlBhcmFtZXRlciwgSHJTaG9wLkNvbW1vbiwgVmVyc2lvbj0xLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGxdXQECAAAAtAAAAAYDAAAABuWNq+iWhwYEAAAACzEzNjYxNjE4OTg4BgUAAAAJY0AxMjMuY29tBgYAAAAACQYAAAAICAEAAAAIBQYwLjAxMDAICAEAAAAICAAAAAAICAAAAAAICAAAAAAICF8PAAAKBgcAAAAGMjEzNHwxCA2ADKcHApvTCAgIAAAAAAgIWgkAAAgIAQAAAAgIAAAAAAoKAAkIAAAAAAwJAAAAREhyU2hvcC5Db21tb24sIFZlcnNpb249MS4wLjAuMCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj1udWxsBAgAAACHAVN5c3RlbS5Db2xsZWN0aW9ucy5HZW5lcmljLkxpc3RgMVtbSHJTaG9wLkNvbW1vbi5TcWxEYlBhcmFtZXRlciwgSHJTaG9wLkNvbW1vbiwgVmVyc2lvbj0xLjAuMC4wLCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPW51bGxdXQMAAAAGX2l0ZW1zBV9zaXplCF92ZXJzaW9uBAAAHkhyU2hvcC5Db21tb24uU3FsRGJQYXJhbWV0ZXJbXQkAAAAICAkKAAAAAAAAAAAAAAAHCgAAAAABAAAAAAAAAAQcSHJTaG9wLkNvbW1vbi5TcWxEYlBhcmFtZXRlcgkAAAALFgJmD2QWAgIDD2QWDAIDDw8WAh4EVGV4dAUZPGI+5Y2r6JaHPC9iPu+8jOaCqOWlve+8gWRkAgcPDxYCHgtOYXZpZ2F0ZVVybAUrLi4vQWNjb3VudC9UaUppYW5fWmhpWWluZ19DYXJkLmFzcHg/b3V0PW91dGRkAgkPFgIeB1Zpc2libGVoZAIRDw8WAh8BBQExZGQCEw9kFhgCAQ8WAh4LXyFJdGVtQ291bnQCARYCAgEPZBYKAgEPDxYCHwEFBDIxMzRkZAIDDw8WAh8BBRTlronlv4Pln7rnoYDlpZfppJBQQ2RkAgUPDxYCHwEFBDAuMDFkZAIHDw8WAh8BBQExZGQCCQ8PFgIfAQUEMC4wMWRkAgMPDxYCHwEFBDAuMDFkZAIHDw8WAh8BBQnnlLXlrZDljaFkZAIJDw8WAh8BBQbljavolodkZAILDw8WAh8BBQsxMzY2MTYxODk4OGRkAg0PDxYCHwEFCWNAMTIzLmNvbWRkAg8PDxYCHwEFDOWcqOe6v+aUr+S7mGRkAhEPFgIfA2gWAgIBD2QWAgIBDw8WAh8BBQnkuI3pnIDopoFkZAITDxYCHwNoZAIVDxYCHwNoZAIXDxYCHwNoZAIZDw8WAh8BBQzliY3lvoDmlK/ku5hkZAIVDxQrAAIUKwADDxYCHhdFbmFibGVBamF4U2tpblJlbmRlcmluZ2hkZGQQFgJmAgEWAhQrAAMPFgIfBWhkZGQUKwADDxYCHwVoZGRkDxYCZmYWAQVyVGVsZXJpay5XZWIuVUkuUmFkV2luZG93LCBUZWxlcmlrLldlYi5VSSwgVmVyc2lvbj0yMDEyLjMuMTAxNi40MCwgQ3VsdHVyZT1uZXV0cmFsLCBQdWJsaWNLZXlUb2tlbj0xMjFmYWU3ODE2NWJhM2Q0FgRmDxQrAAMPFgIfBWhkZGRkAgEPFCsAAw8WAh8FaGRkZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgMFGWN0bDAwJEhyU2hvcFdpbmRvd01hbmFnZXIFDmN0bDAwJFdpblNtYWxsBQ5jdGwwMCRXaW5MYXJnZTWb77UkQkKwi5Li/r97F0Fnnuy3CdL/Vtl+gb1xOceb" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+
+<script src="/WebResource.axd?d=607svojJYpVe9hrgaNbgCEzN41imWeMKgQH4gVAnpXknpbRCFn4G7Qz8MkAIbsKWDiyLGdAeThv32lMTfmwoqkS_Dw-7Lwfd-HFglH5bHBU1&amp;t=635145356180000000" type="text/javascript"></script>
+
+
+<script src="/ScriptResource.axd?d=olsQUPqf4bXR9L0_C0z-qUnTdmlEMgh4DWKCBmst0Rm02VVwzlLeuLy0kAs965tYrsmywn7EHB4-uHkqnU8iRFeYUfw8zZQbLhvSRt4aPDTUZuIXSFMdLr1WJd0N4acqoqmuyh_w7awgxJJhf63qdO49KbY-CZefnpVWkaAGxgaavn_mfVDvZPOa94C0dq_70&amp;t=ca758f3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=rYN47NK42RToqoPNGW8oKCZKmP1JkHtnjSma_XHxau3UPW9cUKlla9Ew3VAfC1868-LnbQQJYTV0cC2kL5f1fvW7mMDIEP7H2cSH-wT_f-pedcnoshCG2JQk-HAqmF8RrLUW3-2tia5FbCUCuJNlkZnQ14TvHJW9L9GXG9eppfDNrOS14q7p21J8iNNWpdZL0&amp;t=ca758f3" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=4ab4PLiMK9Ui6uK2yTTeFtfKNZG0TIfOJDPnDzPYVTOiNxz0DbMPt_zqGbzDLb-_p7BiPTaE47Jp-LAdB0Mzjrq1Pim0v41kaFbo88jWq4oMwobSc0lHlXWDDyZHcL7RGneQcZI16IIb1fMghI2dmw2&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=qeQVu5Il2AucQrNBQc3JT4kfft-ORucwJECN0cV-v_GRI7DGl1-LFOLSuTlDsuGwi8K8vO3V1uEfSW8PezO6XV7dYmaKhG9AoeIPtJByzwPaaJBH8bpLWP8eXbceFKvCL93-MKH4DPw7jZw2roW-Aw2&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=yMCukXcf3jy6J1h7x9l-ZlEKhRprMFPjsUOGBrgRpM7JFi9uhD0RqiKtu9_dAd8-2fZMfFowy9Y2UXJC3AYX75Fpjj3rzRe11_QHd_9hzmjA2VGzafGZzV5JanENOEoCGfHEBJVawuoSShQ3sn0PIQ2&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=Iuw5vtCJ3GsDXi3_kHV1_N4WQY8kZWtHsfrJ9DixE4O9LfZ9Os6GJrU-OApca3XuSGSkkdxTYPYL6rB6tOKG2n9Z8qQbWiALk1eaefaa5a7a4_zb3f5lBdgfdOTirIu4nGfB6zgvAq5T546q9bTyqV35Zr0usgzlU54pqWHHdb41&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=lfaDrssViWVEys5yYzscwAl5Gd9Cpichbn5fWgf0lrxaz63GAL0Lhrbm-xmMUz0q9DNsLqXSFuwu7lsWmuNfBuyL9JtHsw1OmaSEC60oLreVoVaOgLiuEApPqEvoaDj4ffUFNG9exPUzX6oyJtaJPApg0X-SkQPB4aw04AMrm4s1&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=YYgAsnxbiV3Fj_8deogppufnLu8tu07cOOb00_Kg4Wgk3Q8VfAYrNTaOvcRiZj9lci3pS2-je8u5TOmNahRvKLj_coTHdfDPLKGF0SBJjFCJFWTm19tdybxypEshiQZ0tzsOdhZcCiXG8C0c53VdyJVC8FDtIn58nw9IiKjYkj01&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=r8yHZQ8VllVZ2hFnk5Ig_Q-oXovRShuAvPAtqawta37Yd3v59V1jHgtgIrR4Njg-JP9T6Q_U9SK_65fJxj0eJIuZFNYjgStzUVjMf924PqLdHMdKfzwTFB1dslnYZxmbzq_a_QrCRsq6ByTD8A0geQ-LF2rzJmb-Ef0pde3s7WA1&amp;t=1f1fff7f" type="text/javascript"></script>
+<script src="/ScriptResource.axd?d=JsUKH_WkW7HHjCIVcYO9CeFGWUIdEhlBf10we3ivjXItXAaIv1SFFEFeTFxUwzMCJUO-csB1lmb7P2wJcwXtiA2X1EiuVLKKxAFPWtkWtO5Ads9ECMPHMlDHZs1Aj4Dyl-v5SZZPYZm6qGXV0Xc305CWHBgTS43RCb6T-74O2n81&amp;t=1f1fff7f" type="text/javascript"></script>
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAA1Fo1nuJUxVTUs5lcyNNRqqG3ae9jOAUJTEnHKo6EIr65HzwdQ+HhzTLU8eF2GpVvMvhCMUJuOPOmrdwR03m0SNJxpOVKHJ24p8AojszwPVoKLlAfWHBlbuEuokJhwya0Iu3VIB08zQrI7bKxGPjrxWAT84FDUqYTqA2Lnl5xpR13m3jleipw3HQySFGCXTBP4vz0gL8cmyBu9Bou5TEqNhjtR+9Gh3dk+RsbCDYwhAlkkWVVLTtWhMf1FTZvy9og0LiT7bZpapj6aFwZgnetlRlotcMoVqX8cAt4eY5CEdlfN//vmmQN73UfH3wOOOOp4=" />
+</div>
+    <script type="text/javascript">
+//<![CDATA[
+Sys.WebForms.PageRequestManager._initialize('ctl00$ScriptManager1', 'form1', [], [], [], 90, 'ctl00');
+//]]>
+</script>
+
+    <div id="homePage_head">
+        <div class="hd_global_top_bar"  id="global_top_bar">
+            <div class="wrap clearfix">
+                <div class="hd_topbar_left clearfix" style="padding-left:110px">
+                    <span style="float: left;">
+                        <span id="lblUserName"><b>卫薇</b>，您好！</span></span>
+                    <div id="global_unlogin" class="hd_unlogin_wrap">
+                        
+                            
+                        <div class="hd_login_wrap" id="divusercenter">
+                            <a id="jsddm" href="../Account/EmpIndex.aspx" class="hd_user_center fl" >
+                                个人中心</a>
+                            <ul id="usercenter" style="width: 100%;">
+                                <li><a href="../OrderList/MyOrderListNot.aspx" target="_self">我的订单</a></li>
+                                <li><a href="../OrderList/MyOrderList.aspx" target="_self">我的保单</a></li>
+                                <li><a href="../Account/MyPointList.aspx" target="_self">我的积分</a></li>
+                                
+                                <li><a href="../Account/EmpInfo.aspx" target="_self">个人信息</a></li>
+                                <li><a href="../Account/EmpSecurity.aspx" target="_self">账户安全</a></li>
+                                <li><a href="../OrderList/MyScoreList.aspx" target="_self">评价管理</a></li>
+                                <li><a href="../Transfer/TransferPage.aspx" target="_self">用户体系</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <a id="linkOut" class="logout blue_link none" href="TiJian_ZhiYing_Card.aspx?out=out">退出</a>
+                </div>
+                <div class="hd_top_manu clearfix" >
+                    
+                    <ul class="clearfix">
+                        <li class="hd_menu_tit hd_my_favorite" id="glShouCang"><a target="_blank" href="#"
+                            onclick="addFav();" rel="sidebar"><i></i>加入收藏夹</a> </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div id="topbanner" class="wrap">
+            <div class="banner_img">
+            </div>
+        </div>
+        <div class="wrap clearfix" id="site_header">
+            <div id="logo_areaID" class="hd_logo_area fl clearfix" style="padding-left: 110px;">
+                <a href="../Account/PageIndex.aspx" class="fl">
+                    <img id="imgLogo" src="../images/homepage_logo_ciic.png" /></a>
+            </div>
+            <div style="float:right; padding-right:130px; color:orangered; font-size:18px; font-weight:bold; padding-top:20px ">
+                咨询电话：400-816-6768 &nbsp;&nbsp;&nbsp;&nbsp
+                
+            </div>
+            <div class="hd_head_search" >
+            </div>
+        </div>
+        <div id="headerNav" class="hd_header_nav headerNav_channel ">
+            <div class="hd_fixed_bg">
+            </div>
+            <div class="wrap2" style="z-index: 1000;">
+                <div id="allSortOuterbox">
+                    <h2 class="hd_all_sort_link fl">
+                        <a href="#" class="fl" style="background-image: none; width: 90px;"></a>
+                    </h2>
+                    
+                </div>
+                <div class="headerNavWrap" id="global_menu" style="width: 800px;">
+                    <ul id="wideScreenTabShowID" class="headerNavMain clearfix">
+                        <li><a href="../Account/PageIndex.aspx">首页</a></li>
+                        <li><a href="../Account/TiJianCard_Product.aspx">安心体检</a></li>
+                        
+                        <li><a href="../Account/ShangLvXianIndex.aspx">安心保障</a></li>
+                        
+                        <li><a href="../Product/ZaiXianShouLiInfo.aspx">安心理赔</a></li>
+                        
+                        <li><a href="../Account/HeZuoHuoBan.aspx">合作伙伴</a></li>
+                        <li><a href="../Account/AboutUs.aspx">关于我们</a></li>
+                        
+                        
+                        
+                        
+                    </ul>
+                </div>
+                <div id="divShop" style="padding-top: 10px; padding-left: 30px; float: left; "><img src="../images/shop.png" alt="" width="20px" height="20px;" />&nbsp;
+                    <a onclick="return ShowLogin();" id="lnkCarShop" href="javascript:__doPostBack(&#39;ctl00$lnkCarShop&#39;,&#39;&#39;)" style="font-size: 15px; font-weight: bold; color: #FFFFFF;">购物车</a>
+                    <span style="font-size: 15px; font-weight: bold; color: #FFFFFF;">(<span id="lblShopNum">1</span>)</span>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wrap">
+        
+    <div class="row c mb25 bs02 mt10">
+        <div class="pr pd02 bs03 pdr10 pb10">
+            <table width="100%">
+                <tr>
+                    <td style="font-size: 15px; font-weight: bold;">体检卡采购</td>
+                    <td style="font-size: 15px; text-align: right;"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="timeline_noresult">
+            <ol class="progress_bar">
+                <li class="complete" style="width:33%"><i></i>1.信息核对</li>
+                <li style="width:33%"><i></i>2.支付费用</li>
+                <li style="width:33%"><i></i>3.发送体检卡</li>
+            </ol>
+            <div style="padding-top:50px;">
+                
+                        <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                            <th style="width: 40%">体检产品
+                            </th>
+                            <th style="width: 20%">单价
+                            </th>
+                            <th style="width: 20%">购买数量
+                            </th>
+                            <th style="width: 20%">小计
+                            </th>
+                    
+                        <tr>
+                            <td>
+                                <span id="main_RepList_lblProductID_0" style="display: none;">2134</span>
+                                <span id="main_RepList_lblProductName_0">安心基础套餐PC</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span id="main_RepList_lblSaleValue_0">0.01</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <span id="main_RepList_lblCount_0">1</span>
+                            </td>
+                            <td style="text-align: right;">
+                                <span id="main_RepList_lblAllSaleValue_0">0.01</span>
+                            </td>
+                        </tr>
+                    
+                        </table>
+                    
+                <table cellspacing="0" cellpadding="0" border="0" width="100%" class="bx_item_table" style="border-top: 0px">
+                    <tr>
+                        <td style="width: 40%"></td>
+                        <td style="width: 20%"></td>
+                        <td colspan="2" style="width: 40%; text-align: right;">合计：<span id="main_lblPayValue">0.01</span>
+                            <span id="main_lblPoint"></span>
+                        </td>
+                    </tr>
+                </table>
+                <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                    <tr>
+                        <th style="width: 40%">体检卡类型：
+                        </th>
+                        <td style="width: 60%">
+                            <span id="main_lblCardType">电子卡</span>
+                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的姓名：
+                        </th>
+                        <td>
+                            <span id="main_lblName">卫薇</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的手机：
+                        </th>
+                        <td>
+                            <span id="main_lblMobile">13661618988</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>您的邮箱：
+                        </th>
+                        <td>
+                            <span id="main_lblEmail">c@123.com</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>支付方式：
+                        </th>
+                        <td>
+                            <span id="main_lblPayWay">在线支付</span>
+                        </td>
+                    </tr>
+                    
+                    
+                    
+                    
+                </table>
+                
+            <div style="text-align: center; font-weight:bold; font-size:14px; color:orangered; padding: 20px;">
+                请注意，本网站所列体检产品，仅提供“上海中盈保险经纪有限公司”开具的“服务费”发票，恕不提供各体检中心发票，请知晓。
+            </div>
+                <div style="text-align: center; padding: 15px;">
+                    <input type="submit" name="ctl00$main$btnOrder" value="前往支付" id="main_btnOrder" class="reg_btn" style="background-color:Orange;width:140px;" />
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="ctl00$main$hidTotalValue" id="main_hidTotalValue" />
+    <input type="hidden" name="ctl00$main$hidCount" id="main_hidCount" />
+    <input type="hidden" name="ctl00$main$hidProductCount" id="main_hidProductCount" />
+    <input type="hidden" name="ctl00$main$hidPayWay" id="main_hidPayWay" value="1" />
+    <input type="hidden" name="ctl00$main$hidOrderID" id="main_hidOrderID" value="2394" />
+
+
+        <div class="clear">
+        </div>
+        <!--footer-->
+        <div class="hz-footer bt-e2 bgf9">
+            <div class="hz-wrapper">
+                <div class="fl pt15 pb15 wid-01 bt-ef tc lh26 fc8">
+                    
+                    <div style="margin:0px auto; width:600px;">
+                    <div style="float:left; padding: 20px 0px 20px 0px;">
+                        上海中盈保险经纪有限公司&nbsp;&nbsp;<a class="pr5 lk-f8"
+                            href="http://www.miitbeian.gov.cn/" rel="nofollow" target="_blank">沪ICP备11037892号</a>Copyright<em
+                                class="pl5 pr5">©</em>2012-
+                    <script language="JavaScript" type="text/javascript">
+                        Btoday = new Date(); document.write(Btoday.getFullYear());</script><br />
+                    <a class="pr5 pl5 lk-f8" href="#" target="_blank">中盈保险网</a>版权所有</div>
+                    <div style="float:left; margin-left:30px;"><img src="../../Web/images/qr_code.jpg" width="80" height="80" alt="" /></div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ctl00_HrShopWindowManager" style="z-index:7002;display:none;">
+	<!-- 2012.3.1016.40 --><div id="ctl00_WinSmall" style="display:none;">
+		<div id="ctl00_WinSmall_C">
+
+		</div><input id="ctl00_WinSmall_ClientState" name="ctl00_WinSmall_ClientState" type="hidden" />
+	</div><div id="ctl00_WinLarge" style="display:none;">
+		<div id="ctl00_WinLarge_C">
+
+		</div><input id="ctl00_WinLarge_ClientState" name="ctl00_WinLarge_ClientState" type="hidden" />
+	</div><div id="ctl00_HrShopWindowManager_alerttemplate" style="display:none;">
+            <div class="DialogStyle" style="display: block; width: 100%; height: 240px;">
+                <div class="mainArea">
+                    <h3 class="NoB">
+                        信息提示</h3>
+                    <div class="topToolbar">
+                        <a onclick="$find('{0}').close();" href="javascript:void(0);">
+                            <img src="/Content/images/icon_r_b_close.png" /></a>
+                    </div>
+                    <div class="content" style="height: 120px; overflow-y: auto;">
+                        {1}
+                    </div>
+                    <div class="ButtonArea">
+                        <a onclick="$find('{0}').close();" class="Bu1" href="javascript:void(0);">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div><div id="ctl00_HrShopWindowManager_prompttemplate" style="display:none;">
+		 <div class="rwDialogPopup radprompt">			
+			    <div class="rwDialogText">
+			    {1}				
+			    </div>		
+			    <div>
+				    <script type="text/javascript">
+				    function RadWindowprompt_detectenter(id, ev, input)
+				    {							
+					    if (!ev) ev = window.event;                
+					    if (ev.keyCode == 13)
+					    {															        
+					        var but = input.parentNode.parentNode.getElementsByTagName("A")[0];					        
+					        if (but)
+						    {							
+							    if (but.click) but.click();
+							    else if (but.onclick)
+							    {
+							        but.focus(); var click = but.onclick; but.onclick = null; if (click) click.call(but);							 
+							    }
+						    }
+					       return false;
+					    } 
+					    else return true;
+				    }	 
+				    </script>
+				    <input title="Enter Value" onkeydown="return RadWindowprompt_detectenter('{0}', event, this);" type="text"  class="rwDialogInput" value="{2}" />
+			    </div>
+			    <div>
+				    <a onclick="$find('{0}').close(this.parentNode.parentNode.getElementsByTagName('input')[0].value);"				
+					    class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+				    <a onclick="$find('{0}').close(null);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+			    </div>
+		    </div>				       
+		</div><div id="ctl00_HrShopWindowManager_confirmtemplate" style="display:none;">
+		<div class="rwDialogPopup radconfirm">			
+			<div class="rwDialogText">
+			{1}				
+			</div>						
+			<div>
+				<a onclick="$find('{0}').close(true);"  class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+				<a onclick="$find('{0}').close(false);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+			</div>
+		</div>		
+		</div><input id="ctl00_HrShopWindowManager_ClientState" name="ctl00_HrShopWindowManager_ClientState" type="hidden" />
+</div>
+    
+    <!--message bar-->
+    <ul class="right-side-flyelem show">
+        <a href="#">
+            <li class="rsf-items fa fa-arrow-circle-up side-icon" style="background:url(../Images/Top.png) no-repeat right center;"></li>
+        </a>
+        <a hre="javascript:void(0);">
+        <li class="rsf-items  fa fa-qq fa-qq3 side-icon" style="background:url(../Images/Wx.png) no-repeat right center;" onmousemove="showqrcode(this);" onmouseout="hideqrcode();"></li>
+        
+        </a>
+        <a href="../Account/ActivityApp.aspx" class='jb_btn on confirm'>
+            <li class="rsf-items fa-message glyphicon glyphicon-edit side-icon" style="background:url(../Images/List.png) no-repeat right center;"></li>
+        </a>
+        <a hre="javascript:void(0);">
+            <li class="rsf-items  fa fa-phone side-icon" style="background:url(../Images/Tel.png) no-repeat right center;"></li>
+        </a>
+        <a target="_blank" href="../Account/PageIndex.aspx">
+            <li class="rsf-items  fa fa-question-circle side-icon" style="background:url(../Images/Question.png) no-repeat right center;"></li>
+        </a>
+    </ul>
+    <div id="divQr_Code" style="position: absolute; display:none;"><img src="../images/qr_code.jpg" width="110px" height="110px" /></div>
+
+    
+    <div class="base_pop" id="tos" style="width: 580px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                用户登录</h3>
+        </div>
+        <!-- normal start -->
+        <div class="input-container">
+            <div style="float: left;">
+                <div id="msg_login" class="login-message">
+                </div>
+                <p class="p-input clearfix">
+                    <span class="l input-label">账&nbsp;&nbsp;号：</span>
+                    <input name="ctl00$txtAccount" type="text" maxlength="30" id="txtAccount" tabindex="1" class="l input-common" />
+                    <i id="empty-username" class="btn-clear" style="display: none;"></i>
+                </p>
+                <p id="p-psw" class="p-input clearfix">
+                    <span class="l input-label">密&nbsp;&nbsp;码：</span>
+                    <input name="ctl00$txtPassword" type="password" maxlength="30" id="txtPassword" tabindex="2" class="l input-common" />
+                </p>
+                <div id="login_passcode" class="p-input clearfix" style="">
+                    <span class="l input-label">验证码：</span><span class="wrap-verify">
+                        <input name="ctl00$txtValidateCode" type="text" maxlength="6" id="txtValidateCode" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;" />
+                        <img width="70" height="30" class="l" id="getcode" alt="看不清楚.点击更换" src="#"
+                            onclick="fGetCode();" style="cursor: pointer;" />
+                    </span>
+                </div>
+                <p class="p-btn p-submit">
+                    <input type="submit" name="ctl00$btnLogin" value="登录" id="btnLogin" class="btn-common btn-shadow yahei" />
+
+                    <a href="../Account/ForgetPassword.aspx" class="btn-forgot green" target="_blank">忘记密码？</a>
+                    <a href="../Account/EmpRegister.aspx" class="btn-forgot green" target="_blank">马上注册</a>
+
+                    <p class="p-btn">
+                        <span id="tips-login" class="tips-common"></span>
+                    </p>
+            </div>
+            <div style="float: left;">
+                <img src="../images/register_pic.jpg" style="width: 210px; height: 210px;" alt="" />
+            </div>
+            <div style="clear: both;">
+            </div>
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
+
+    <input type="hidden" name="ctl00$client" id="client" value="1" />
+    <div id="backgroundPopup" style="height: 924px; width: 100%; display: none; opacity: 0.5;">
+    </div>
+
+
+    <script type="text/javascript">
+        function showqrcode(obj) {
+            $("#divQr_Code").show();
+            var offsettop = $(obj).offset().top;
+            var offsetleft = $(obj).offset().left;
+            $("#divQr_Code").css({ 'top': offsettop + 45 + 'px', 'left': offsetleft - 115 + 'px' });
+        }
+        function hideqrcode() {
+            $("#divQr_Code").hide();
+        }
+
+        function fGetCode() {
+            if (document.getElementById("getcode")) {
+                document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+            }
+        }
+        fGetCode();
+
+        function ShowLogin() {
+            if ($("input[id$='client']").val() == "0") {
+                popUp("tos");
+                return false;
+            }
+            else {
+                return true;
+            }
+
+        }
+
+
+
+        $("document").ready(function () {
+
+            if ($("#main_lblProductCount").text() != '') {
+
+                $("#lblShopNum").text($("#main_lblProductCount").text());
+            }
+            else {
+
+                $("#divShop").hide();
+            }
+        });
+
+        
+
+    </script>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadWindow, {"_dockMode":false,"behaviors":36,"clientStateFieldID":"ctl00_WinSmall_ClientState","formID":"form1","height":"500px","iconUrl":"","minimizeIconUrl":"","modal":true,"name":"WinSmall","reloadOnShow":true,"showContentDuringLoad":false,"skin":"HrShop","visibleStatusbar":false,"width":"700px"}, null, null, $get("ctl00_WinSmall"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadWindow, {"_dockMode":false,"behaviors":36,"clientStateFieldID":"ctl00_WinLarge_ClientState","formID":"form1","height":"600px","iconUrl":"","minimizeIconUrl":"","modal":true,"name":"WinLarge","reloadOnShow":true,"showContentDuringLoad":false,"skin":"HrShop","visibleStatusbar":false,"width":"990px"}, null, null, $get("ctl00_WinLarge"));
+});
+Sys.Application.add_init(function() {
+    $create(Telerik.Web.UI.RadWindowManager, {"clientStateFieldID":"ctl00_HrShopWindowManager_ClientState","formID":"form1","iconUrl":"","minimizeIconUrl":"","modal":true,"name":"HrShopWindowManager","reloadOnShow":true,"showContentDuringLoad":false,"skin":"HrShopAlert","visibleStatusbar":false,"visibleTitlebar":false,"windowControls":"['ctl00_WinSmall','ctl00_WinLarge']"}, null, {"child":"ctl00_WinSmall"}, $get("ctl00_HrShopWindowManager"));
+});
+//]]>
+</script>
+</form>
+
+</body>
+</html>

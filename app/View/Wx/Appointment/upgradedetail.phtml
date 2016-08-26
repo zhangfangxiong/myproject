@@ -1,0 +1,158 @@
+<div class="row row-main-margin">
+    <div class="p-detail-main">
+        <input type="hidden" name="iProductID" id="iProductID"
+               value="<?php echo !empty($aUpgrade['iProductID']) ? $aUpgrade['iProductID'] : 0 ?>">
+        <h4 class="p-detail-title"><?php echo !empty($aUpgrade['sProductName']) ? !empty($aUpgrade['sAlias']) ? $aUpgrade['sAlias'] : $aUpgrade['sProductName'] : '' ?></h4>
+
+        <div class="p-detail-store">可在全国<span
+                class="red"><?php echo !empty($aUpgrade['iStoreNum']) ? $aUpgrade['iStoreNum'] : '' ?></span>家门店使用<!--（<a
+                href="<?php echo $sStoreUrl . 'id/' . $aUpgrade['sProductCode'] ?>">查看门店列表<i
+                    class="fa fa-arrow-circle-right green"></i></a>）-->
+        </div>
+        <div class="p-detail-supplier">
+            合作机构：<?php echo !empty($aUpgrade['sSupplierName']) ? $aUpgrade['sSupplierName'] : '' ?></div>
+        <div class="p-detail-price">套餐升级个人支付：<span
+                class="red">+<?php echo !empty($aUpgrade['iNeedPrice']) ? $aUpgrade['iNeedPrice'] : '' ?></span>元
+        </div>
+        <div>
+            <div class="p-detail-special-title">产品特色：</div>
+            <div class="p-detail-special-content">
+                <?php echo !empty($aUpgrade['sRemark']) ? $aUpgrade['sRemark'] : '' ?>
+            </div>
+        </div>
+        <div class="p-detail-nav">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab"
+                                                          data-toggle="tab"><?php echo !empty($aCommonLang[29]) ? $aCommonLang[29] : '' ?></a>
+                </li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[30]) ? $aCommonLang[30] : '' ?></a>
+                </li>
+                <li role="presentation"><a href="#messages" aria-controls="messages" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[31]) ? $aCommonLang[31] : '' ?></a>
+                </li>
+                <!--
+                <li role="presentation"><a href="#settings" aria-controls="settings" role="tab"
+                                           data-toggle="tab"><?php echo !empty($aCommonLang[32]) ? $aCommonLang[32] : '' ?></a>
+                </li>
+                -->
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content product-detail">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div id="detail" style="background-color:#fff; padding:5px;">
+                        <div id="pnlDetail" style="padding-top:10px;" class="panel-group">
+                            <?php if (!empty($aItemCat)) {
+                                foreach ($aItemCat as $key => $value) {
+                                    ?>
+                                    <div class="panel panel-info">
+                                            <div class="panel-heading" role="tab" style="cursor:pointer;">
+                                                <?php echo $key; ?>
+                                            </div>
+                                            <div class="panel-body " role="tabpanel">
+                                            <?php if (!empty($value)) {
+                                                foreach ($value as $k => $v) {
+                                                    ?>
+                                                    <div style="padding:10px 0; border-bottom:1px dashed #808080">
+                                                        <div><b><?php echo $k ?>
+                                                                ：</b><?php echo implode(',', $v['aItemNames']) ?></div>
+                                                        <!--
+                                                        <div><b>适应人群：</b><span
+                                                                class="persontype label label-success">男性✔</span>&nbsp;<span
+                                                                class="persontype label label-success">女(未婚)✔</span>&nbsp;<span
+                                                                class="persontype label label-success">女(已婚)✔</span>
+                                                        </div>
+                                                        -->
+                                                        <div><b>检查意义：</b><span><?php echo $v['sRemark'] ?></span>
+                                                        </div>
+                                                        <div class="clearfix"></div>
+                                                    </div>
+                                                <?php
+                                                }
+                                            } ?>
+                                        </div>
+                                    </div>
+                                <?php
+                                }
+                            } ?>
+                        </div>
+                        <div><b>温馨提示：此体检套餐所含检查单项内容因各家体检机构门店设备差异会有相应替换及调整。</b></div>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <?php include('reserve.phtml') ?>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="messages">
+                    <?php include('attention.phtml') ?>
+                </div>
+                <div role="tabpanel" class="tab-pane detail-store-include" id="settings">
+                    <?php include('store.phtml') ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel">可选升级套餐</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert" style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tr>
+                        <th>项目</th>
+                        <th>原套餐</th>
+                        <th>升级套餐</th>
+                    </tr>
+                <?php if (!empty($aItems)) {
+                    foreach ($aItems as $key => $value) {
+                        ?>
+                        <tr>
+                            <td><?php echo $value['sName'] ?></td>
+                            <td><?php echo in_array($value['iItemID'],$aItem1) ? '<i class="fa fa-check-square green"></i>' : '<i class="fa fa-minus-square red"></i>' ?></td>
+                            <td><?php echo in_array($value['iItemID'],$aItem) ? '<i class="fa fa-check-square green"></i>' : '<i class="fa fa-minus-square red"></i>' ?></td>
+                        </tr>
+                <?php
+                    }
+                } ?>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-fixed-bottom reserve-nav">
+    <div class="container-fluid text-center clearfix navbar-white upgrade-detail-bur">
+        <a id="reservebtn" class="btn btn-warning navbar-btn active" href="<?php echo $sReserveStoreUrl.'id/' . $aParam['id'].'/pid/'.$aParam['pid'].'/upid/'.$aParam['upid']?>"
+           role="button">
+            <?php echo !empty($aCommonLang[39]) ? $aCommonLang[39] : '' ?></a>
+        <a id="upgradebtn" class="btn btn-default navbar-btn active" href="javascript:;" role="button">
+            <?php echo !empty($aCommonLang[41]) ? $aCommonLang[41] : '' ?>
+        </a>
+        <a id="reback" class="btn btn-default navbar-btn active" href="javascript:;" role="button">
+            <?php echo !empty($aCommonLang[42]) ? $aCommonLang[42] : '' ?>
+        </a>
+    </div>
+</nav>
+<script>
+    $(function () {
+        //$('[data-toggle="popover"]').popover();
+
+        $('#upgradebtn').click(function () {
+            $('#selectModal').modal('show');
+        });
+        $('#reback').click(function(){
+            window.history.back();
+        })
+    })
+</script>

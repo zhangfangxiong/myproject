@@ -1,0 +1,159 @@
+<style>
+    .tubiao {
+        font-weight: bold;
+        color: red;
+        padding-right: 2px;
+    }
+    .publish-div {
+        margin-bottom: 20px;
+    }
+</style>
+<div class="pheader clearfix"><?php echo $aClass['sClassTitle']?>留言回复</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iReplyID" type="hidden" value="<?php echo isset($aMessage['iMessageID']) ? $aMessage['iMessageID'] : '' ?>">
+        <input name="iTargetID" type="hidden" value="<?php echo isset($aMessage['iTargetID']) ? $aMessage['iTargetID'] : '' ?>">
+        <input name="sClass" type="hidden" value="<?php echo isset($aMessage['sClass']) ? $aMessage['sClass'] : $sClass ?>">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">标题：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+                <?php echo isset($aMessage['sTargetTitle']) ? htmlentities($aMessage['sTargetTitle']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php if ($aClass['sImageName'] && !empty($aMessage['sImage'])) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label "><?php echo $aClass['sImageName']?>：</label>
+            <div class="col-sm-10">
+            	<img src="<?php echo (isset($aMessage['sImage']) && !empty($aMessage['sImage'])) ? Util_Uri::getDFSViewURL($aMessage['sImage']): '';?>">
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">作者：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+            	<?php echo isset($aMessage['sUserName']) ? htmlentities($aMessage['sUserName']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php if ($aClass['sDiy1Name'] && !empty($aMessage['sDiy1'])) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label "><?php echo $aClass['sDiy1Name']?>：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+            	<?php echo isset($aMessage['sDiy1']) ? htmlentities($aMessage['sDiy1']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sDiy2Name'] && !empty($aMessage['sDiy2'])) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label "><?php echo $aClass['sDiy2Name']?>：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+            	<?php echo isset($aMessage['sDiy2']) ? htmlentities($aMessage['sDiy2']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sDiy3Name'] && !empty($aMessage['sDiy3'])) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label "><?php echo $aClass['sDiy3Name']?>：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+            	<?php echo isset($aMessage['sDiy3']) ? htmlentities($aMessage['sDiy3']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label ">内容：</label>
+            <div class="col-sm-10">
+            	<p class="form-control-static">
+                <?php echo isset($aMessage['sContent']) ? htmlentities($aMessage['sContent']) : '' ?>
+                </p>
+            </div>
+        </div>
+        <?php if ($aClass['sImageName'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> <?php echo $aClass['sImageName']?>：</label>
+            <div class="col-sm-10">
+                <input type="hidden" validate="*required:请上传图片" id="sImage" name="sImage" value="">
+                <img id="sImageShow" style="width:160px;height:120px;" src="">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow" data-fsize="100kb">
+                <span class="text-muted">请上传大小≤100K，支持png、jpg图片</span>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 作者：</label>
+            <div class="col-sm-10">.
+            	<select name="iUserID" class="form-control input-validate">
+                    <?php foreach ($aAuthor as $k => $v) { ?>
+                        <option value="<?php echo $k ?>"><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <?php if ($aClass['sDiy1Name']) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> <?php echo $aClass['sDiy1Name']?>：</label>
+            <div class="col-sm-10">
+            	<input name="sDiy1" validate="<?php echo $aClass['sDiy1Format']?>" type="text" value="" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sDiy2Name']) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> <?php echo $aClass['sDiy2Name']?>：</label>
+            <div class="col-sm-10">
+            	<input name="sDiy2" validate="<?php echo $aClass['sDiy2Format']?>" type="text" value="" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sDiy3Name']) {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> <?php echo $aClass['sDiy3Name']?>：</label>
+            <div class="col-sm-10">
+            	<input name="sDiy3" validate="<?php echo $aClass['sDiy3Format']?>" type="text" value="" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 内容：</label>
+            <div class="col-sm-10">
+                <textarea name="sContent" rows="5" class="form-control input-validate" validate="<?php echo $aClass['sContentFormat']?>"></textarea>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center col-sm-9 publish-div">
+            <button id="publish" class="btn btn-danger">回复</button>
+            <button id="cancel" class="btn" onclick="location.href='<?php echo $sListUrl?>';return false;">取消</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+	$(function () {
+        //提交表单
+        $("#myform").validate({
+            submitHandler: function (form) {
+            	$.post(form.action, $(form).serialize(), function (ret) {
+                    alert(ret.data);
+                    if (ret.status) {
+                        location.href = '<?php echo $sListUrl?>';
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+	});
+</script>

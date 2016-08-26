@@ -1,0 +1,67 @@
+<div class="row row-main-margin">
+    <div class="order-list" style="margin-top: 20px;">
+        <div class="order-list-title">
+            商品明细
+        </div>
+        <?php
+        if (!empty($aOrderProduct)) {
+            ?>
+            <table class="table table-hover">
+                <?php
+                foreach ($aOrderProduct as $key => $value) {
+                    ?>
+                    <tr>
+                        <td>名称:</td>
+                        <td><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                    </tr>
+                    <tr>
+                        <td>价格:</td>
+                        <td><span
+                                class="order-price"><?php echo !empty($value['sProductPrice']) ? $value['sProductPrice'] : '' ?></span>元*<?php echo !empty($value['iProductNumber']) ? $value['iProductNumber'] : '' ?>
+                            =<?php echo !empty($value['sTotalPrice']) ? $value['sTotalPrice'] : number_format(0, 2); ?>
+                            元
+                        </td>
+                    </tr>
+                    <tr class="border-bottom1 order-item-padding">
+                        <td>体检卡号:</td>
+                        <td><?php if (!empty($value['aCardList'])) {
+                                foreach ($value['aCardList'] as $k => $v) {
+                                    ?>
+                                    <?php echo $v['sCardCode'] ?><span class="red">(<?php echo $v['iBindStatus']==0 ? '未绑定' : '已绑定' ?>)</span><br>
+                                    <?php if (!empty($v['aProductList'])) {
+                                        foreach ($v['aProductList'] as $a => $b) {
+                                            ?>
+                                            &nbsp;&nbsp;&nbsp;<?php echo $b['sProductName'] ?><span class="red">(<?php echo !empty($iNeedSex) ? $aSex[$v['iSex']] : '性别通用' ?>)</span><br>
+                                            <?php
+                                        }
+                                    } ?>
+                            <?php
+                                }
+                            } ?>
+                        </td>
+                    </tr>
+                <?php
+                }
+                ?>
+            </table>
+        <?php
+        }
+        ?>
+    </div>
+</div>
+<script>
+    $(function () {
+        var orderlist = '<?php echo $sOrderListUrl ?>';
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    alert(ret.data);
+                    if (ret.status) {
+                        location.href = orderlist;
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    })
+</script>

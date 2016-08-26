@@ -1,0 +1,223 @@
+<div class="pheader clearfix">人员基本信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aEmployee['iUserID'])?$aEmployee['iUserID']:''?>">        
+
+        <div class="form-group col-sm-6">
+            <label for="sUserName" class="col-sm-3 control-label"> <span class="tubiao">*</span>员工编号：</label>
+            <div class="col-sm-9">
+                <input name="sUserName" type="text" value="<?php echo isset($aEmployee['sUserName'])?$aEmployee['sUserName']:''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>员工姓名：</label>
+            <div class="col-sm-9">
+                <input name="sRealName"  type="text" value="<?php echo !empty($aEmployee['sRealName']) ? $aEmployee['sRealName'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>        
+
+        <div class="form-group col-sm-6">
+            <label for="iSex" class="col-sm-3 control-label"> <span class="tubiao">*</span>性别：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iSex' value='1' 
+                <?php echo 1 == $aEmployee['iSex'] ? 'checked': '';?>>男</input>
+                <input type='radio' name='iSex' value='2'
+                <?php echo 2 == $aEmployee['iSex'] ? 'checked': '';?>>女</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iMarriage" class="col-sm-3 control-label"> <span class="tubiao">*</span>婚姻状况：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iMarriage' value='1'
+                <?php echo 1 == $aEmployee['iMarriage'] ? 'checked': '';?>>未婚</input>
+                <input type='radio' name='iMarriage' value='2' 
+                <?php echo 2 == $aEmployee['iMarriage'] ? 'checked': '';?>>已婚</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sIdentityCard" class="col-sm-3 control-label">身份证号码：</label>
+            <div class="col-sm-9">
+                <input name="sIdentityCard" type="text" value="<?php echo !empty($aEmployee['sIdentityCard']) ? $aEmployee['sIdentityCard'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sEmail" class="col-sm-3 control-label"> 公司邮箱：</label>
+            <div class="col-sm-9">
+                <input name="sEmail" type="text" value="<?php echo isset($aEmployee['sEmail'])?$aEmployee['sEmail']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sMobile" class="col-sm-3 control-label"> 手机号码：</label>
+            <div class="col-sm-9">
+                <input name="sMobile" type="text" value="<?php echo isset($aEmployee['sMobile'])?$aEmployee['sMobile']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="pheader col-sm-12">
+            体检安排信息
+        </div>
+        <input name="type" type="hidden" value="<?php echo isset($aProduct['iType'])?$aProduct['iType']:''?>">
+        <div class="form-group col-sm-6">
+            <label for="sPhysicalNumber" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检卡号：</label>
+            <div class="col-sm-9">
+                <?php echo $aProduct['sCardCode']; ?>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sNotice" class="col-sm-3 control-label"> <span class="tubiao">*</span>通知邮件：</label>
+            <div class="col-sm-9">
+                <?php echo $aProduct['sNotice']; ?>
+            </div>
+        </div>        
+
+        <div class="form-group col-sm-6">
+            <label for="iSex" class="col-sm-3 control-label">体检产品：</label>
+            <div class="col-sm-9">
+                <select name="iProductID" class="form-control input-validate">
+                    <option value="0" <?php echo $iProductID==0 ? 'selected' : ''?>>请选择</option>
+                    <?php foreach ($aHrItem as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo $iProductID==$k ? 'selected' : ''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+                <?php echo $aProduct['sPlanName'] == '--' ? '' : '
+                体检计划下该项不可编辑，请至员工计划'; ?>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sPlanName" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检计划：</label>
+            <div class="col-sm-9">
+                <?php echo $aProduct['sPlanName']; ?>
+            </div>
+        </div> 
+
+        <div class="form-group col-sm-6">
+            <label for="sDate" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检周期：</label>
+            <div class="col-sm-9">
+                <input onclick="laydate({format: 'YYYY-MM-DD'})" name="sStartDate" type="text" value="<?php echo (isset($aProduct['sStartDate']) && $aProduct['sStartDate']!='0000-00-00')?$aProduct['sStartDate']:''?>" class="">
+                至
+                <input onclick="laydate({format: 'YYYY-MM-DD'})" name="sEndDate" type="text" value="<?php echo (isset($aProduct['sEndDate']) && $aProduct['sEndDate']!='0000-00-00')?$aProduct['sEndDate']:''?>" class="">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iPhysicalType" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检类型：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iPhysicalType' value='1'
+                <?php echo 1 == $aProduct['iPhysicalType'] ? 'checked': '';?>>普通体检</input>
+                <input type='radio' name='iPhysicalType' value='2' 
+                <?php echo 2 == $aProduct['iPhysicalType'] ? 'checked': '';?>>入职体检</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iPaperReport" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检报告：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iPaperReport' value='1'
+                <?php echo 1 == $aProduct['iPaperReport'] ? 'checked': '';?>>提供</input>
+                <input type='radio' name='iPaperReport' value='0' 
+                <?php echo 0 == $aProduct['iPaperReport'] ? 'checked': '';?>>不提供</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iPayType" class="col-sm-3 control-label"> <span class="tubiao">*</span>付款方式：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iPayType' value='2'
+                <?php echo 2 == $aProduct['iPayType'] ? 'checked': '';?>>公司付款</input>
+                <input type='radio' name='iPayType' value='1' 
+                <?php echo 1 == $aProduct['iPayType'] ? 'checked': '';?>>个人付款</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sMobile" class="col-sm-3 control-label"> 特别说明：</label>
+            <div class="col-sm-9">
+                如果员工自行取走纸质体检报告，将不再提供企业纸质报告
+            </div>
+        </div>        
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">保存</button>            
+            <a class="text-right btn btn-default" href='<?php echo $sReturnUrl;?>'>取消</a>
+        </div>
+    </form>
+</div>
+
+<div class="pheader col-sm-12">
+    体检预约信息
+</div>
+<?php if ($aAppointment) { 
+    foreach ($aAppointment as $key => $value) { ?>
+<div class="form-group col-sm-6">
+    <label for="sStoreName" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检机构：</label>
+    <div class="col-sm-9">
+        <?php echo $value['sStoreName']; ?>
+    </div>
+</div>
+<div class="form-group col-sm-6">
+    <label for="sOrderDate" class="col-sm-3 control-label"> <span class="tubiao">*</span>预约状态：</label>
+    <div class="col-sm-9">
+        <?php echo $aStatus[$value['iBookStatus']] . '    ' . $value['iUseStatus']; ?>
+    </div>
+</div>
+<div class="form-group col-sm-6">
+    <label for="sOrderDate" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检日期：</label>
+    <div class="col-sm-9">
+        <?php echo $value['sOrderDate']; ?>
+    </div>
+</div>
+<div class="form-group col-sm-6">
+    <label for="sItemName" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检项目：</label>
+    <div class="col-sm-9">
+        <?php echo $value['sProductName']; ?>
+    </div>
+</div>
+<div class="form-group col-sm-6">
+    <label for="sCost" class="col-sm-3 control-label"> <span class="tubiao">*</span>体检费用：</label>
+    <div class="col-sm-9">
+        <?php echo $value['sCost']; ?>
+    </div>
+</div>
+<div class="form-group col-sm-6">
+    <label for="iCreateTime" class="col-sm-3 control-label"> <span class="tubiao">*</span>预订时间：</label>
+    <div class="col-sm-9">
+        <?php echo $value['sCreateDate']; ?>
+    </div>
+</div>
+<?php if ($value['iBookStatus'] == 5) { ?>
+<div class="form-group center col-sm-12">
+    <a href='<?php echo @$value["sDPUrl"] ?>' class="btn btn-primary downLoadbtn">下载体检报告</a>
+</div>
+<?php } ?>
+<?php } }?>
+
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = '<?php echo $href; ?>';
+            }
+        }, 'json');
+        return false;
+    }});
+});
+</script>

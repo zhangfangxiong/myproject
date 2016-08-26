@@ -1,0 +1,88 @@
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/backend/css/HrShop.css" type="text/css" />
+<style>.indexwrap .tit_siller{padding-top:6px;}
+        .timeline_noresult ul li{   font-size: 15px; line-height: 30px; }
+        .timeline_noresult ul li span{   float: right;  }
+        .timeline_noresult ul li span a {  text-decoration: underline;  color: Orange;  }
+</style>
+<div id="wrap" class="indexwrap" style="width: 100%">
+    <table cellpadding="0" cellspacing="0" width="95%" style="margin-left: 15px; margin-bottom: 50px;">
+        <tr>
+            <td style="width: 65%; padding-right: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>本年度每月销售额统计</strong></h3>
+                    </div>
+                    <div id="main1" style="height: 300px;"></div>
+                </div>
+            </td>
+            <td style="width: 35%; padding-left: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>待办事项</strong></h3>
+                    </div>
+                    <div class="timeline_noresult">
+                        <ul>
+                            <li><a href="#">待发送体检通知</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblShenHeKeHu">119</span></a></span></li>
+                            <li><a href="#">信息修改</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblJingJiRen">0</span></a></span></li>
+                            <li><a href="#">系统预警</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblYiChangBaoDan">0</span></a></span></li>
+                            <li><a href="#">大阳性统计</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblNewPingLun">89</span></a></span></li>
+                            <li><a href="#">纸质报告未处理</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblLiPeiBaoAn">0</span></a></span></li>
+                            <li><a href="#">预期未检</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblGouMaiXuQiu">4</span></a></span></li>
+                            <li><a href="#">待办公司处理特殊需求</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblGouMaiXuQiu">4</span></a></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 65%; padding-right: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>产品销售总额（按类别分布）</strong></h3>
+                    </div>
+                    <div id="main2" style="height: 300px;">  </div>
+                </div>
+            </td>
+            <td style="width: 35%; padding-left: 10px; vertical-align: top;">
+                <div class="mb10 bs02" style="height: 300px;">
+                    <div class="pr pd02 bs03 pdr10">
+                        <h3 class="tit_siller">
+                            <strong>数据汇总</strong></h3>
+                    </div>
+                    <div class="timeline_noresult">
+                        <ul>
+                            <li>注册个人用户数量<span><span id="ContentPlaceHolder1_content_lblTotalSaleValue">1,000,000.00</span></span></li>
+                            <li><a href="#">企业创建个人用户数量</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblCustomerCount">2769</span></a></span></li>
+                            <li><a href="#">企业客户数量</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblCustomerCount">2769</span></a></span></li>
+                            <li><a href="#">有效期已到客户数</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblSupplierCount">306</span></a></span></li>
+                            <li><a href="#">未到有效期客户数</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblPersonUserCount">77022</span></a></span></li>
+                            <li><a href="#">产品总数</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblProductItemCount">36</span></a></span></li>
+                            <li><a href="#">供应商数</a><span><a href="#"><span id="ContentPlaceHolder1_content_lblProductItemCount">36</span></a></span></li>
+                        </ul>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+<script src="<?php echo $sStaticRoot ?>/js/echart/echarts-plain.js" type="text/javascript"></script>
+<script src="<?php echo $sStaticRoot ?>/js/echart/echarts-help.js" type="text/javascript"></script>
+<script type="text/javascript">
+        $(function () {
+            var Legend1 = ["实际到检数量","体检安排数量"];
+            var XAxis1 =[{"type":"category","data":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]}];
+            var Series1 = [{"name":"实际到检数量","type":"bar","data":[83235.0,28962.01,73274.0,48522.0,40572.0,35678.0,20552.0,0.0,0.0,0.0,0.0,0.0]},{"name":"体检安排数量","type":"bar","data":[189069.0,48898.0,102896.0,62800.0,57392.0,46315.0,36044.0,0.0,0.0,0.0,0.0,0.0]}];
+            ShowEChartLineOrBar("main1", XAxis1, Series1, Legend1);
+
+
+            var Data2 = [{"name":"入职体检","value":121736.0},{"name":"拓展产品（非标准产品）","value":455641.05},{"name":"拓展产品（标准产品）","value":500709.0}];
+            var Legend2 = ["","","入职体检"];
+            ShowEChartPie("main2", Data2, Legend2);
+        });
+
+</script>

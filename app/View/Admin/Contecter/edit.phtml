@@ -1,0 +1,66 @@
+<div class="pheader clearfix"><?php echo isset($aContecter['iID'])?'编辑':'增加'?>联系人</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iID" type="hidden" value="<?php echo isset($aContecter['iID'])?$aContecter['iID']:''?>">
+
+		<div class="form-group">
+			<label for="sRealName" class="col-sm-2 control-label"> <span class="tubiao">*</span>姓名：</label>
+			<div class="col-sm-10">
+				<input name="sRealName" validate="!clength:1-10" placeholder="请输入联系人姓名" type="text" value="<?php echo !empty($aContecter['sRealName'])?$aContecter['sRealName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="sAppellation" class="col-sm-2 control-label"> <span class="tubiao">*</span>称谓：</label>
+			<div class="col-sm-10">
+				<input name="sAppellation" validate="!clength:1-10" placeholder="请输入联系人称谓" type="text" value="<?php echo !empty($aContecter['sAppellation'])?$aContecter['sAppellation']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="sMobile" class="col-sm-2 control-label"> <span class="tubiao">*</span>手机号码：</label>
+			<div class="col-sm-10">
+				<input name="sMobile" validate="!mobile:true" placeholder="请输入联系人手机号码" type="text" value="<?php echo !empty($aContecter['sMobile'])?$aContecter['sMobile']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="sJobPhone" class="col-sm-2 control-label"> <span class="tubiao">*</span>工作电话：</label>
+			<div class="col-sm-10">
+				<input name="sJobPhone" validate="!clength:3-20" placeholder="请输入联系人工作电话" type="text" value="<?php echo !empty($aContecter['sJobPhone'])?$aContecter['sJobPhone']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="sEmail" class="col-sm-2 control-label"> <span class="tubiao">*</span>Email：</label>
+			<div class="col-sm-10">
+				<input name="sEmail" validate="!email:true" placeholder="请输入联系人Email" type="text" value="<?php echo !empty($aContecter['sEmail'])?$aContecter['sEmail']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+    	<div class="btn-toolbar text-center">
+			<input type="hidden" name="iUserID" value="<?php echo isset($iUserID)?$iUserID:''?>">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="window.history.back(-1);return false;">取消</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+		var url = '/admin/user/contecterinfo/?id=<?php echo isset($iUserID)?$iUserID:''?>';
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	           location.href = url;
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

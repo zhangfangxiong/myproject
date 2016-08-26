@@ -1,0 +1,197 @@
+    <div class="pheader clearfix">单项管理</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">体检大类</div>
+                <div class="col-sm-11">
+                    <span class="cateall <?php echo !empty($aParam['aParentCat']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($parentCat)) {
+                        foreach ($parentCat as $key => $value) { ?>
+                            <span class="category <?php echo in_array($key,$aParam['aParentCat']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aParentCat']) ? 'checked' : '' ?> type="checkbox" class="aCategory" id="aCategory_<?php echo $key; ?>" name="aParentCat[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">体检项目分类</div>
+                <div class="col-sm-11">
+                    <span class="catall <?php echo !empty($aParam['aCat']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($subCat)) {
+                        foreach ($subCat as $key => $value) { ?>
+                            <span class="cat <?php echo in_array($key,$aParam['aCat']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aCat']) ? 'checked' : '' ?> type="checkbox" class="aCategory" id="aCat_<?php echo $key; ?>" name="aCat[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">关键字</div>
+                <div>
+                    <input placeholder="支持搜索单项名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <a class="import text-right btn btn-default">名称导入</a>
+                </div>
+            </div>
+        </div>
+
+        <hr/>
+        <div class="col-md-12" style="overflow-x: auto">
+        <table class="table table-bordered table-hover" style="width:auto">
+            <thead>
+            <tr>
+                <th class="text-center">大类</th>
+                <th class="text-center">分类</th>
+                <th class="text-center">标准名称</th>
+                <?php if ($aSupplier) { 
+                foreach ($aSupplier as $key => $value) { ?>
+                <th class="text-center"><?php echo $value?></th>
+                <?php } }?>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aList['aList'])) {
+                foreach ($aList['aList'] as $value) {?>
+                    <tr id='storeid_<?php echo $value['iItemID'];?>'>                        
+                        <td class="text-center"><?php echo $parentCat[$value['iParentCat']] ?></td>
+                        <td class="text-center"><?php echo $subCat[$value['iCat']] ?></td>
+                        <td class="text-center"><?php echo $value['sName'] ?></td>
+                        <?php if ($aSupplier) { 
+                        foreach ($aSupplier as $k => $val) { ?>
+                        <td class="text-center">
+                            <input id='<?php echo $k.'_'.$value['iItemID'];?>' readonly class="text-center" value="<?php echo $value['sSupplierSetName'][$k] ?>" />
+                        </td>
+                        <?php } }?>
+                        <td class="desc text-center">
+                            <a class='edit' data-id='<?php echo $value['iItemID'];?>'>修改</a>
+                        </td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        </div>
+        <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>        
+    </form>
+</div>
+
+<div class="modal fade" id="iModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body form-group col-sm-12">
+            <input id='addId' value='' type='hidden'/>
+            <input type='' id='sFileKeyExt' name='sFile' value=''></input>
+            <label class="col-sm-3 control-label" for="file">请选择导入文件：</label>
+            <input type='button' value="选择文件" class='plupload' data-target='#sFileKeyExt'></input>
+            <a href="<?php echo $sStaticRoot . '/doc/itemnamedemo.xls'?>" target="_blank" style="color: Blue">（点击此处下载导入模版）</a>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="jSave">完成<tton>
+            <button type="button" class="btn btn-default" id='close' data-dismiss="modal">关闭<tton>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+    //大类单项点击效果
+    $('.category').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cateall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCategory_'+key).prop("checked",true);
+    });
+    //大类全部点击效果
+    $('.cateall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.category').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+
+    //分类单项点击效果
+    $('.cat').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.catall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCat_'+key).prop("checked",true);
+    });
+    //分类全部点击效果
+    $('.catall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cat').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+
+    function saved(id) {
+        var arr = [];
+        <?php foreach ($aSupplier as $key => $value) { 
+            $k = 0; ?>            
+            var itemId = id;
+            arr[<?php echo $key ?>] = $('#<?php echo $key ?>_' + id).val();
+        <?php $k++; }?>
+        $.ajax({
+            url : '/admin/item/savename',
+            type : 'post',
+            data : {
+                itemId : id,
+                array : arr                
+            },
+            dataType : 'json',
+            success : function(ret) {
+                if (ret.status) {
+                    txt = "<a class='edit' data-id='" + id + "'>修改</a>";
+                    $('#storeid_' + id +' .desc').html(txt);
+                }
+            }
+        });        
+    }
+
+    $('table').on('click','.edit', function(){
+        id = $(this).data('id');
+        $('#storeid_' + id +' input').removeAttr('readonly');
+        html = "<a onclick='saved("+ id + ")'>保存</a>";
+        $('#storeid_' + id +' .desc').html(html);
+    });
+
+    $('.import').on('click', function() {
+        $('#iModal').modal('show');
+    });
+
+    $('#jSave').on('click', function() {        
+        var file = $('#sFileKeyExt').val();
+        if (!file) {
+            alert('请选择导入文件');
+            return false;
+        }
+        submitExcel();
+    });
+
+    function submitExcel() {
+        $.ajax({
+            url : '/admin/item/excelname',
+            type : 'post',
+            data : {
+                file : $('#sFileKeyExt').val()        
+            },
+            dataType : 'json',
+            success : function(ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    window.location.reload();
+                }
+            }
+        });
+    };
+</script>

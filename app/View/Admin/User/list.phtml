@@ -1,0 +1,115 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">员工列表</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/user/list">
+        <div class="row">
+
+            <div class="form-group col-sm-3">
+                <label>员工编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sUserName']) ? $aParam['sUserName'] : '' ?>"
+                       class="form-control" name="sUserName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>员工职级：</label>
+                <select name="iJobTitleID" class="form-control" style="width: 100px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aJobTitleID as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iJobTitleID']) && $aParam['iJobTitleID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>所属部门：</label>
+                <select name="iDeptID" class="form-control" style="width: 100px">
+                    <option value="0">全部</option>
+                    <?php foreach ($aDept as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iDeptID']) && $aParam['iDeptID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>账号状态：</label>
+                <select name="iStatus" class="form-control" style="width: 100px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <button class="btn btn-primary" id="user_add">添加员工</button>
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">员工编号</th>
+            <th class="text-center">员工姓名</th>
+            <th class="text-center">部门名称</th>
+            <th class="text-center">职位名称</th>
+            <th class="text-center">职级</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $aUser) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($aUser['sUserName']) ? $aUser['sUserName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aDept[$aUser['iDeptID']]) ? $aDept[$aUser['iDeptID']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aUser['sJobTitleName']) ? $aUser['sJobTitleName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aJobGradeID[$aUser['iJobGradeID']]) ? $aJobGradeID[$aUser['iJobGradeID']] : '' ?></td>
+                    <td class="text-center">
+                        <a href="/admin/user/edit?id=<?php echo $aUser['iUserID'] ?>" title="编辑"><i
+                                class="fa fa-pencil fa-large"></i></a>
+                        <!--
+                        <a class="user_delete" href="javascript:;" data-url="/admin/user/del?id=<?php echo $aUser['iUserID'] ?>" title="删除"><i
+                                class="fa fa-trash fa-large"></i></a>
+                                -->
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+
+<script>
+    $('.user_delete').click(function () {
+        var url = $(this).data('url');
+        alert(url);return false;
+        if (confirm("您确认要删除该用户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#user_add').click(function () {
+        location.href = '/admin/user/add';
+        return false;
+    });
+</script>

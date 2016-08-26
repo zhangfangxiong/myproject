@@ -1,0 +1,122 @@
+<?php include('statheader.phtml'); ?>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/order/stat1.html">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 120px">
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">预约状态：</label>
+                <select name="iPreStatus" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aPreStatus as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iPreStatus']) && $aParam['iPreStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">到检状态：</label>
+                <select name="iBookStatus" class="form-control" style="width: 120px">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iBookStatus']) && $aParam['iBookStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">体检类型：</label>
+                <select name="iPhysicalType" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aPType as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iPhysicalType']) && $aParam['iPhysicalType'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">体检日期：</label>
+                <input type="text" value="<?php echo !empty($aParam['iPhysicalTime']) ? $aParam['iPhysicalTime'] : '' ?>"
+                       class="form-control laydatetime" name="iPhysicalTime" format="YYYY-MM-DD" style="width: 120px">
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">公司名称：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCoName']) ? $aParam['sCoName'] : '' ?>"
+                       class="form-control" name="sCoName" style="width: 120px">
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">供应商：</label>
+                <select name="iSupplierID" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aSupplier as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iSupplierID']) && $aParam['iSupplierID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">城市：</label>
+                <select name="iCityID" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aCity as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iCityID']) && $aParam['iCityID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">预约平台：</label>
+                <select name="iPlat" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aPlat as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iPlat']) && $aParam['iPlat'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="info">
+            <th class="text-center">员工姓名</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">产品名称</th>
+            <th class="text-center">预约门店</th>
+            <th class="text-center">到检状态</th>
+            <th class="text-center">操作时间</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $v) { ?>
+                <tr>
+                    <td class="text-center">
+                    	<?php echo !empty($v['sUserName']) ? $v['sUserName'] : '' ?><br>
+                    	<?php echo isset($aPlat[$v['iPlat']]) ? $aPlat[$v['iPlat']] : ''?> <br>
+                    	<?php echo !empty($v['sCoName']) ? $v['sCoName'] : '' ?>
+                    </td>
+                    <td class="text-center"><?php echo !empty($v['iOrderTime']) ? date('Y-m-d', $v['iOrderTime']) : '-'; ?></td>
+                    <td class="text-left"><?php echo !empty($v['sProductName']) ? $v['sProductName'] : '';?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo !empty($v['sAddress']) ? $v['sAddress'] : '-' ?><br>
+                        <?php echo !empty($v['sStroeName']) ? $v['sStroeName'] : '-' ?>
+                    </td>
+                    <td class="text-center">
+                    	<?php echo !empty($aPreStatus[$v['iPreStatus']])?$aPreStatus[$v['iPreStatus']]:'待确认'?><br>
+                    	<?php echo !empty($aStatus[$v['iBookStatus']])?$aStatus[$v['iBookStatus']]:'-'?><br>
+                    </td>
+                    <td class="text-center">
+                        <?php echo !empty($v['iResoure']) ?  '接口推送数据' : '系统自动' ?><br>
+                    	<?php echo !empty($v['iCreateTime']) ? date('Y-m-d H:i:s',$v['iCreateTime']) : '' ?>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>

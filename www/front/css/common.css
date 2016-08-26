@@ -1,0 +1,156 @@
+@CHARSET "UTF-8";
+
+label.error {
+	display: inline-block;
+	height: 31px;
+	line-height: 31px;
+	background: url(../images/common/wrong_icon.png) no-repeat left center;
+	padding-left: 19px;
+	margin-left: 10px;
+	color: #ea6060;
+}
+
+select.fill_text {
+	border: 1px solid #ccc;
+	background: #fff;
+	padding: .8em 10px;
+	vertical-align: middle;
+	font-size: 14px;
+	width: 422px;
+	line-height: 3em;
+	height: 3em;
+}
+
+ul.sec_nav {
+	margin-bottom: 0px;
+}
+
+table.list_table {
+	margin-bottom: 0px;
+}
+
+div.pager {
+	margin: 0px auto 15px auto;
+	clear: both;
+	width: 1200px;
+	text-align: right;
+}
+div.pager::after{content:"."; visibility:hidden;display:block;font-size: 0;clear: both;height:0;}
+
+.pagination {
+	display: inline-block;
+	padding-left: 0;
+	margin: 20px 0;
+	border-radius: 4px;
+}
+
+.pagination>li {
+	display: inline;
+}
+
+.pagination>li>a,.pagination>li>span {
+	position: relative;
+	float: left;
+	padding: 6px 12px;
+	margin-left: -1px;
+	line-height: 1.42857143;
+	color: #428bca;
+	text-decoration: none;
+	background-color: #fff;
+	border: 1px solid #ddd;
+}
+
+.pagination>.disabled>span,.pagination>.disabled>span:hover,.pagination>.disabled>span:focus,.pagination>.disabled>a,.pagination>.disabled>a:hover,.pagination>.disabled>a:focus
+	{
+	color: #777;
+	cursor: not-allowed;
+	background-color: #fff;
+	border-color: #ddd;
+}
+
+.pagination>li:first-child>a,.pagination>li:first-child>span {
+	margin-left: 0;
+	border-top-left-radius: 4px;
+	border-bottom-left-radius: 4px;
+}
+.pager .l {
+    display: inline-block;
+    padding-left: 0;
+    margin: 20px 0;
+    border-radius: 4px;
+}
+
+a.olda{text-decoration:underline; color:blue;}
+a.olda:hover{ text-decoration:underline; color:#e40212;}
+a.pinka{color:#f0ad4e;}
+a.pinka:hover{color:#e40212;}
+input.th_input_btn{width: 60px;background: rgb(255, 0, 0) url("../images/tool/search-001.png") no-repeat scroll 23px center !important;
+	height: 30px;}
+dl.video_fen dd {width: 31%;float:left}
+dl.video_fen dd div{width: 50%}
+dl.video_fen dd:last-child {background: url(../images/tool/line_l.gif) repeat-y 0px top;}
+img.imageplus {float:left;width:120px;height:120px;cursor:pointer;}
+div.imagetips {float:left;padding-left:20px;padding-top:20px;}
+div.imageplus {float:left;width:120px;height:120px;cursor:pointer;}
+.wixitag {
+	display: block;
+	padding: 0px 15px 0px 15px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 9px;
+    position: absolute;
+}
+.wixitag.active{
+    border: 1px solid #e6e6e6;
+    border-bottom: none;
+	color: #f01;
+	background-color: #f5f5f5;
+}
+.wixitaglst{
+	margin-left:117px;
+}
+.loginAdvUserOut {
+    position: absolute;
+    top: 90px;
+    left: 170px;
+    width: 15px;
+    height: 15px;
+    background: url(../images/wellcome_quit.png) no-repeat;
+}
+.nav_active {
+	padding-bottom: 2px;
+	background: url(../images/tool/th_line.gif) repeat-x left bottom;
+	color: #e40212;
+}
+
+/*联系客服*/
+.izl-rmenu{position:fixed; right:20px; bottom:10px; padding-bottom:73px;z-index:999; }
+.izl-rmenu .btn-services{width:72px; height:73px; margin-bottom:1px; cursor:pointer; position:relative;}
+.izl-rmenu .btn-qq{background:url(../images/kefu/r_qq.png) 0px 0px no-repeat; background-color:#6da9de;}
+.izl-rmenu .btn-qq:hover{background-color:#488bc7;}
+.izl-rmenu a.btn-qq,.izl-rmenu a.btn-qq:visited{background:url(../images/kefu/r_qq.png) 0px 0px no-repeat; background-color:#6da9de; text-decoration:none; display:block;}
+.izl-rmenu .btn-wx{background:url(../images/kefu/r_wx.png) 0px 0px no-repeat; background-color:#78c340;cursor:default;}
+.izl-rmenu .btn-wx:hover{background-color:#58a81c;}
+.izl-rmenu .btn-wx .pic{position:absolute; left:-160px; top:0px; display:none;width:160px;height:160px;}
+.izl-rmenu .btn-phone{background:url(../images/kefu/r_phone.png) 0px 0px no-repeat; background-color:#fd8c25;cursor:default;}
+.izl-rmenu .btn-phone:hover{background-color:#f0ad4e;}
+.izl-rmenu .btn-phone .phone{background-color:#f0ad4e; position:absolute; width:160px; left:-160px; top:0px; line-height:73px; color:#FFF; font-size:18px; text-align:center; display:none;}
+.izl-rmenu .btn-top{background:url(../images/kefu/r_top.png) 0px 0px no-repeat; background-color:#666666; display:none;}
+.izl-rmenu .btn-top:hover{background-color:#444;}
+
+.clear{clear:both;}
+.clearfix:after{content:"."; visibility:hidden;display:block;font-size: 0;clear: both;height:0;}
+
+#loading {
+	position:fixed;
+	z-index: 9999;
+	opacity: 0.1;
+	filter:alpha(opacity=10); 
+	background:url(../images/loading.gif) 50% 50% no-repeat;
+	background-color:#000;
+	height: 100%;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+}

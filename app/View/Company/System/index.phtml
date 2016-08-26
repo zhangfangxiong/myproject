@@ -1,0 +1,91 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">网页设置</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="row">
+            <div class="form-group col-sm-6">
+                <label for="sQRCode" class="col-sm-6 control-label">公司Logo上传：</label>
+                <div class="col-sm-6">
+                    <input type="hidden" id="imgurlImg" name="sLogoKey" value="<?php echo !empty($sLogo) ? 
+                    $sLogo : '' ?>">
+                    <img id="imgurlShow" style="width:120px;height:90px;" src="<?php echo !empty($sLogo) ?Util_Uri::getDFSViewURL($sLogo) : '' ?>">
+                    <input type="button" value="选择" class="plupload" data-target="#imgurlImg" data-img="#imgurlShow">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="上传">
+                    <span><a target='_blank' href='/admin/login'>点击此处访问员工登录页面查看效果</a></span>                    
+                </div>
+            </div>
+            <div class="form-group col-sm-6">
+                <label for="sQRCode" class="col-sm-6 control-label">登录页面图片：</label>
+                <div class="col-sm-6">
+                    <input type="hidden" id="sLoginImg" name="sPageKey" value="<?php echo !empty($sLogin) ? 
+                    $sLogin : '' ?>">
+                    <img id="sLoginImgShow" style="width:120px;height:90px;" src="<?php echo !empty($sLogin) ?Util_Uri::getDFSViewURL($sLogin) : '' ?>">
+                    <input type="button" value="选择" class="plupload" data-target="#sLoginImg" data-img="#sLoginImgShow">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="上传">
+                </div>
+            </div>
+        </div>   
+
+        <hr />
+
+        <div class="pheader clearfix">邮件格式设定</div>
+        <div class="pbody clearfix">
+            <div class="form-group col-sm-6">
+                <label for="sQRCode" class="col-sm-6 control-label">账号发送的邮件：</label>
+                <div class="col-sm-12">
+                    <textarea id="txtEmailMode" name="sMail" style="margin: 0px; width: 503px; height: 260px;" class="form-control input-validate"><?php echo !empty($sMail) ? $sMail : '' ?></textarea>
+                    <input id="Button1" type="button" value="插入[收件人]" style="width: 100px;">
+                    <input id="Button2" type="button" value="插入[登录地址]" style="width: 100px;">
+                    <input id="Button3" type="button" value="插入[账号]" style="width: 100px;">
+                    <input id="Button4" type="button" value="插入[密码]" style="width: 100px;">
+                    
+                    <input type="submit" id="formbtn" style="margin-top: 10px" class="btn btn-primary" value="保存格式">
+                    <span>**标签 [ ] 的内容会自动替换成对应的信息，发送账号告知邮件的功能在 组织架构->员工列表 进行操作。</span>
+                </div>
+            </div>
+        </div>  
+
+    </form>
+
+</div>
+
+
+<script type="text/javascript">
+global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/caretinsert.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+                window.location.reload();
+            }
+        }, 'json');
+        return false;
+    }});
+
+    $('#Button1').click(function () {
+        $("textarea[id*='txtEmailMode']").insertAtCaret("[收件人]");
+    });
+    $('#Button2').click(function () {
+        $("textarea[id*='txtEmailMode']").insertAtCaret("[登录地址]");
+    });
+    $('#Button3').click(function () {
+        $("textarea[id*='txtEmailMode']").insertAtCaret("[账号]");
+    });
+    $('#Button4').click(function () {
+        $("textarea[id*='txtEmailMode']").insertAtCaret("[密码]");
+    });
+
+});
+</script>

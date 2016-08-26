@@ -1,0 +1,52 @@
+<div class="pheader clearfix"><?php echo isset($aPermission['iPermissionID'])?'编辑':'增加'?>权限点</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iPermissionID" type="hidden" value="<?php echo isset($aPermission['iPermissionID'])?$aPermission['iPermissionID']:''?>">
+		<div class="form-group">
+			<label for="sPermissionName" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 权限名称：</label>
+			<div class="col-sm-10">
+				<input name="sPermissionName" validate="!length:2-20" type="text" value="<?php echo isset($aPermission['sPermissionName'])?$aPermission['sPermissionName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sPassword" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 归属模块：</label>
+			<div class="col-sm-10">
+			    <select name="iMenuID" class="form-control col-sm-10 input-validate">
+					<?php 
+					if(!empty($aMenuTree)){
+					    $iMenuID = isset($aPermission['iMenuID'])?$aPermission['iMenuID']:'';
+					    foreach ($aMenuTree as $v){
+                    ?>
+					<option value="<?php echo $v['iMenuID']?>" <?php echo $v['iMenuID']==$iMenuID?'selected':'';?>><?php echo ($v['iLevel']>0?'└'.str_repeat('─', $v['iLevel'] * 2):'') . $v['sMenuName']?></option>
+					<?php }}?>
+				</select>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sMobile" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 权限点：</label>
+			<div class="col-sm-10">
+				<input name="sPath" type="text" validate="!length:2-50" value="<?php echo isset($aPermission['sPath'])?$aPermission['sPath']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/permission/list/';return false;">取消</button>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            location.href = '/admin/permission/list/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

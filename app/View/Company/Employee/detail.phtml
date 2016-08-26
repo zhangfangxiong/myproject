@@ -1,0 +1,173 @@
+<div class="pheader clearfix">员工信息</div>
+<div class="pbody clearfix">
+<?php if ($aEmployee) { ?>
+    <div class="form-group col-sm-6">
+        <label for="sUserName" class="col-sm-5 ">员工编号：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sUserName'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sRealName" class="col-sm-5 ">员工姓名：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sRealName'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sUserShortName" class="col-sm-5 ">性别：</label>
+        <div class="col-sm-7">
+            <?php echo (1 == $aEmployee['iSex']) ? '男' : '女' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sUserEngName" class="col-sm-5 ">婚姻状况：</label>
+        <div class="col-sm-7">
+            <?php echo (2 == $aEmployee['iMarriage']) ? '已婚' : '未婚' ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iDeptID" class="col-sm-5 ">所属机构：</label>
+        <div class="col-sm-7">
+            <?php echo $aDeptSet[$aEmployee['iDeptID']]?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iJobGradeID" class="col-sm-5 ">职级：</label>
+
+        <div class="col-sm-7">
+            <?php echo $aLevel[$aEmployee['iJobGradeID']]?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sJobTitleName" class="col-sm-5 ">职位：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sJobTitleName']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sIdentityCard" class="col-sm-5 ">身份证：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sIdentityCard']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sBirthDate" class="col-sm-5 ">生日：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sBirthDate']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sEmail" class="col-sm-5 "> 公司邮箱：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sEmail']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sMobile" class="col-sm-5 "> 手机号码：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sMobile']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iStatus" class="col-sm-5 "> 账号状态：</label>
+        <div class="col-sm-7">
+            <?php echo $aState[$aEmployee['iStatus']] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sJobDate" class="col-sm-5 "> 入职日期：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sJobDate']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sRemark" class="col-sm-5 "> 备注：</label>
+        <div class="col-sm-7">
+            <?php echo $aEmployee['sRemark']?>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a class="btn btn-default" href='/company/employee/edit/iEmployeeID/<?php echo $aEmployee['iUserID']?>'>修改</a>
+        <a class="btn btn-default" href='/company/employee/list'>返回</a>
+    </div>
+<?php }?>
+</div>
+
+<hr>
+<div class="clearfix">员工家属信息
+    <a class="text-right btn btn-default" href='/company/family/add/iEmployeeID/<?php echo $aEmployee['iUserID'];?>'>添加</a>
+    
+    <div class="pbody clearfix">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">家属姓名</th>
+                <th class="text-center">性别</th>
+                <th class="text-center">关系</th>
+                <th class="text-center">证件号</th>
+                <th class="text-center">出生日期</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if ($aFamily) {
+                foreach ($aFamily as $key => $val) { ?>
+                    <tr>
+                        <td class="text-center"><?php echo $val['sRealName'] ?></td>
+                        <td class="text-center"><?php echo (1 == $val['iSex']) ? '男' : '女' ?></td>
+                        <td class="text-center"><?php echo $aFamilyRelation[$val['iRelationID']] ?></td>
+                        <td class="text-center"><?php echo $val['sDocumentNumber'] ?></td>
+                        <td class="text-center"><?php echo $val['sBirthDate'] ?></td>
+                        <td class="text-center">
+                            <a href="/company/family/edit?iFamilyID=<?php echo $val['iAutoID'] ?>" title="">修改</a>
+                            <a class="user_delete" href="javascript:;" data-url="/company/family/del?iFamilyID=<?php echo $val['iAutoID'] ?>" title="删除">删除</a>                  
+                        </td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = '/company/employee/detail?iEmployeeID=<?php echo $aFamily['iEmployeeID']?>';
+            }
+        }, 'json');
+        return false;
+    }});
+
+    $('.user_delete').click(function () {
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该用户吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+});
+</script>
+
+

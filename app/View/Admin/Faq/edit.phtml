@@ -1,0 +1,145 @@
+<div class="pheader clearfix"><?php echo isset($aFaq['iAutoID'])?'编辑':'增加'?>问答</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iAutoID" type="hidden" value="<?php echo isset($aFaq['iAutoID'])?$aFaq['iAutoID']:''?>">
+
+		<div class="form-group">
+			<label for="sTitle" class="col-sm-2 control-label"> 标题关键字：</label>
+			<div class="col-sm-10">
+				<input name="sTitle" type="text" value="<?php echo isset($aFaq['sTitle'])?$aFaq['sTitle']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="iType" class="col-sm-2 control-label"> 新闻类别：</label>
+			<div class="col-sm-10">
+				<select name="iType" class="form-control input-validate">
+					<?php foreach ($aCategory as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aFaq['iType'])&&$aFaq['iType']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 资讯正文：</label>
+            <div class="col-sm-7">
+                <textarea name="sContent" id="sContent"><?php echo isset($aFaq['sContent']) ? $aFaq['sContent'] : '' ?></textarea>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+		<div class="form-group">
+			<label for="iIsShow" class="col-sm-2 control-label"> 是否显示：</label>
+			<div class="col-sm-10">
+				<select name="iIsShow" class="form-control input-validate">					
+					<option value="1" <?php echo !isset($aFaq['iIsShow']) || $aFaq['iIsShow'] == 1 ? 'selected' : ''?>>是</option>
+					<option value="2" <?php echo isset($aFaq['iIsShow']) && $aFaq['iIsShow'] == 2 ? 'selected' : ''?>>否</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="iIsApply" class="col-sm-2 control-label"> 是否可以申请：</label>
+			<div class="col-sm-10">
+				<select name="iIsApply" class="form-control input-validate">					
+					<option value="1" <?php echo isset($aFaq['iIsApply']) && $aFaq['iIsApply'] == 1 ? 'selected' : ''?>>是</option>
+					<option value="2" <?php echo !isset($aFaq['iIsApply']) || $aFaq['iIsApply'] == 2 ? 'selected' : ''?>>否</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="iIsShare" class="col-sm-2 control-label"> 是否可以分享：</label>
+			<div class="col-sm-10">
+				<select name="iIsShare" class="form-control input-validate">					
+					<option value="1" <?php echo isset($aFaq['iIsShare']) && $aFaq['iIsShare'] == 1 ? 'selected' : ''?>>是</option>
+					<option value="2" <?php echo !isset($aFaq['iIsShare']) || $aFaq['iIsShare'] == 2 ? 'selected' : ''?>>否</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="iIsTop" class="col-sm-2 control-label"> 是否置顶：</label>
+			<div class="col-sm-10">
+				<select name="iIsTop" class="form-control input-validate">					
+					<option value="1" <?php echo isset($aFaq['iIsTop']) && $aFaq['iIsTop'] == 1 ? 'selected' : ''?>>是</option>
+					<option value="2" <?php echo !isset($aFaq['iIsTop']) || $aFaq['iIsTop'] == 2 ? 'selected' : ''?>>否</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label for="iStartTime" class="col-sm-2 control-label">有效期：</label>
+			<div class="col-sm-10">
+				<input class="col-sm-2" name="sStartTime" value="<?php echo !empty($aFaq['sStartTime']) ? $aFaq['sStartTime'] : '';?>" />
+				至
+				<input class="col-sm-2" name="sEndTime" value="<?php echo !empty($aFaq['sEndTime']) ? $aFaq['sEndTime'] : '';?>"/>
+			</div>			
+		</div>
+		
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/faq/list/';return false;">取消</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/ueditor.config.js">
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/ueditor.all.js">
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/lang/zh-cn/zh-cn.js">
+</script>
+
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+$(function() {
+	//富文本编辑框
+    var opt = {
+        //这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
+        toolbars: [['source', 'undo', 'redo', '|',
+            'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat', 'blockquote', 'pasteplain', '|',
+            'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', '|',
+            'justifyleft', 'justifycenter', 'justifyright', '|',
+            'link', 'unlink', 'horizontal', '|',
+            'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+            'inserttable', //插入表格
+            'insertrow', //前插入行
+            'insertcol', //前插入列
+            'deleterow', //删除行
+            'deletecol', //删除列
+            'mergecells', //合并多个单元格
+            'deletetable', //删除表格
+            'edittable', //表格属性
+            'edittd', //单元格属性
+            'insertimage']],
+        //关闭字数统计
+        wordCount: true,
+        //关闭elementPath
+        elementPathEnabled: true,
+        //默认的编辑区域高度
+        initialFrameHeight: 100,
+        catchRemoteImageEnable: false,
+        //更多其他参数，请参考ueditor.config.js中的配置项
+        serverUrl: global.sUploadUrl+'/ueditor/'
+    };
+    var cue = UE.getEditor('sContent', opt);
+
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	           location.href = '/admin/faq/list/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

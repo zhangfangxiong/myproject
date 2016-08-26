@@ -1,0 +1,66 @@
+<div class="pheader clearfix">体检产品结算</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/order/balance.html">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <label style="width: 70px">请款编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sBalanceCode']) ? $aParam['sBalanceCode'] : '' ?>"
+                       class="form-control" name="sBalanceCode" style="width: 120px">
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 50px">状态：</label>
+                <select name="iStatus" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label style="width: 60px">供应商：</label>
+                <select name="iSupplierID" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aSupplier as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iSupplierID']) && $aParam['iSupplierID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">供应商</th>
+            <th class="text-center">结算凭证号</th>
+            <th class="text-center">请款月份</th>
+            <th class="text-center">金额</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $v) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($v['sSupplierName']) ? $v['sSupplierName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sBalanceCode']) ? $v['sBalanceCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($v['sMonth']) ? $v['sMonth'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($v['iSMoney']) ? $v['iSMoney'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aStatus[$v['iStatus']]) ? $aStatus[$v['iStatus']] : '' ?></td>
+                    <td class="text-center">
+                        <a href="/admin/balance/detail.html?id=<?php echo $v['iBalanceID'] ?>">详细</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>

@@ -1,0 +1,40 @@
+<?php include 'menu.phtml'; ?>
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pbody clearfix">
+    <div class="form-group col-sm-5">        
+        <a class="text-right btn btn-primary" href='/admin/store/addcontact/id/<?php echo $iStoreID;?>'>新增联系人</a>        
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">称谓</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">工作电话</th>
+            <th class="text-center">移动电话</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aList['iTotal'] > 0) {
+            foreach ($aList['aList'] as $key => $aContact) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aContact['sRealName'] ?></td>
+                    <td class="text-center"><?php echo $aContact['sAppellation'] ?></td>
+                    <td class="text-center"><?php echo $aContact['sEmail'] ?></td>
+                    <td class="text-center"><?php echo $aContact['sJobPhone'] ?></td>
+                    <td class="text-center"><?php echo $aContact['sMobile'] ?></td>                    
+                    <td class="text-center">
+                        <a href="/admin/store/editcontact/iID/<?php echo $aContact['iID']?>">修改</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aList['aPager'] : '' ?>
+</div>

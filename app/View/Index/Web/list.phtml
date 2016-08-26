@@ -1,0 +1,183 @@
+<style type="text/css">
+    .div_welcome_big_banner {
+        background-image: url("<?php echo $sStaticRoot?>/backend/img/banner3.jpg");
+        background-repeat: no-repeat;
+        float: left;
+        height: 221px;
+        width: 1000px;
+    }
+</style>
+<div id="wrap">
+<!-- START: 正文 -->
+<div class="row c mb25">
+    <table cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="width: 50%; text-align: left;">
+                <a title="首页" href="">首页</a>
+                <span class="location_next">&gt;</span>
+                <span>安心体检</span>
+                <span class="location_next">&gt;</span>
+                <span>购买体检套餐</span>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div class="div_welcome_picbg">
+        <div class="div_welcome_cen_picbg">
+            <div class="div_welcome_big_banner">
+            </div>
+        </div>
+        <!-- banner end -->
+    </div>
+    <div style="width: 100%">
+            <div class="search_con" >
+                <?php if (!empty($aData['aList'])) {
+                    foreach ($aData['aList'] as $key => $value) { ?>
+                <table class="table_dailiList" style="margin-top: 10px; margin-bottom: 10px;">
+                    <tr>
+                        <td style="width: 150px; padding-right: 10px; text-align: center;">
+                            <a id="main_RepList_lnkPhoto_0" href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>" style="color: #0D8FE3;"><img src="<?php echo !empty($value['sImage']) ? Util_Uri::getDFSViewURL($value['sImage']) : '' ?>" style="height:150px;width:150px;" /></a>
+                            <p style="color: #0D8FE3; font-weight: bold; font-size: 13px; margin-top: 10px;">
+                                <span><?php echo $value['iCardNum']?></span>人已预订
+                            </p>
+                        </td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td style="width: 60%">
+                                            <strong class="cnName" style="width:auto;" >
+                                                <a href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>" style="color: #0D8FE3; text-decoration: none; font-size: 16px;">
+                                                <?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] :$value['sProductName'] : '' ?>
+                                                </a>
+                                            </strong>
+                                            <span style="color:#CCCCCC;font-size:14px;line-height:23px"></span>
+
+                                        </td>
+                                        <td style="width: 40%; text-align: right;">
+                                            <p style="font-size: 18px; font-weight: bold; color: orangered; ">
+                                                <i class="fa fa-cny"></i><span class="p-price"><?php echo !empty($value['iPrice']) ? $value['iPrice'] : '' ?></span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" style="color: #808080; padding-top: 5px; padding-bottom: 5px;">(本产品可在全国<span><?php echo $value['iStoreNum']?></span>家体检门店预约使用)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="line-height: 25px; font-size: 13px;">体检内容简介：
+                                        <span><?php echo !empty($value['sRemark']) ? $value['sRemark'] : '' ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 60%; color: #CCCCCC;"></td>
+                                        <td style="width: 40%; text-align: right;" class="noline">
+                                            <a href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>">
+                                            <input type="submit" value="产品详情" class="btn_submit_blue" style="background-color:OrangeRed;" />
+                                            </a>
+                                            <input data-id="<?php echo $value['iProductID']?>" type="submit" value="加入购物车" class="cartbtn btn_submit_blue" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="height:15px;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <?php } } ?>
+            </div>
+            <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+
+        <div class="overlay" id="overlay_cart" >我的购物车：
+                <span id=""><?php echo $aChart ? count($aChart) : 0 ?></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <a href='/index/web/cartlist' >
+                <input type="submit" name="" value="结算" id="main_btnCale" class="btn_submit_blue" />
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- END: 正文 -->
+    <!-- START: 跟随页面滚动 -->
+    <div class="page_fixed">
+        <a class="fixed_gotop" id="fixed_gotop" href="#">回到顶部</a>
+    </div>
+
+    <div class="base_pop" id="divMap" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                <span id="main_lblCompanyName2">Label</span></h3>
+            <div class="input-container">
+                <iframe id="framemap" src="" height="500px" width="760px" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function addCart(productid)
+    {
+        var productid = productid;
+        var Url = '<?php echo $sAddCartUrl; ?>';
+        var seccussmsg = '<?php echo!empty($aCommonLang[36]) ? $aCommonLang[36] : '' ?>';
+        var failmsg = '<?php echo!empty($aCommonLang[37]) ? $aCommonLang[37] : '' ?>';
+        $.get(Url, {id: productid}, function (ret) {
+            if (ret.status) {
+                window.location.href = window.location.href;
+                alert(seccussmsg);
+            } else {
+                alert(failmsg);
+            }
+        }, 'json');
+    }
+    $('.cartbtn').click(function () {//加入购物车
+        productid = $(this).data('id');
+        addCart(productid);
+    });
+</script>
+
+<script type="text/javascript">
+    function showqrcode(obj) {
+        $("#divQr_Code").show();
+        var offsettop = $(obj).offset().top;
+        var offsetleft = $(obj).offset().left;
+        $("#divQr_Code").css({ 'top': offsettop + 45 + 'px', 'left': offsetleft - 115 + 'px' });
+    }
+    function hideqrcode() {
+        $("#divQr_Code").hide();
+    }
+
+    function fGetCode() {
+        if (document.getElementById("getcode")) {
+            document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+        }
+    }
+    fGetCode();
+
+    function ShowLogin() {
+        if ($("input[id$='client']").val() == "0") {
+            popUp("tos");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    $("document").ready(function () {
+
+        if ($("#main_lblProductCount").text() != '') {
+
+            $("#lblShopNum").text($("#main_lblProductCount").text());
+        }
+        else {
+
+            $("#divShop").hide();
+        }
+    });
+</script>

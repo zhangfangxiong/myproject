@@ -1,0 +1,62 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/backend/css/product.css">
+<?php include('clientinfoheader.phtml');?>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo !empty($aEditHeaderInfo[6]['viewurl']) ? $aEditHeaderInfo[6]['viewurl'].'id/'.$id : '' ?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索门店名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">单项变化</th>
+                <th class="text-center">公司渠道</th>
+                <th class="text-center">公司客户</th>
+                <th class="text-center">个人渠道</th>
+                <th class="text-center">个人客户</th>
+                <th class="text-center">城市数量</th>
+                <th class="text-center">门店数量</th>
+                <th class="text-center">价格</th>
+                <th class="text-center">状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aData['aList'])) {
+                foreach ($aData['aList'] as $value) {?>
+                    <tr>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iItemChange']) ? $value['iItemChange'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iComChannelNum']) ? $value['iComChannelNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iComUserNum']) ? $value['iComUserNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iIndivChannelNum']) ? $value['iIndivChannelNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iIndivUserNum']) ? $value['iIndivUserNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iCityNum']) ? $value['iCityNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iStoreNum']) ? $value['iStoreNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+    </form>
+</div>
+<script>
+    $('.product_view').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $('.product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+</script>

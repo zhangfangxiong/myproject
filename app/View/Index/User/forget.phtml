@@ -1,0 +1,95 @@
+<div class="cf2 login_w gray_border">
+		<h4 class="pass_th">忘记密码</h4>
+        <form id="myform" method="post">
+        <input type="hidden" name="type" id="type" value="<?php echo $iType?>">
+		<dl class="login_box">
+			<dt>
+				<div class="input_text">
+					<span class="l_3 png"></span>
+					<input type="text" name="mobile" id="mobile" class="login_text r" placeholder="请输入手机号">
+				    <label class="error mobile" style="display: none"></label>
+				</div>
+                <div style="height: 42px;">
+					<span class="r"><a href="javascript:;" style="padding-left: 1em;"><img class="verifyimage" src="/verify/image/type/3" alt=""></a></span>
+					<div class="input_text">
+						<span class="l_4 png"></span>
+						<input type="text" name="imgcode" id ="imgcode" class="login_text r" placeholder="请输入验证码">
+						<label class="error imgcode" style="display: none"></label>
+					</div>
+				</div>
+				<div style="height: 42px;">
+					<span class="r"><a href="javascript:;" name="code" id="sendsmsverify" class="red_btn_t ma_btn">发送验证码</a></span>
+					<div class="input_text">
+						<span class="l_4 png"></span>
+						<input type="text" class="login_text r" placeholder="请输入验证码">
+						<label class="error code" style="display: none"></label>
+					</div>
+				</div>
+
+				<div class="input_text">
+					<span class="l_2 png"></span>
+					<input type="password" name="pass" class="login_text r" placeholder="请输入新密码">
+					<label class="error pass" style="display: none"></label>
+				</div>
+				
+				<div class="input_text">
+					<span class="l_2 png"></span>
+					<input type="password" name="repass" class="login_text r" placeholder="请再次输入新密码">
+					<label class="error repass" style="display: none"></label>
+				</div>
+			</dt>
+			<dd>
+				<input type="button" class="login_btn_i" value="确认修改">
+			</dd>
+		</dl>
+        </form>
+	</div>
+<script type="text/javascript">
+$(function() {
+	$('#sendsmsverify').click(function(){
+		var mobile = $('#mobile').val();
+		var imgcode = $('#imgcode').val();
+		if (false == /^1[0-9]{10}$/.test(mobile)) {
+			alert('请输入手机号码.');
+			$('#mobile').focus();
+			return false;
+		}
+		if (imgcode.length != 4) {
+			alert('请输入正确的验证码.');
+			$('#mobile').focus();
+			return false;
+		}
+
+		$.post('/verify/sms.html', {'mobile':mobile, 'type':9, 'code': imgcode}, function(ret){
+			alert(ret.data);
+			$('.verifyimage').click();
+		});
+	});
+
+	function resetVerifyImage(img){
+		var src = img.src.substring(0, img.src.indexOf('?')) + '';
+		src = src.length == 0 ? img.src : src;
+		img.src = src + '?r=' + Math.random();
+	}
+	$('.verifyimage').click(function(){
+		resetVerifyImage(this);
+	});
+	
+	$(".login_btn_i").click(function(){
+		var form = $('#myform').get(0);
+		var type = $(form).find('input[name=type]').val();
+	    $.post(form.action?form.action:location.href, $(form).serialize(), function(ret){
+	        if (ret.status) {
+	        	alert(ret.data);
+	        	location.href = '/user/login/?type=' + type;
+			} else {
+				$(form).find('label.error').hide();
+	        	for (var key in ret.data) {
+		        	$(form).find('.' + key).html(ret.data[key]).show();
+	        	}
+			}
+	    }, 'json');
+		return false;
+	});
+});
+</script>

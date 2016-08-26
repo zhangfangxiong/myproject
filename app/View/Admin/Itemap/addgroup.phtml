@@ -1,0 +1,41 @@
+<div class="pheader clearfix">第一步：增加基本信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <div class="form-group">
+            <label for="sName" class="col-sm-2 control-label"> 组合加项名称：</label>
+            <div class="col-sm-6">
+                <input name="sName" type="text" value="" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 备注信息：</label>
+            <div class="col-sm-6">
+                <textarea class="form-control input-validate" name="sRemark"></textarea>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center">
+            <button id="save" class="btn btn-primary">下一步</button>
+            <button id="cancel" class="btn" onclick="location.href='/admin/itemap/group';return false;">
+                取消
+            </button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    $("#myform").validate({
+        submitHandler: function (form) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                if (ret.status) {
+                    location.href = ret.data;
+                } else {
+                    alert(ret.data);
+                }
+            }, 'json');
+            return false;
+        }
+    });
+});
+</script>

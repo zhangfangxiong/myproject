@@ -1,0 +1,210 @@
+<div class="pheader clearfix">消息列表</div>
+<div class="pbody clearfix">
+	<form class="form-inline search-form" role="form" method="post" id="myform" action="">
+		<div class="row sousuo_now">
+            <div class="form-group">
+                <label>用户名称：</label>
+    		    <input type="text" value="<?php echo isset($aParam['sUserRealName']) ? $aParam['sUserRealName'] : '' ?>" class="form-control" name="sUserRealName" style="width: 200px">
+        	</div>
+        	<div class="form-group">
+                <label>广告名称：</label>
+    		    <input type="text" value="<?php echo isset($aParam['sAdName']) ? $aParam['sAdName'] : '' ?>" class="form-control" name="sAdName" style="width: 200px">
+        	</div>
+           <div class="form-group">
+                <label>媒体类型：</label>
+    		    <select name="iMediaType" class="form-control">
+    		        <option value="">全部</option>
+    		        <option value="1" <?php echo isset($aParam['iMediaType'])&&$aParam['iMediaType']=='1'?'selected':''?>>公众号</option>
+    		        <option value="2" <?php echo isset($aParam['iMediaType'])&&$aParam['iMediaType']=='2'?'selected':''?>>朋友圈</option>
+    		        <option value="3" <?php echo isset($aParam['iMediaType'])&&$aParam['iMediaType']=='3'?'selected':''?>>新浪微博</option>
+    		        <option value="4" <?php echo isset($aParam['iMediaType'])&&$aParam['iMediaType']=='4'?'selected':''?>>新闻论坛</option>
+    		    </select>
+        	</div>
+           <div class="form-group">
+                <label>广告类型：</label>
+    		    <select name="iAdType" class="form-control">
+    		        <option value="">全部</option>
+    		        <option value="1" <?php echo isset($aParam['iAdType'])&&$aParam['iAdType']=='1'?'selected':''?>>硬广</option>
+    		        <option value="2" <?php echo isset($aParam['iAdType'])&&$aParam['iAdType']=='2'?'selected':''?>>软广</option>
+    		        <option value="3" <?php echo isset($aParam['iAdType'])&&$aParam['iAdType']=='3'?'selected':''?>>全选</option>
+    		    </select>
+        	</div>
+           <div class="form-group">
+                <label>支付状态：</label>
+    		    <select name="iPayStatus" class="form-control">
+    		        <option value="">全部</option>
+    		        <option value="0" <?php echo isset($aParam['iPayStatus'])&&$aParam['iPayStatus']=='0'?'selected':''?>>未付款</option>
+    		        <option value="1" <?php echo isset($aParam['iPayStatus'])&&$aParam['iPayStatus']=='1'?'selected':''?>>已付款</option>
+    		    </select>
+        	</div>
+           <div class="form-group">
+                <label>状态：</label>
+    		    <select name="iStatus" class="form-control">
+    		        <option value="">全部</option>
+    		        <option value="1" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='1'?'selected':''?>>待审核</option>
+    		        <option value="2" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='2'?'selected':''?>>审核通过</option>
+    		        <option value="3" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='3'?'selected':''?>>审核未通过</option>
+    		        <option value="4" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='4'?'selected':''?>>完成</option>
+    		        <option value="5" <?php echo isset($aParam['iStatus'])&&$aParam['iStatus']=='5'?'selected':''?>>未填写完成</option>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <!-- <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索"> -->
+                <button class="btn btn-default btn-sm" id="formquerybtn">搜索</button>
+                <button class="btn btn-default btn-sm" id="formexplodebtn">导出</button>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+    	<!-- <button class="btn btn-primary" id="finance_add">
+    		<i class="fa fa-plus"></i> 增加财务
+    	</button> -->
+		<form  style="width: 100px;float: left; " role="form" method="post" id="myform1" action="">
+			<input type="hidden" value="1" name="iStatus">
+			<button id="formquerybtn1">待审核</button>
+		</form>
+		<form style="width: 100px;float: left;" role="form" method="post" id="myform2" action="">
+			<input type="hidden" value="2" name="iStatus">
+			<button id="formquerybtn2">审核通过</button>
+		</form>
+		<form style="width: 130px;float: left;" role="form" method="post" id="myform3" action="">
+			<input type="hidden" value="3" name="iStatus">
+			<button id="formquerybtn3">未通过审核</button>
+		</form>
+		<form style="width: 100px;float: left;" role="form" method="post" id="myform4" action="">
+			<input type="hidden" value="1" name="iMediaType">
+			<button id="formquerybtn4">公众号</button>
+		</form>
+		<form style="width: 100px;float: left;" role="form" method="post" id="myform5" action="">
+			<input type="hidden" value="3" name="iMediaType">
+			<button id="formquerybtn5">新浪微博</button>
+		</form>
+		<div style="float: none;clear: both;width: 0;height: 0;"></div>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">订单编号</th>
+    			<th class="text-center">用户名</th>
+    			<th class="text-center">订单名</th>
+				<th class="text-center">媒体类型</th>
+    			<th class="text-center">广告预算</th>
+    			<th class="text-center">投放时间</th>
+				<th class="text-center">创建时间</th>
+				<th class="text-center">类型</th>
+    			<th class="text-center">订单总金额</th>
+    			<th class="text-center">支付状态</th>
+    			<th class="text-center">状态</th>
+				<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php
+	//	print_r($aList)    ;
+        foreach ($aList['aList'] as $v) {
+			$sRealName = isset($aData[$v['iUserID']]['sRealName']) ? $aData[$v['iUserID']]['sRealName'] : '';
+        ?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $v['iAdID']?></td>
+    			<td class="text-center"><?php echo $sRealName?></td>
+    			<td class="text-center"><?php echo $v['sAdName'];?></td>
+				<td class="text-center"><?php echo $v['iMediaType'];?></td>
+    			<td class="text-center"><?php echo $v['iPlanMinMoney'];?>-<?php echo $v['iPlanMaxMoney'];?></td>
+    			<td class="text-center"><?php echo ((isset($v['iPlanTime']) && $v['iPlanTime'] > 0) ? (date('Y-m-d' , $v['iPlanTime'])) : '');?></td>
+				<td class="text-center"><?php echo ((isset($v['iCreateTime']) && $v['iCreateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iCreateTime'])) : '');?></td>
+				<td class="text-center"><?php echo $v['iAdType']?></td>
+    			<td class="text-center"><?php echo $v['iTotalMoney']?></td>
+    			<td class="text-center"><?php echo $v['iPayStatus']?></td>
+    			<td class="text-center"><?php echo $v['iStatus']?></td>
+				<td class="text-center">
+    			    <a href="/admin/ad/edit?id=<?php echo $v['iAdID']?>" title=""><i class="fa fa-pencil fa-large"></i></a>
+<!--    			    <a href="/admin/mediaorder/list.html?iAdID=--><?php //echo $v['iAdID']?><!--" title="资源列表"><i class="fa fa-list fa-large"></i></a>-->
+    			    <a href="/admin/ad/show.html?id=<?php echo $v['iAdID']?>" title="详情"><i class="fa fa-th-large fa-large"></i></a>
+    			     <a class="ad_delete" href="/admin/ad/del?id=<?php echo $v['iAdID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$("#formquerybtn").bind("click", function() {  
+    var url = "/admin/ad/list.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$("#formquerybtn1").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform1").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform1").submit();
+});
+$("#formquerybtn2").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform2").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform2").submit();
+});
+$("#formquerybtn1").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform1").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform1").submit();
+});
+$("#formquerybtn2").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform2").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform2").submit();
+});
+$("#formquerybtn3").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform3").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform3").submit();
+});
+$("#formquerybtn4").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform4").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform4").submit();
+});
+$("#formquerybtn5").bind("click", function() {
+	var url = "/admin/ad/list.html";
+	//更改form的action
+	$("#myform5").attr("action", url);
+	//触发submit事件，提交表单
+	$("#myform5").submit();
+});
+$("#formexplodebtn").bind("click", function() {  
+    var url = "/admin/ad/explode.html";  
+    //更改form的action  
+    $("#myform").attr("action", url);  
+    //触发submit事件，提交表单   
+    $("#myform").submit();  
+});
+$('.ad_delete').click(function() {
+	if (confirm("您确认要删除该广告吗？")) {
+		$.get(this.href, function(ret){
+			alert(ret.data);
+		    if (ret.status) {
+			    location.reload();
+		    }
+		}, 'json');
+	}
+	return false;
+});
+$('#ad_add').click(function(){
+	location.href = '/admin/ad/add';
+});
+</script>

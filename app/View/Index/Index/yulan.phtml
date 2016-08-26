@@ -1,0 +1,134 @@
+<link rel="stylesheet" type="text/css" href="/front/css/yulan.css">
+<div class="body">
+    <?php //print_r($aSetting) ?>
+    <div class="_body">
+        <!--进度至确认预览-->
+        <div class="cf2 step_o">
+            <div class="cf2 step_o_w">
+                <ul class="step_o cf2 step_3">
+                    <li>
+                        <span class="eng"></span>
+                        <p>添加推广</p>
+                    </li>
+                    <li>
+                        <span class="eng"></span>
+                        <p>选择媒介</p>
+                    </li>
+                    <li>
+                        <span class="eng"></span>
+                        <p>确认预览</p>
+                    </li>
+                    <li class="light">
+                        <span class="eng"></span>
+                        <p>支付款项</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <?php //print_r($aList) ?>
+        <!--订单信息-->
+        <div class="tablebox">
+            <table class="tableone">
+                <tr>
+                    <th>订单号</th>
+                    <th>推广名称</th>
+                    <th>下单时间</th>
+                    <th>投放时间</th>
+                    <th>支付状态</th>
+                    <th>账号个数</th>
+                    <th>总投放金额</th>
+                    <th>查看内容</th>
+                    <th>订单备注</th>
+                </tr>
+                <tr>
+
+                    <td id=""><?php echo $aAd['iAdID'] ?></td>
+                    <td id=""><?php  echo$aAd['sAdName'] ?></td>
+                    <td id=""><?php echo date('Y-m-d H:i', $aAd['iCreateTime'])?></td>
+                    <td id=""><?php echo date('Y-m-d H:i', $aAd['iPlanTime'])?></td>
+                    <td id=""><span><?php  echo$aAd['iPayStatus']==0?'未支付':'已支付' ?></span></td>
+                    <td id=""><?php echo count($aList) ?></td>
+                    <td id=""><?php echo $iTotalMoney ?></td>
+                    <td id=""><a href="javascript:;" id="show" style="color: red">查看</a></td>
+                        <td id=""><?php echo $aAd['iBeizhu']?></td>
+                </tr>
+
+            </table>
+
+            <ul class="alter">
+                <li><a href='/ad/add4/id/<?php echo $aAd['iAdID']?>.html'"><img src="/front/images/zhifu2.jpg"/> <span>立即支付</span></a></li>
+                <li><a href="/media/index/id/<?php echo $aAd['iAdID']?>.html"><img src="/front/images/zhifu.jpg"/> <span>修改资源</span></a></li>
+                <li><a href="/ad/add/id/<?php echo $aAd['iAdID']?>.html" ><img src="/front/images/zhifu3.jpg"/> <span>修改内容</span></a></li>
+            </ul>
+
+            <p><img src="/front/images/xiangqing2.jpg"/>&nbsp;<span>资源列表</span></p>
+            <table class="list">
+                <tr>
+                    <th>订单号</th>
+                    <th>媒体类型</th>
+                    <th>账号名称</th>
+                    <th>粉丝数</th>
+                    <th>认证状态</th>
+                    <th>推广位置</th>
+                    <th>账号价格</th>
+                    <th>执行时间</th>
+                </tr>
+                <?php foreach($aList as $k=>$v) {?>
+                <tr>
+                    <td id=""><?php echo $v['iAutoID'] ?></td>
+                    <td id=""><span><?php echo $v['aMedia']['iMediaType']==1?'微信公众号':'新浪微博'?></span></td>
+                    <td id=""><?php
+                        if($v['aMedia']['iMediaType']==1){
+                            echo $v['aMedia']['sMediaName'];
+                            echo "<br/>";
+                            echo '('.$v['aMedia']['sOpenName'].')';
+                        } else{
+                            echo $v['aMedia']['sMediaName'] ;
+                        }?>
+                    </td>
+                    <td id=""><?php echo $v['aMedia']['iFollowerNum'] ?></td>
+                    <td id=""><?php
+                        if($v['aMedia']['iMediaType']==1){
+                          echo  $v['aMedia']['iVerifyState']==125?'已认证':'未认证';
+                        }
+                        else{
+                         echo   $v['aMedia']['iVerifyState']==130?'草根':$v['aMedia']['iVerifyState']==129?'达人':$v['aMedia']['iVerifyState']==128?'黄V':'蓝V';
+                        }?></td>
+                    <td id=""><?php echo$aTitle[$v['iAdPos']] ?></td>
+                    <td id=""><?php $num=$v['iAdPos']+4;
+                        $iPrice='iPrice'.$num ;
+                        echo $v['aMedia'][$iPrice]?></td>
+                    <td id=""> <?php echo date('Y-m-d H:i', $v['iPlanTime'])?> </td>
+                </tr>
+                <?php  } ?>
+            </table>
+        </div>
+
+        <div class="conntent" style="width: 400px;">
+
+        </div>
+
+</div>
+
+<script src="/front/js/yulan.js"></script>
+    <script type="text/javascript">
+           var wenzi=" ";
+      $('#show').click(function () {
+          //alert(1);
+
+          layer.open({
+              type: 1,
+              skin: 'layui-layer-rim', //加上边框
+              area: ['800px', '600px'], //宽高
+              content: '<div style="font-size: x-large;color: red;text-align: center;">' +
+              '<?php echo empty($aSetting)?'':$aSetting['sTitle']?> ' +
+              '<br><br><br></div>' +
+              '<div>' +
+              '<?php echo empty($aSetting)?'':$aSetting['sContent']?>' +
+              '</div> '
+          });
+      })
+    </script>
+
+
+

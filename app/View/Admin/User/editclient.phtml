@@ -1,0 +1,271 @@
+<div class="pheader clearfix"><?php echo isset($aUser['iUserID'])?'编辑':'增加'?>客户</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aUser['iUserID'])?$aUser['iUserID']:''?>">
+
+		<div class="form-group col-sm-6">
+			<label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span> 客户名称：</label>
+			<div class="col-sm-9">
+				<input name="sRealName" validate="!clength:1-20" placeholder="请输入客户名称" type="text" value="<?php echo !empty($aUser['sRealName'])?$aUser['sRealName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sUserName" class="col-sm-3 control-label"> <span class="tubiao">*</span>客户编号/账号：</label>
+			<div class="col-sm-9">
+				<input name="sUserName" validate="!clength:1-20" placeholder="请输入客户编号/账号" type="text" value="<?php echo isset($aUser['sUserName'])?$aUser['sUserName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sUserShortName" class="col-sm-3 control-label">客户简称：</label>
+			<div class="col-sm-9">
+				<input name="sUserShortName" placeholder="请输入客户简称" type="text" value="<?php echo isset($aUser['sUserShortName'])?$aUser['sUserShortName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sUserEngName" class="col-sm-3 control-label"> 客户英文名：</label>
+			<div class="col-sm-9">
+				<input name="sUserEngName" type="text" value="<?php echo isset($aUser['sUserEngName'])?$aUser['sUserEngName']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoIndustry" class="col-sm-3 control-label">客户行业：</label>
+			<div class="col-sm-9">
+				<select name="sCoIndustry" class="form-control input-validate">
+					<?php foreach ($aIndustry as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['sCoIndustry'])&&$aUser['sCoIndustry']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iProperty" class="col-sm-3 control-label">客户性质：</label>
+			<div class="col-sm-9">
+				<select name="iProperty" class="form-control input-validate">
+					<?php foreach ($aProperty as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iProperty'])&&$aUser['iProperty']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCreditLevel" class="col-sm-3 control-label">信用等级：</label>
+			<div class="col-sm-9">
+				<select name="iCreditLevel" class="form-control input-validate">
+					<?php foreach ($aCreditLevel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iCreditLevel'])&&$aUser['iCreditLevel']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iRelationLevel" class="col-sm-3 control-label">关系等级：</label>
+			<div class="col-sm-9">
+				<select name="iRelationLevel" class="form-control input-validate">
+					<?php foreach ($aRelationLevel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iRelationLevel'])&&$aUser['iRelationLevel']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iChannel" class="col-sm-3 control-label">客户渠道：</label>
+			<div class="col-sm-9">
+				<select name="iChannel" class="form-control input-validate">
+					<?php foreach ($aChannel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iChannel'])&&$aUser['iChannel']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iUserNum" class="col-sm-3 control-label">员工数量：</label>
+			<div class="col-sm-9">
+				<select name="iUserNum" class="form-control input-validate">
+					<?php foreach ($aUserNum as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iUserNum'])&&$aUser['iUserNum']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCreditNum" class="col-sm-3 control-label"> 信用透支额度：</label>
+			<div class="col-sm-9">
+				<input name="iCreditNum" type="text" value="<?php echo isset($aUser['iCreditNum'])?$aUser['iCreditNum']:''?>" class="form-control input-validate">元
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCustomerManager" class="col-sm-3 control-label">客户经理：</label>
+			<div class="col-sm-9">
+				<select name="iCustomerManager" class="form-control input-validate">
+					<?php foreach ($aCustomerManager as $k => $v) {?>
+						<option value="<?php echo $v['iUserID']?>" <?php echo isset($aUser['iCustomerManager'])&&$aUser['iCustomerManager']==$v['iUserID']?'selected':''?>><?php echo $v['sRealName'].'--'.$v['sUserName']?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sHrName" class="col-sm-3 control-label"> HR联系人姓名：</label>
+			<div class="col-sm-9">
+				<input name="sHrName" type="text" value="<?php echo isset($aUser['sHrName'])?$aUser['sHrName']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sEmail" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮箱：</label>
+			<div class="col-sm-9">
+				<input name="sEmail" validate="!clength:1-20" placeholder="请输入邮箱" type="text" value="<?php echo isset($aUser['sEmail'])?$aUser['sEmail']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sMobile" class="col-sm-3 control-label"> 手机号码：</label>
+			<div class="col-sm-9">
+				<input name="sMobile" type="text" value="<?php echo isset($aUser['sMobile'])?$aUser['sMobile']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoAddress" class="col-sm-3 control-label"> 通讯地址：</label>
+			<div class="col-sm-9">
+				<input name="sCoAddress" type="text" value="<?php echo isset($aUser['sCoAddress'])?$aUser['sCoAddress']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoMobile" class="col-sm-3 control-label"> 公司电话：</label>
+			<div class="col-sm-9">
+				<input name="sCoMobile" type="text" value="<?php echo isset($aUser['sCoMobile'])?$aUser['sCoMobile']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoFex" class="col-sm-3 control-label"> 传真：</label>
+			<div class="col-sm-9">
+				<input name="sCoFex" type="text" value="<?php echo isset($aUser['sCoFex'])?$aUser['sCoFex']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoWebsite" class="col-sm-3 control-label"> 网址：</label>
+			<div class="col-sm-9">
+				<input name="sCoWebsite" type="text" value="<?php echo isset($aUser['sCoWebsite'])?$aUser['sCoWebsite']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoZipCode" class="col-sm-3 control-label"> 邮政编码：</label>
+			<div class="col-sm-9">
+				<input name="sCoZipCode" type="text" value="<?php echo isset($aUser['sCoZipCode'])?$aUser['sCoZipCode']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sAFManagerName" class="col-sm-3 control-label"> AF经理姓名：</label>
+			<div class="col-sm-9">
+				<input name="sAFManagerName" type="text" value="<?php echo isset($aUser['sAFManagerName'])?$aUser['sAFManagerName']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sAFMangaerEmail" class="col-sm-3 control-label"> AF经理邮箱：</label>
+			<div class="col-sm-9">
+				<input name="sAFMangaerEmail" type="text" value="<?php echo isset($aUser['sAFMangaerEmail'])?$aUser['sAFMangaerEmail']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sAFMangerMobile" class="col-sm-3 control-label"> AF经理手机：</label>
+			<div class="col-sm-9">
+				<input name="sAFMangerMobile" type="text" value="<?php echo isset($aUser['sAFMangerMobile'])?$aUser['sAFMangerMobile']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iAuthenticateType" class="col-sm-3 control-label">认证模式：</label>
+			<div class="col-sm-9">
+				<select name="iAuthenticateType" class="form-control input-validate">
+					<?php foreach ($aAuthenticateType as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iAuthenticateType'])&&$aUser['iAuthenticateType']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iSendMassage" class="col-sm-3 control-label">发送体检通知：</label>
+			<div class="col-sm-9">
+				<select name="iSendMassage" class="form-control input-validate">
+					<?php foreach ($aSendMassage as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iSendMassage'])&&$aUser['iSendMassage']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iLockUser" class="col-sm-3 control-label">是否锁定HR账号：</label>
+			<div class="col-sm-9">
+				<select name="iLockUser" class="form-control input-validate">
+					<?php foreach ($aLockUser as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iLockUser'])&&$aUser['iLockUser']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCanLoadReport" class="col-sm-3 control-label">是否允许下载
+				入职体检报告：</label>
+			<div class="col-sm-9">
+				<select name="iCanLoadReport" class="form-control input-validate">
+					<?php foreach ($aCanLoadReport as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aUser['iCanLoadReport'])&&$aUser['iCanLoadReport']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-9">
+			<label for="sRemark" class="col-sm-2 control-label"> 备注：</label>
+			<div class="col-sm-10">
+				<textarea name="sRemark" class="form-control input-validate"><?php echo isset($aUser['sRemark'])?$aUser['sRemark']:''?></textarea>
+			</div>
+		</div>
+
+
+    	<div class="btn-toolbar text-center col-sm-12">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/user/clientlist/';return false;">取消</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	           location.href = '/admin/user/clientlist/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

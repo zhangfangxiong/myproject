@@ -1,0 +1,66 @@
+<div class="pheader clearfix"><?php echo isset($aContact['iID'])?'编辑':'增加'?>联系人信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+    	<input name="id" type="hidden" value="<?php echo isset($aContact['iStoreID'])?$aContact['iStoreID']:''?>">
+        <input name="iID" type="hidden" value="<?php echo isset($aContact['iID'])?$aContact['iID']:''?>">
+        <div class="form-group col-sm-12">
+            <label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>姓名：</label>
+            <div class="col-sm-9">
+                <input name="sRealName"  type="text" value="<?php echo !empty($aContact['sRealName']) ? $aContact['sRealName'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>  
+
+        <div class="form-group col-sm-12">
+            <label for="sAppellation" class="col-sm-3 control-label"> <span class="tubiao">*</span>称谓：</label>
+            <div class="col-sm-9">
+                <input name="sAppellation"  type="text" value="<?php echo !empty($aContact['sAppellation']) ? $aContact['sAppellation'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>   
+
+        <div class="form-group col-sm-12">
+            <label for="sMobile" class="col-sm-3 control-label"> <span class="tubiao">*</span>手机号码：</label>
+            <div class="col-sm-9">
+                <input name="sMobile" type="text" value="<?php echo isset($aContact['sMobile'])?$aContact['sMobile']:''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <label for="sJobPhone" class="col-sm-3 control-label"> <span class="tubiao">*</span>工作电话：</label>
+            <div class="col-sm-9">
+                <input name="sJobPhone" type="text" value="<?php echo isset($aContact['sJobPhone'])?$aContact['sJobPhone']:''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-12">
+            <label for="sEmail" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮箱：</label>
+            <div class="col-sm-9">
+                <input name="sEmail" type="text" value="<?php echo isset($aContact['sEmail'])?$aContact['sEmail']:''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">保存</button>            
+            <a class="text-right btn btn-default" href=<?php echo $sDelUrl;?>>取消</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){            
+            if (ret.status) {
+               window.location.href = ret.data;
+            } else {
+            	alert(ret.data);	
+            }            
+        }, 'json');
+        return false;
+    }});
+});
+</script>

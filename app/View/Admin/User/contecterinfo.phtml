@@ -1,0 +1,42 @@
+<?php include('clientinfoheader.phtml'); ?>
+<div class="pbody clearfix">
+    <div class="form-group col-sm-3">
+        <button class="btn btn-primary" id="contecter_add">添加联系人</button>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">称谓</th>
+            <th class="text-center">Email</th>
+            <th class="text-center">工作电话</th>
+            <th class="text-center">移动电话</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($value['sRealName']) ? $value['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sAppellation']) ? $value['sAppellation'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sEmail']) ? $value['sEmail'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sJobPhone']) ? $value['sJobPhone'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sMobile']) ? $value['sMobile'] : '' ?></td>
+                    <td class="text-center">
+                        <a href="/admin/contecter/edit?id=<?php echo !empty($value['iID']) ? $value['iID'] : '' ?>" title="编辑"><i
+                                class="fa fa-pencil fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script>
+    $('#contecter_add').click(function () {
+        location.href = '/admin/contecter/add?id=<?php echo !empty($iUserID) ? $iUserID : 0 ?>';
+        return false;
+    });
+</script>

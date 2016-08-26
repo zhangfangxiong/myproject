@@ -1,0 +1,85 @@
+@charset "utf-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+body { background:#fff; color:#000; font-size:16px; font-family: 微软雅黑,Verdana, Arial, Helvetica, sans-serif; }
+td,th,caption { font-size:16px; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal;}
+a { color:#000; text-decoration:none; }
+a:hover { text-decoration:underline; }
+img { border:none; }
+ol,ul,li { list-style:none; }
+input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
+table { border-collapse:collapse; }
+html {overflow-y: scroll;}
+/* css common */
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+.clear{ clear:both;}
+.cursor{cursor: pointer;}
+.imgleft:hover,.imgright:hover{background-color: #c81624;}
+
+
+body{width: 100%;background-color: #f6f6f6;}
+
+#p{width: 100%;height: 100px;background-color: #acacac;}
+
+.box{width: 1000px;margin: 0 auto;}
+
+/*案例中心*/
+.center_a{width: 140px;height: 30px;margin:40px auto;text-align: center;}
+.center_a p{font-size: 22px;}
+.center_a .sub{width: 52px;height: 2px;position:relative;left:22px;background-color: #ce1e1d;margin: 4px auto;}
+.center_a span{color: #8F8F8F;}
+/*图片滚动*/
+.gundong{width: 100%;margin: 0px auto;}
+.roll{width: 980px;height: 290px;margin: 20px auto;overflow: hidden;position:relative;}
+.roll .roll_ul{height: 280px;width: 4000px;margin: 5px auto;position: relative;}
+.roll .roll_ul li{float: left;margin-left: 20px;height: 270px;}
+.roll .roll_ul .roll_a div{display: inline;float: left; }
+.roll .roll_ul li img{width: 380px;height: 260px;position: relative;top: 12px;}
+.roll .roll_ul .roll_a .right{width:580px;}
+.roll .roll_ul .roll_a .right .firstline{width: 560px;font-size: 14px;line-height: 18px;margin: 10px auto auto 50px;}
+.roll .roll_ul .roll_a .right .firstline div{float:left;}
+.roll .roll_ul .roll_a .right .firstline-2{width: 100px;text-align: right;}
+.roll .roll_ul .roll_a .right .firstline-3{width: 380px;}
+
+
+.roll_li{margin:4px auto;width: 80px;height: 10px;}
+.roll_li li{float: left;width: 10px;height: 10px;border-radius:50%;background-color: #818181;margin: 0px 5px auto;}
+.roll_li .on{background-color: #FE76D5;}
+
+.gundong .imgleft,.imgright{width: 40px;height: 40px;background-color: #acacac;border-radius: 50%;}
+.gundong .imgleft img{position: relative;top:9px;left: 12px;}
+.gundong .imgright img{position: relative;top:9px;left: 14px;}
+.gundong .imgleft {float:left;position: relative;top:-200px;left: -50px;}
+.gundong .imgright {float:right;position: relative;top:-200px;left: 50px;}
+
+/*案例中心*/
+.center_b{width: 140px;height: 30px;margin:40px auto;text-align: center;}
+.center_b p{font-size: 22px;}
+.center_b .sub{width: 52px;height: 2px;position:relative;left:22px;background-color: #ce1e1d;margin: 4px auto;}
+.center_b span{color: #8F8F8F;}
+/*tab*/
+/*.tab{width: 100%;}*/
+/*.tab .tab_ul{width: 100%;height: 100px;background-color: #FFFFFF;}*/
+/*.tab .tab_ul li{float: left;width: 100px;height: 100px;line-height: 100px;text-align: center;margin-right: 20px;*/
+    /*background: url("../images/help/sanjiao.png");background-repeat: no-repeat;background-position: 44px 80px;}*/
+/*.tab .tab_ul li:hover{background-color: #e91c1a;}*/
+/*.tab .tab_ul li a:hover{color:#fff;}*/
+/*.tab .tab_ul li a{width:100px;height:100px;display:block;text-decoration: none;font-size: 16px;}*/
+
+.show_ul{width: 100%;height: 520px;margin:20px auto;background-color: #ffffff;}
+.show_ul li{width: 470px;height: 230px;overflow: hidden;position:relative;float:left;padding: 20px 0 0 20px;text-align: center;}
+.show_ul li img{width: 100%;height: 100%;z-index: 0;}
+.show_ul li .tip{width: 100%;height: 110px;position:relative;bottom:30px;z-index: 10;text-overflow:ellipsis;color: #fff;
+    -o-text-overflow:ellipsis;
+    background-color: #ce1e1d;
+    opacity: .75;
+    filter:alpha(opacity=75);/*低版本IE*/
+    -moz-opacity:0.75;/*兼容firefox*/
+    -khtml-opacity:0.75;}
+.show_ul li .tip p{width: 100%;height: 30px;font-size: 18px;line-height: 30px;}
+/*.show_ul li .tips{line-height: 30px;}*/
+.show_ul li .tips2{width: 90%;height:80px;margin:0 auto;font-size:14px;line-height:26px;text-overflow:ellipsis;
+    -o-text-overflow:ellipsis;}

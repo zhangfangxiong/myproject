@@ -1,0 +1,65 @@
+<div class="pheader clearfix"><?php echo isset($aUser['iAdminID'])?'编辑':'增加'?>用户</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iAdminID" type="hidden" value="<?php echo isset($aUser['iAdminID'])?$aUser['iAdminID']:''?>">
+    	<div class="form-group">
+    		<label for="sAdminName" class="col-sm-2 control-label"><span style="color:red;">*</span> 用户名称：</label>
+    		<div class="col-sm-10">
+    			<input name="sAdminName" readonly type="text" validate="!length:3-50" value="<?php echo isset($aUser['sAdminName'])?$aUser['sAdminName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sMobile" class="col-sm-2 control-label"><span style="color:red;">*</span> 手机号码：</label>
+    		<div class="col-sm-10">
+    			<input name="sMobile" readonly type="text" validate="!mobile:true" value="<?php echo isset($aUser['sMobile'])?$aUser['sMobile']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sEmail" class="col-sm-2 control-label"><span style="color:red;">*</span> 公司邮箱：</label>
+    		<div class="col-sm-10">
+    			<input name="sEmail" readonly type="text" validate="!email:true" value="<?php echo isset($aUser['sEmail'])?$aUser['sEmail']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sRealName" class="col-sm-2 control-label"><span style="color:red;">*</span> 真实姓名：</label>
+    		<div class="col-sm-10">
+    			<input name="sRealName" readonly type="text" validate="!chinese:2-20" value="<?php echo isset($aUser['sRealName'])?$aUser['sRealName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sRealName" class="col-sm-2 control-label"><span style="color:red;">*</span> 默认城市：</label>
+    		<div class="col-sm-10">
+    		    <input name="iCityID" type="text" readonly value="<?php echo $aCity[$aUser['iCityID']]?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sRealName" class="col-sm-2 control-label"><span style="color:red;">*</span> 角色选择：</label>
+    		<div class="col-sm-10">
+    		    <div class="col-sm-8" validate="!checkbox:aRoleID[]|sAdminID:1:角色">
+        		    <input type="checkbox" disabled class="checkbox-inline" name="sAdminID" value="1" <?php echo isset($aUser['iRoleID'])&&$aUser['iRoleID']=='-1'?'checked':''?>> 管理员<br>
+    		    <?php $n = 1; foreach ($aRole as $k => $v) {?>
+    		        <input type="checkbox" disabled class="checkbox-inline" name="aRoleID[]" value="<?php echo $k?>" <?php echo isset($aUser['aRoleID'])&&in_array($k,$aUser['aRoleID'])?'checked':''?>> <?php echo $v?>
+    		    <?php if ($n++ % 8 == 0){echo '<br>';}}?>
+		        </div>
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    	<div class="form-group">
+    		<label for="sRealName" class="col-sm-2 control-label"><span style="color:red;">*</span> 城市选择：</label>
+    		<div class="col-sm-10">
+    		    <div class="col-sm-8" validate="!checkbox:aCityID[]|sAllCityID:1:城市">
+        		    <input type="checkbox" disabled class="checkbox-inline" name="sAllCityID" value="1" <?php echo isset($aUser['sCityID'])&&$aUser['sCityID']=='-1'?'checked':''?>> 所有城市<br>
+    		    <?php $n = 1; foreach ($aCity as $k => $v) {?>
+    		        <input type="checkbox" disabled class="checkbox-inline" name="aCityID[]" value="<?php echo $k?>" <?php echo isset($aUser['aCityID'])&&in_array($k,$aUser['aCityID'])?'checked':''?>> <?php echo $v?>
+    		    <?php if ($n++ % 8 == 0){echo '<br>';}}?>
+		        </div>
+				<span class="validate_checktip"></span>
+    		</div>
+    	</div>
+    </form>
+</div>

@@ -1,0 +1,242 @@
+<div class="pheader clearfix">体检数据核对</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/order/check">
+        <div class="form-group col-sm-12">
+            <div class="col-sm-3">
+                <label style="width: 100px">公司名称：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCoName']) ? $aParam['sCoName'] : '' ?>"
+                       class="form-control" name="sCoName" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">员工姓名：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">预约状态：</label>
+                <select name="iBookStatus" class="form-control" style="width: 120px">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iBookStatus']) && $aParam['iBookStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">体检类型：</label>
+                <select name="iPhysicalType" class="form-control" style="width: 120px">
+                    <option value="0">请选择</option>
+                    <?php foreach ($aPType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iPhysicalType']) && $aParam['iPhysicalType'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <div class="col-sm-3">
+                <label style="width: 100px">公司编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCoCode']) ? $aParam['sCoCode'] : '' ?>"
+                       class="form-control" name="sCoCode" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">员工编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sUserName']) ? $aParam['sUserName'] : '' ?>"
+                       class="form-control" name="sUserCode" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">短信是否发送：</label>
+                <select name="iSendMsg" class="form-control" style="width: 120px">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aMsgStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iSendMsg']) && $aParam['iSendMsg'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">邮件是否发送：</label>
+                <select name="iSendEMail" class="form-control" style="width: 120px">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aEMailStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iSendEMail']) && $aParam['iSendEMail'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <div class="col-sm-3">
+                <label style="width: 100px">任务单号：</label>
+                <input type="text" value="<?php echo !empty($aParam['iAutoID']) ? $aParam['iAutoID'] : '' ?>"
+                       class="form-control" name="iAutoID" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">身份证号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sIdentityCard']) ? $aParam['sIdentityCard'] : '' ?>"
+                       class="form-control" name="sIdentityCard" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label style="width: 100px">体检卡号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCardCode']) ? $aParam['sCardCode'] : '' ?>"
+                       class="form-control" name="sCardCode" style="width: 120px">
+            </div>
+            <div class="col-sm-3">
+                <label>是否显示体检卡：</label>
+                <select name="iIsShow" class="form-control" style="width: 110px">
+                    <?php foreach ($aShowStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iIsShow']) && $aParam['iIsShow'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <div class="col-sm-6">
+                <label style="width: 100px">操作时间：</label>
+                <input type="text" value="<?php echo !empty($aParam['sOptStartDate']) ? $aParam['sOptStartDate'] : '' ?>"
+                       class="form-control laydatetime" format="YYYY-MM-DD" name="sOptStartDate" style="width: 120px">
+				至
+				<input type="text" value="<?php echo !empty($aParam['sOptEndDate']) ? $aParam['sOptEndDate'] : '' ?>"
+                       class="form-control laydatetime" format="YYYY-MM-DD" name="sOptEndDate" style="width: 120px">
+            </div>
+            <div class="col-sm-6" style="text-align:right">
+                <label><a href="/admin/order/errorlist" style="color:red;padding-right:20px">预约报错预警：<?php echo !empty($iError) ? $iError : 0;?></a></label>
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                <!--<a id="sendmsg" class="btn btn-primary" href="javascript: batchsendmsg();">发送体检通知</a>-->
+                <a id="batchddiscard" class="btn btn-primary" href="javascript: batchddiscard();">批量作废</a>
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr class="info">
+            <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+            <th class="text-center">人员信息</th>
+            <th class="text-center">公司信息</th>
+            <th class="text-center">体检周期</th>
+            <th class="text-center">联系方式</th>
+            <th class="text-center">计划产品</th>
+            <th class="text-center">预约状态</th>
+            <th class="text-center">操作时间</th>
+            <th class="text-center">发送通知</th>
+            <th class="text-center">查看</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $v) { ?>
+                <tr>
+                    <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]"
+                                                   value="<?php echo !empty($v['iAutoID']) ? $v['iAutoID'] : 0 ?>" cardid="<?php echo !empty($v['iCardID']) ? $v['iCardID'] : 0;?>">
+                    </td>
+                    <td class="text-center">
+                        <?php echo !empty($v['sUserName']) ? $v['sUserName'] : '' ?> <br>
+                        <?php echo !empty($v['iUserID']) ? $v['iUserID'] : '' ?> <br>
+                        <?php echo !empty($v['sRealName']) ? $v['sRealName'] : '' ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo !empty($v['sCompanyCode']) ? $v['sCompanyCode'] : '' ?> <br>
+                        <?php echo !empty($v['sCompanyName']) ? $v['sCompanyName'] : '' ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo ( !empty($v['sStartDate']) && $v['sStartDate'] != "0000-00-00" )? $v['sStartDate'] : '' ?><br>
+                        <?php echo ( !empty($v['sEndDate']) && $v['sEndDate'] != "0000-00-00" ) ? $v['sEndDate'] : '' ?>
+                    </td>
+                    <td class="text-center">
+                        <?php echo !empty($v['sMobile']) ? $v['sMobile'] : '' ?><br>
+                        <?php echo !empty($v['sEmail']) ? $v['sEmail'] : '' ?>
+                    </td>
+                    <td class="text-center">
+                        任务单号：<?php echo !empty($v['iCardID']) ? $v['iCardID'] : '' ?><br>
+                        <?php echo !empty($v['sProductName']) ? $v['sProductName'] : '' ?>
+                    </td>
+                    <td class="text-center"><?php echo !empty($aStatus[$v['iBookStatus']]) ? $aStatus[$v['iBookStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($v['iUpdateTime']) ? date('Y-m-d H:i:s',$v['iUpdateTime']) : '' ?></td>
+                    <td class="text-center">
+                        <?php echo !empty($aPType[$v['iPhysicalType']]) ? $aPType[$v['iPhysicalType']] : '' ?><br>
+                                                                短信<?php echo !empty($v['iSendMsg']) ? '已发送' : '未发送' ?><br>
+                                                                邮件<?php echo !empty($v['iSendEMail']) ? '已发送' : '未发送' ?>
+                    </td>
+                    <td class="text-center">
+                        <a href="/admin/order/detail?iCradID=<?php echo $v['iCardID'] ?>&icpID=<?php echo $v['iAutoID'] ?>" title="查看"><i
+                                class="fa fa-eye fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script>
+    //全选效果
+    $('#itemall').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+
+    $('.itemlist').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('#itemall').prop("checked", false);
+        }
+    });
+
+    function batchsendmsg(){
+        var select_item = '';
+        var count_num = 0;
+        $('.itemlist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_item += $(dom).attr('cardid') + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要发送通知的人员');
+            return false;
+        }
+        select_item = select_item.substring(0, select_item.length - 1);
+        if (confirm("您确认要为选中的" + count_num + "个人发送体检通知吗？")) {
+            $.post('/admin/order/batchSend', {iCardIDs: select_item}, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                }else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        }
+    }
+
+    function batchddiscard(){
+        var select_item = '';
+        var count_num = 0;
+        $('.itemlist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_item += $(dom).val() + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要作废的卡');
+            return false;
+        }
+        select_item = select_item.substring(0, select_item.length - 1);
+        if (confirm("您确认要作废选中的" + count_num + "个体检卡吗？")) {
+
+            $.post('/admin/order/batchDiscard', {iCardIDs: select_item}, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                }else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        }
+    }
+</script>

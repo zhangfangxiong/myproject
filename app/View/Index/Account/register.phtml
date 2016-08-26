@@ -1,0 +1,186 @@
+<form id="myform" action="" method="post">
+<div class="cui_bd">
+    <div class="reg_wrap">
+        <div class="reg_title">
+            <div class="pr pd02 bs03 pdr10" style="padding-top: 5px; padding-bottom: 5px">
+                <h3 class="tit_siller">
+                    <strong style="font-size: 16px;">用户注册</strong></h3>
+                <div style="float: right; padding-right: 20px;">
+                </div>
+            </div>
+            <div class="sub_title">
+                
+            </div>
+        </div>
+        <div class="reg_form reg_form_step1">
+            <dl id="Dl1">
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>姓名</dt>
+                <dd>
+                    <input name="sRealName" type="text" id="main_userName" class="r_input input_l" placeholder="您的姓名" />
+                </dd>
+            </dl>
+            <div class="base_error" id="erroName" style="display: none;">
+            </div>
+            <dl id="Dl2">
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>性别</dt>
+                <dd>
+                    <table id="main_rbtnSex" style="margin-top: 10px;">
+                        <tr>
+                            <td>
+                                <input type="radio" name="iSex" value="1" checked="checked" />
+                                <label for="">男</label>
+                            </td>
+                            <td>
+                                <input type="radio" name="iSex" value="2" />
+                                <label for="">女</label>
+                            </td>
+                        </tr>
+                    </table>
+                </dd>
+            </dl>
+            <div class="base_error" id="erroSex" style="display: none;">
+            </div>
+            <dl id="D13">
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>身份证</dt>
+                <dd>
+                    <input id="sIdentityCard" name="sIdentityCard" type="text" maxlength="55" class="r_input input_l" placeholder="您的身份证号码" autocomplete="off" />
+                </dd>                
+            </dl>
+            <div class="base_error" id="errID" style="display: none;">
+            </div>
+            <dl id="inputMobile">
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>手机号</dt>
+                <dd>
+                    <input id="sMobile" name="sMobile" type="text" maxlength="55" class="r_input input_l" placeholder="您的手机号码" autocomplete="off" />
+                </dd>
+                <input type="button" name="" value="发送验证码" id="again" class="reg_btn" style="font-size:15px; width:100px; height:35px;">
+            </dl>
+            <div class="base_error" id="errPhone" style="display: none;">
+            </div>
+            <dl id="login_passcode" class="p-input clearfix" style="">
+                <dt class="label">手机验证码</dt>
+                <dd>
+                    <input name="iPhoneCode" type="text" maxlength="55" class="r_input input_l" autocomplete="off" />
+                </dd>
+            </dl>
+            <dl>
+                <dt class="label">Email</dt>
+                <dd>
+                    <input name="sEmail" type="text" maxlength="55" class="r_input input_l" placeholder="您的邮箱" autocomplete="off" />
+                </dd>
+                <dd class="reg_tip"></dd>
+            </dl>
+            <div class="base_error" id="errEmail" style="display: none;">
+            </div>
+            <dl>
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>密码</dt>
+                <dd><input name="sPassword" type="password" maxlength="20" class="r_input input_l" /></dd>
+            </dl>
+            <div class="base_error" id="errPassword" style="display: none;">
+            </div>
+            <dl>
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>确认密码</dt>
+                <dd><input name="sPassword2" type="password" maxlength="20" class="r_input input_l" /></dd>
+            </dl>
+            <div class="base_error" id="errRepwd" style="display: none;">
+            </div>
+            <dl>
+                <dt class="label"><span style="color: Orange; font-size: 20px;">*</span>验证码</dt>
+                <dd>
+                    <input name="sCode" class="r_input input_l" />
+                    <img id="sCode" alt="看不清楚.点击更换" style="cursor: pointer; vertical-align: bottom; margin-bottom: 2px" />
+            </dl>
+            <div class="base_error" id="errVerifyCode" style="display: none;">
+            </div>
+            <dl>
+                <dt class="label">&nbsp;</dt>
+                <dd>
+                    <label class="base_label">
+                        <input type="checkbox" id="iAgree" name="iAgree" value="1">同意<span style="color: rgb(102, 102, 102);"
+                            onclick="showTos()">&lt;&lt;中盈安心网服务条款&gt;&gt;</span></label></dd>
+            </dl>
+            <div class="base_error" id="errShowTos" style="display: none;">
+            </div>
+            <dl class="form_space">
+                <dt class="label">&nbsp;</dt>
+                <dd>
+                    <input id="next-step" type="submit" value="注册"  class="reg_btn" />
+                </dd>
+            </dl>
+        </div>
+        <a class="to_card" href="#">
+            <img alt="" src="<?php echo $sStaticRoot ?>/backend/img/register_pic.png" style="width: 250px; height: 320px;" /></a>
+    </div>
+</div>
+<div class="base_pop" id="tos" style="width: 680px; display: none; z-index: 999;">
+    <div class="pop_hd">
+        <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+        <h3>中盈保险网站服务条款</h3>
+    </div>
+    <div class="pop_bd" style="overflow: hidden;">
+        <?php include 'agree.phtml' ?>
+        <div class="pop_btn">
+            <a class="btn02" id="checkTos" href="javascript:;">已阅读并同意条款</a>
+        </div>
+    </div>
+</div>
+</form>
+
+<script>
+    var Code2Url = '/index/Verify/sms?type=<?php echo $iCodeType2 ?>&mobile=';
+    var StepTwoUrl = '/index/web/list';
+
+    function codeChange2()
+    {
+        var Mobile = $('#sMobile').val();
+        if (!Mobile) {
+            alert('请输入手机号');
+            return false;
+        }
+        Code2Url = Code2Url + Mobile;
+        $.get(Code2Url, function(data){
+            console.log(data.data);
+        });
+    }
+
+    $('#again').click(function(){
+        codeChange2();
+    });
+
+    var CodeUrl = '/index/verify/image?type=<?php echo $iCodeType ?>';
+    function codeChange()
+    {
+        $('#sCode').attr('src',CodeUrl+'&'+Math.random());
+    }
+    codeChange();
+    $('#sCode').click(function(){
+        codeChange();
+    });
+    $('#next-step').click(function(){
+        var CanSummit = 0;
+        var form = $('#myform');
+        if($("#iAgree").prop("checked"))
+        {
+            CanSummit = 1;
+        } else {
+            alert('请先同意条款');
+            return false;
+        }
+        if (CanSummit) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    window.location = StepTwoUrl;
+                    return true;
+                } else {
+                    codeChange();
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    })
+
+</script>
+
+

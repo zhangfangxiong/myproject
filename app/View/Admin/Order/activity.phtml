@@ -1,0 +1,70 @@
+<div class="pheader clearfix">体检卡激活</div>
+<div class="pbody clearfix">
+    <?php
+        $acitivyNum = 0;
+        foreach($cards as $card) {
+            if(!empty($card['iStatus']) && 1 == $card['iStatus']){
+                $acitivyNum += 1;
+            }
+        }
+    ?>
+    <form id="myform1" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group col-sm-6">
+            <label>扫描卡号：</label>
+            <input type="hidden" value="<?php echo $iOrderID;?>" id="iOrderID" />
+            <div style="display: inline-block;">
+                <input type="text" style="width: 200px;display: inline-block;" name="sCardCode" class="form-control" value="" id="sCardCode">
+            </div>
+            <a href="javascript:updateinfo();" class="btn btn-primary">激活</a>
+            <a href="javascript: history.go(-1);" class="btn btn-primary">返回</a>
+        </div>
+        <div class="form-group col-sm-3">
+            <span style="font-size: 15px;line-height: 30px;">激活数量：<span id="activity"><?php echo $acitivyNum;?></span> / 总数：<span><?php echo sizeof($cards);?></span></span>
+        </div>
+        <div style="clear: both;"></div>
+    </form>
+
+    <table class="table table-bordered table-hover">
+        <tr class="info">
+        <td>序号</td>
+        <td>体检卡号</td>
+        <td>对应套餐(截止有效期)</td>
+        <td>使用状态</td>
+        <td>是否激活</td>
+        </tr>
+        <?php if(!empty($cards)) { ?>
+            <?php foreach($cards as $card) { ?>
+                <tr>
+                    <td><?php echo !empty($card['iAutoID']) ? $card['iAutoID'] : '';?></td>
+                    <td><?php echo !empty($card['sCardCode']) ? $card['sCardCode'] : '';?></td>
+                    <td>
+                        <?php
+                            echo !empty($card['sProductName']) ? $card['sProductName'] : '';
+                            echo "<br>";
+                            echo !empty($card['sEndDate']) ? $card['sEndDate'] : 0;
+                        ?>
+                    </td>
+                    <td><?php echo !empty($card['iBindStatus']) ? '已使用' : '未使用';?></td>
+                    <td><?php echo (!empty($card['iStatus']) && 1 == $card['iStatus']) ? '已激活' : '';?></td>
+                </tr>
+            <?php }?>
+        <?php }?>
+    </table>
+</div>
+
+<script>
+    function updateinfo(){
+        var iOrderID = $('#iOrderID').val();
+        var sCardCode = $('#sCardCode').val();
+
+        var url = '/admin/order/updateinfo';
+        $.post(url, {iOrderID: iOrderID, sCardCode: sCardCode, iStatus: 1}, function (ret) {
+            if (ret.data.code) {
+                location.reload();
+            }else {
+                alert(ret.data.msg);
+            }
+        }, 'json');
+    }
+
+</script>

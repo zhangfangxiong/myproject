@@ -1,0 +1,34 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="pheader clearfix">职级设置</div>
+<div class="pbody clearfix">
+	<a class="btn btn-default" href='/company/level/add'>添加职级</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">职级</th>
+            <th class="text-center">排序</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aLevel)) {
+            foreach ($aLevel as $level) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $level['sLevelName'] ?></td>
+                    <td class="text-center"><?php echo $level['iRank'] ?></td>
+                    <td class="text-center">
+                    	<a href="/company/level/edit?iLevelID=<?php echo $level['iAutoID'] ?>" title="编辑">
+                    		<i class="fa fa-pencil fa-large"></i>
+                    	</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+</div>

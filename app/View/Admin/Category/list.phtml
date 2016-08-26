@@ -1,0 +1,55 @@
+<?php include 'menu.phtml'; ?>
+
+<div class="pbody clearfix">
+    <?php if (!$iMenu) {?>
+    <a class="text-right btn btn-default" href='/admin/category/add'>新增大类</a>
+    <?php } else {?>
+    <a class="text-right btn btn-default" href='/admin/category/add?type=1'>新增分类</a>
+    <?php } ?>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <?php if (!$iMenu) {?>
+            <th class="text-center">大类名称</th>
+            <?php } else {?>
+            <th class="text-center">分类名称</th>
+            <th class="text-center">从属大类</th>
+            <?php } ?>
+            <th class="text-center">相应单项数量</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aCategory['aList']) {
+            foreach ($aCategory['aList'] as $key => $value) { ?>
+                <tr>                    
+                    <td class="text-center"><?php echo $value['sCateName'] ?></td>
+                    <?php if ($iMenu) {?>
+                    <td class="text-center"><?php echo $value['sBelong'] ?></td>
+                    <?php }?>
+                    <td class="text-center"><?php echo $value['iCount'] ?></td>
+                    <td class="text-center">
+                        <a href="/admin/category/edit?id=<?php echo $value['iAutoID'] ?>">修改</a>
+                        <a class='user_delete' href="javascript:;"  data-url="/admin/category/del?type=<?php echo $iMenu?>&&id=<?php echo $value['iAutoID']?>">删除</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aCategory['aPager']) ? $aCategory['aPager'] : '' ?>
+</div>
+
+<script>
+    $('.user_delete').click(function () {
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该类别吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+</script>

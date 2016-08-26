@@ -1,0 +1,19 @@
+<div class="pbody clearfix">
+    <div class="pheader pmargin clearfix"><?php echo !empty($aProduct['sProductName']) ? $aProduct['sProductName'] : '' ?>(<?php echo !empty($aProduct['sProductCode']) ? $aProduct['sProductCode'] : '' ?>)</div>
+
+    <ul class="nav nav-tabs">
+        <?php if (!empty($aEditHeaderInfo)) {
+            $sUrlKey = $iHeaderType == 1 ? 'viewurl' : 'editurl';
+            if ($iHeaderType == 2) {
+                unset($aEditHeaderInfo[6]);//编辑里面没有拓展产品
+            }
+            foreach ($aEditHeaderInfo as $key => $value) {
+                ?>
+                <li role="presentation" <?php echo $iEditHeaderIndex == $key ? 'class="active"' : '' ?>>
+                    <a href="<?php echo $iEditHeaderIndex == $key ? 'javascript:;' : $value[$sUrlKey].'id/'.$iProductID ?>"><?php echo $value['name'] ?></a>
+                </li>
+            <?php
+            }
+        } ?>
+    </ul>
+</div>

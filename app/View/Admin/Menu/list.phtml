@@ -1,0 +1,121 @@
+<div class="pheader clearfix">菜单管理</div>
+<div class="pbody clearfix">
+	<button class="btn btn-primary" id="menu_add">
+		<i class="fa fa-plus"></i> 增加菜单
+	</button>
+	<table class="table table-bordered table-hover">
+	    <thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="col-sm-4">菜单名</th>
+    			<th class="col-sm-4">URL</th>
+    			<th class="col-sm-1 text-center">图标</th>
+    			<th class="col-sm-2 text-center">操作</th>
+    		</tr>
+		</thead>
+		<tbody>
+		    <?php makeTree($aTree, $aColor);?>
+		</tbody>
+	</table>
+</div>
+<?php 
+function makeTree($aTree, $aColor) {
+    foreach ($aTree as $v) {
+?>
+    		<tr cid="<?=$v['iMenuID']?>" ppid="<?=$v['iParentID']?>" class="<?php echo $aColor[$v['iLevel']]?> <?php echo $v['iLevel']==0?'':'hide';?> menupp<?=$v['iParentID']?> <?=$v['sPath']?>">
+    			<td align="center"><?=$v['iMenuID']?></td>
+    			<td align="left">
+    				<?php echo str_repeat('&nbsp;', 4*$v['iLevel'])?>
+    				<?php if(!empty($v['aChild'])){?><i class="fa fa-plus-square mopenbtn"></i><?php }else{?><i class="fa fa-minus"></i><?php }?>
+    				<?php echo $v['sMenuName'];?>
+    			</td>
+    			<td align="left"><?php echo $v['sUrl'];?></td>
+    			<td align="center"><?php echo $v['sIcon']?'<i class="fa '.$v['sIcon'].'"></i>':'-';?></td>
+    			<td class="text-center">
+    				<a onclick="return menu_move(this,0);" href="/admin/menu/move?id=<?php echo $v['iMenuID']?>&direct=0" title="上移"><i class="fa fa-arrow-up fa-large"></i></a>
+    				<a onclick="return menu_move(this,1);" href="/admin/menu/move?id=<?php echo $v['iMenuID']?>&direct=1" title="下移"><i class="fa fa-arrow-down fa-large"></i></a>
+    				<a href="/admin/menu/edit?id=<?php echo $v['iMenuID'];?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    				<a href="/admin/menu/del?id=<?php echo $v['iMenuID'];?>"  role="button" class="menu_del" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+<?php
+        if (!empty($v['aChild'])) {
+            makeTree($v['aChild'], $aColor);
+        }
+    }
+}		
+?>
+<script>
+$('#menu_add').click(function(){
+	location.href = '/admin/menu/add';
+});
+$('.menu_del').click(function() {
+	var url = this.href;
+	if (confirm("你确定要删除该菜单吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+
+
+$('.mopenbtn').click(function(){
+	var ptr = $(this).parent().parent();
+	if ($(this).hasClass('fa-plus-square')) {
+		$('.menupp' + ptr.attr('cid')).removeClass('hide');
+		$(this).removeClass('fa-plus-square').addClass('fa-minus-square');
+	} else {
+		$('.menup' + ptr.attr('cid')).addClass('hide');
+	    $(this).removeClass('fa-minus-square').addClass('fa-plus-square');
+		$('.menupp' + ptr.attr('cid') + ' .mopenbtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+	}
+});
+
+var menu_moving = false;
+function menu_move(ele, direct) {
+	if (menu_moving == true) {
+		return false;
+	}
+	menu_moving = true;
+	$.get($(ele).attr('href'), function(ret){
+		menu_moving = false;
+		if (ret.status == false) {
+			alert(ret.data);
+			return false;
+		}
+		if (ret.data > 0) {
+			var currtr = $(ele).parent().parent();
+			var ppid = '.menupp' + currtr.attr('ppid');
+			if (direct == 0) {
+				var swaptr = currtr.prevAll(ppid).first();
+				if (swaptr.length == 0) {
+					return false;
+				}
+				swaptr.before(currtr);
+				$('.menup' + currtr.attr('cid')).each(function(){
+					swaptr.before($(this));
+				});
+			} else {
+				var swaptr = currtr.nextAll(ppid).first();
+				if ($('.menup' + swaptr.attr('cid')).length > 0) {
+					swaptr = $('.menup' + swaptr.attr('cid')).last();
+				}
+				if (swaptr.length == 0) {
+					return false;
+				}
+				swaptr.after(currtr);
+				var nexttr = currtr;
+				$('.menup' + currtr.attr('cid')).each(function(){
+					nexttr.after(this);
+					nexttr = $(this);
+				});
+			}
+		}
+	});
+	return false;
+}
+</script>

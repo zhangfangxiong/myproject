@@ -1,0 +1,123 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<?php if (empty($hasLoged)) {
+    include 'warning.phtml';
+}?>
+<div class="pheader clearfix">我的体检记录</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="">
+        <div class="col-sm-12 form-group">
+            <div class="col-sm-9">
+                <label>体检日期：</label>
+                <input type="text" value="<?php echo !empty($aParam['sStartDate']) ? $aParam['sStartDate'] : '' ?>"
+                       class="laydatetime form-control" name="sStartDate" style="width: 200px">
+           
+                <label>至：</label>
+                <input type="text" value="<?php echo !empty($aParam['sEndDate']) ? $aParam['sEndDate'] : '' ?>"
+                       class="laydatetime form-control" name="sEndDate" style="width: 200px">
+
+                <label>状态：</label>
+                <select name="iStatus" class="form-control" style="width: 100px">
+                    <option value="-1" <?php echo empty($aParam['iStatus'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="col-sm-3">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center"></th>
+            <th class="text-center">体检项目</th>
+            <th class="text-center">体检卡类型</th>
+            <th class="text-center">体检卡卡号</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">预约状态</th>
+            <th class="text-center">可用状态</th>
+            <th class="text-center">使用状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php makeTree($aTree, $aColor);?>
+        </tbody>
+    </table>
+    <?php echo !empty($aCard['aPager']) ? $aCard['aPager'] : '' ?>
+</div>
+
+<?php 
+function makeTree($aTree, $aColor) {
+    $aOrderType = Yaf_G::getConf('aOrderType', 'order');
+    $aPayType = Yaf_G::getConf('paytype', 'physical');
+    $aSex = Yaf_G::getConf('aSex', 'product');
+    $aCardUseType = Yaf_G::getConf('aUseType', 'card');
+    $aStatus = Yaf_G::getConf('aStatus', 'cardproduct');
+    $sAppointmentDetailUrl = '/order/buythird/';
+    $sReserveDetailUrl = '/order/detail/';
+
+    $i = 1;
+    foreach ($aTree as $v) {
+?>
+            <tr cid="<?=$v['iMenuID']?>" ppid="<?=$v['iParentID']?>" class="<?php echo $aColor[$v['iLevel']]?> <?php echo $v['iLevel']==0?'':'hide';?> menupp<?=$v['iParentID']?> <?=$v['sPath']?>">
+                <td class="text-center"><?=$i;?></td>
+                <td align="center">
+                    <?php echo str_repeat('&nbsp;', 4*$v['iLevel'])?>
+                    <?php if(!empty($v['aChild'])){?><i class="fa fa-plus-square mopenbtn"></i><?php }else{?><i class="fa fa-minus"></i><?php }?>
+                    <?php echo $v['aDetail'] ? $v['sMenuName'] : ($v['sProductName'] ? $v['sProductName'] : $v['sMenuName']) ?><?php echo (count($v['aDetail']) == 1 && !empty($v['aDetail'][0]['iLastProductID'])) ? '<span class="red">(已升级)</span>' : ''; ?>
+                </td>
+                <td class="text-center"><?php echo!empty($aOrderType[$v['iOrderType']]) ? $aOrderType[$v['iOrderType']] : '' ?>
+                <?php if ($v['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT || $v['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT_PLAN) {
+                    ?>
+                    <span class="red">(<?php echo!empty($aPayType[$v['iPayType']]) ? $aPayType[$v['iPayType']] : ''; ?>)</span>
+                <?php }
+                ?></td>
+                <td class="text-center"><?php echo $v['sCardCode'];?></td>
+                <td class="text-center"><?php echo $v['iOrderTime'] && $v['iOrderTime'] != '0000-00-00' ? date('Y-m-d', $v['iOrderTime']) : '';?></td>
+                <td class="text-center"><?php echo!empty($v['sBookStatus']) ? $v['sBookStatus'] : '' ?></td>
+                <td class="text-center"><?php echo!empty($v['sUseable']) ? $v['sUseable'] : '' ?></td>
+                <td class="text-center"><?php echo!empty($v['sUseStatus']) ? $v['sUseStatus'] : '' ?></td>
+                <td class="text-center">
+                    <a target='_blank' <?php
+                        if ((empty($v['iUseable']) && $v['sEndDate'] != '0000-00-00' && strtotime($v['sEndDate']) <= time()) || $v['iStatus'] == 2) {
+                            echo 'disabled';
+                        }
+                        if ($v['iBookStatus'] == 3 && $v['iLastProductID'] > 0 && empty($v['iCheckRefund'])) {
+                            echo 'disabled';//已升级的已退订未确认退款的不能预约
+                        }
+                        ?> href="<?php echo (empty($v['iBookStatus']) || $v['iBookStatus'] == 3 || $v['iBookStatus'] == 6) ? $sAppointmentDetailUrl . 'id/' . $v['iCardID'] . '/pid/' . $v['iProductID'] : $sReserveDetailUrl . 'type/2/' . 'id/' . $v['iCardID'] . '/pid/' . $v['iProductID'] ?>"
+                            class="btn btn-primary"><?php echo empty($v['iBookStatus']) || $v['iBookStatus'] == 3 || $v['iBookStatus'] == 6 ? '立即预约' : '查看详细' ?></a>
+                </td>
+            </tr>
+<?php
+        if (!empty($v['aChild'])) {
+            makeTree($v['aChild'], $aColor);
+        }
+
+        $i++;
+    }
+}       
+?>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$('.mopenbtn').click(function(){
+    var ptr = $(this).parent().parent();
+    if ($(this).hasClass('fa-plus-square')) {
+        $('.menupp' + ptr.attr('cid')).removeClass('hide');
+        $(this).removeClass('fa-plus-square').addClass('fa-minus-square');
+    } else {
+        $('.menup' + ptr.attr('cid')).addClass('hide');
+        $(this).removeClass('fa-minus-square').addClass('fa-plus-square');
+        $('.menupp' + ptr.attr('cid') + ' .mopenbtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+    }
+});
+</script>

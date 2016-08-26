@@ -1,0 +1,183 @@
+<?php if (!isset($opt) || $opt != 'edit') { ?>
+<div class="pheader clearfix">第二步：选择体检产品</div>
+<?php } ?>
+<div class="pbody clearfix">
+    <input type='hidden' name='id' value='<?php echo $iPlanID?>'/>
+    <div class="ptitle clearfix">已选择的产品(共<span class="red"><?php echo count($aHasItem); ?></span>个)
+    <?php if (!empty($aHasItem)) {?>
+    <?php if (!isset($opt) || $opt != 'edit') { ?>
+    <input type="button" value="下一步" class="btn btn-primary" onclick="location.href='<?php echo $sNextItemUrl?>?iPlanID=<?php echo $iPlanID?>';return false;">
+    <?php }?>
+    <?php }?>
+    </div>
+    <?php if (!empty($aHasItem)) { ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="hasitemall"></th>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">门店数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasItem as $value) {?>
+                    <tr>
+                        <td class="text-center"><input class="hasitemlist" type="checkbox" name="hasitemlist[]" value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iCount']) ? $value['iCount'] : 0 ?></td>                        
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php } else { ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加体检产品，请从下面的表格中选择需要添加的体检产品，添加之后单项信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php } ?>
+    <div class="btn-toolbar text-center">
+        <?php if (!empty($aHasItem)) {?>
+            <input type="button" value="删除选中单项" class="btn btn-primary input-margin-left" id="item-delete-select">
+        <?php }?>
+    </div>
+
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的体检产品</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">门店数量</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aHrProduct['aList'])) {
+                foreach ($aHrProduct['aList'] as $value) {?>
+                    <tr>
+                        <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]" value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>"></td>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iCount']) ? $value['iCount'] : 0 ?></td>                        
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        
+        <?php echo !empty($aHrProduct['aPager']) ? $aHrProduct['aPager'] : '' ?>
+
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">            
+            <input type="button" value="添加选中产品" class="btn btn-primary" id="item-add-select">
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    //全选效果
+    $('#itemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasitemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasitemlist').prop("checked", false);
+        } else {
+            $('.hasitemlist').prop("checked", true);
+        }
+    });
+    //单项选择效果
+    $('.itemlist').click(function(){
+        $('#itemall').prop("checked", false);
+    });
+    //单项选择效果
+    $('.hasitemlist').click(function(){
+        $('#hasitemall').prop("checked", false);
+    });
+    //单项单个添加
+    $('.item_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量添加
+    $('#item-add-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertItemUrl) ? $sInsertItemUrl : '' ?>?pid=<?php echo !empty($iPlanID) ? $iPlanID : 0 ?>&id=';
+        $('.itemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的产品');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.reload();
+            }
+        }, 'json');
+    });
+    //单项单个删除
+    $('.hasitem_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量删除
+    $('#item-delete-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteItemUrl) ? $sDeleteItemUrl : '' ?>?pid=<?php echo !empty($iPlanID) ? $iPlanID : 0 ?>&id=';
+        $('.hasitemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的产品');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+        $.get(url, function (ret) {
+            alert(ret.data);
+            if (ret.status) {
+                location.reload();
+            }
+        }, 'json');
+    });
+    $('#next').click(function(){
+        location.href = $(this).data('url');
+    })
+</script>

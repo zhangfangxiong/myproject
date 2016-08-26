@@ -1,0 +1,157 @@
+<div class="pheader clearfix"><?php echo $type==5 ? '服务加项价格修改' : '组合单项价格修改'?></div>
+<form id="myform" class="form-horizontal" role="form" method="post" action="">
+    <div class="pcate clearfix">
+        <div class="pmargin clearfix">
+            <div class="catetitle col-sm-1 text-center">支持供应商</div>
+            <div class="col-sm-11">
+                <span class="supplierall <?php echo !empty($aParam['aSupplier']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                <?php if (!empty($supplier)) {
+                    foreach ($supplier as $key => $value) { ?>
+                        <span class="supplier <?php echo in_array($key,$aParam['aSupplier']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                        <input <?php echo in_array($key,$aParam['aSupplier']) ? 'checked' : '' ?> type="checkbox" class="aCategory" id="aSupplier_<?php echo $key; ?>" name="aSupplier[<?php echo $key; ?>]">
+                    <?php
+                    }
+                } ?>
+            </div>
+        </div>
+
+        <div class="pmargin clearfix">
+            <div class="catetitle col-sm-1 text-center">支持城市</div>
+            <div class="col-sm-11">
+                <span class="cityall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                <?php if (!empty($city)) {
+                    foreach ($city as $key => $value) { ?>
+                        <span class="city <?php echo in_array($key,$aParam['aCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                        <input <?php echo in_array($key,$aParam['aCity']) ? 'checked' : '' ?> type="checkbox" class="aCategory" id="aCity_<?php echo $key; ?>" name="aCity[<?php echo $key; ?>]">
+                    <?php
+                    }
+                } ?>
+            </div>
+
+            <input type="submit" id="formbtn" class="btn btn-primary" value="查询">            
+        </div>
+    </div>
+</form>
+    <?php if (!empty($aList)) { ?>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">门店</th>
+            <th class="text-center">供应商</th>
+            <th class="text-center">城市</th>
+            <th class="text-center">性别</th>            
+            <th class="text-center">代码</th>
+            <th class="text-center">供应商结算价</th>
+            <th class="text-center">门市价</th>
+            <th class="text-center">标准销售价</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($aList as $key => $value) {?>
+            <tr id='storeid_<?php echo $value['iAutoID'];?>'> 
+                <td class="text-center"><?php echo $addition[$value['iStoreID']] ?></td>
+                <td class="text-center">
+                    <?php echo $value['sSupplier'] ?>
+                </td>
+                <td class="text-center">
+                    <?php echo $value['sCity'] ?>
+                </td>
+                <td class="text-center">
+                    <?php echo $aSex[$value['iSex']] ?>
+                </td>
+                <td class="text-center">
+                    <input id='sCode_<?php echo $value['iAutoID'];?>' readonly class="text-center" value="<?php echo $value['sCode'] ?>" />
+                </td>
+                <td class="text-center">
+                    <input id='sCostPrice_<?php echo $value['iAutoID'];?>' readonly class="text-center" value="<?php echo $value['sCostPrice'] ?>" />
+                </td>
+                <td class="text-center">
+                    <input id='sMarketPrice_<?php echo $value['iAutoID'];?>' readonly class="text-center" value="<?php echo $value['sMarketPrice'] ?>" />
+                </td>
+                <td class="text-center">
+                    <input id='sChannelPrice_<?php echo $value['iAutoID'];?>' readonly class="text-center" value="<?php echo $value['sChannelPrice'] ?>" />
+                </td>
+                <td class="desc text-center">
+                    <a class='edit' data-id='<?php echo $value['iAutoID'];?>'>修改</a>
+                </td>
+            </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>    
+
+<div class="btn-toolbar text-center col-sm-12">
+    <?php 
+        if(5 == $type) {
+            $href = '/admin/itemap/service';
+        } else {
+            $href = '/admin/itemap/group'; 
+        }
+    ?>
+    <a class="text-right btn btn-default" href='<?php echo $href?>'>取消</a>
+</div>
+
+<script type="text/javascript">
+    //供应商门店点击效果
+    $('.supplier').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplierall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aSupplier_'+key).prop("checked",true);
+    });
+    //供应商全部点击效果
+    $('.supplierall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplier').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+
+    //城市门店点击效果
+    $('.city').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cityall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCity_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.cityall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.city').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+
+    function saved(id) {
+        sCode = $('#sCode_'+id).val();
+        sCostPrice = $('#sCostPrice_'+id).val();
+        sMarketPrice = $('#sMarketPrice_'+id).val();
+        sChannelPrice = $('#sChannelPrice_'+id).val();
+        $.ajax({
+            url : '/admin/itemap/saved',
+            type : 'post',
+            data : {
+                iAutoID : id,
+                sCode : sCode,
+                sCostPrice : sCostPrice,
+                sMarketPrice : sMarketPrice,
+                sChannelPrice : sChannelPrice,
+            },
+            dataType : 'json',
+            success : function(ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    txt = "<a class='edit' data-id='" + id + "'>修改</a>";
+                    $('#storeid_' + id +' .desc').html(txt);
+                }
+            }
+        });        
+    }
+
+    $('table').on('click','.edit', function(){
+        id = $(this).data('id');
+        $('#storeid_' + id +' input').removeAttr('readonly');
+        html = "<a onclick='saved("+ id + ")'>保存</a>";
+        $('#storeid_' + id +' .desc').html(html);
+    });
+
+</script>

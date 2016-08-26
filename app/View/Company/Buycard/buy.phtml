@@ -1,0 +1,415 @@
+<style>
+    .table-width, .canslectproduct {
+        width: 950px;
+        margin: 0 auto;
+    }
+
+    #buy-card tr td, #buy-card tr th, #buy-info tr td, #canselecttype tr td {
+        border: 1px dashed #adadad;
+        height: 42px;
+    }
+
+    #buy-card, #canselecttype {
+        border-top: 3px solid #90cb3b;
+        border-bottom: 3px solid #90cb3b;
+        margin-bottom: 0px;;
+    }
+
+    .success-back {
+        background-color: #F7FBF1;
+    }
+
+    .name-width {
+        width: 200px;
+    }
+    .num-width {
+        width: 150px;
+    }
+
+    .num-select {
+        width: 50%;
+        margin: 0 auto;
+    }
+
+    .tishi {
+        color: orange;
+        padding-top: 5px;
+    }
+
+    .p-show, .i-show, .all-show {
+        display: none;
+    }
+
+    .prompt {
+        text-decoration: underline;
+        cursor: pointer;
+    }
+
+    .canslectproductlist {
+        margin-top: 20px;
+    }
+
+    .canslectproductlist {
+        display: none;
+    }
+</style>
+<div class="pheader pmargin clearfix">购买体检卡</div>
+<form id="myform" class="form-horizontal" role="form" method="post">
+    <div class="pbody clearfix table-width">
+        <table id="buy-card" class="table table-bordered table-hover">
+            <thead>
+            <tr class="success-back">
+                <th class="text-center name-width">体检产品</th>
+                <th class="text-center">价格</th>
+                <th class="text-center num-width">购买数目</th>
+                <th class="text-center">选择性别<span class="tishi"><!--(性别决定您是否预约能成功，请慎重选择)--></span></th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aCardList)) {
+                $iCanPcard = 1;//是否能购买实物卡,默认能
+                foreach ($aCardList as $key => $value) {
+                    $aLastProductID[] = $value['iProductID'];
+                    if ($iCanPcard == 1 && empty($value['iPCard'])) {
+                        $iCanPcard = 0;
+                    }
+                    ?>
+                    <tr>
+                        <input type="hidden" name="aProductID[<?php echo $key; ?>]"
+                               value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>" data-last-value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : '' ?>">
+                        <input class="aProductInputPrice<?php echo $key; ?>" type="hidden" name="aProductPrice[<?php echo $key; ?>]"
+                               value="<?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : '' ?>" data-last-value="<?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : '' ?>">
+                        <td class="pname" data-last-value="<?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] : $value['sProductName'] : '' ?>"><?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] : $value['sProductName'] : '' ?></td>
+                        <td><span data-last-value="<?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : '' ?>" class="aProductPrice<?php echo $key; ?>"><?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : '' ?></span>元</td>
+                        <td class="text-center">
+                            <div class="num-select">
+                                <select onchange="Calculation(<?php echo $key; ?>)" class="form-control aProductNumber<?php echo $key; ?>" name="aProductNumber[<?php echo $key; ?>]">
+                                    <?php
+                                    for ($i = 1; $i <= 100; $i++) {
+                                        ?>
+                                        <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                                    <?php
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="col-md-9">
+                                <?php if (!empty($aSex)) {
+                                    foreach ($aSex as $k => $val) {
+                                        ?>
+                                        <label class="radio-inline">
+                                            <input onchange="Calculation(<?php echo $key; ?>)" data-price="<?php if($k==1){echo $value['iManPrice'];}elseif($k==2){echo $value['iWomanPrice1'];}elseif($k==3){echo $value['iWomanPrice2'];} ?>" type="radio" class="aProductSex<?php echo $key; ?>" name="aProductSex[<?php echo $key; ?>]" value="<?php echo $k ?>" <?php if($k==1){echo 'checked';} ?>><?php echo $val?>
+                                        </label>
+                                    <?php
+                                    }
+                                } ?>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <a href="javascript:;" title="删除" class="delete-item"><i
+                                    class="fa fa-trash fa-large"></i></a>
+                        </td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <table id="buy-info" class="table table-bordered table-hover">
+            <tbody>
+            <tr>
+                <td class="text-center name-width success-back">体检卡类型：</td>
+                <td>
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" class="iOrderType" name="iOrderType" value="1" checked>电子卡
+                        </label>
+                        <?php if (!empty($iCanPcard)) {
+                            ?>
+                            <label class="radio-inline">
+                                <input type="radio" class="iOrderType" name="iOrderType" value="2">实物卡
+                            </label>
+                        <?php
+                        } ?>
+                    </div>
+                </td>
+            </tr>
+            <tr class="p-show">
+                <td class="text-center success-back">实物卡种类：</td>
+                <td>
+                    <div class="col-md-4">
+                        <select class="form-control" name="iCardType">
+                            <?php
+                            foreach ($aCardType as $key => $value) {
+                                ?>
+                                <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                            <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back">您的姓名：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sConsignee" validate="!required:true"
+                               placeholder="请填写您的姓名">
+                    </div>
+                    <div class="col-md-6 tishi">*</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back">您的手机：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sMobile" validate="!mobile:true"
+                               placeholder="请填写您的手机">
+                    </div>
+                    <div class="col-md-6 tishi">*</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back">您的邮箱：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sEmail" placeholder="请填写您的邮箱">
+                    </div>
+                    <div class="col-md-6 tishi">如果您选择电子卡，将发送至此邮箱</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back">是否索要发票：</td>
+                <td>
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" class="iIfInv" name="iIfInv" value="0" checked>不需要
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" class="iIfInv" name="iIfInv" value="1">需要
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr class="i-show">
+                <td class="text-center success-back">发票抬头：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sInvPayee" placeholder="请填写发票抬头">
+                    </div>
+                    <div class="col-md-6">请注意，本网站所列体检产品，仅提供“上海中盈保险经纪公司”开具的“服务费”发票，恕不提供各体检中心发票，请知晓。</div>
+                </td>
+            </tr>
+            <tr class="all-show">
+                <td class="text-center success-back">收件地址：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sAddress" placeholder="请填写收件地址">
+                    </div>
+                    <div class="col-md-6 tishi">如果您选择实体卡或需要发票，将寄送到这个地址</div>
+                </td>
+            </tr>
+            <tr class="all-show">
+                <td class="text-center success-back">邮编：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="sZipcode" placeholder="请填写邮编">
+                    </div>
+                    <div class="col-md-6 tishi">如果您选择实体卡或需要发票，请填写邮编</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back">支付方式：</td>
+                <td class="clearfix">
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" class="iUserType" name="iUserType" value="2" checked>公司结算
+                        </label>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center success-back"></td>
+                <td class="clearfix">
+                    <div class="col-md-2">
+                        <button class="btn btn-warning" type="submit">下一步</button>
+                    </div>
+                    <div class="col-md-2">
+                        <button id="reback" class="btn btn-info" type="button">返回</button>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <div class="canslectproduct pbody">
+        <?php if (!empty($aCardList) && count($aCardList) == 1) {
+            ?>
+            <div class="prompt">如您希望在一张体检卡内包含多个体检套餐，请点击此处，并选择其他的可选套餐</div>
+            <div class="canslectproductlist">
+                <table id="canselecttype" class="table table-bordered table-hover">
+                    <tbody>
+                    <tr>
+                        <td class="text-center success-back name-width">可选使用类型：</td>
+                        <td class="clearfix">
+                            <div class="col-md-3">
+                                <label class="radio-inline">
+                                    <input onchange="Calculation(0)" type="radio" class="iUseType" name="iUseType" value="1" checked>OR
+                                </label>
+                                <label class="radio-inline">
+                                    <input onchange="Calculation(0)" type="radio" class="iUseType" name="iUseType" value="2">AND
+                                </label>
+                            </div>
+                            <label class="col-md-9 tishi">OR的类型能使用选中的其中一个产品，AND类型能使用选中的所有产品</label>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="text-center th-width"></th>
+                        <th class="text-center">产品编号</th>
+                        <th class="text-center">体检产品</th>
+                        <th class="text-center">价格</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php if (!empty($aAllCardList)) {
+                        foreach ($aAllCardList as $value) {
+                            if (in_array($value['iProductID'],$aLastProductID)) {
+                                continue;
+                            }
+                            ?>
+                            <tr>
+                                <td class="text-center"><input onchange="Calculation(0)" data-name="<?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] : $value['sProductName'] : '' ?>" data-price1="<?php echo $value['iManPrice'] ?>" data-price2="<?php echo $value['iWomanPrice1'] ?>" data-price3="<?php echo $value['iWomanPrice2'] ?>" class="extenditem" type="checkbox" name="extenditem[]"
+                                                               value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : 0 ?>">
+                                </td>
+                                <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                                <td class="text-center"><?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] : $value['sProductName'] : '' ?></td>
+                                <td class="text-center"><?php echo !empty($value['iUserCanPrice']) ? 'hr不可见' : $value['iPrice'] ?></td>
+                            </tr>
+                        <?php }
+                    } ?>
+                    </tbody>
+                </table>
+            </div>
+        <?php
+        } ?>
+    </div>
+</form>
+<script>
+    //计算总额和产品名称
+    function Calculation($key) {
+        var totalprice;
+        var usetype;
+        var num = $('.aProductNumber'+$key).val();
+        usetype = extendItem($key);
+        usetype = usetype > 0 ? usetype : $('.aProductSex'+$key+':checked').data('price');
+        totalprice = (num*usetype).toFixed(2);
+        $('.aProductPrice'+$key).html(totalprice);
+        $('.aProductInputPrice'+$key).val(totalprice);
+    }
+
+    function extendItem($key)
+    {
+        var dataprice;
+        var totalprice = 0;
+        var totalname = '';
+        var phix = '';
+        dataprice = 'price'+$('.aProductSex'+$key+':checked').val();
+
+        $('.extenditem:checked').each(function(){
+            var datapricevalue = $(this).data(dataprice);
+            if ($('.iUseType:checked').val() == 1) {//or
+                totalprice = Math.max(totalprice,datapricevalue);
+                totalname += $(this).data('name')+'/';
+                phix = '/';
+            } else if ($('.iUseType:checked').val() == 2) {//and
+                totalprice += parseFloat(datapricevalue);
+                totalname += $(this).data('name')+'+';
+                phix = '+';
+            }
+        });
+        totalname=totalname.substring(0,totalname.length-1);
+        if (phix == '/') {
+            totalprice = Math.max(totalprice,$('.aProductInputPrice'+$key).data('last-value'));
+        } else if (phix == '+') {
+            totalprice += parseFloat($('.aProductInputPrice'+$key).data('last-value'));
+        }
+        if (totalname) {
+            totalname = $('.pname').data('last-value') + phix +totalname;
+            $('.pname').html(totalname);
+        }
+        return totalprice;
+    }
+
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                if ($('.iOrderType:checked').val() == 2) {
+                    if ($('input[name="sAddress"]').val() == '' || $('input[name="sZipcode"]').val() == '') {
+                        alert('实体卡必须填写地址和邮编');
+                        return false;
+                    }
+                }
+                if ($('.iIfInv:checked').val() == 1) {
+                    if ($('input[name="sAddress"]').val() == '' || $('input[name="sZipcode"]').val() == '' || $('input[name="sInvPayee"]').val() == '') {
+                        alert('需要发票必须填写地址，邮编和发票抬头');
+                        return false;
+                    }
+                }
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        $('#reback').click(function () {
+            window.history.back();
+        });
+
+        $('.delete-item').click(function () {
+            $(this).parents('tr').remove();
+        });
+
+        $('.iOrderType').change(function () {
+            if ($(this).val() == 1) {
+                $('.p-show').hide();
+                if ($('.iIfInv:checked').val() == 0) {
+                    $('.all-show').hide();
+                }
+            } else if ($(this).val() == 2) {
+                $('.p-show').show();
+                $('.all-show').show();
+            }
+        });
+        $('.iIfInv').change(function () {
+            if ($(this).val() == 0) {
+                $('.i-show').hide();
+                if ($('.iOrderType:checked').val() == 1) {
+                    $('.all-show').hide();
+                }
+            } else if ($(this).val() == 1) {
+                $('.i-show').show();
+                $('.all-show').show();
+            }
+        });
+
+        $('.prompt').click(function () {
+            $('.canslectproductlist').toggle();
+        });
+    })
+</script>

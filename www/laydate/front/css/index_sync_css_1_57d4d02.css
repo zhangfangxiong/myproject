@@ -1,0 +1,360 @@
+.page-container {
+	padding-top: 73px;
+	padding-left: 260px
+}
+.toogle-collapse {
+	display: none
+}
+.ninsda .toogle-collapse {
+	display: block
+}
+.w1890 .onsidebar #index_right_float {
+	margin-left: 740px
+}
+.w1890 .onsidebar .back-to-top {
+	margin-left: 740px
+}
+.w1890 .onsidebar .wideSroll {
+	width: 1234px
+}
+.item {
+	float: left;
+	padding: 0 0 0 20px;
+	_display: inline;
+	_margin-right: -3px;
+	-webkit-transition: padding .3s ease-in-out;
+	-moz-transition: padding .3s ease-in-out;
+	transition: padding .3s ease-in-out
+}
+.nindexwrapper .item {
+	float: none;
+	padding: 0
+}
+.gradient-bg {
+	background-image: -webkit-gradient(linear, 0 0, 0 100%, from(rgba(225,225,225,0)), to(rgba(0,0,0,.8)));
+	background-image: -moz-linear-gradient(top, rgba(225,225,225,0), rgba(0,0,0,.8));
+	background-image: linear-gradient(to bottom, rgba(225,225,225,0), rgba(0,0,0,.8));
+filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#00ffffff', endColorstr='#80000000');
+-ms-filter:progid:DXImageTransform.Microsoft.gradient(gradientType=0, startColorstr='#00ffffff', endColorstr='#80000000');
+	height: 40px;
+	z-index: 0
+}
+.video {
+	position: relative;
+	overflow: hidden
+}
+.video span {
+	display: block
+}
+.video .vid-cover {
+	width: 100%;
+	height: 100%
+}
+.video .vid-info, .video .gradient-bg, .video .play-video-icon {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%
+}
+.video .vid-title {
+	overflow: hidden;
+	height: 22px;
+	color: #fff;
+	font-size: 22px;
+	line-height: 22px;
+	width: 94%;
+	padding: 0 3%;
+	position: absolute;
+	left: 0;
+	bottom: 29px
+}
+.video .vid-info {
+	overflow: hidden;
+	height: 22px;
+	color: #ccc;
+	font-size: 12px;
+	line-height: 22px;
+	width: 94%;
+	padding: 0 3%
+}
+.video .play-video-icon {
+	opacity: 0;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	margin-top: -26px;
+	height: 52px;
+	width: 52px;
+	margin-left: -26px;
+	-webkit-transition: opacity .4s ease-in;
+	-moz-transition: opacity .4s ease-in;
+	-ms-transition: opacity .4s ease-in;
+	transition: opacity .4s ease-in;
+	bottom: auto
+}
+.video a {
+	display: block;
+	height: 100%
+}
+.video a:hover .play-video-icon {
+	opacity: 1;
+	background: url(http://vs5.bdstatic.com/browse_static/v3/index/widget/video/play_normal_bddc2e1.png) no-repeat center center;
+	_cursor: pointer;
+	_background-image: none;
+_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://vs5.bdstatic.com/browse_static/v3/index/widget/video/play_normal_bddc2e1.png')
+}
+.video .play-count {
+	color: #999
+}
+.video .play-icon {
+	background: url(http://vs5.bdstatic.com/browse_static/v3/index/widget/video/play-count_836c87e.gif) no-repeat 0 45%;
+	font-style: normal;
+	padding-left: 13px;
+	display: inline-block;
+	color: #ccc;
+	font-weight: 200;
+	font-size: 12px;
+	zoom: 1
+}
+.video .vid-duration {
+	text-align: right
+}
+.video .vid-duration .play-icon {
+	float: left
+}
+.video .vid-score {
+	text-align: right;
+	color: #ff3c30;
+	font-size: 16px;
+	vertical-align: top;
+	font-weight: 200;
+	font-family: Arial, Verdana, Tahoma
+}
+.video .vid-score .cinema-title {
+	font-family: "\5FAE\8F6F\96C5\9ED1", "\5B8B\4F53", Arial, sans-serif;
+	float: left;
+	font-style: normal;
+	color: #fff;
+	font-size: 12px
+}
+.video .vid-score sup {
+	font-size: 12px;
+	line-height: 3em
+}
+.item-title {
+	width: 170px;
+	margin-bottom: 10px;
+*margin-bottom:14px
+}
+.item-title a {
+	display: block
+}
+.item-title a.title {
+	color: #000;
+	font-size: 14px;
+	padding-top: 4px;
+	height: 20px;
+	overflow: hidden;
+*letter-spacing:-1px
+}
+.item-title a:hover.title {
+	color: #136ec3
+}
+.item-title a.sub-title {
+	font-size: 12px;
+	color: gray;
+	padding-top: 2px;
+	height: 18px;
+	overflow: hidde
+}
+.nindexwrapper .item-title {
+	margin-bottom: 0
+}
+.v-item {
+	width: 173px;
+	height: 235px;
+	border: 1px solid #fff
+}
+.h-item {
+	width: 173px;
+	border: 1px solid #fff;
+	height: 100px
+}
+.mod-block {
+	width: 760px;
+	overflow: hidden
+}
+.mod-block .mod-block-inner {
+	width: 975px;
+	margin-left: -20px;
+	position: relative;
+	zoom: 1
+}
+.mod-block .item {
+	margin-left: 20px;
+	float: left;
+	height: 300px
+}
+.rightSubject {
+	margin-top: 25px;
+	border-bottom: 2px solid #eaeaea;
+	height: 90px
+}
+.rightSubject img {
+	width: 261px;
+	height: 90px
+}
+.hao123 .rightSubject {
+	margin-top: 15px;
+	height: 100px
+}
+.hao123 .rightSubject img {
+	height: 100px
+}
+.w1024 .item, .sidebaron_channel .item {
+	padding: 0 0 0 10px
+}
+.w1024 .nindexwrapper .item, .sidebaron_channel .nindexwrapper .item {
+	padding: 0
+}
+.w1024 .focus-carousel-images, .sidebaron_channel .focus-carousel-images {
+	width: 360px
+}
+.w1024 .focus-carousel-images ul.bdv-carousel-list .play-icon, .sidebaron_channel .focus-carousel-images ul.bdv-carousel-list .play-icon {
+	right: 15px
+}
+.w1024 .focus-images-block, .sidebaron_channel .focus-images-block {
+	width: 585px
+}
+#topCinema {
+	display: block
+}
+#topCinema .hd {
+	width: 260px;
+	padding-top: 0
+}
+#topCinema .bd {
+	width: 260px
+}
+#topCinema .bd .tab-block {
+	width: 280px;
+	margin-top: -15px
+}
+#topCinema .bd .tab-block .item {
+	margin-top: 15px
+}
+#topCinema .v-item {
+	width: 118px;
+	height: 73px
+}
+#topCinema .video a:hover .play-video-icon {
+	background: url(http://vs4.bdstatic.com/pc_static/common/icon/playicon_40.png) center center no-repeat scroll;
+	_background: 0;
+_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://vs4.bdstatic.com/pc_static/common/icon/playicon_40.png')
+}
+#children .hd a {
+	margin-top: 3px
+}
+#children .hd h2 {
+	font-size: 25px;
+	line-height: 25px;
+	border-left: 5px solid #136EC3;
+	padding-left: 5px
+}
+#todayHot .item-title a.title, #sport .item-title a.title, #entertainment .item-title a.title, #showOriginal .item-title a.title, #showBeauty .item-title a.title, #Tucao .item-title a.title, #popularDaKa .item-title a.title, #starBaGua .item-title a.title, #newsSuDi .item-title a.title, #showfashion .item-title a.title, #showFun .item-title a.title {
+	height: 40px
+}
+#showTV .video a:hover .play-video-icon, #showMovie .video a:hover .play-video-icon {
+	margin-top: -30px;
+	height: 61px;
+	width: 61px;
+	margin-left: -30px;
+	background: url(http://vs5.bdstatic.com/browse_static/v3/index/widget/video/play_normal_big_c987203.png) center center no-repeat scroll;
+	_background: 0;
+_filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='http://vs5.bdstatic.com/browse_static/v3/index/widget/video/play_normal_big_c987203.png')
+}
+#showMinMovie, #showChildren {
+	margin-top: 0
+}
+.mod-aside {
+	width: 261px;
+	position: relative;
+	overflow: hidden
+}
+.mod-aside .hd-aside {
+	width: 100%
+}
+.mod-aside .hd-aside h2 {
+	font: 20px/30px "寰蒋闆呴粦";
+	padding: 15px 0 13px
+}
+.mod-aside .bd-aside {
+	width: 100%;
+	overflow: hidden
+}
+.mod-aside .grey-bg {
+	background-color: #e8e8e8
+}
+.player .v-item, .player .h-item {
+	border: 1px solid #272a36
+}
+.player .item-title a.title {
+	color: #ccc
+}
+.player .item-title a:hover.title {
+	color: #136EC3
+}
+.player .item-title a.sub-title {
+	color: #626262
+}
+.player .mod-aside .hd-aside h2 {
+	color: #828385
+}
+.player .rightSubject {
+	border-bottom: 2px solid #272a36
+}
+#bgPromote .chunjie {
+	width: 1235px;
+	margin: 0 auto;
+	height: 90px;
+	display: block;
+	position: relative
+}
+#bgPromote .chunjie a {
+	font-family: "鏂规绮楀畫绠€浣�", "鍗庢枃涓畫", "榛戜綋", System, "浠垮畫";
+	font-size: 28px;
+	color: #ffef99;
+	width: 179px;
+	text-align: center;
+	display: block;
+	line-height: 4.2em;
+	position: relative
+}
+#bgPromote .chunjie .topic-link {
+	display: block;
+	height: 90px;
+	width: 100%
+}
+#bgPromote .chunjie .close {
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	right: -10px;
+	top: 5px;
+	z-index: 10;
+	background: url(http://list.video.baidu.com/chunwan2015/chunwanclose.png) no-repeat center center;
+	_background: url(http://list.video.baidu.com/chunwan2015/chunwanclose.gif) no-repeat center center
+}
+.w1024 #bgPromote .chunjie {
+	display: block;
+	width: 1000px;
+	-webkit-transition: width .3s ease-in-out;
+	-moz-transition: width .3s ease-in-out;
+	transition: width .3s ease-in-out
+}
+.w1024 #bgPromote .chunjie .left a {
+	margin-left: -50px
+}
+.w1024 #bgPromote .chunjie .right a {
+	margin-right: -50px
+}

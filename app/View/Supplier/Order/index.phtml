@@ -1,0 +1,39 @@
+<div class="pheader clearfix">
+订单确认
+<?php include 'menu.phtml'; ?>	
+</div>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <?php if ($iType == 1 && $aPhysical) { ?>
+        <a class="text-right btn btn-default" href='/supplier/order/export'>导出</a>
+        <?php } ?>
+        <thead>
+        <tr>
+            <th class="text-center">姓名(性别)</th>
+            <th class="text-center">身份证</th>
+            <th class="text-center">预订日期</th>
+            <th class="text-center">门店</th>
+            <th class="text-center">体检产品</th>
+            <th class="text-center">下单时间</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aPhysical) {
+            foreach ($aPhysical as $key => $aUser) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aUser['sUserName'] ?>(<?php echo $aUser['sSex'] ?>)</td>
+                    <td class="text-center"><?php echo $aUser['sIdentityCard'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sOrderDate'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sStoreName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['iCreateTime'] ?></td>
+                    <td class="text-center">
+                        <a href="/supplier/order/detail/type/<?php echo $iType;?>/id/<?php echo $aUser['iAutoID']?>">查看</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+</div>

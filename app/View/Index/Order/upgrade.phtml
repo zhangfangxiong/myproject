@@ -1,0 +1,205 @@
+<style type="text/css">
+    .div_welcome_big_banner {
+        background-image: url("<?php echo $sStaticRoot?>/backend/img/banner3.jpg");
+        background-repeat: no-repeat;
+        float: left;
+        height: 221px;
+        width: 1000px;
+    }
+
+    .red {
+        /*color: #f63;*/
+        content:"\2714";
+    }
+    .green {
+        color: #1edd10;
+    }
+
+    .fa-check-square:before {
+        /*content: "\f14a";*/
+        content:"\2714";
+        font-size:14px;
+    }
+
+    .fa-minus-square:before {
+        content: "\f146";
+    }
+
+    *:before, *:after {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+</style>
+
+<div id="wrap">
+<!-- START: 正文 -->
+<div class="row c mb25">
+    <table cellpadding="0" cellspacing="0" width="100%">
+        <tr>
+            <td style="width: 50%; text-align: left;">
+                <a title="首页" href="">首页</a>
+                <span class="location_next">&gt;</span>
+                <span>安心体检</span>
+                <span class="location_next">&gt;</span>
+                <span>升级套餐</span>
+            </td>
+        </tr>
+    </table>
+    <br />
+    <div class="div_welcome_picbg">
+        <div class="div_welcome_cen_picbg">
+            <div class="div_welcome_big_banner">
+            </div>
+        </div>
+        <!-- banner end -->
+    </div>
+    <div style="width: 100%">
+            <div class="search_con" >
+                <input id='iPID' type='hidden' value='<?php echo $iPID; ?>'>
+                <?php if (!empty($aUpgrade)) {
+                    foreach ($aUpgrade as $key => $value) { ?>
+                <table class="table_dailiList" style="margin-top: 10px; margin-bottom: 10px;">
+                    <tr>
+                        <td style="width: 150px; padding-right: 10px; text-align: center;">
+                            <a id="main_RepList_lnkPhoto_0" href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>" style="color: #0D8FE3;"><img src="<?php echo !empty($value['sImage']) ? Util_Uri::getDFSViewURL($value['sImage']) : '' ?>" style="height:150px;width:150px;" /></a>
+                            <p style="color: #0D8FE3; font-weight: bold; font-size: 13px; margin-top: 10px;">
+                                <span><?php echo $value['iCardNum']?></span>人已预订
+                            </p>
+                        </td>
+                        <td>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <td style="width: 60%">
+                                            <strong class="cnName" style="width:auto;" >
+                                                <a target='_blank' href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>" style="color: #0D8FE3; text-decoration: none; font-size: 16px;">
+                                                <?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] :$value['sProductName'] : '' ?>
+                                                </a>
+                                            </strong>
+                                            <span style="color:#CCCCCC;font-size:14px;line-height:23px"></span>
+
+                                        </td>
+                                        <td style="width: 40%; text-align: right;">
+                                            <p style="font-size: 18px; font-weight: bold; color: orangered; ">
+                                                <i class="fa fa-cny"></i><span class="p-price">+<?php echo $value['iNeedPrice'] ?></span>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" style="color: #808080; padding-top: 5px; padding-bottom: 5px;">(本产品可在全国<span><?php echo $value['iStoreNum']?></span>家体检门店预约使用)
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="line-height: 25px; font-size: 13px;">体检内容简介：
+                                        <span><?php echo !empty($value['sRemark']) ? $value['sRemark'] : '' ?></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width: 60%; color: #CCCCCC;"></td>
+                                        <td style="width: 40%; text-align: right;" class="noline">
+                                            
+                                            <a id="reservebtn" class="cartbtn btn_submit_blue" href="<?php echo $sReturnUrl.'/upid/'.$value['iUpgradeID']; ?>" role="button">进入预约</a>
+                                            <a id="upgradebtn" class="cartbtn btn_submit_blue upgradebtn" role="button"  href="javascript:void(0)" data-id='<?php echo $value['iUpgradeID']?>'>套餐对比</a>
+                                            <a id="reback" class="cartbtn btn_submit_blue" style="background-color:OrangeRed;" href="<?php echo $sReturnUrl; ?>" role="button">返回原套餐</a>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" style="height:15px;"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <?php } } ?>
+            </div>
+        </div>
+    </div>
+    <!-- END: 正文 -->
+    <!-- START: 跟随页面滚动 -->
+    <div class="page_fixed">
+        <a class="fixed_gotop" id="fixed_gotop" href="#">回到顶部</a>
+    </div>
+
+    <div class="base_pop" id="divMap" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                <span id="main_lblCompanyName2">Label</span></h3>
+            <div class="input-container">
+                <iframe id="framemap" src="" height="500px" width="760px" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel">可选升级套餐</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert" style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover">
+                    <tbody id="showmodalHtml">
+                        
+                    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('.upgradebtn').click(function () {
+        $('#showmodalHtml').html('');
+        $.ajax({
+            url : '/order/upgradeCompare',
+            type : 'post',
+            data : {
+                pid : $('#iPID').val(),
+                upid : $(this).data('id')
+            },
+            dataType : 'json',
+            success : function(ret) {                
+                if (ret.status) {
+                    $('#showmodalHtml').append('<tr><th>项目</th><th>原套餐</th><th>升级套餐</th></tr>');
+                    $.each(ret.data.aItems, function(i, item) {   
+                        $.each(ret.data.aItem1, function(k, v) {
+                            sclass1 = 'red_icon';
+                            if (v == item.iItemID) {
+                                sclass1 = 'green_icon';
+                                return false;
+                            }
+                        }) 
+
+                        $.each(ret.data.aItem, function(key, val) {
+                            sclass2 = 'red_icon';
+                            if (val == item.iItemID) {
+                                sclass2 = 'green_icon';
+                                return false;
+                            }
+                        }) 
+
+                        $('#showmodalHtml').append('<tr> <td>' + item.sName + '</td> '
+                        + '<td><i class=" ' + sclass1 + '"></i></td> '
+                        + '<td><i class=" ' + sclass2 + '"></i></td> </tr>');   
+                    }); 
+                    $('#selectModal').modal('show');
+                }
+            }
+        });
+        
+    });
+</script>

@@ -1,0 +1,55 @@
+<div class="pheader clearfix">城市列表</div>
+<div class="pbody clearfix">
+	<div class="btn-toolbar list-toolbar">
+		<button class="btn btn-primary" id="city_add">
+			<i class="fa fa-plus"></i> 增加城市
+		</button>
+	</div>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-1 text-center">#</th>
+				<th class="text-center">城市名称</th>
+				<th class="text-center">城市代码</th>
+				<th class="text-center">前台启用状态</th>
+				<th class="text-center">后台启用状态</th>
+				<th class="text-center">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+        <?php foreach ($aList['aList'] as $v) {?>
+            <tr>
+				<td class="col-sm-1 text-center"><?php echo $v['iCityID']?></td>
+				<td class="text-center"><?php echo $v['sCityName']?></td>
+				<td class="text-center"><?php echo $v['sCityCode']?></td>
+				<td class="text-center"><?php echo $v['iFrontShow']?'是':'否'?></td>
+				<td class="text-center"><?php echo $v['iBackendShow']?'是':'否'?></td>
+				<td class="text-center">
+					<a href="/admin/city/edit?id=<?php echo $v['iCityID']?>" title="编辑"><i
+						class="fa fa-pencil fa-large"></i></a> <a class="city_delete"
+						href="/admin/city/del?id=<?php echo $v['iCityID']?>" role="button"
+						data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+				</td>
+			</tr>
+        <?php }?>
+    	</tbody>
+	</table>
+    <?php echo $aList['aPager']?>
+</div>
+<script>
+$('.city_delete').click(function() {
+	var url = this.href;
+	if (confirm("您确认要删除该城市吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+$('#city_add').click(function(){
+	location.href = '/admin/city/add';
+});
+</script>

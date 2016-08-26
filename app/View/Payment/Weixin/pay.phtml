@@ -1,0 +1,52 @@
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/payment/css.css">
+<div class="main">
+	<div class="w">
+		<div class="order">
+			<div class="o-left">
+				<h3 class="o-title">请您及时付款，以便订单尽快处理！ 订单号：<?php echo $aParam['ordercode']?></h3>
+			</div>
+			<div class="o-right">
+				<div class="o-price">
+					<em>应付金额</em><strong><?php echo $aParam['totalfee']?></strong><em>元</em>
+				</div>
+			</div>
+			<div class="clr"></div>
+		</div>
+		<div class="payment">
+			<!-- 微信支付 -->
+			<div class="pay-weixin">
+				<div class="p-w-hd">微信支付</div>
+				<div class="p-w-bd">
+					<div class="p-w-box">
+						<div class="pw-box-hd">
+						</div>
+						<div class="pw-box-ft">
+							<p>请使用微信扫一扫</p>
+							<p>扫描二维码支付</p>
+						</div>
+					</div>
+					<div class="p-w-sidebar"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/qrcode.js"></script>
+<script>
+var url = '<?php echo $sQRUrl?>';
+//参数1表示图像大小，取值范围1-10；参数2表示质量，取值范围'L','M','Q','H'
+var qr = qrcode(10, 'M');
+qr.addData(url);
+qr.make();
+$('.pw-box-hd').html(qr.createImgTag());
+
+setInterval(function(){
+	$.get('/payment/pay/check/id/<?php echo $aParam['ordercode']?>.html', function(ret){
+		if (ret.status) {
+			alert(ret.data);
+			location.href = ret.url;
+		}
+	},'json');
+}, 3000);
+</script>

@@ -1,0 +1,113 @@
+<div id="divMyJourneyLoading" style="display: " class="mb10 bs02">
+<div class="pr pd02 bs03 pdr10">
+    <h3 class="tit_siller">
+        <strong>购卡信息</strong></h3>
+    <div style="float: right; padding-right: 20px;">
+    </div>
+</div>
+<div class="timeline_noresult">
+     <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+        <colgroup>
+            <col style="width: 15%" />
+            <col style="width: 35%" />
+            <col style="width: 15%" />
+            <col style="width: 35%" />
+        </colgroup>
+        <?php if (!empty($aOrder)) { ?>
+        <tr>
+            <th>姓名：</th>
+            <td>
+                <span id="main_main_lblName"><?php echo $aOrder['sConsignee'] ?></span>
+            </td>
+        </tr>
+        <tr>
+            <th>体检卡类型：</th>
+            <td>
+                <span id="main_main_lblCardType">电子卡</span>
+            </td>
+            <th>发放状态：</th>
+            <td>
+                <span id="main_main_lblIsSend">已发放</span>
+                
+            </td>
+        </tr>
+        <tr>
+            <th>手机：</th>
+            <td>
+                <span id="main_main_lblMobile"><?php echo $aOrder['sMobile'] ?></span>
+            </td>
+            <th>邮箱：</th>
+            <td>
+                <span id="main_main_lblEmail"><?php echo $aOrder['sEmail'] ?></span>
+            </td>
+        </tr>
+        <tr>
+            <th>总金额：</th>
+            <td>
+                <span id="main_main_lblPayValue"><?php echo $aOrder['sProductAmount'] ?></span>
+            </td>
+            <th>付款状态：</th>
+            <td>
+                <span id="main_main_lblIsPay"><?php echo $aOrder['sPayStatus'] ?></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height:10px"></td>
+        </tr>
+        <tr>
+            <td colspan="4" style="height:20px; color:orange;">
+            </td>
+        </tr>
+        <?php } ?>
+        
+    </table>
+            <table id="tableFrameBlue" cellspacing="0" cellpadding="0" border="0" width="100%">
+                <tr class="title">
+                    <td style="width: 20%">体检产品</td>
+                    <td style="width: 10%">单价</td>
+                    <td style="width: 10%">数量</td>
+                    <?php if (!$iType) { ?>
+                    <td style="width: 30%">卡号(绑定状态)</td>
+                    <?php } ?>
+                    <td style="width: 20%">小计</td>
+                </tr>
+                
+                <?php if ($aOP) { 
+                foreach ($aOP as $key => $value) { ?>
+                <tr class="item">
+                    <td style="text-align:center;">
+                        <span id="main_main_RepList_lblProductName_0"><?php echo $value['sProductName'] ?></span>
+                    </td>
+                    <td style="text-align:center;">
+                        <span id="main_main_RepList_lblSaleValue_0">
+                        <?php echo number_format($value['sProductPrice'], 2)?>
+                        </span>
+                    </td>
+                    <td style="text-align: center;">
+                        <span id="main_main_RepList_lblCount_0"><?php echo $value['iProductNumber']?></span>
+                    </td>
+                    <?php if (!$iType) { ?>
+                    <td style="text-align: center;">
+                        <span><?php echo $value['sCardNumber']?></span>
+                    </td>
+                    <?php } ?>
+                    <td style="text-align:center;">
+                        <span id="main_main_RepList_lblAllSaleValue_0">
+                        <?php echo number_format($value['sProductPrice'] * $value['iProductNumber'], 2)?>
+                        </span>
+                    </td>
+                </tr>
+                <?php } } ?>
+            </table>
+        
+</div>
+<div style="padding:15px; text-align:center;">
+    <?php if ($aOrder['iPayStatus'] == 0) { ?>
+    <a class="btn_submit" href="/order/orderpay/ordercode/<?php echo $aOrder['sOrderCode'] ?>" style="padding-top:4px">继续支付</a>
+    <?php } ?>
+    <a class="btn_submit" href="/index/order/list" style="padding-top:4px">返回</a>
+</div>
+</div>
+
+</div>
+</div>

@@ -1,0 +1,491 @@
+<form id="myform" class="form-horizontal" role="form" method="post">
+    <div id="">
+        <input type="hidden" name="iOrderID" value="<?php echo $iOrderID ?>">
+        <input type="hidden" name="iCardID" value="<?php echo $iCardID ?>">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+            <tr>
+                <td colspan="2" style="height: 10px"></td>
+            </tr>
+            <tr>
+                <td style="font-size: 15px; color: orangered; font-weight: bold; text-align: center;" colspan="4">温馨提示：请正确填写以下信息， 确保您能顺利完成本次体检。<br />
+                </td>
+            </tr>
+            <tr>
+                <th style="width: 20%">体检套餐：</th>
+                <td style="width: 30%">
+                    <span><?php echo isset($sProductName) ? $sProductName : $aOP['sPName'] ?></span>
+                </td>
+            </tr>
+            
+            <tr>
+                <th>体检地点：</th>
+                <td>
+                    <span><?php echo $aStore['sName'] ?></span>
+                </td>
+                <th></th>
+                <td></td>
+            </tr>
+            <tr>
+                <th>预约体检日期：</th>
+                <td align="left">
+                    <!-- <span id="main_lblBeginTime" class="Wdate input_text" onclick="ShowCalendar();"></span> -->
+                    <input name="sPhysicalDate" id="iOrderTime" validate="!date:true" placeholder="请选择体检日期" type="text" class="Wdate input_text" value="<?php echo $aCardProduct['iOrderTime'] 
+                    ? date('Y-m-d', $aCardProduct['iOrderTime']) : '' ?>" />
+                    <span class="f_c_f63 f20">*</span>
+                    <span style="color: Orange"></span>
+                    
+                </td>
+                <td style="text-align: left;">
+                    <span class="msgBox f12">
+                    <?php echo date('Y-m-d', $aCardProduct['iOrderTime']) ?>
+                    </span>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>体检人姓名：</th>
+                <td>
+                    <span><?php echo $aEmployee['sRealName'] ?></span>
+                </td>
+                <td><span class="msgBox f12"></span></td>
+                <td style="color: blue">
+                    <a href="<?php echo $sBaseInfoUrl2 ?>" style="color:OrangeRed;text-decoration:underline;">(修改体检信息)</a>
+                </td>
+            </tr>
+            <tr>
+                <th>性别：</th>
+                <td>
+                    <span><?php echo $aEmployee['sSex'] ?></span>
+                </td>
+                <td></td>
+                <td style="color: orange">(性别关系到您体检的项目)</td>
+
+            </tr>
+            <tr>
+                <th>婚姻状况：</th>
+                <td>
+                    <span><?php echo $aEmployee['sMarriage'] ?></span>
+                </td>
+                <td></td>
+                <td style="color: orange">(婚姻状况关系到您体检的项目)</td>
+            </tr>
+            <tr>
+                <th>身份证号码：</th>
+                <td>
+                    <span><?php echo $aEmployee['sIdentityCard'] ?></span>
+                </td>
+                <td></td>
+                <td style="color: orange">(体检时需出示您登记的证件)</td>
+            </tr>
+            <tr>
+                <th>生日：</th>
+                <td>
+                    <span><?php echo $aEmployee['sBirthDate'] ?></span>
+                </td>
+                <td>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>手机：</th>
+                <td>
+                    <span><?php echo $aEmployee['sMobile'] ?></span>
+                </td>
+                <td>
+                </td>
+                <td style="color: orange">(此号码将用于接收体检短信提醒)</td>
+            </tr>
+            <tr>
+                <th>邮箱：</th>
+                <td>
+                    <span><?php echo $aEmployee['sEmail'] ?></span>
+                </td>
+                <td>
+                    <span class="msgBox f12" id="errorEmail"></span>
+                </td>
+                <td style="color: orange">(此邮箱将用于接收体检报告及提醒)</td>
+            </tr>
+            <tr id="main_trPersonPay">
+                <th>个人支付：</th>
+                <td style="font-size: 15px; font-weight: bold; color: orange;">
+                    <span><?php echo $aCard['sProductAmount'] ?></span>元
+                    <?php 
+                    if (isset($iUpPayStatus) && 1 == $iUpPayStatus ) {
+                        echo '(已支付)';
+                    } else if (isset($iUpPayStatus) && 0 == $iUpPayStatus ){
+                        echo '(未支付)';
+                    } else if ($aCard['iPayType'] == 1) { ?>
+                        ( <?php echo (1 == $aCardProduct['iPayStatus'])? '已支付' : '未支付' ?> )
+                    <?php }?>
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr id="main_report1">
+                <th style="">获取电子报告：</th>
+                <td style="" colspan="3">    报告生成后，我们会通过短息和邮件的方式通知您，之后您可登录系统在线浏览和下载电子报告。
+                </td>
+            </tr>
+            <tr id="main_report2">
+                <th style="">领取书面报告：</th>
+                <td style="" colspan="3">
+                    1、自取（体检报告出具后，请带好参检者身份证原件前往体检门店自行提取）<br>
+                    2、快递（体检当日至体检门店前台填写快递单并支付快递费用）
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 15px;" colspan="2"></td>
+            </tr>
+            <tr>
+                <td colspan="4" style="text-align: center;">
+                    <?php if (isset($iUpPayStatus) && $iUpPayStatus == 0) { ?>
+                    <input type="submit" name="" value="去支付" class="reg_btn" style="width:140px;" />&nbsp;&nbsp;
+                    <?php } else if ($aCardProduct['iPayStatus'] == 1 || $aCard['iPayType'] == 2) { ?>
+                    <input type="submit" name="" value="提交预约申请" class="reg_btn" style="width:140px;" />&nbsp;&nbsp;
+                    <?php } else { ?>
+                    <input type="submit" name="" value="去支付" class="reg_btn" style="width:140px;" />&nbsp;&nbsp;
+                    <?php } ?>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="4" style="height: 30px"></td>
+            </tr>
+            <tr>
+                <th>具体地址：</th>
+                <td colspan="3">
+                    <span><?php echo $aStore['sAddress'] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>营业时间：</th>
+                <td colspan="3">
+                    <span><?php echo $aStore['sWorktime'] ?></span>
+                </td>
+            </tr>
+            <tr>
+                <th>附近交通：</th>
+                <td colspan="3" style="line-height: 25px;">
+                    <span><?php echo $aStore['sTraffic'] ?></span>
+                </td>
+            </tr>
+        </table>                
+    </div>
+    
+    <div id="container" style='height:600px;width:800px;margin:20px auto'>        
+    </div>
+    <!-- <div id="allmap" style="overflow: hidden; zoom: 1; position: relative; margin: 0 auto; height: 300px">
+        <div id="map" style="height: 100%; -webkit-transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out;">
+        </div>
+    </div> 
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+        <tr>
+            <td style="font-size: 12px; color: #808080; text-align: center;" colspan="2"></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="height: 10px"></td>
+        </tr>
+    </table>    
+            
+    <div class="timeline_noresult">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+            
+            <tr>
+                <td colspan="3" style="height: 20px;"></td>
+            </tr>
+        </table>
+    </div>
+            
+    <div class="base_pop" id="divMap" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                <span id="main_lblCompanyName2">慈铭人民广场分院</span></h3>
+            <div class="input-container">
+                <iframe id="framemap" src="" height="500px" width="760px" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>    
+
+    <div class="base_pop" id="divLoad" style="width: 300px; height: 200px; display: none; z-index: 888;">
+        <table style="width: 100%;">
+            <tr>
+                <td style="font-size: 18px; font-weight: bold; padding-top: 75px; text-align: center;">
+                    <span id="main_lblLoading" style="font-size:18px;">请稍候..</span></td>
+            </tr>
+        </table>
+    </div>
+    <div id="backgroundPopup" style="height: 924px; width: 100%; display: none; opacity: 0.5;">
+    </div>
+    -->
+</form>
+
+<div class="modal" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel">选择体检日期</h4>
+            </div>
+            <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert"
+                 style="display: none">
+                <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+                <span class="card-warn-msg"></span>
+            </div>
+            <div class="modal-body">
+                <table class="calendar_table">
+                    <tbody id="calendar_table">
+                    <tr class="calendar_head">
+                        <td>周一</td>
+                        <td>周二</td>
+                        <td>周三</td>
+                        <td>周四</td>
+                        <td>周五</td>
+                        <td>周六</td>
+                        <td>周日</td>
+                    </tr>
+                    <?php if (!empty($aReserDateList)) {
+                        $iTime = time();
+                        foreach ($aReserDateList as $key => $value) {
+                            ?>
+                            <tr class="calendar_body">
+                                <?php foreach ($value as $k => $val) {
+                                    ?>
+                                    <td <?php echo $k == date('Ymd',$iTime) ? 'style="background-color:#f0ad4e"' : '' ?> data-date="<?php echo date('Y-m-d',strtotime($k));?>" class="<?php echo $val == 1 ? 'calendar_cell' : 'calendar_cell_none' ?>"><?php echo $k == date('Ymd',$iTime) ? '今天' : date('Y-m-d',strtotime($k)); ?><br>(<?php echo !empty($aReserveStatus[$val]) ? $aReserveStatus[$val] : '';  ?>)</td>
+                                <?php
+                                } ?>
+                            </tr>
+                    <?php
+                        }
+                    }  ?>
+                    <tr class="calendar_body"></tr>
+                    </tbody>
+                </table>
+                <div class="calendar-month clearfix">
+                    <input type="hidden" id="sSupplierCode" value="<?php echo $sSupplierCode; ?>">
+                    <input type="hidden" id="sStoreCode" value="<?php echo $sStoreCode; ?>">
+                    <input type="hidden" id="iPhysicalType" value="<?php echo $aCard['iPhysicalType']; ?>">
+                    <div class="col-xs-3 col-xs-offset-2">
+                        <input type="button" value="上一月" id="main_btnPrevMonth" data-date="<?php echo date('Ymd',strtotime($k)-86400*69) ?>" class="form-control btn-warning">
+                    </div>
+                    <div class="col-xs-3 col-xs-offset-2">
+                        <input type="button" value="下一月" id="main_btnNextMonth" data-date="<?php echo date('Ymd',strtotime($k)+86400) ?>" class="form-control btn-warning">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+   
+<script type="text/javascript">
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = ret.url;
+            }
+        }, 'json');
+        return false;
+    }});
+
+    function ShowMap(suppliername, sLat, sLng) {
+        setLatLng(sLat, sLng);
+        return false;
+    }
+    AMap.service('AMap.Geocoder',function(){//回调函数
+        //实例化Geocoder
+        geocoder = new AMap.Geocoder({
+            city: ""//城市，默认全国
+        });
+    })
+
+    function setLatLng (lat, lng) {
+        if ($('#container').length) {
+            var map = new AMap.Map('container', {
+                resizeEnable: true,
+                center: [lat, lng],
+                zoom: 16
+            });
+            var marker = new AMap.Marker({
+                position: map.getCenter()
+            });
+            
+            marker.setMap(map);
+            // 设置label标签
+            marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+                offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+            });
+            marker.on('click',function(e){
+                infowindow.open(map,e.target.getPosition());
+            })
+            
+            AMap.plugin('AMap.AdvancedInfoWindow',function(){
+                infowindow = new AMap.AdvancedInfoWindow({
+                    offset: new AMap.Pixel(0, -30)
+                });
+                infowindow.open(map,[lat, lng]);
+            })
+           
+            AMap.plugin(['AMap.ToolBar','AMap.Scale'],function(){
+                var toolBar = new AMap.ToolBar();
+                var scale = new AMap.Scale();
+                map.addControl(toolBar);
+                map.addControl(scale);
+            })            
+        }
+    }
+
+
+    // $('#iOrderTime').click(function () {
+    //     $('#selectModal').modal('show');
+    // });
+    // $('.calendar_cell').click(function(){//体检预约日期接口todo
+    //     alert(1);return;
+    //     $('#iOrderTime').val($(this).data('date'));
+    //     $('#selectModal').modal('hide');
+    // });
+    
+    $(function () {
+        $('#iOrderTime').click(function () {
+            $('#selectModal').modal('show');
+        });
+        $("#calendar_table").on("click", ".calendar_cell", function () {
+            $('#iOrderTime').val($(this).data('date'));
+            $('#selectModal').modal('hide');
+        })
+    });
+
+    
+    function errShow(obj, isShow, message) {
+        if (isShow) {
+            obj.show();
+            obj.html("<i></i>" + message);
+        }
+        else {
+            obj.hide();
+            obj.html("<i></i>" + message);
+        }
+    }
+
+    function checktxtBeginTime() {
+        var name = $("input[id$='txtBeginTime']").val();
+        var today = $("input[id$='hidToday']").val();
+        if (name.length === 0) {
+            errShow($("#errorBeginTime"), true, "请填写体检日期\r\n");
+            return false;
+        }
+        else if (compareDate(name, today)) {
+            errShow($("#errorBeginTime"), true, "体检日期必须大于今天\r\n");
+            return false;
+        }
+        else {
+            errShow($("#errorBeginTime"), false, "");
+            return true;
+        }
+    }
+
+    $("input[id$='txtBeginTime']").bind("blur", function () {
+        checktxtBeginTime();
+    })
+ 
+    function compareDate(DateOne, DateTwo) {
+        var OneMonth = DateOne.substring(5, DateOne.lastIndexOf("-"));
+        var OneDay = DateOne.substring(DateOne.length, DateOne.lastIndexOf("-") + 1);
+        var OneYear = DateOne.substring(0, DateOne.indexOf("-"));
+
+        var TwoMonth = DateTwo.substring(5, DateTwo.lastIndexOf("-"));
+        var TwoDay = DateTwo.substring(DateTwo.length, DateTwo.lastIndexOf("-") + 1);
+        var TwoYear = DateTwo.substring(0, DateTwo.indexOf("-"));
+
+        if (Date.parse(OneMonth + "/" + OneDay + "/" + OneYear) <= Date.parse(TwoMonth + "/" + TwoDay + "/" + TwoYear))
+            return true;
+        else
+            return false;
+    } 
+
+    function getLocalTime(nS) {
+        var dataArray = new Date(parseInt(nS) * 1000).toLocaleDateString().split("/");
+        dataArray[1] < 10 ? dataArray[1] = "0" + dataArray[1] : dataArray[1] = dataArray[1];
+        dataArray[2] < 10 ? dataArray[2] = "0" + dataArray[2] : dataArray[2] = dataArray[2];
+        return dataArray.join("");
+    }
+    //日期转为时间戳函数
+    function transformTime(str) {
+        str = str.replace(/-/g, '/');
+        var time = (new Date(str)).getTime();
+        return time / 1000;
+    }
+    function formateData(date) {
+        var year = date.substr(0, 4), month = date.substr(4, 2), date = date.substr(6);
+        var formatdate = year + "-" + month + "-" + date;
+        return formatdate;
+    }
+
+
+    //下一月上一月todo @yabo
+    $("#main_btnPrevMonth,#main_btnNextMonth").on("click", function () {
+        var _this = this;
+        var sdate = $(_this).attr("data-date");
+        var sSupplierCode = $("#sSupplierCode").val();
+        var sStoreCode = $("#sStoreCode").val();
+        var iPhysicalType = $('#iPhysicalType').val();
+        $.ajax({
+            url: "/index/web/getreservedate",
+            type: "post",
+            dataType: "json",
+            data: {
+                sSupplierCode: sSupplierCode, 
+                sStoreCode: sStoreCode, 
+                sdate: sdate, 
+                iPhysicalType: iPhysicalType
+            },
+            success: function (res) {
+                var dataLength = res.data.length;
+                if (dataLength > 0) {
+                    var index = dataLength - 1;
+                    var sdates = res.data[index];
+                    var objlength = 0;
+                    var newLastDataArray = [];
+                    $.each(sdates, function (key, value) {
+                        objlength++;
+                        newLastDataArray.push(key);
+                    })
+                    var prevData = newLastDataArray[objlength - 1];
+                    var year = prevData.substr(0, 4), month = prevData.substr(4, 2), data = prevData.substr(6);
+                    var formatdate = year + "/" + month + "/" + data;
+                    var prevData = getLocalTime(transformTime(formatdate) - 86400 * 69);
+                    var nextData = getLocalTime(transformTime(formatdate) + 86400);
+                    if (prevData.indexOf("年") != -1) {
+                        //prevData=prevData.replace(/年|月|日/g, "");
+                        prevData=newjxDate(prevData);
+                    }
+                    if (nextData.indexOf("年") != -1) {
+                        //nextData=nextData.replace(/年|月|日/g, "");
+                         nextData=newjxDate(nextData);
+                    }
+                    $("#main_btnPrevMonth").attr("data-date", prevData);
+                    $("#main_btnNextMonth").attr("data-date", nextData);
+                    var trArray = [];
+                    for (var i = 0; i < dataLength; i++) {
+                        var tdArray = [];
+                        $.each(res.data[i], function (key, value) {
+                            var tdate = formateData(key);
+//                          var comparedata=(Date.parse(tdate)+"").substr(0,5);
+//                          var comparenow=(Date.parse(new Date())+"").substr(0,5);
+//                          var style=(comparedata ==comparenow)?'style="background-color:#f0ad4e"':"";
+                            var syy = (value == 1) ? "可以预约" : "不可预约";
+                            var syyclass = (value == 1) ? "calendar_cell" : "calendar_cell_none";
+                            tdArray.push('<td  data-date="' + tdate + '" class="' + syyclass + '">' + tdate + '<br>(' + syy + ')</td>');
+                        })
+                        trArray[i] = '<tr class="calendar_body">' + tdArray.join("") + ' </tr>';
+                    }
+                    var headHtml = '<tr class="calendar_head"><td>周一</td><td>周二</td><td>周三</td><td>周四</td> <td>周五</td> <td>周六</td><td>周日</td></tr>';
+                    var footHtml = '<tr class="calendar_body"></tr>';
+                    $("#calendar_table").html(headHtml + trArray.join("") + footHtml);
+                }
+            }
+        })
+    })
+
+    ShowMap('<?php echo $aStore['sName']?>', <?php echo $aStore['iX']?>, <?php echo $aStore['iY']?>);
+</script>

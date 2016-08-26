@@ -1,0 +1,49 @@
+<div class="pheader clearfix"><?php echo isset($aAdd['iAddtionID'])?'编辑':'增加'?>基本信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name='iAddtionID' type='hidden' value='<?php echo isset($aAdd['iAddtionID']) ? $aAdd['iAddtionID'] : ''; ?>'/>
+        <div class="form-group">
+            <label for="sName" class="col-sm-2 control-label"> 服务加项名称：</label>
+            <div class="col-sm-6">
+                <input name="sName" type="text" value="<?php echo isset($aAdd['sName']) ? $aAdd['sName'] : ''; ?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sContent" class="col-sm-2 control-label"> 服务内容：</label>
+            <div class="col-sm-6">
+                <input name="sContent" type="text" value="<?php echo isset($aAdd['sContent']) ? $aAdd['sContent'] : ''; ?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 备注信息：</label>
+            <div class="col-sm-6">
+                <textarea class="form-control input-validate" name="sRemark"><?php echo isset($aAdd['sRemark']) ? $aAdd['sRemark'] : ''; ?></textarea>
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center">
+            <button id="save" class="btn btn-primary">保存</button>
+            <button id="cancel" class="btn" onclick="location.href='/admin/itemap/service';return false;">
+                取消
+            </button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    $("#myform").validate({
+        submitHandler: function (form) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.href = '/admin/itemap/service';
+                }
+            }, 'json');
+            return false;
+        }
+    });
+});
+</script>

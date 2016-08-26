@@ -1,0 +1,43 @@
+<div class="pheader clearfix">修改登录密码</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+		<div class="form-group col-sm-9">
+			<label for="sOldPwd" class="col-sm-3 control-label">当前密码：</label>
+			<div class="col-sm-9">
+				<input name="sOldPwd" type="password" value="" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-9">
+			<label for="sNewPwd" class="col-sm-3 control-label">新密码：</label>
+			<div class="col-sm-9">
+				<input name="sNewPwd" type="password" value="" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-9">
+			<label for="sConfirmPwd" class="col-sm-3 control-label">确认新密码：</label>
+			<div class="col-sm-9">
+				<input name="sConfirmPwd" type="password" value="" class="form-control input-validate">
+			</div>
+		</div>
+
+    	<div class="form-groupbtn-toolbar text-center col-sm-9">
+        	<button id="save" class="btn btn-primary">保存</button>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	        	window.location.reload();
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

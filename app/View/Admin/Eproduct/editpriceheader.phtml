@@ -1,0 +1,26 @@
+<style>
+    .header .pheader {
+        height: auto;
+    }
+</style>
+<div class="header pbody clearfix">
+    <div class="pheader pmargin clearfix">
+        <div>正在编辑客户：共<span class="red"><?php echo count($aUsers) ?></span>家</div>
+        <div>
+            <?php echo implode(',',$aUsers); ?>
+        </div>
+    </div>
+
+    <ul class="nav nav-tabs">
+        <?php if (!empty($aEditUserHeaderInfo)) {
+            $sUrlKey = 'editurl';
+            foreach ($aEditUserHeaderInfo as $key => $value) {
+                ?>
+                <li role="presentation" <?php echo $iEditUserHeaderIndex == $key ? 'class="active"' : '' ?>>
+                    <a href="<?php echo $iEditUserHeaderIndex == $key ? 'javascript:;' : $value[$sUrlKey].'id/'.$iProductID.'/uid/'.$sUserID ?>/tid/<?php echo $iChannelType ?>/cid/<?php echo $iChannelID ?>"><?php echo $value['name'] ?></a>
+                </li>
+            <?php
+            }
+        } ?>
+    </ul>
+</div>

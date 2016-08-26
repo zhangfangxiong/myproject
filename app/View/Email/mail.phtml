@@ -1,0 +1,70 @@
+<html>
+<style>
+.body {
+	border: 1px solid #ccc;
+	border-top: 2px solid #cc0000;
+	width: 800px;
+	margin: 0px auto;
+	font-size: 14px;
+}
+.header {
+	padding: 20px;
+	border-bottom: 1px solid #ccc;
+}
+.logo {
+	width: 180px;
+	float: left;
+}
+.text {
+	margin-left: 20px;
+    height: 20px;
+    float: left;
+    padding-top: 36px;
+}
+.right {
+	float: right;
+	margin-right: 20px;
+	vertical-align: middle;
+    height: 56px;
+	line-height: 56px;
+}
+.right a{
+	margin-right: 20px;
+	color: #000;
+	font-weight: bold;
+	font-size: 14px;
+}
+.content {
+	padding: 20px;
+	border-bottom: 1px solid #ccc;
+	min-height: 300px;
+}
+.footer {
+	padding: 20px;
+}
+.clearfix:after{content:"."; visibility:hidden;display:block;font-size: 0;clear: both;height:0;}
+</style>
+<body>
+	<div class="body">
+		<div class="header clearfix">
+			<img class="logo" src="http://www.51wom.com/front/images/logo.png">
+			<div class="text">此信为系统邮件，请不要直接回复。</div>
+			<div class="right">
+				<a href="http://www.51wom.com">首页</a>
+				<a href="http://www.51wom.com/media/index.html">媒体资源下载</a>
+				<a href="http://www.51wom.com/ad/add.html">广告投放</a>
+			</div>
+		</div>
+		<div class="content">
+			<p>尊敬的用户{email}，您好！</p>
+			<p>{content}</p>
+		</div>
+		<div class="footer">
+			如果在使用过程中遇到问题，您可以选择以下两种方式解决：<br>
+			1、进入帮助中心查看相关帮助信息；<br>
+			2、拨打客服热线 400-878-9551 ，由客服提供专业协助；<br>
+			本邮件内容仅供参考，业务详情如有变动，请以51wom网站公示为准。
+		</div>
+	</div>
+</body>
+</html>

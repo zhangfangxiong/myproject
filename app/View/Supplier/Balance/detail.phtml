@@ -1,0 +1,69 @@
+<div class="pheader clearfix">体检预约单</div>
+<div class="pbody clearfix">
+<?php if ($aDetail) { ?>
+    <div class="form-group col-sm-6">
+        <label for="sBalanceCode" class="col-sm-5 ">凭证编号：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sBalanceCode'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sMonth" class="col-sm-5 ">请款月份：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sMonth'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iCount" class="col-sm-5 ">订单数量：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['iCount'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iSMoney" class="col-sm-5 ">总金额：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['iSMoney'] ?>元
+        </div>
+    </div>
+
+    <div class="form-group col-sm-12 text-center">        
+        <a class="btn btn-default" href='/supplier/balance/record'>返回</a>        
+        <a class="text-right btn btn-primary" href='/supplier/balance/export/id/<?php echo $aDetail['iBalanceID'] ?>'>导出</a>
+    </div>
+
+    <div class="pheader col-sm-12">订单明细</div>    
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">姓名</th>
+            <th class="text-center">性别</th>
+            <th class="text-center">城市</th>
+            <th class="text-center">体检项目</th>
+            <th class="text-center">体检门店</th>
+            <th class="text-center">体检日期</th>
+            <th class="text-center">状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aProduct) {
+            foreach ($aProduct as $key => $aBalance) { ?>
+                <tr>                   
+                    <td class="text-center"><?php echo $aBalance['sRealName'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sSex'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sCityName'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sProductName'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sStoreName'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sPhysicalTime'] ?></td>
+                    <td class="text-center"><?php echo $aBalance['sOrderStatus'] ?></td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+<?php }?>
+</div>
+
+

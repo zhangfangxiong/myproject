@@ -1,0 +1,153 @@
+<form id="myform" action="" method="post">
+    <div class="wrap-login container" style="margin-top: 30px;">
+        <div class="login_l">
+            <a href="javascript:void(0);">
+                <img src="<?php echo $sStaticRoot ?>/backend/img/qydl_pic.png" alt="" width="466" height="326" /></a>
+        </div>
+        <div class="loginbox">
+            <h3 class="clearfix title-login" style="text-align:right; padding-right:30px;">
+                <span class="l"></span>
+                <a id="main_hlLoginMobile" href="/index/account/identitycardlogin">身份证登录</a>
+                <span style="font-size:14px;">/</span>
+                <a id="main_hlLogin" href="/index/account/publiclogin">用户名登录</a>
+                <span style="font-size:14px;">/</span>
+                <a id="main_hlLogin" href="/index/account/medicalcardlogin">体检卡登录</a>
+            </h3>
+            <!-- normal start -->
+            <div class="input-container">
+                <div id="msg_login" class="login-message">
+                </div>
+                <div id="p-psw1" class="p-input clearfix" style="">
+                    <span class="l input-label" style="width:58px;">身份证：</span>
+                    <span class="wrap-verify">
+                        <input name="sIdentityCard" type="text" maxlength="30" id="sIdentityCard" tabindex="2" class="l input-common" style="width:230px;">
+                    </span>
+                </div>
+                <div id="p-psw1" class="p-input clearfix" style="">
+                    <span class="l input-label" style="width:58px;">手机号：</span>
+                    <span class="wrap-verify">
+                        <input name="sMobile" type="text" maxlength="30" id="sMobile" tabindex="2" class="l input-common" style="width:130px;">
+                        <input type="button" name="" value="发送验证码" id="again" class="reg_btn" style="font-size:15px; width:100px; height:35px;">
+                    </span>
+                </div>
+                <div id="login_passcode" class="p-input clearfix" style="">
+                    <span class="l input-label" style="width:58px;">验证码：</span>
+                    <span class="wrap-verify">
+                        <input name="iPhoneCode" type="text" maxlength="6" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;">                    
+                    </span>
+                </div>
+                <p class="p-btn p-submit">
+                    <input id="login" name="" style="padding-left:50px" value="登录" class="masking_button" />
+                </p>
+            </div>
+            <!-- normal end -->
+            <div class="login_uniom" style="padding-left:88px;">
+                <a href="/index/account/register" class="btn-forgot green">免费注册</a>
+                <span style="display:none" title="1.如您是企业员工用户，请联系您公司的HR，使用贵公司的专用地址进行登录  2.如果您是网站注册用户，可点击【忘记密码】来进行密码重置操作。">无法登录？</span>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript" language="javascript">
+
+    function fGetCode() {
+        if (document.getElementById("getcode")) {
+            document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+        }
+    }
+    fGetCode();
+
+    function BindButtonTime() {
+        var tc = 90;
+        var tid = 0;
+
+        var timer1 = function () {
+            tc--;
+            if (tc > 0) {
+                $('#main_btnSend').attr('disabled', "true"); //添加disabled属性
+                $("#main_btnSend").val(tc + '秒后可获取');
+                tid = setTimeout(timer1, 1000);
+            }
+            else {
+                $('#main_btnSend').removeAttr("disabled"); //移除disabled属性
+                $("#main_btnSend").val('获取验证码');
+                //$("#main_btnSend").button('reset');
+            }
+        }
+
+        timer1();
+    }
+
+    var UcenterUrl = '/index/web/list';
+    function codeChange()
+    {
+        var CodeUrl = '/index/account/sendcode/type/<?php echo $iCodeType ?>/mobile/';
+        var Mobile = $('#sMobile').val();
+        if (!Mobile) {
+            alert('请输入手机号');
+            return false;
+        }
+        CodeUrl = CodeUrl + Mobile;
+        $.get(CodeUrl, function (data) {
+            data = eval("(" + data + ")")
+            if (data.status) {
+                alert('发送成功');
+            } else {
+                alert('发送失败，请稍后重试');
+            }
+        });
+    }
+    $('#again').click(function () {
+         BindButtonTime() 
+    });
+
+
+    function BindButtonTime() {
+        codeChange();
+        var tc = 90;
+        var tid = 0;
+
+        var timer1 = function () {
+            tc--;
+
+            if (tc > 0) {
+                $('#again').attr('disabled', "true"); //添加disabled属性
+                $("#again").val(tc + '秒后可获取');
+                tid = setTimeout(timer1, 1000);
+            }
+            else {
+                $('#again').removeAttr("disabled"); //移除disabled属性
+                $("#again").val('获取验证码');
+            }
+        }
+
+        timer1();
+    }
+
+
+
+
+
+
+    $('#login').click(function () {
+        var CanSummit = 1;
+        var form = $('#myform');
+        if (CanSummit) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                if (ret.status) {
+                    //跳转到个人中心
+                    alert('登陆成功!');
+                    window.location = UcenterUrl;
+                    return true;
+                } else {
+                    alert(ret.data);
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    })
+</script>
+
+

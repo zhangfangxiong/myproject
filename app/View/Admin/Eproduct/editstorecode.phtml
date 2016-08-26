@@ -1,0 +1,99 @@
+<div class="pheader clearfix">
+    <?php echo $aProduct['sProductName'] ?>
+</div>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">门店名称：</label>
+
+            <div class="col-sm-6 labal-top">
+                <?php echo !empty($aStore['sName']) ? $aStore['sName'] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">供应商：</label>
+
+            <div class="col-sm-6 labal-top">
+                <?php echo !empty($aSupplier[$aStore['iSupplierID']]) ? $aSupplier[$aStore['iSupplierID']] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">城市：</label>
+
+            <div class="col-sm-6 labal-top">
+                <?php echo !empty($aCity[$aStore['iCityID']]) ? $aCity[$aStore['iCityID']] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">性别：</label>
+
+            <div class="col-sm-6 labal-top">
+                <?php echo !empty($aSex[$aStoreCode['iSex']]) ? $aSex[$aStoreCode['iSex']] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">门店代码：</label>
+
+            <div class="col-sm-6 labal-top">
+                <?php echo !empty($aStore['sStoreCode']) ? $aStore['sStoreCode'] : '' ?>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sCode" class="col-sm-2 control-label">产品代码：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sCode" placeholder="请填写产品代码" type="text"
+                       value="<?php echo !empty($aStoreCode['sCode']) ? $aStoreCode['sCode'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sSupplierPrice" class="col-sm-2 control-label">供应商结算价：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sSupplierPrice" placeholder="请填写供应商结算价" type="text"
+                       value="<?php echo !empty($aStoreCode['sSupplierPrice']) ? $aStoreCode['sSupplierPrice'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sChannelPrice" class="col-sm-2 control-label">渠道结算价：</label>
+
+            <div class="col-sm-6">
+                <input class="form-control input-validate" validate="!required:true" name="sChannelPrice" placeholder="请填写渠道结算价" type="text"
+                       value="<?php echo !empty($aStoreCode['sChannelPrice']) ? $aStoreCode['sChannelPrice'] : '' ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+
+        <div class="btn-toolbar text-center">
+            <input type="hidden" name="iAutoID" value="<?php echo $iID ?>">
+            <input type="submit" id="next" class="btn btn-primary"
+                   value="保存">
+            <input type="button" value="取消" id="cancel" class="btn"
+                   onclick="history.back()">
+        </div>
+    </form>
+</div>
+<script>
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

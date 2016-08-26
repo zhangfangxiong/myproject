@@ -1,0 +1,149 @@
+@charset "utf-8";
+/* Window/WindowHorizontalSprites.gif */
+.RadWindow_HrShop {
+  font-family: "微软雅黑";
+  font-size: 12px;
+  border: 0px solid #cdcdcd;
+  /* When ShowContentDuringLoad="false" */ }
+  .RadWindow_HrShop .rwStatusbarRow .rwCorner,
+  .RadWindow_HrShop .rwStatusbarRow .rwStatusbar {
+    border-top: 1px solid #cdcdcd; }
+  .RadWindow_HrShop .rwTopLeft,
+  .RadWindow_HrShop .rwTopRight,
+  .RadWindow_HrShop .rwTopResize {
+    background-color: #0D8FE3 !important; 
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50) !important;
+	opacity: .50 !important; 
+	-moz-opacity: .50 !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+	}
+  .RadWindow_HrShop .rwBodyLeft,
+  .RadWindow_HrShop .rwBodyRight,
+  .RadWindow_HrShop tr td.rwStatusbar input,
+  .RadWindow_HrShop .rwStatusbar td,
+  .RadWindow_HrShop .rwFooterRow .rwCorner,
+  .RadWindow_HrShop .rwFooterCenter,
+  .RadWindow_HrShop .rwStatusbar td {
+    background-color: #0D8FE3 !important; 
+    filter: progid:DXImageTransform.Microsoft.Alpha(opacity=50) !important;
+	opacity: .50 !important; 
+	-moz-opacity: .50 !important;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    }
+  .RadWindow_HrShop iframe {
+    display: block; }
+  .RadWindow_HrShop a.rwIcon,
+  .RadWindow_HrShop .rwShadow a.rwIcon {
+    background: url('Window/Icon.gif') no-repeat center;
+    margin: 3px 5px 0 0; }
+  .RadWindow_HrShop ul.rwControlButtons {
+    margin: 7px 0; }
+  .RadWindow_HrShop .rwControlButtons a {
+    background-color: #25a0da;
+    background-image: url('Window/CommandButtonSprites.gif');
+    width: 29px;
+    height: 19px;
+    border: 1px solid #25a0da; }
+  .RadWindow_HrShop table.rwTitlebarControls em {
+    color: #0D8FE3;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: normal;
+    padding: 5px 0 0 1px; }
+  .RadWindow_HrShop td.rwStatusbar div {
+    background-image: url('Window/rwResize.gif');
+    background-position: 10px 8px;
+    margin: 0 -4px -7px 0;
+    *margin: 0 -1px -4px 0; }
+  .RadWindow_HrShop input.rwDialogInput {
+    border: 1px solid #cdcdcd; }
+  .RadWindow_HrShop input.rwDialogInput:hover {
+    border: 1px solid #767676; }
+  .RadWindow_HrShop td.rwWindowContent.rwLoading {
+    background-image: url('Common/loading.gif'); }
+  .RadWindow_HrShop input.rwLoading {
+    background-image: url('Common/loading_small.gif'); }
+  .RadWindow_HrShop .rwDialogPopup a.rwPopupButton {
+    background: white;
+    border: 1px solid #cdcdcd; }
+  .RadWindow_HrShop .rwDialogPopup a.rwPopupButton:hover {
+    background: #e8e8e8;
+    border: 1px solid #767676; }
+
+div.RadWindow_HrShop tr td.rwLoading {
+  background-color: white; }
+
+div.RadWindow_HrShop a.rwCancel,
+div.RadWindow_HrShop a.rwCancel span {
+  background: none !important;
+  cursor: pointer;
+  border: 0 !important; }
+
+div.RadWindow_HrShop a.rwCancel span span,
+div.RadWindow_HrShop a.rwCancel:hover span span {
+  color: black;
+  text-decoration: underline; }
+
+/*override*/
+
+.RadWindow .rwCorner {
+    width: 4px !important;
+}
+.RadWindow .rwTopLeft, .RadWindow .rwTopRight, .RadWindow .rwTitlebar, .RadWindow .rwFooterLeft, .RadWindow .rwFooterRight, .RadWindow .rwFooterCenter {
+	height:4px !important;
+}
+
+/*自定义区*/
+.rwTitlebarControls
+{
+    background-image:#FFFFFF !important; 
+    background:#FFFFFF;
+    border-bottom: 1px solid #AEC4CC !important;
+    border-collapse: collapse;
+    }
+
+.RadWindow .rwCloseButton
+{
+	background-image:url(../../images/icon_r_b_close.png) !important;
+	background-position: center !important;
+}
+.RadWindow .rwControlButtons a {
+    height: 24px !important;
+    width: 24px !important;
+}
+.RadWindow .rwCloseButton:hover
+{
+	background-position: -90px -21px;
+}
+
+.RadWindow_HrShop .rwControlButtons a  
+{
+    background-color: #25A0DA !important;
+    background: url(../../Content/images/icon_r_b_s_close24_2.png) !important;
+    border: 0px solid #25A0DA;
+    height: 24px;
+    width: 24px;
+}
+
+.RadWindow_HrShop ul.rwControlButtons {
+    width:40px !important;
+}
+
+.RadWindow_HrShop table.rwTitlebarControls em {
+    
+    font-size: 20px !important;
+    font-weight: bold;
+    font-family:"微软雅黑" !important;
+}
+
+.RadWindow_HrShop a.rwIcon,
+  .RadWindow_HrShop .rwShadow a.rwIcon {
+    background: none !important;
+    margin: 3px 5px 0 0; 
+   }
+   
+   .RadWindow .rwTitlebarControls {
+	height:40px !important;
+}
+
+ 

@@ -1,0 +1,62 @@
+<div class="pheader clearfix">发送账号</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input type='hidden' name="ids" value="<?php echo $ids;?>"></input>
+        <div class="form-group col-sm-12">
+            <label for="title" class="col-sm-3 control-label"> <span class="tubiao">*</span>范围：</label>
+            <div class="col-sm-9">
+                <input type="radio" name="iIsAll" class="surl" value="0" checked="">尚未预约体检的员工
+                <input type="radio" name="iIsAll" class="surl" value="1">全部参与本次体检的员工
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label for="title" class="col-sm-3 control-label"> <span class="tubiao">*</span>通知类别：</label>
+            <div class="col-sm-9">
+                <input id='yearly' type="radio" class="turl"  name="iType" value="1" checked="">年度体检
+                <input id='job' type="radio"  class="turl" name="iType" value="2">入职体检
+            </div>
+        </div>
+
+        <div id="content1" class="form-group col-sm-12" style="display">
+            <label for="content" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮件正文：</label>
+            <div class="col-sm-9">
+                <textarea style="margin-top: 0px; margin-bottom: 0px; height: 222px;" name="content" class="form-control input-validate"><?php echo $content1 ?></textarea>
+            </div>
+        </div>
+
+        <div id="content2" class="form-group col-sm-12" style="display:none">
+            <label for="content" class="col-sm-3 control-label"> <span class="tubiao">*</span>邮件正文：</label>
+            <div class="col-sm-9">
+                <textarea style="margin-top: 0px; margin-bottom: 0px; height: 222px;" name="content" class="form-control input-validate"><?php echo $content2 ?></textarea>
+            </div>
+        </div>
+        
+        <div class="btn-toolbar text-center col-sm-12">
+            <a  href='/company/physical/downloadplan/iPlanID/<?php echo $iPlanID ?>' class="btn btn-primary downLoadbtn">下载</a>
+        </div>      
+    </form>
+</div>
+
+<script type="text/javascript">
+$(function() {
+    $('#yearly').click(function(){
+        $('#content2').hide();
+        $('#content1').show();
+    });
+
+    $('#job').click(function(){
+        $('#content1').hide();
+        $('#content2').show();;
+    });
+
+    var url = '/company/physical/downloadplan/iPlanID/<?php echo $iPlanID ?>';
+
+    $('.surl').click(function(){    
+        $('.downLoadbtn').attr('href', url + '/iIsAll/' + $(this).val() + '/iType/' + $('.turl:checked').val());
+    })
+
+    $('.turl').click(function(){
+        $('.downLoadbtn').attr('href', url + '/iIsAll/' + $('.surl:checked').val() + '/iType/' + $(this).val());
+    })
+});
+</script>

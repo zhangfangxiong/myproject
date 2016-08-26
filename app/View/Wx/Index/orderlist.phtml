@@ -1,0 +1,130 @@
+<div class="row row-main-margin">
+    <div class="order-list" id="order-list">
+        <?php if (!empty($aOrder['aList'])) {
+            foreach ($aOrder['aList'] as $key => $value) {
+                ?>
+                <div class="order-item border-bottom1">
+                    <div class="form-group clearfix">
+                        <div class="col-xs-3 order-label order-total-price-title">订购时间：</div>
+                        <div class="col-xs-7 order-label-padding">
+                            <?php echo !empty($value['iCreateTime']) ? date('Y/m/d H:i:s', $value['iCreateTime']) : '' ?>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix <?php echo empty($value['iPayStatus']) ? 'delete' : '' ?>" data-url="<?php echo $sCancelOrderUrl.'?ordercode='.$value['sOrderCode'] ?>">
+                        <div class="col-xs-3 order-label order-total-price-title">订单类型：</div>
+                        <div class="col-xs-7 order-label-padding">
+                            <?php echo !empty($aOrderType[$value['iOrderType']]) ? $aOrderType[$value['iOrderType']] : '' ?>
+                        </div>
+                        <?php if (empty($value['iPayStatus'])) {
+                            ?>
+                            <div class="pull-right order-list-to"><i class="fa fa-trash"></i></div>
+                        <?php
+                        } ?>
+                    </div>
+                    <div class="form-group clearfix todo"
+                         data-url="<?php echo empty($value['iPayStatus']) ? ($value['iOrderType'] == 1) ? $sWxjsPayUrl : $sWxjsUpgradePayUrl : $sOrderDetailUrl;
+                         echo '?ordercode=' . $value['sOrderCode']; ?>">
+                        <div class="col-xs-3 order-label order-total-price-title">数量：</div>
+                        <div class="col-xs-1 order-label-padding">
+                            <?php echo !empty($value['iTotalNum']) ? $value['iTotalNum'] : 0 ?>
+                        </div>
+                        <div class="col-xs-3 order-label order-total-price-title">总价：</div>
+                        <div class="col-xs-4">
+                            <span
+                                class="order-price"><?php echo !empty($value['sProductAmount']) ? money_format($value['sProductAmount'], 2) : 0 ?></span>元
+                        </div>
+                        <div class="pull-right order-list-to"><i class="fa fa-arrow-circle-right"></i></div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="col-xs-3 order-label order-total-price-title">状态：</div>
+                        <div class="col-xs-7 order-label-padding">
+                            <?php echo !empty($aPayStatus[$value['iPayStatus']]) ? $aPayStatus[$value['iPayStatus']] : 0 ?>
+                        </div>
+                    </div>
+                </div>
+            <?php
+            }
+        } ?>
+    </div>
+        <div class="loaddiv"></div>
+</div>
+<script>
+    var listObj = {
+        pagenumber: 2,
+        getLocalTime:function(nS){
+             return new Date(parseInt(nS) * 1000).toLocaleString().replace(/年|月/g, "-").replace(/日/g, " ").replace(/上午|中午|下午|晚上/g,"");
+        },
+        orderType:<?php echo json_encode($aOrderType)  ?>,
+        payStatus:<?php echo json_encode($aPayStatus)  ?>,
+        initList: function () {
+            commonObj.moreUrl = "/wx/orderlist";//设置下拉分页url
+            commonObj.appendId = "order-list";
+            //下滑分页数据
+            commonObj.pageData = {page: listObj.pagenumber, t: true};
+            //下滑分页回调函数
+            commonObj.searchCallBack = function (res) {
+                $(".loaddiv").hide();
+                var dataLength = res.data.aList.length;
+                var dataList= res.data.aList;
+                if (dataLength > 0) {
+                    listObj.pagenumber++;
+                    commonObj.ajaxstatus = true;
+                    commonObj.pageData.page = listObj.pagenumber;
+                    var htmlArray = [];
+                    for (var i = 0; i < dataLength; i++) {
+                        var iPayStatus=(parseInt(dataList[i].iPayStatus))?"":"delete";
+                        var iPayStatusicon=(iPayStatus=="delete")? '<div class="pull-right order-list-to"><i class="fa fa-trash"></i></div>' :' ';
+                        var dataUrl='<?php echo $sCancelOrderUrl; ?>'+'?ordercode='+dataList[i].sOrderCode;
+                        var dataUrl2=!(parseInt(dataList[i].iPayStatus))?(parseInt(dataList[i].iOrderType)==1)?'<?php echo $sWxjsPayUrl ?>':'<?php echo $sWxjsUpgradePayUrl ?>':'<?php echo $sOrderDetailUrl ?>'+'?ordercode='+dataList[i].sOrderCode;
+                        var iTotalNum=(parseInt(dataList[i].iTotalNum))?dataList[i].iTotalNum:0;
+                        var aOrderType=listObj.orderType[dataList[i].iOrderType]?listObj.orderType[dataList[i].iOrderType]:"";
+                        var payStatus=listObj.payStatus[dataList[i].iPayStatus]?listObj.payStatus[dataList[i].iPayStatus]:"";
+                        var productAmount=dataList[i].sProductAmount?parseFloat(dataList[i].sProductAmount).toFixed(2):0;
+                        htmlArray[i] = '<div class="order-item border-bottom1">'+
+                     '<div class="form-group clearfix">'+
+                         '<div class="col-xs-3 order-label order-total-price-title">订购时间：</div>'+
+                         '<div class="col-xs-7 order-label-padding">'+listObj.getLocalTime(dataList[i].iCreateTime)+'</div>'+
+                     '</div>'+
+                     '<div class="form-group clearfix '+iPayStatus+'" data-url="'+dataUrl+'">'+
+                         '<div class="col-xs-3 order-label order-total-price-title">订单类型：</div>'+
+                         '<div class="col-xs-7 order-label-padding">'+aOrderType+ '</div>'+iPayStatusicon+
+                     '</div>'+
+                     '<div class="form-group clearfix todo" data-url="'+dataUrl2+'">'+
+                         '<div class="col-xs-3 order-label order-total-price-title">数量：</div>'+
+                         '<div class="col-xs-1 order-label-padding"> '+iTotalNum+' </div>'+
+                         '<div class="col-xs-3 order-label order-total-price-title">总价：</div>'+
+                         '<div class="col-xs-4">   <span  class="order-price">'+productAmount+'</span>元</div>'+
+                         '<div class="pull-right order-list-to"><i class="fa fa-arrow-circle-right"></i></div></div>'+
+                     '<div class="form-group clearfix">'+
+                         '<div class="col-xs-3 order-label order-total-price-title">状态：</div>'+
+                        ' <div class="col-xs-7 order-label-padding">'+payStatus+'  </div>'+
+                     '</div>'+
+                 '</div>';
+                    }
+                    $("#" + commonObj.appendId).append(htmlArray.join(""));
+                } else {
+                    commonObj.fenyestatus = false
+                }
+            }
+            //下滑分页触发
+            commonObj.scrollNextPage();
+
+        }
+    }
+    $(listObj.initList)
+    $('.todo').click(function () {
+        window.location.href = $(this).data('url');
+    });
+    $('.delete').click(function(){
+        var url = $(this).data('url');
+        if (confirm("你确定要取消该订单吗？")) {
+            $.get(url, function(ret){
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+        return false;
+    });
+</script>

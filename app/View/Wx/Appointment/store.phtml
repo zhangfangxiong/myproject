@@ -1,0 +1,167 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : '';?>">
+    <?php if (empty($hassnotoremenu)){
+        ?>
+        <div class="store-menu">
+            <div class="store-menu-title">
+                <?php echo !empty($aProduct['sProductName']) ? !empty($aProduct['sAlias']) ? $aProduct['sAlias'] : $aProduct['sProductName'] : '' ?>
+            </div>
+            <div class="store-menu-price">
+                <i class="fa fa-cny"></i><span class="red"><?php echo !empty($aProduct['iPrice']) ? $aProduct['iPrice'] : '' ?></span>元
+            </div>
+            <div class="pointer">
+                <i class="fa fa-chevron-right"></i>
+            </div>
+        </div>
+    <?php
+    } ?>
+    <div class="store-content">
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">门店所在地区：</label>
+            <div class="col-xs-3 store-select-div">
+                <select id="iCityID" name="iCityID" class="form-control input-validate store-select">
+                    <option value="0" selected="">请选择</option>
+                    <?php if (!empty($aCitys)) {
+                        foreach ($aCitys as $key => $value){
+                            ?>
+                            <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                    <?php
+                        }
+                    } ?>
+                </select>
+            </div>
+
+            <div class="col-xs-3 store-select-div">
+                <select id="iRegionID" name="iRegionID" class="form-control input-validate store-select">
+                    <option value="0">全部</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">所属体检品牌：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <select id="iSupplierID" name="iRegionID" class="form-control input-validate store-select">
+                    <option value="0">全部</option>
+                    <?php if (!empty($aSupplier)) {
+                        foreach ($aSupplier as $key => $value){
+                            ?>
+                            <option value="<?php echo $key ?>"><?php echo $value ?></option>
+                        <?php
+                        }
+                    } ?>
+                </select>
+            </div>
+        </div>
+        <div class="border-bottom1"></div>
+        <div class="store-item-list">
+        </div>
+    </div>
+<input type="hidden" id="iProductID" value="<?php echo $iProductID ?>">
+
+    <nav class="navbar navbar-fixed-bottom">
+        <div class="container-fluid text-center clearfix navbar-white">
+            <a id="buybtn" class="btn btn-warning navbar-btn col-xs-4 col-xs-offset-1 active" href="javascript:;"
+               role="button">
+                <i class="fa fa-rmb fa-lg"></i> <?php echo !empty($aCommonLang[34]) ? $aCommonLang[34] : '' ?></a>
+            <a id="cartbtn" class="btn btn-default navbar-btn col-xs-4 col-xs-offset-1 active" href="javascript:;"
+               role="button">
+                <i class="fa fa-shopping-cart fa-lg"></i> <?php echo !empty($aCommonLang[35]) ? $aCommonLang[35] : '' ?>
+            </a>
+        </div>
+    </nav>
+</div>
+<script>
+    $(function(){
+        var getreginUrl = '<?php echo $sGetRegionUrl; ?>';
+        var getstoreUrl = '<?php echo $sGetStoreUrl; ?>';
+        var detailUrl = '<?php echo $sDetailUrl.'id/'.$aProduct['sProductCode']; ?>';
+        change();
+
+        function citychange()
+        {
+            var cid = $('#iCityID').find('option:selected').val();
+            $('#iRegionID').empty();
+            $.post(getreginUrl, {iCityID: cid}, function(ret){
+                console.log(ret);
+                if (ret.status) {
+                    $('#iRegionID').append('<option value="0">全部</option>');
+                    $.each(ret.data, function(i,e) {
+                        $('#iRegionID').append('<option value="'+e.iRegionID+'">'+e.sRegionName+'</option>');
+                    });
+                    change();
+                    return false;
+                }else {
+                    alert('请求数据失败!');
+                }
+            }, 'json');
+        }
+
+        function change()
+        {
+            var cid = $('#iCityID').find('option:selected').val();
+            var rid = $('#iRegionID').find('option:selected').val();
+            var sid = $('#iSupplierID').find('option:selected').val();
+            var pid = $('#iProductID').val();
+            $.post(getstoreUrl, {iCityID: cid,iRegionID:rid,iSupplierID:sid,iProductID:pid}, function(ret){
+                if (ret.status) {
+                    if (ret.data.aList) {
+                        var html = '';
+                        $.each(ret.data.aList, function(i,e) {
+                            var star = initStar(e.detail.iShopLevel);
+                            html += '<div class="store-item">'+
+                            '<div class="store-item-title">'+e.detail.sName+'</div>'+
+                            '<div class="store-item-city">('+e.detail.sCityName+'/'+e.detail.sRegionName+')</div>'+star+
+                            '<div><span class="store-item-label">网点地址：</span>'+e.detail.sAddress+'</div>'+
+                            '<div><span class="store-item-label">联系电话：</span>'+e.detail.sTel+'</div>'+
+                            '<div><span class="store-item-label">营业时间：</span>'+e.detail.sWorktime+'</div>'+
+                            '</div>';
+                            //$('#iRegionID').append('<option value="'+e.iRegionID+'">'+e.sRegionName+'</option>');
+                        });
+                        $('.store-item-list').html(html);
+                    }
+                    return false;
+                }else {
+                    alert('请求数据失败!');
+                }
+            }, 'json');
+        }
+
+        $('#iCityID').on('change',function(){
+            citychange();
+        });
+
+        $('#iRegionID').on('change',function(){
+            change();
+        });
+
+        $('#iSupplierID').on('change',function(){
+            change();
+        });
+
+        $('.store-menu').on('click',function(){
+            window.location.href = detailUrl;
+        });
+
+        function initStar(point)
+        {
+            var starhtml = '<div class="store-item-level">';
+            var starnum = Math.floor(point);
+            for (i=0;i<starnum;i++)
+            {
+                starhtml += '<i class="fa fa-lg fa-star"></i>';
+            }
+            if (starnum != point) {
+                starhtml += '<i class="fa fa-lg fa-star-half-o"></i>';
+                starnum += 1;
+            }
+
+            for (i=0;i<5-starnum;i++)
+            {
+                starhtml += '<i class="fa fa-lg fa-star-o"></i>';
+            }
+            starhtml += '</div>';
+            return starhtml;
+        }
+    })
+</script>

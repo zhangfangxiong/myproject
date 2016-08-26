@@ -1,0 +1,33 @@
+<?php if ($iType == 1) {?>
+	<?php $iTopNav=2; include APP_PATH . '/View/Index/Acenter/topnav.phtml';?>
+<?php } else {?>
+	<?php $iTopNav=1; include APP_PATH . '/View/Index/Mcenter/topnav.phtml';?>
+<?php }?>
+<div class="cf2 gray_border box_w">
+	<dl class="gray_th">
+		<dd>推广详情</dd>
+	</dl>
+	 <?php //	print_r($aList) ?>
+	<form autocomplete="off">
+		<input type="hidden" name="iAdID" value="<?php echo $aAd['iAdID']?>">
+		<table class="fill_table">
+			<?php include 'ad_' . $aAd['iMediaType'] . '.phtml';?>
+		</table>
+	</form>
+	<input type="button" onclick="location.href='/index/yulan/id/<?php echo $iAdID?>.html'" class="red_btn_t step_btn" value="返回">
+</div>
+
+<script src="<?php echo $sStaticRoot ?>/front/js/comment.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/front/js/jquery.datetimepicker.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/front/css/jquery.datetimepicker.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/front/css/pinjia.css"/ >
+<script>
+	$(function () {
+		$('.remark-btn').click(function(){
+			var _id = this.id.replace('btn-','');
+			$('#hidden_id').val(_id);
+			$(".yincang").css('display','block');
+		});
+
+	})
+</script>

@@ -1,0 +1,396 @@
+<form id='myform' method='post'/>
+<div class="row c mb25 bs02 mt10">
+    <div class="pr pd02 bs03 pdr10 pb10">
+        <table width="100%">
+            <tr>
+                <td style="font-size: 15px; font-weight: bold;">我的购物车</td>
+                <td style="font-size: 15px; text-align: right;"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="timeline_noresult">
+        
+        <div class="search_con">
+            <div id="main_UpdatePanel1">
+                <table id="tblItems" cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                    <th class="text-center">体检产品</th>
+                    <th class="text-center">价格</th>
+                    <th class="text-center">选择性别<span class="tishi"><!--(性别决定您是否预约能成功，请慎重选择)--></span></th>                    
+                    <th class="text-center">购买数量</th>
+
+                    <th class="text-center">小计</th>
+                    <th class="text-center"></th>
+                    <?php $sTotalPrice = 0;
+                    foreach($aCart as $key => $value) { ?>
+                    <tr>
+                        <td>
+                            <span id=""><?php echo $value['detail']['sProductName'] ?></span>
+                        </td>
+                        <td style="text-align: right;">
+                            <span class="price_<?php echo $value['iProductID']?>">
+                            <?php echo $value['detail']['iManPrice'] ?>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="col-md-9">
+                                <?php if (!empty($aSex)) {
+                                    foreach ($aSex as $k => $val) {
+                                        ?>
+                                        <label class="radio-inline">
+                                            <input onchange="Calculation(<?php echo $key; ?>, <?php echo $value['iProductID']?>)" data-price="<?php if($k==1){echo $value['detail']['iManPrice'];}elseif($k==2){echo $value['detail']['iWomanPrice1'];}elseif($k==3){echo $value['detail']['iWomanPrice2'];} ?>" type="radio" class="aProductSex<?php echo $key; ?>" name="aProductSex[<?php echo $key; ?>]" value="<?php echo $k ?>" <?php if($k==1){echo 'checked';} ?>><?php echo $val?>
+                                        </label>
+                                    <?php
+                                    }
+                                } ?>
+                            </div>
+                        </td>
+                        <td style="text-align: center;">
+                            <select name="cartnum[<?php echo $value['iProductID'] ?>]"  data-id="<?php echo $value['iProductID']?>" class="select_num abc cartnum_<?php echo $value['iProductID'] ?>">
+                                <?php for ($i=1; $i<100; $i++) { ?>
+                                <option <?php echo $i==$value['iNum'] ? 'selected' : '' ?> value="<?php echo $i ?>"><?php echo $i ?></option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td style="text-align: right;">
+                            <span id="<?php echo $value['iProductID']?>" class="subtotal"><?php echo number_format($value['iNum'] * $value['detail']['iManPrice'], 2) ?></span>
+                        </td>
+                        <td style="text-align: center;">
+                            <a data-id="<?php echo $value['iProductID']?>" class='delete-cart'>删除</a>
+                        </td>
+                    </tr>
+                    <?php 
+                    $sTotalPrice = $sTotalPrice + $value['iNum'] * $value['detail']['iManPrice'];
+                    } ?>
+                </table>      
+            <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+                <tr>
+                    <td style="text-align: right; width: 40%"></td>
+                    <td style="text-align: right; width: 15%;"></td>
+                    <td style="text-align: right; width: 15%; font-size: 16px; font-family: 微软雅黑;">合计：
+                    </td>
+                    <td style="text-align: right; width: 15%;">
+                        <span id="" class="cart-total-num"><?php echo number_format($sTotalPrice, 2) ?></span>
+                    </td>
+                    <td style="text-align: center; width: 15%;"></td>
+                </tr>
+            </table>      
+        </div>
+        <br />
+        <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+            <tr>
+                <th style="width: 40%">体检卡类型：</th>
+                <td style="width: 60%">
+                    <input id="main_rbtnDianZi" type="radio" name="" value="rbtnDianZi" checked="checked" />
+                    <label for="main_rbtnDianZi">电子卡</label>
+                </td>
+            </tr>
+            <tr>
+                <th>您的姓名：</th>
+                <td>
+                    <input name="sConsignee" type="text" 
+                    value="<?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : ''?>" id="" class="input_text" />
+                    <span style="color: orange; padding-left: 5px">*</span>
+                </td>
+            </tr>
+            <tr>
+                <th>您的手机：</th>
+                <td>
+                    <input name="sMobile" type="text"
+                    value="<?php echo !empty($aUser['sMobile']) ? $aUser['sMobile'] : ''?>" id="" class="input_text" />
+                    <span style="color: orange; padding-left: 5px">*</span>
+                </td>
+            </tr>
+            <tr>
+                <th>您的邮箱：</th>
+                <td>
+                    <input name="sEmail" type="text"
+                    value="<?php echo !empty($aUser['sEmail']) ? $aUser['sEmail'] : ''?>" class="input_text" />
+                    <span style="color: orange; padding-left: 5px">我们会将卡号发送到您填写的邮箱</span>
+                </td>
+            </tr>
+            <tr>
+                <th>是否索要发票：</th>
+                <td>
+                    <span >
+                        <input type="radio" name="iIfInv" value="1" onclick="showfp();" />
+                        <label for="">需要</label>
+                        <input type="radio" name="iIfInv" value="0" checked="checked" onclick="hidefp();" />
+                        <label for="">不需要</label>
+                    </span>
+                </td>
+            </tr>
+            <tr id="fp1" style="display: none;">
+                <th>发票抬头：</th>
+                <td>
+                    <input name="sInvPayee" type="text" id="" class="input_text" style="width:350px;" />
+                    <span style="color: orange; padding-left: 5px">*</span>
+                    <span id="errorFpTitle" style="color: red; padding-left: 5px"></span>
+                </td>
+            </tr>
+            <tr id="fp2" style="display: none;">
+                <th>收件地址：</th>
+                <td>
+                    <input name="sAddress" type="text" id="" class="input_text" style="width:350px;" />
+                    <span style="color: orange; padding-left: 5px">*</span>
+                    <span id="errorAddress" style="color: red; padding-left: 5px"></span>
+                </td>
+            </tr>
+            <tr id="fp3" style="display: none;">
+                <th>邮编：</th>
+                <td>
+                    <input name="sZipcode" type="text" id="" class="input_text" />
+                </td>
+            </tr>
+            <tr>
+                <th>支付方式：</th>
+                <td>
+                    <input type="radio" name="" value="" checked="checked" />
+                    <label for="">在线支付</label>
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                </td>
+            </tr>
+        </table>
+        </div>
+
+        <div style="text-align: center; font-weight: bold; font-size: 14px; color: orangered; padding: 20px;">
+            请注意，本网站所列体检产品，仅提供“上海中盈保险经纪有限公司”开具的“服务费”发票，恕不提供各体检中心发票，请知晓。
+        </div>
+        <div style="text-align: center; padding: 20px;">
+            <input type="hidden" value="<?php echo $sTotalPrice ?>" name="total_price" id="total_price">
+            <input type="hidden" value="" name="checkdata" id="checkdata">
+            <input type="submit" name="" value="下一步" id="main_btnBuyCard" class="btn_submit" style="background-color:Orange;" />
+        </div>
+    </div>
+</div>
+</form>
+
+<script type="text/javascript">
+    function fGetCode() {
+        if (document.getElementById("getcode")) {
+            document.getElementById("getcode").src = "../../Master/ValidateCode.aspx?" + Math.random();
+        }
+    }
+    fGetCode();
+
+    function ShowLogin() {
+        if ($("#main_cbxjifen").is(':checked')) {
+            popUp("tos");
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    function errShow(obj, isShow, message) {
+        if (isShow) {
+            obj.css("display", "");
+            obj.html("<i></i>" + message);
+        }
+        else {
+            obj.css("display", "none");
+            obj.html("<i></i>" + message);
+        }
+    }
+
+    function checkFpTitil() {
+        if ($("#main_rbtnIsNeedFaPiao_0").attr("checked")) {
+            var name = $("input[id$='txtFpTitle']").val();
+
+            if (name.length === 0) {
+                errShow($("#errorFpTitle"), true, "请输入发票抬头");
+                return false;
+            }
+            else {
+                errShow($("#errorFpTitle"), false, "");
+                return true;
+            }
+        }
+        else {
+
+            return true;
+        }
+    }
+
+
+    function checkAddress() {
+
+        if ($("#main_rbtnIsNeedFaPiao_0").attr("checked")) {
+            var name = $("input[id$='txtAddress']").val();
+
+            if (name.length === 0) {
+                errShow($("#errorAddress"), true, "请收件地址");
+                return false;
+            }
+            else {
+                errShow($("#errorAddress"), false, "");
+                return true;
+            }
+        }
+        else {
+
+            return true;
+        }
+    }
+
+
+    //检查注册按钮提交
+    function check() {
+        var flag = 1;
+
+        if (!checkFpTitil()) {
+            document.getElementById("main_txtFpTitle").focus();
+            flag = 0;
+        }
+
+        if (!checkAddress()) {
+            document.getElementById("main_txtAddress").focus();
+            flag = 0;
+        }
+
+
+        if (flag == 0) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    function order() {
+        $.ajax({
+            url: '<?php echo !empty($sBalancePostUrl) ? $sBalancePostUrl : '' ?>',
+            type: 'post',
+            async: false,
+            data: $($("#myform")).serialize(),
+            dataType: 'json',
+            success: function (ret) {
+                if (ret.status) {
+                    alert(ret.data.msg);
+                    $('#pay').val(1);
+                    $('#iCreateTime').val(ret.data.iCreateTime);
+                    $('#sOrderCode').val(ret.data.sOrderCode);
+                    //console.log(ret.data);
+                    $("#myform").attr('action', payurl).submit();
+                } else {
+                    if (ret.data.msg) {
+                        alert(ret.data.msg);
+                    } else {
+                        $('#' + ret.data.inputid + '_tip').html($('#' + ret.data.inputid).attr('placeholder'));
+                        $('#' + ret.data.inputid).focus();
+                    }
+                }
+            }
+        });
+        return false;
+    };
+
+    $("#myform").submit(function () {
+        return balanceValidate();
+    });
+
+    function balanceValidate() {
+        var breturn = false;
+        $.ajax({
+            url: '<?php echo !empty($sBalanceValidateUrl) ? $sBalanceValidateUrl : '' ?>',
+            type: 'post',
+            async: false,
+            data: $($("#myform")).serialize(),
+            dataType: 'json',
+            success: function (ret) {
+                if (ret.status) {
+                    $('#checkdata').val(JSON.stringify(ret.data));
+                    location.href = ret.url;
+                } else {
+                    alert(ret.data);
+                    if (ret.url) {
+                        location.href = ret.url;
+                    }
+                }
+            }
+        });
+        return breturn;
+    }
+
+    function deleteCart(productid) {
+        var Url = '<?php echo $sDeleteCartUrl;?>';
+        $.get(Url, {id: productid}, function (ret) {
+            if (ret.status) {
+                alert('删除成功');
+                window.location.reload();
+            } else {
+                alert('删除失败');
+            }
+        }, 'json');
+    }
+
+    $('.delete-cart').click(function () {
+        var productid = $(this).data('id');
+        deleteCart(productid);
+    });
+
+    function showfp() {
+        $("#fp1").show();
+        $("#fp2").show();
+        $("#fp3").show();
+    }
+
+    function hidefp() {
+        $("#fp1").hide();
+        $("#fp2").hide();
+        $("#fp3").hide();
+    }
+
+    //计算总额和产品名称
+    function Calculation(key, id) {
+        var totalprice;
+        var usetype;
+        var num = $('.cartnum_'+id).find('option:selected').val();
+        usetype = $('.aProductSex'+key+':checked').data('price');
+        total = (num*usetype).toFixed(2);
+        $("#"+id).text(total);
+        $('.price_'+id).text(usetype);
+
+        totalprice = 0;
+        //改变总计
+        $('.subtotal').each(function () {
+            totalprice += parseFloat($(this).html());
+        });
+        
+        totalprice = totalprice.toFixed(2);
+
+        $('#total_price').val(totalprice);
+        $('.cart-total-num').html(totalprice);
+    }
+
+    $("document").ready(function () {
+        $("#main_cbxjifen").click(function () {
+            if (this.checked) {
+                $("#jifen").show();
+            } else {
+                $("#jifen").hide();
+            }
+        });
+
+        $('.select_num').on('change',function(){
+            number = $(this).find('option:selected').val();
+            number = number < 1 ? 1 : number;
+            id  = $(this).data('id');
+            price = $('.price_'+id).text();
+            price = price < 0 ? 0 : price;           
+            
+            total = number * price;
+            $('#'+id).text(total.toFixed(2));
+
+            totalprice = 0;
+            //改变总计
+            $('.subtotal').each(function () {
+                totalprice += parseFloat($(this).html());
+            });
+            totalprice = totalprice.toFixed(2);
+
+            $('#total_price').val(totalprice);
+            $('.cart-total-num').html(totalprice);
+        });
+    });
+</script>
+

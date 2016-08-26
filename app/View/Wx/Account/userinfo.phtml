@@ -1,0 +1,85 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div class="reservestore-content">
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">姓名：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?>
+            </div>
+        </div>
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">证件号码：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aUser['sIdentityCard']) ? $aUser['sIdentityCard'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">性别：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aSex[$aUser['iSex']]) ? $aSex[$aUser['iSex']] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">婚姻状况：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aMarriage[$aUser['iMarriage']]) ? $aMarriage[$aUser['iMarriage']] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">生日：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aUser['sBirthDate']) ? $aUser['sBirthDate'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">手机：</label>
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aUser['sMobile']) ? $aUser['sMobile']  : '<a href="'.$sBindPhoneUrl.'">去绑定</a>' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">邮箱：</label>
+
+            <div class="col-xs-7 store-select-div">
+                <?php echo !empty($aUser['sEmail']) ? $aUser['sEmail'] : '' ?>
+            </div>
+        </div>
+
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-4 control-label">城市/区域：</label>
+
+            <div class="col-xs-3 store-select-div">
+                <?php echo !empty($aCitys[$aUser['iCityID']]) ? $aCitys[$aUser['iCityID']] : '' ?>
+                <?php echo !empty($aRegion[$aUser['iRegionID']]) ? $aRegion[$aUser['iRegionID']] : '' ?>
+            </div>
+        </div>
+        <div class="jiesuan">
+            <input id="eidtUserInfo" type="button" value="修改个人信息" class="form-control btn-warning">
+        </div>
+        <div class="cart-return">
+            <input class="form-control" value="返回" type="button" id="reback">
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var editurl = '<?php echo $sAccountUserInfoUrl; ?>';
+        var sIndexUrl = '<?php echo $sIndexUrl ?>';
+        $('#eidtUserInfo').click(function () {
+            window.location.href = editurl;
+        });
+
+        $('#reback').click(function () {
+            window.location.href = sIndexUrl;
+        });
+    })
+</script>

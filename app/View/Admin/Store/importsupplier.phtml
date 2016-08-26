@@ -1,0 +1,34 @@
+<?php include 'familyheader.phtml'; ?>
+<div class="pbody clearfix">
+    <form id='myform' method="POST" enctype="multipart/form-data">
+        <div class="form-group col-sm-10">
+            <input id='addId' value='' type='hidden'/>
+            <input type='' id='sFileKeyExt' name='sFile' value=''></input>
+            <label class="col-sm-3 control-label" for="file">请选择导入文件：</label>
+            <input type='button' value="选择文件" class='plupload' data-target='#sFileKeyExt'></input>            
+        </div>          
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">确定导入</button>
+            <a class="text-right btn btn-default" href='/company/employee/list'>取消</a>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);            
+        }, 'json');
+        return false;
+    }});
+});
+</script>

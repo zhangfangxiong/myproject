@@ -1,0 +1,165 @@
+<div id="main_UpdatePanel1">
+    <input type="hidden" id="iProductID" value="<?php echo $iProductID ?>" />
+    <input type="hidden" id="iCardID" value="<?php echo $iCardID ?>" />
+    <input type="hidden" id="iUpgradeID" value="<?php echo $iUpgradeID ?>" />
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo" style="float:left;">
+        <tbody>
+            <tr>
+                <td colspan="2" style=" color:orange;">
+                温馨提示： 由于各体检中心根据体检淡旺季会进行体检门店休假日的调整，请您以实际预约时可选择的体检日期为准。
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">体检套餐：
+                    <span id="" style="font-weight:bold;"><?php echo isset($sProductName) ? $sProductName : $aProduct['sProductName'] ?></span>
+                </td>
+                <td style="width: 50%;">
+                    <span id="" style="font-weight:bold;"></span>
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 50%;">所在地区：
+                    <select id="iCityID" name="iCityID">
+                    	<option value="-1">选择城市</option>
+                        <?php foreach ($aCity as $key => $value) { ?>
+                        <option <?php echo $key == $iCityID ? 'selected' : ''?> value="<?php echo $key ?>"><?php echo $value ?></option>
+                        <?php } ?>
+                    </select>
+                    <select id="iRegionID" name="iRegionID">
+                    	<option value="0">选择区</option>
+                        <?php if ($aRegion) { 
+                        foreach ($aRegion as $k => $val) { ?>
+                        <option <?php echo $k == $aParam['iRegionID'] ? 'selected' : ''?> value="<?php echo $k ?>"><?php echo $val ?></option>
+                        <?php }} ?>
+                    </select>
+                </td>
+                <td style="width: 50%; padding-right: 20px;">体检机构：
+                    <select id="iSupplierID" name="iSupplierID">
+                    	<option value="0">请选择</option>
+                        <?php foreach ($aSupplier as $k => $val) { ?>
+                        <option <?php echo $k == $aParam['iSupplierID'] ? 'selected' : ''?> value="<?php echo $k ?>"><?php echo $val ?></option>
+                        <?php } ?>
+                    </select>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="search_con">
+        <table class="table_dailiList" style="margin-top: 10px; margin-bottom: 10px; float:left;" width="100%">
+            <tbody>
+                <?php if ($aStore['aList']) { 
+                    foreach ($aStore['aList'] as $key => $value) { ?>
+                <tr>
+                    <td>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td style="width: 70%">
+                                        <strong class="cnName" style="width: 400px">
+                                            <a href="javascript:void(0)" target="_blank" style="color: #0D8FE3; text-decoration: none;">
+                                                <span style="font-size:16px;">
+                                                <?php echo $value['sName'] ?>
+                                                </span>
+                                                <span class="font_gray"><?php echo '/' . $aCity[$value['iCityID']] . '/' . $aRegion[$value['iRegionID']]?></span>
+                                            </a>
+                                        </strong>
+                                    </td>
+                                    <td style="width: 30%; text-align: right;">
+                                        <a id="main_RepList_lnkMap_0" onclick="ShowMap('<?php echo $value['sName']?>', <?php echo $value['iX']?>, <?php echo $value['iY']?>)">
+                                            <img src="<?php echo $sStaticRoot?>/backend/img/dw.gif" alt="">查看地图
+                                        </a>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="line-height: 20px;">具体地址：
+                                    <?php echo $value['sAddress'] ?>
+                                    </td>
+                                    <td style="line-height: 20px; text-align: right;" rowspan="2">
+                                        <a class="btn btn-primary" href="/order/buyfourth/id/<?php echo $iCardID ?>/pid/<?php echo $iProductID ?>/sid/<?php echo $value['iStoreID'] ?>/upid/<?php echo $iUpgradeID ?>">立即预约</a>
+                                        <??>
+                                        <?php if (!$iUpgradeID 
+                                            && (($aCard['iPayType'] == Model_OrderCard::PAYTYPE_PERSON 
+                                                && !empty($aCardProduct['iPayStatus']) 
+                                                || $aCard['iPayType'] == Model_OrderCard::PAYTYPE_COMPANY))
+                                            && (empty($aCardProduct['iLastProductID']))
+                                            ) { ?>
+                                        <!-- && (($aCard['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT_PLAN || $aCard['iOrderType'] == Model_OrderCard::ORDERTYPE_PRODUCT ) && $aCard['iPayType'] == Model_OrderCard::PAYTYPE_PERSON && !empty($aCardProduct['iPayStatus']))
+                                         -->
+                                        <a class="btn btn-primary upgradebtn" href="javascript:void(0)">升级套餐</a>
+                                        <?php } ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="line-height: 20px;">联系电话：
+                                    <?php echo $value['sTel'] ?>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="line-height: 20px;">营业时间：
+                                    <?php echo $value['sWorktime'] ?>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr><td style="height: 10px;"></td></tr>   
+                <?php } } ?>                
+            </tbody>
+        </table>
+        <br>
+        
+        <span>
+            <div class="page">
+                <?php echo !empty($aStore['aPager']) ? $aStore['aPager'] : '' ?>
+            </div>
+        </span>
+        <br>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var cardId = $('#iCardID').val();
+    var productId = $('#iProductID').val(); 
+    var cityId = $('#iCityID').val();
+    var regionId = $('#iRegionID').val();
+    var supplierId = $('#iSupplierID').val();
+    var upId = $('#iUpgradeID').val();
+
+    $('#iCityID').change(function(){ 
+        cityId = $(this).children('option:selected').val();
+        window.location.href = "/order/buythird/id/"+cardId+"/pid/"+productId+"/iCityID/"+cityId+"/iSupplierID/"+supplierId+"/upid/"+upId;
+    });
+
+    $('#iRegionID').change(function(){ 
+        regionId = $(this).children('option:selected').val();       
+        window.location.href = "/order/buythird/id/"+cardId+"/pid/"+productId+"/iCityID/"+cityId+"/iRegionID/"+regionId+"/iSupplierID/"+supplierId+"/upid/"+upId;
+    });
+
+    $('#iSupplierID').change(function(){ 
+        supplierId = $(this).children('option:selected').val();
+        window.location.href = "/order/buythird/id/"+cardId+"/pid/"+productId+"/iCityID/"+cityId+"/iRegionID/"+regionId+"/iSupplierID/"+supplierId+"/upid/"+upId;
+    });
+
+    $('.upgradebtn').click(function () {
+        $.ajax({
+            url : '/order/upgradecheck/id/<?php echo $iCardID ?>/pid/<?php echo $iProductID ?>',
+            type : 'post',
+            data : {
+                id : <?php echo $iCardID ?>,
+                pid : <?php echo $iProductID ?>,
+            },
+            dataType : 'json',
+            success : function(ret) {  
+                if (ret.status) {
+                    location.href = ret.data;
+                } else {
+                    alert(ret.data);
+                }
+            }
+        });
+        
+    });
+</script>

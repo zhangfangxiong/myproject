@@ -1,0 +1,168 @@
+
+<div class="buy_pro_main">
+    <input type="hidden" name="iProductID" id="iProductID" value="<?php echo!empty($aData['iProductID']) ? $aData['iProductID'] : 0 ?>">
+    <div class="page_location">
+        <a href="#">体检预约</a><span class="location_next">&gt;</span><a href="/index/web/list">体检产品</a>
+        <span class="location_next">&gt;</span>
+        <span id="main_lblTitle" class="f_c_999"><?php echo $aData['sProductName'] ?></span>
+    </div>
+    <div class="product-intro c">
+        <div class="pro_big_img pr20 fl">
+            <img id="main_imgUrl" src="<?php echo!empty($aData['sImage']) ? Util_Uri::getDFSViewURL($aData['sImage']) : '' ?>" style="border-width:0px;height:328px;width:400px;" />
+        </div>
+        <div class="pro_big_img_info fl pt10 pb10">
+            <div>
+                <div style="float: left;">
+                    <h1 class="f_c_333" style="width: 345px">
+                        <span  style="font-size:18px;"><?php echo $aData['sProductName'] ?></span>
+                        <span  style="color:#CCCCCC;font-size:14px;font-weight:normal;"></span>
+                    </h1>
+                </div>
+                <div class="bdsharebuttonbox fl mt5" style="text-align:right">
+                    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+                    <a href="#" class="bds_tqq" data-cmd="tqq" title="分享到腾讯微博"></a>
+                    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+                    <a href="#" class="bds_more" data-cmd="more"></a>
+                </div>
+                <script type="text/javascript">
+                    window._bd_share_config = {"common": {"bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16"}, "share": {}};
+                    with (document)
+                        0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];
+                </script>
+            </div>
+
+
+            <div class="summary c">
+                <div class="c">
+                    <ul>
+                        <li>
+                            <span class="f_c_999">体检机构：</span>
+                            <span id="main_lblSupplier" class="f_c_999"><?php echo $sSupplier ?></span>
+                        </li>
+                        <li class="summary_other c">
+                            <div class="fl clo_ico">
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="fl c w215" style=" text-align:right;padding-top:10px">
+                        <a id="show_comment_a" href="#" class="ano_2e84ca show_comment">已有<span id="main_lblOrderCount"><?php echo $aData['iCardNum'] ? $aData['iCardNum'] : 12 ?></span>位用户选购</a>
+
+                    </div>
+                </div>
+                <div class="pb15" style="padding-top:15px;">
+                    <input type="submit" name="" value="立即预约" id="buybtn" class="reg_btn" style="background-color:Orange;width:140px;">
+                </div>
+            </div>
+            <div>
+                <dl class="pro_feature">
+                    <dt>产品特色：</dt>
+                    <dd>
+                        <span id="main_lblInfo"><?php echo $aData['sRemark'] ?></span></dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <!--详情 begin-->
+    <div class="pro_det_box">
+        <div class="tab_nav_box mt20" id="product-detail">
+            <div class="float-nav-wrap" style="height: 38px;">
+                <ul class="tab_a c" id="tab_nav" style="height: 38px; width: 1000px;">
+                    <li class="cut"><span><a href="javascript:;">产品详情</a></span></li>
+                    <li><span><a href="javascript:;">体检门店</a></span></li>
+                    <li><span><a href="javascript:;">注意事项</a></span></li>
+                    <li><span><a href="javascript:;">预约流程</a></span></li>
+                    <li style="float: right;"><span style="border-right: none;">咨询电话：400-816-6768</span></li>
+
+                </ul>
+            </div>
+        </div>
+
+        <!--产品详情-->
+        <div class="pro_det_con pro_det_con2">
+            <div id="main_UpdatePanel2">
+                <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">产品详情</h2>
+                <div class="pro_det_box2">
+                    <table id="main_rbtnBigType" style="font-size:15pt;font-weight:bold;text-decoration:underline;">
+                        <tr>
+                            <?php foreach ($aItemCat as $key => $value) { ?>
+                            <!--<td>
+                            <input id="" type="radio" name="item" value="1" checked="checked" />
+                            <label for=""><?php // echo $key ?></label>
+                            </td>
+                            -->  
+                            <?php } ?>
+                    </table>
+
+                    <table id="tableFrameBlue" cellpadding="0" cellspacing="0" border="0" width="100%">
+                        <tr class="title">
+                            <td style="width: 15%">项目
+                            </td>
+                            <td style="width: 25%">检查内容
+                            </td>
+                            <td style="width: 10%; text-align: center;">男
+                            </td>
+                            <td style="width: 10%; text-align: center;">女（未婚）
+                            </td>
+                            <td style="width: 10%; text-align: center;">女（已婚）
+                            </td>
+                            <td style="width: 30%">检查意义
+                            </td>
+                        </tr>
+
+                        <?php foreach ($aItemCat as $key => $value) { 
+                            foreach ($value as $k => $v) { ?>
+                        <tr class="item">
+                            <td>
+                                <span id=""><?php echo $k; ?></span>
+
+                            </td>
+                            <td>
+                                <span id=""><?php echo implode(',', $v['aItemNames']); ?></span>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanMan'] ? '√' : ''?>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanWomanMarry'] ? '√' : ''?>
+                            </td>
+                            <td style="text-align: center;">
+                                <?php echo 1 == $v['iCanWomanNoMarry'] ? '√' : ''?>
+                            </td>
+                            <td>
+                                <span id=""><?php echo $v['sRemark']; ?></span>
+                            </td>
+                        </tr>                            
+                        <?php } } ?>
+                    </table>
+                    <br />
+                    <p style="font-weight: bold;">温馨提示：此体检套餐所含检查单项内容因各家体检机构门店设备差异会有相应替换及调整。</p>
+                </div>
+            </div>
+        </div>
+        <div class="pro_det_con pro_det_con2">
+            <div id="main_UpdatePanel1"> 
+                <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">体检门店</h2>
+               <?php include 'store.phtml' ?>
+            </div>
+         </div>
+        <div class="pro_det_con pro_det_con2">
+            <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">注意事项</h2>
+            <div class="pro_det_box2" style="line-height: 25px;">
+                <?php include('attention.phtml') ?>
+            </div>
+        </div>
+        <div class="pro_det_con pro_det_con2">
+            <h2 class="pro_tit_temp f_c_f63 fwb b_l5s_f63">预约流程</h2>
+            <div class="pro_det_box2" style="line-height: 25px;">
+                <?php include('reserve.phtml') ?>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#buybtn').click(function () {
+        window.location.href = '<?php echo $sAptUrl ?>';
+});
+</script>

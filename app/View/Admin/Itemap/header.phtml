@@ -1,0 +1,10 @@
+<br>
+<ul class="nav nav-tabs pbody">
+    <?php if (!empty($aMenu)) {
+        foreach ($aMenu as $key => $value) {
+            ?>
+            <li role="presentation" <?php echo ($key == $iMenu) ? 'class="active"' : '' ?>><a href="<?php echo !empty($value['url']) ? $value['url'] : 'javascript:;'?>"><?php echo !empty($value['name']) ? $value['name'] : '' ?></a></li>
+        <?php
+        }
+    } ?>
+</ul>

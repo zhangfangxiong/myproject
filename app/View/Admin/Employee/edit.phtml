@@ -1,0 +1,60 @@
+<div class="pheader clearfix"><?php echo isset($aPrice['iAutoID'])?'编辑':'增加'?>搜索条件</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iAutoID" type="hidden" value="<?php echo isset($aPrice['iAutoID'])?$aPrice['iAutoID']:''?>">
+		<div class="form-group">
+			<label for="sTitle" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 搜索条件标题：</label>
+			<div class="col-sm-10">
+				<input name="sTitle" validate="!length:1-20" type="text" value="<?php echo isset($aPrice['sTitle'])?$aPrice['sTitle']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="iMinPrice" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 最小价格：</label>
+			<div class="col-sm-10">
+			    <input name="iMinPrice" validate="!float:true" type="text" value="<?php echo isset($aPrice['iMinPrice'])?$aPrice['iMinPrice']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="iMaxPrice" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 最大价格：</label>
+			<div class="col-sm-10">
+			    <input name="iMaxPrice" validate="!float:true" type="text" value="<?php echo isset($aPrice['iMaxPrice'])?$aPrice['iMaxPrice']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<?php if(isset($aPrice['iAutoID'])){ ?>
+    	<?php if(isset($aPrice['iUpdateTime']) && $aPrice['iUpdateTime'] > 0){ ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 更新时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aPrice['iUpdateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 创建时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aPrice['iCreateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/price/list/';return false;">取消</button>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            location.href = '/admin/price/list/';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

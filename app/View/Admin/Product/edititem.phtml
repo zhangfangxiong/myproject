@@ -1,0 +1,348 @@
+<?php if (!empty($iHeaderType)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix">第二步：<?php echo !empty($aProduct['iProductID']) ? '编辑' : '增加' ?>单项</div>
+<?php
+} ?>
+<div class="pbody clearfix">
+    <div class="ptitle clearfix">已添加的单项(共<span class="red"><?php echo count($aHasItem); ?></span>个)
+        <?php if (!empty($aHasItem) && (empty($iHeaderType) || $iHeaderType == 2)) {?>
+        <input type="button" value="删除选中单项" class="btn btn-primary input-margin-left" id="item-delete-select">
+        <?php }?>
+    </div>
+    <?php if (!empty($aHasItem)) {
+        ?>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="hasitemall"></th>
+                <?php
+                } ?>
+                <th class="text-center">单项名称</th>
+                <th class="text-center">分类</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                foreach ($aHasItem as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="hasitemlist" type="checkbox" name="hasitemlist[]" value="<?php echo !empty($value['iAutoID']) ? $value['iAutoID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($value['aItem']['sName']) ? $value['aItem']['sName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aCategory[$value['aItem']['iCat']]) ? $aCategory[$value['aItem']['iCat']] : '' ?></td>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="hasitem_del" href="javascript:;" data-url="<?php echo !empty($sDeleteItemUrl) ? $sDeleteItemUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>" title="删除"><i
+                                        class="fa fa-trash fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php
+            } ?>
+            </tbody>
+        </table>
+    <?php
+    } else {
+        ?>
+        <div class="clearfix">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">暂时没有添加体检单项，请从下面的表格中选择需要添加的项目，添加之后单项信息会在这里显示出来</div>
+            <div class="col-sm-3"></div>
+        </div>
+    <?php
+    } ?>
+    <div class="ptitle clearfix"></div>
+    <div class="ptitle clearfix">可添加的单项</div>
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo $iHeaderType == 1 ? $sViewItemUrl : $sEditItemUrl ?>?id=<?php echo !empty($iProductID) ? $iProductID : ''?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">分类</div>
+                <div class="col-sm-11">
+                    <span class="cateall <?php echo !empty($aParam['aCategory']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aCategory)) {
+                        foreach ($aCategory as $key => $value) {
+                            //if ($key==0) continue;
+                            ?>
+                            <span class="category <?php echo in_array($key,$aParam['aCategory']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aCategory']) ? 'checked' : '' ?> type="checkbox" class="aCategory" id="aCategory_<?php echo $key; ?>" name="aCategory[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle col-sm-1 text-center">关键字</div>
+                <div>
+                    <input placeholder="支持搜索单项名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                        ?>
+                        <input type="button" value="添加选中单项" class="btn btn-primary" id="item-add-select">
+                        <input class="import btn btn-primary" type="button" value="导入单项" id="item-import" data-id='<?php echo $iProductID?>'>
+                    <?php
+                    } ?>
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+                <?php
+                } ?>
+                <th class="text-center">单项名称</th>
+                <th class="text-center">分类</th>
+                <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                    ?>
+                    <th class="text-center">操作</th>
+                <?php
+                } ?>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aItem['aList'])) {
+                foreach ($aItem['aList'] as $value) {?>
+                    <tr>
+                        <?php if (empty($iHeaderType) || $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]" value="<?php echo !empty($value['iItemID']) ? $value['iItemID'] : '' ?>"></td>
+                        <?php
+                        } ?>
+                        <td class="text-center"><?php echo !empty($value['sName']) ? $value['sName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aCategory[$value['iCat']]) ? $aCategory[$value['iCat']] : '' ?></td>
+                        <?php if (empty($iHeaderType) ||  $iHeaderType == 2) {
+                            ?>
+                            <td class="text-center">
+                                <a class="item_add" href="javascript:;" data-url="<?php echo !empty($sInsertItemUrl) ? $sInsertItemUrl : '' ?>?pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=<?php echo $value['iItemID'] ?>" title="添加"><i
+                                        class="fa fa-plus fa-large"></i></a>
+                            </td>
+                        <?php
+                        } ?>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aItem['aPager']) ? $aItem['aPager'] : '' ?>
+        <div class="btn-toolbar text-center">
+            <input name="iProductID" id="iProductID" type="hidden" value="<?php echo !empty($iProductID) ? $iProductID : 0 ?>">
+            <?php if (!empty($iHeaderType) && $iHeaderType == 1) {
+                ?>
+                <input type="button" id="product_eidt" class="btn btn-primary input-margin-right" value="编辑"
+                       data-url="<?php echo !empty($aEditHeaderInfo[2]['editurl']) ? $aEditHeaderInfo[2]['editurl'] : '' ?>?id=<?php echo $aProduct['iProductID'] ?>">
+            <?php
+            } else {
+                ?>
+                <input type="button" data-url="<?php echo !empty($sNextUrl) ? $sNextUrl : 'javascript:;' ?>" id="next" class="btn btn-primary"
+                       value="<?php echo !empty($iHeaderType) ? '保存' : '下一步' ?>">
+            <?php
+            } ?>
+            <input type="button" value="返回列表" id="cancel" class="btn" onclick="location.href='<?php echo !empty($sListUrl) ? $sListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="iModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body form-group col-sm-12">
+            <input id='addId' value='' type='hidden'/>
+            <input type='' id='sFileKeyExt' name='sFile' value=''></input>
+            <label class="col-sm-3 control-label" for="file">请选择导入文件：</label>
+            <input type='button' value="选择文件" class='plupload' data-target='#sFileKeyExt'></input>
+            <a href="<?php echo $sStaticRoot . '/doc/itemdemo.xls'?>" target="_blank" style="color: Blue">（点击此处下载导入模版）</a>
+      </div>
+      <div class="modal-footer">
+            <button type="button" class="btn btn-primary" id="jSave">完成<tton>
+            <button type="button" class="btn btn-default" id='close' data-dismiss="modal">关闭<tton>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+
+<script type="text/javascript">
+    //分类单项点击效果
+    $('.category').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cateall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCategory_'+key).prop("checked",true);
+    });
+    //分类全部点击效果
+    $('.cateall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.category').addClass('pcursor').removeClass('pbold');
+        $('.aCategory').prop("checked", false);
+    });
+    //全选效果
+    $('#itemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+    //全选效果
+    $('#hasitemall').click(function(){
+        if ($(this).prop("checked") == false) {
+            $('.hasitemlist').prop("checked", false);
+        } else {
+            $('.hasitemlist').prop("checked", true);
+        }
+    });
+    //单项选择效果
+    $('.itemlist').click(function(){
+        $('#itemall').prop("checked", false);
+    });
+    //单项选择效果
+    $('.hasitemlist').click(function(){
+        $('#hasitemall').prop("checked", false);
+    });
+    //单项单个添加
+    $('.item_add').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要添加该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量添加
+    $('#item-add-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sInsertItemUrl) ? $sInsertItemUrl : '' ?>?type=1&pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=';
+        $('.itemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要添加的单项');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+        if (confirm("您确认要添加选中的"+count_num+"个单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项单个删除
+    $('.hasitem_del').click(function(){
+        var url = $(this).data('url');
+        if (confirm("您确认要删除该单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    //单项批量删除
+    $('#item-delete-select').click(function(){
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sDeleteItemUrl) ? $sDeleteItemUrl : '' ?>?type=1&pid=<?php echo !empty($iProductID) ? $iProductID : 0 ?>&id=';
+        $('.hasitemlist').each(function(index,dom){
+            if ($(dom).prop('checked')) {
+                select_item +=$(dom).val()+',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要删除的单项');
+            return false;
+        }
+        select_item=select_item.substring(0,select_item.length-1);
+        url += select_item;
+        if (confirm("您确认要删除选中的"+count_num+"个单项吗？")) {
+            $.get(url, function (ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    location.reload();
+                }
+            }, 'json');
+        }
+    });
+    $('#next').click(function(){
+        var ifLocation = <?php echo !empty($iHeaderType) ? 0 : 1 ?>;
+        var operationType = '<?php echo !empty($iHeaderType) ? '保存' : '添加' ?>';
+        if (ifLocation) {
+            location.href = $(this).data('url');
+        } else {
+            alert(operationType+'成功!');
+        }
+    });
+    $('#product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+
+    $('.import').on('click', function() {
+        id = $(this).data('id');
+        $('#iModal').modal('show');
+        $('#addId').val(id);
+    });
+
+    $('#jSave').on('click', function() {
+        var id = $('#addId').val();
+        var file = $('#sFileKeyExt').val();
+        if ( !file) {
+            alert('请选择导入文件和产品');
+            return false;
+        }
+        submitExcel();
+    });
+
+    function submitExcel() {
+        $.ajax({
+            url : '/admin/product/importitem',
+            type : 'post',
+            data : {
+                id : $('#addId').val(),
+                file : $('#sFileKeyExt').val(),
+                type : 1      
+            },
+            dataType : 'json',
+            success : function(ret) {
+                alert(ret.data);
+                if (ret.status) {
+                    window.location.reload();
+                }
+            }
+        });
+    };
+</script>

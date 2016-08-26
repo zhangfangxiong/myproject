@@ -1,0 +1,234 @@
+<div class="pheader clearfix">人员基本信息</div>
+<div class="pbody clearfix">
+    <input id="iCardID" type="hidden" value="<?php echo isset($aCard['iAutoID']) ? $aCard['iAutoID'] : '' ?>">
+    <input id="icpID" type="hidden" value="<?php echo isset($aCardProduct['iAutoID']) ? $aCardProduct['iAutoID'] : '' ?>">
+    <form id="myform1" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">员工姓名：</label>
+            <label class="col-sm-3 control-label">
+                <input type="text" class="form-control" name="sRealName" value="<?php echo !empty($aUser['sRealName'])?$aUser['sRealName']:''?>">
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">员工编号：</label>
+            <label class="col-sm-3 control-label" style="text-align: left"><?php echo !empty($aCustomerCompany['sUserName'])?$aCustomerCompany['sUserName']:''?></label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">联系电话：</label>
+            <label class="col-sm-3 control-label">
+                <input type="text" class="form-control" name="sMobile" value="<?php echo !empty($aUser['sMobile'])?$aUser['sMobile']:''?>">
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">邮箱：</label>
+            <label class="col-sm-3 control-label">
+                <input type="text" class="form-control" name="sEmail" value="<?php echo !empty($aCustomerCompany['sEmail'])?$aCustomerCompany['sEmail']:$aUser['sEmail'];?>">
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">身份证号码：</label>
+            <label class="col-sm-3 control-label">
+                <input type="text" class="form-control" name="sIdentityCard" value="<?php echo !empty($aUser['sIdentityCard'])?$aUser['sIdentityCard']:''?>">
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">性别：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <input name="iSex" type="radio" value="1" <?php echo empty($aUser['iSex']) || $aUser['iSex']==1?'checked':''?>> 男
+                <input name="iSex" type="radio" value="2" <?php echo !empty($aUser['iSex']) && $aUser['iSex']==2?'checked':''?>> 女
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">婚姻状况：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <input name="iMarriage" type="radio" value="1" <?php echo empty($aUser['iMarriage']) || $aUser['iMarriage']==1?'checked':''?>> 未婚
+                <input name="iMarriage" type="radio" value="2" <?php echo !empty($aUser['iMarriage']) && $aUser['iMarriage']==2?'checked':''?>> 已婚
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">状态：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span style="color:Orange;font-weight:bold;"><?php echo $aStatus[$aCardProduct['iBookStatus']]?></span>
+                <?php if(1 == $aCard['iBookStatus']){?>
+                    <span style="color:Orange;font-weight:bold;">|<?php echo $aPrestatus[$aCardProduct['iBookStatus']]?></span>
+                <?php }?>
+                <br>
+                <?php echo '操作时间' . date('Y-m-d H:i:s', $aCardProduct['iUpdateTime'])?>
+            </label>
+            <label class="col-sm-3 control-label">
+            	<?php if (4 != $aCardProduct['iBookStatus'] && 2 != $aCardProduct['iBookStatus'] && 5 != $aCardProduct['iBookStatus'] && 6 != $aCardProduct['iBookStatus']) {?>
+                    <a id="discard" class="btn btn-primary" href="javascript:discard();">作废</a>
+                <?php }?>
+            </label>
+        </div>
+    </form>
+</div>
+<hr>
+<div class="pheader clearfix">体检安排信息</div>
+<div class="pbody clearfix">
+    <form id="myform2" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">体检卡号：</label>
+            <label class="col-sm-3 control-label" style="text-align: left"><?php echo !empty($aCard['sCardCode'])?$aCard['sCardCode']:''?></label>
+            
+            <label class="col-sm-3 control-label text-right">通知邮件：</label>
+            <label class="col-sm-3 control-label" style="text-align: left"><?php echo !empty($aCardProduct['iSendEMail'])?'已发送':'未发送'?></label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">体检产品：</label>
+            <label class="col-sm-3 control-label" style="text-align: left"><?php echo !empty($aCardProduct['sProductName'])?$aCardProduct['sProductName']:''?></label>
+            
+            <label class="col-sm-3 control-label text-right">体检计划：</label>
+            <label class="col-sm-3 control-label" style="text-align: left"><?php echo !empty($sPlanName)?$sPlanName:'--'?></label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">企业纸质报告：</label>
+            <label class="col-sm-3 control-label">
+                <select class="form-control" name="iPaperReport" style="width:120px;" id="iPaperReport">
+                    <option value="0" <?php echo $aCard['iPaperReport']==0?'selected="selected"':''?> class="iPaperReport">不提供</option>
+                    <option value="1" <?php echo $aCard['iPaperReport']==1?'selected="selected"':''?> class="iPaperReport">提供</option>
+                </select>
+            </label>
+            <label class="col-sm-3 control-label text-right">体检类型：</label>
+            <label class="col-sm-3 control-label">
+                <select class="form-control" name="iPhysicalType" style="width:120px;" id="iPhysicalType">
+                    <?php foreach ($aPType as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aCard['iPhysicalType']) && $aCard['iPhysicalType'] == $k ? 'selected="selected"' : '' ?> class="iPhysicalType"><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">付款方式：</label>
+            <label class="col-sm-9 control-label" style="text-align: left">
+                <select class="form-control" name="iPayType" style="width:120px;" id="iPayType">
+                    <?php foreach ($aPayType as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aCard['iPayType']) && $aCard['iPayType'] == $k ? 'selected="selected"' : '' ?> class="iPayType"><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">特别说明：	</label>
+            <label class="col-sm-9 control-label" style="text-align: left">如果员工自行取走纸质体检报告，将不再提供企业纸质报告</label>
+        </div>
+    	<div class="btn-toolbar text-center">
+        	<?php if ($aCardProduct['iBookStatus'] < 1) {?>
+                <a id="chgdata" class="btn btn-primary" href="javascript:chgdata();">修改保存</a>
+            <?php }?>
+            <a id="reback" class="btn btn-primary" href="javascript: history.go(-1);">返回</a>
+        </div>
+    </form>
+</div>
+<hr>
+
+<?php if(1 == $aCardProduct['iBookStatus'] && 1== $aCardProduct['iPreStatus']){?>
+<div class="pheader clearfix">体检已出报告设置</div>
+<div class="pbody clearfix">
+    <form id="myform3" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">出报告日期：</label>
+            <label class="col-sm-6 control-label" style="text-align: left">
+                <input type="text" class="form-control laydatetime" style="width:120px;display: inline-block;" id="sReportTime" format="YYYY-MM-DD" name="sReportTime" value="<?php echo !empty($aCardProduct['iReportTime'])?date("Y-m-d", $aCardProduct['iReportTime']):''?>">
+            </label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <a id="report" class="btn btn-primary" href="javascript: report();">报告已出</a>
+            </label>
+        </div>
+        <div class="btn-toolbar text-center">
+        </div>
+    </form>
+</div>
+<hr>
+<?php }?>
+
+<div class="pheader clearfix">体检延期</div>
+<div class="pbody clearfix">
+    <form id="myform3" class="form-horizontal" role="form" method="post" action="">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">体检周期：</label>
+            <label class="col-sm-6 control-label" style="text-align: left">
+                <input type="text" class="form-control laydatetime" style="width:120px;display: inline-block;" format="YYYY-MM-DD" id="sStartDate" name="sStartDate" value="<?php echo !empty($aCard['sStartDate'])?$aCard['sStartDate']:''?>">
+                --
+                <input type="text" class="form-control laydatetime" style="width:120px;display: inline-block;" format="YYYY-MM-DD" id="sEndDate" name="sEndDate" value="<?php echo !empty($aCard['sEndDate'])?$aCard['sEndDate']:''?>">
+            </label>
+            <?php if (1 == $aCardProduct['iBookStatus']) {?>
+                <label class="col-sm-3 control-label" style="text-align: left">
+                    <a id="delay" class="btn btn-primary" href="javascript: delay();">体检延期</a>
+                </label>
+            <?php }?>
+        </div>
+    	<div class="btn-toolbar text-center">
+        </div>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+    function discard(){
+        var iCardID = $('#icpID').val();
+        var url = '/admin/order/discard';
+        var data = {iAutoID: iCardID, iBookStatus: 4};
+        if (confirm("您确认作废吗？")) {
+            updateCard(url, data);
+        }
+    }
+
+    function activity(){
+        var iCardID = $('#iCardID').val();
+        var url = '/admin/order/change';
+        var data = {iAutoID: iCardID, iStatus: 1};
+
+        updateCard(url, data);
+    }
+
+    function report(){
+        var icpID = $('#icpID').val();
+        var reportTime = $('#sReportTime').val();
+        reportTime.replace(/-/g,'/');
+        reportTime = new Date(reportTime).getTime();
+
+        var url = '/admin/order/report';
+        var data = {iAutoID: icpID, iReportTime: reportTime, iBookStatus: 5};
+
+        updateCard(url, data);
+    }
+
+    function delay(){
+        var iCardID = $('#iCardID').val();
+        var sStartDate = $('#sStartDate').val();
+        var sEndDate = $('#sEndDate').val();
+
+        var url = '/admin/order/change';
+        var data = {iAutoID: iCardID, sStartDate: sStartDate, sEndDate: sEndDate};
+
+        updateCard(url, data);
+    }
+
+    function chgdata(){
+        var iCardID = $('#iCardID').val();
+        var iPaperReport = $('#iPaperReport').val();
+        var iPhysicalType = $('#iPhysicalType').val();
+        var iPayType = $('#iPayType').val();
+        var url = '/admin/order/change';
+        var data = {iAutoID: iCardID, iPaperReport: iPaperReport, iPhysicalType: iPhysicalType, iPayType: iPayType};
+
+        updateCard(url, data);
+    }
+
+    function updateCard(url, data){
+        $.post(url, data, function (ret) {
+            if (ret.status) {
+                alert(ret.data);
+                location.reload();
+            }else {
+                alert(ret.data);
+            }
+        }, 'json');
+    }
+
+</script>

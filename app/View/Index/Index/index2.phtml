@@ -1,0 +1,96 @@
+<div class="div_welcome_picbg">
+
+    <div class="div_welcome_cen_picbg">
+
+        <div class="div_welcome_big_banner">
+
+        </div>
+    </div>
+    <!-- banner end -->
+</div>
+<!-- 中间  -->
+
+        <!-- 为什么选择中盈安心服务/用户看中盈安心服务  -->
+        <div class="w_950 float_l" style="width:1000px">
+            <!-- 为什么选择中盈安心服务  -->
+            <div class="why_chhz border_1 float_l">
+                <div class="why_chhz_tt background_1 border_2">
+                        <div class="why_chhzth_l_2">
+                            <font style="color: #666">传统代理人（败）</font></div>
+                        <div class="why_chhzth_l_3">
+                            传统代理人一般只能为您提供一家公司产品。</div>
+                            在理赔环节，传统代理人只能为您提供资料递送的便利，并不能为您真正解决“理赔难”的保险通病。</div>
+                    </div>
+                    <div class="why_chhzth_r">
+                        <div class="why_chhzth_r_2">
+                            <font style="color: #666">中盈安心服务团队（胜）</font></div>
+                        <div class="why_chhzth_r_3">
+                            我们优选各家公司优质产品，选择面更广，且产品容易进行比较。</div>
+                        <div class="why_chhzth_r_4">
+                            我们深知一份保险对一个家庭的重要性，我们秉承中立无倾向的立场向您推荐最适合您的险种或者给您最中肯的建议。用我们专业的服务换取您的满意体验！</div>
+                        <div class="why_chhzth_r_5">
+                            我们的专家理赔团队不仅提供理赔的跟进，更为您提供全面的理赔分析。我们始终站在用户的角度，维护您的最大权益。</div>
+                    </div>
+                </div>
+            </div>
+            <!-- 为什么选择中盈安心服务 over-->
+            <!-- 用户看中盈安心服务  -->
+            <div class="user_see border_1 float_r">
+                <div class="user_see_tt background_1 border_2">
+                    用户看中盈安心服务</div>
+                <div class="user_seet">
+                    <div id="tabcontent1" class="user_seet_2">
+                        <p>
+                            在中盈安心服务的帮助下，跟保险公司理赔部门多次沟通协调，两个月后我终于拿到了全额的赔款！</p>
+                    </div>
+                    <div id="tabcontent2" class="user_seet_2 display">
+                        <span>保险，不买贵的，买对的！</span>
+                    </div>
+                    <div id="tabcontent3" class="user_seet_2 display">
+                        <span>我收获的不只是保单</span>
+                        <p>
+                    </div>
+                </div>
+            </div>
+            <!-- 用户看中盈安心服务 over-->
+        </div>
+        <!-- 为什么选择中盈安心服务/用户看中盈安心服务 over-->
+        <div class="clear">
+        </div>
+        <!-- 文本信息  -->
+        <div class="w_950 margin_1 float_l">
+            <div class="health_caset float_l border_1">
+                <div class="health_pbp_o float_l" name="2F">
+                    <p>常见问题</p>
+                    <table id="main_RepList_Left" cellspacing="0" style="width:100%;border-collapse:collapse;">
+                        <?php if ($aFaq['aList']) {
+                        foreach ($aFaq['aList'] as $key => $value) {
+                            if ($key % 2 == 0) { echo('<tr>'); ?>
+                            <td>
+                                <div style="float: left; width: 450px; padding-left: 20px; font-size: 13px; line-height: 25px;">
+                                    <span id="main_RepList_Left_lblID_0" style="display: none;">1</span>
+                                    <span style="font-weight: bold;">·</span>
+                                    <a id="main_RepList_Left_lnkDetail_0" title="<?php echo $value['sTitle'] ?>" href="/index/news/id/<?php echo $value['iAutoID']?>" target="_blank"><?php echo $value['sTitle'] ?></a>
+                                </div>
+                            </td>
+                            <?php } else { ?>
+                            <td>
+                                <div style="float: left; width: 450px; padding-left: 20px; font-size: 13px; line-height: 25px;">
+                                    <span id="main_RepList_Left_lblID_0" style="display: none;">1</span>
+                                    <span style="font-weight: bold;">·</span>
+                                    <a id="main_RepList_Left_lnkDetail_0" title="<?php echo $value['sTitle'] ?>" href="/index/news/id/<?php echo $value['iAutoID']?>" target="_blank"><?php echo $value['sTitle'] ?></a>
+                                </div>
+                            </td>
+                            <?php echo('</tr>'); } } } ?>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- 文本信息 over-->
+        <div class="clear">
+        </div>
+    </div>
+</div>
+<!-- 中间 over-->
+<div class="clear">
+</div>

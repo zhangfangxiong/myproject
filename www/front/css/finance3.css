@@ -1,0 +1,59 @@
+@charset "utf-8";
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td { margin:0; padding:0; }
+body { background:#fff; color:#000; font-size:16px; font-family: Verdana, Arial, Helvetica, sans-serif; }
+td,th,caption { font-size:16px; }
+h1, h2, h3, h4, h5, h6 { font-weight:normal; font-size:100%; }
+address, caption, cite, code, dfn, em, strong, th, var { font-style:normal; font-weight:normal;}
+a { color:#000; text-decoration:none; }
+a:hover { text-decoration:none; }
+img { border:none; }
+ol,ul,li { list-style:none; }
+input, textarea, select, button { font:14px Verdana,Helvetica,Arial,sans-serif; }
+table { border-collapse:collapse; }
+html {overflow-y: scroll;}
+/* css common */
+.clearfix:after {content: "."; display: block; height:0; clear:both; visibility: hidden;}
+.clearfix { *zoom:1; }
+.clear{ clear:both;}
+.cursor{cursor:pointer;}
+
+
+body{width: 100%;min-width: 1200px; font-family: "Microsoft YaHei" ! important;}
+/*account*/
+.account{width: 100%;height: 90px;margin-top:12px;border-bottom: 2px dashed #F0F0F0;border-top: 2px dashed #F0F0F0;}
+.account .account_div{width: 1200px;margin: 20px auto;}
+.account .account_div .account_diva{float: left;margin-top: 10px;font-size: 13px;}
+.account .account_div .account_diva span{color: red;}
+.account img{position: relative;top: -2px;}
+.account .account_right{float: right;margin-right: 10px;}
+.account .account_right div{float: left;width:110px;height:50px;border-radius:4px;line-height:50px;margin-left: 14px;background-color: #c81624;color: #fff;}
+.account .account_right div img{position: relative;top:12px;left: 10px;}
+.account .account_right div span{position: relative;top:0px;left: 10px;}
+
+/*tab*/
+.tab{width: 100%;height:34px;margin-top: 40px;border-bottom: 1px solid #c81624;}
+.tab .tab_div{width: 1200px;margin: 0 auto;}
+.tab .tab_div .tab_ul{margin-left: 30px;}
+.tab .tab_div .tab_ul img{position: relative;top:4px;left: 4px;}
+.tab .tab_div .tab_ul li{width:120px;height:34px;float:left;margin-left: 10px;line-height: 34px;border-top-left-radius:4px;;border-top-right-radius:4px;}
+.tab .tab_div .tab_ul li:last-child a{color: #fff;}
+.newClass{color: #fff;background-color: #c81624;}
+/*time*/
+.time{width:1200px;height:10px;margin:30px auto;}
+.time input{width:187px;height: 36px;border-radius: 6px;vertical-align:middle;line-height: 36px;}
+.time .datetimepicker{background-image: url("../images/date_g.gif");background-position:90%; background-repeat:no-repeat;}
+.time div{display:inline;margin-left: 20px;}
+.time select{width: 180px;height: 36px;padding:8px  0;}
+.time .search{width: 110px;height: 45px;float: right;margin-right:60px;line-height: 45px;background-color: #c81624;color:#fff;border-radius: 6px;}
+.time .search img{position: relative;top: 10px;left: 16px;}
+.time .search span{position: relative;left: 20px;}
+/*table*/
+.table{margin-top: 60px;}
+.table_div{width: 1200px;margin: 30px auto;}
+.table_div table{width: 1200px;color:#8d8d8d;}
+.table_div table tr:first-child{background-color: #f5f5f5;}
+.table_div table tr{height: 40px;width: 100%;}
+.table_div table tr th{border-top: 1px solid #e3e3e3;border-bottom: 1px solid #e3e3e3;text-align: center;}
+.table_div table tr td{border-bottom: 1px solid #e3e3e3;text-align: center;}
+.table_div table tr td span{color: red;}

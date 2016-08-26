@@ -1,0 +1,34 @@
+<?php include 'menu.phtml'; ?>
+
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">产品编号</th>
+            <th class="text-center">产品名称</th>
+            <th class="text-center">产品类型</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if ($aHrProduct['aList']) {
+            foreach ($aHrProduct['aList'] as $key => $value) { ?>
+                <tr>                    
+                    <td class="text-center"><?php echo !empty($value['sProductName']) 
+                    ? $value['sProductName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sProductCode']) 
+                    ? $value['sProductCode'] : ''?></td>
+                    <td class="text-center"><?php echo (1 == $value['iType']) ? '基础产品' : '扩展产品'?></td>
+                    <td class="text-center">
+                        <a href="/company/physical/add?iHRProductID=<?php echo $value['iProductID'];?>">
+                        	新增体检人员
+                        </a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+</div>
+
+<?php echo !empty($aHrProduct['aPager']) ? $aHrProduct['aPager'] : '' ?>

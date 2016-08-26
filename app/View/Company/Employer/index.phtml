@@ -1,0 +1,133 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">公司架构设置</div>
+<?php 
+function makeTree($aTree, $aColor) { foreach ($aTree as $v) { ?>
+    <tr cid="<?=$v['iAutoID']?>" ppid="<?=$v['iParentID']?>" class="menupp<?=$v['iParentID']?> <?=$v['sPath']?>">
+        <td align="left">
+            <?php echo str_repeat('&nbsp;', 4*$v['iLevel'])?>
+            <?php if(!empty($v['aChild'])){?><i class="fa fa-minus-square mopenbtn"></i><?php }else{?>-<?php }?>
+            <a href='/company/employer/index/iDeptID/<?php echo $v['iAutoID'];?>'><?php echo $v['sDeptName'];?></a>
+        </td>          
+    </tr>
+<?php if (!empty($v['aChild'])) {
+        makeTree($v['aChild'], $aColor);
+    }
+} } ?>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th class="col-sm-1 text-center">部门名</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php makeTree($aTree, $aColor);?>
+        </tbody>
+    </table>
+    <table width="100%" cellpadding="0" cellspacing="0">
+        <tbody>            
+            <tr>
+                <td style="width: 75%; padding-right: 20px;">
+                    <table width="100%" border="0" cellspacing="0" cellpadding="0" class="ListInfo">
+                        <colgroup>
+                            <col style="width: 25%">
+                            <col style="width: 75%">
+                        </colgroup>
+                        <tbody>
+                                <tr>
+                                    <th>上级机构：</th>
+                                    <td>
+                                        <span id="">
+                                           <?php echo isset($aDeptSet[$aDepartment['iParentID']]) 
+                                            ? $aDeptSet[$aDepartment['iParentID']] : '--';?> 
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>机构名称：</th>
+                                    <td>
+                                        <span id="" style="display:inline-block;width:330px;">
+                                        <?php echo $aDepartment['sDeptName']?>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>备注：</th>
+                                    <td>
+                                        <span id="" style="display:inline-block;width:330px;">
+                                        <?php echo $aDepartment['sRemark']?>   
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" style="height: 10px;"></td>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <td>
+                                    <a href="/company/employer/edit/iDeptID/<?php echo $iDeptID; ?>">
+                                        <input type="submit" value="修改架构信息" class="btn_submit_blue">
+                                    </a>
+                                    <a href="/company/employer/add/iDeptID/<?php echo $iDeptID; ?>">
+                                        <input type="submit" value="添加下级机构" class="btn_submit_blue">
+                                    </a>
+                                    </td>
+                                </tr>
+                        </tbody>
+                    </table>
+                </td>            
+            </tr>
+    </tbody>
+    </table>
+</div>
+
+<div class="pheader clearfix">当前机构员工</div>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">员工编号</th>
+            <th class="text-center">员工姓名</th>
+            <th class="text-center">机构名称</th>
+            <th class="text-center">职位名称</th>
+            <th class="text-center">职级</th>
+            <th class="text-center">邮箱</th>
+            <th class="text-center">手机</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aEmployee['aList'])) {
+            foreach ($aEmployee['aList'] as $aUser) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $aUser['sUserName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                    <td class="text-center"><?php echo isset($aDeptSet[$aUser['iDeptID']]) 
+                        ? $aDeptSet[$aUser['iDeptID']] : $aDepartment['sDeptName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sJobTitleName'] ?></td>
+                    <td class="text-center"><?php echo $aLevel[$aUser['iJobGradeID']] ?></td>
+                    <td class="text-center"><?php echo $aUser['sEmail'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sMobile'] ?></td>                    
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aEmployee['aPager']) ? $aEmployee['aPager'] : '' ?>
+</div>
+
+<script type="text/javascript">
+$('.mopenbtn').click(function(){
+    var ptr = $(this).parent().parent();
+    if ($(this).hasClass('fa-minus-square')) {
+        $('.menupp' + ptr.attr('cid')).addClass('hide');
+        $(this).removeClass('fa-minus-square').addClass('fa-plus-square');
+    } else {
+        $('.menupp' + ptr.attr('cid')).removeClass('hide');
+        $(this).removeClass('fa-plus-square').addClass('fa-minus-square');
+    }
+});
+</script>

@@ -1,0 +1,693 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>安心服务 www.51joying.com</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot?>/backend/css/Window.HrShop.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot?>/backend/css/Window.HrShopAlert.css" />
+<link rel="stylesheet" href="<?php echo $sStaticRoot?>/backend/css/HrShop.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo $sStaticRoot?>/backend/css/panel.css" type="text/css" />
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/font-awesome/css/font-awesome.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/backend/css/common.css">
+<script src="<?php echo $sStaticRoot?>/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+<script src="<?php echo $sStaticRoot?>/js/common.js" type="text/javascript"></script>
+<script src="<?php echo $sStaticRoot?>/js/panel.js" type="text/javascript"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot?>/js/public.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot?>/js/product-tab.js"></script>
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4bfffe2dca93bbf875de0181774419c4&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/bootstrap/css/bootstrap.css">
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/alert.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/validate.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/backend/css/wxcommon.css">
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/backend/css/nav.css">
+
+<style type="text/css">
+    .ListInfo td {
+        text-align: left;
+        padding-left: 10px;
+        font-size: 14px;
+        font-family: 微软雅黑;
+        line-height: 30px;
+    }
+
+    .table_dailiList {
+        height: 150px;
+        padding: 10px 0 0;
+        width: 100%;
+    }
+
+    #backgroundPopup {
+        display: none;
+        position: fixed;
+        _position: absolute; /* hack for internet explorer 6*/
+        height: 100%;
+        width: 100%;
+        top: 0;
+        left: 0;
+        background: #000000;
+        z-index: 201;
+    }
+
+    .page-menu-wrapper {
+        width: 150px;
+        line-height: 45px;
+        margin: 0 auto;
+        background-color: #1C8CD7;
+    }
+    .page-menu-wrapper > ul > li {
+        position: relative;
+        float: left;
+    }
+    .menu-function {
+        float: left;
+    }
+    .menu-share {
+        float: right;
+    }
+    .page-menu-wrapper > .menu-function > li:first-child {
+        border-left: none;
+    }
+    .page-menu-wrapper > .menu-share > li:last-child {
+        border-right: none;
+    }
+    .page-menu-wrapper a {
+        position: relative;
+        display: block;
+        padding: 0 0px;
+        transition: all .3s ease-out;
+        text-align:center;
+    }
+    .page-menu-wrapper > ul > li:hover > a {
+        color: #fff;
+        background-color: #1C8CD7;
+    }
+    .page-menu-wrapper > ul > li:hover .dropdown-menu {
+        display: block;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        width: 300px;
+        font-size: 18px;
+        font-weight: bold;
+        text-align: left;
+        background-color: #1C8CD7;
+    }
+    .dropdown-menu.categories a {
+        color: #000;
+    }
+    .dropdown-menu.categories a:hover {
+        color: #1C8CD7;
+        margin-left: 10px;
+    }
+    .menu-function > li > a,.menu-share > li > a {
+        padding-left: 0px;
+    }
+    .page-menu-wrapper a:before {
+        position: absolute;
+        left: 15px;
+        font-family: 'icomoon';
+        font-style: normal;
+        speak: none;
+        font-weight: normal;
+        font-size: 18px;
+        vertical-align: middle;
+    }
+    .dropdown-menu.share {
+        width: 150px;   
+        right:0;
+    }
+    .dropdown-menu.share a {
+        margin: 10px;
+        line-height: 26px;
+        font-size: 12px;
+        padding-left: 20px;
+        border: 1px solid #cbcbcb;
+        border-radius: 2px;
+        color: #4c4c4c;
+        background-color: #efefef;
+    }
+    .dropdown-menu.share a:hover {
+        background-color: #fff;
+    }
+    .dropdown-menu.share li a:before {
+        font-size: 12px;
+        left: 5px;
+    }
+</style>
+<script type="text/javascript">
+    var timeout = 500;
+    var closetimer = 0;
+    var ddmenuitem = 0;
+
+
+    function jsddm_timer() {
+        closetimer = window.setTimeout(jsddm_close, timeout);
+    }
+
+    function jsddm_canceltimer() {
+        if (closetimer) {
+            window.clearTimeout(closetimer);
+            closetimer = null;
+        }
+    }
+
+
+    function jsddm_open() {
+        $("#divusercenter").addClass("hd_login_hover");
+        $("#usercenter").css("display", "block");
+    }
+
+    function jsddm_close() {
+        $("#divusercenter").removeClass("hd_login_hover");
+        $("#usercenter").css("display", "none");
+    }
+
+    function producttype_open() {
+        $("#allCategoryHeader").css("display", "block");
+    }
+
+    function producttype_close() {
+        $("#allCategoryHeader").css("display", "none");
+    }
+
+    function ul_addborder(obj) {
+        obj.css.addClass("bd_ccc");
+    }
+
+    $(document).ready(function () {
+        $('#jsddm').bind('mouseover', jsddm_open);
+        $('#jsddm').bind('mouseout', jsddm_close);
+        $("#divusercenter").bind('mouseover', jsddm_open);
+        $('#divusercenter ').bind('mouseout', jsddm_close);
+
+        $("#allSortOuterbox").bind('mouseover', producttype_open);
+        $('#allSortOuterbox ').bind('mouseout', producttype_close);
+
+    });
+
+    function addFav() {
+        var url = window.location;
+        var title = document.title + "-" + $("span[id*='lblProductName']").text();
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.indexOf("360se") > -1) {
+            alert("由于360浏览器功能限制，请按 Ctrl+D 手动收藏！");
+        }
+        else if (ua.indexOf("msie 8") > -1) {
+            window.external.AddToFavoritesBar(url, title); //IE8
+        }
+        else if (document.all) {
+            try {
+                window.external.addFavorite(url, title);
+            } catch (e) {
+                alert('您的浏览器不支持,请按 Ctrl+D 手动收藏!');
+            }
+        }
+        else if (window.sidebar) {
+            window.sidebar.addPanel(title, url, "");
+        }
+        else {
+            alert('您的浏览器不支持,请按 Ctrl+D 手动收藏!');
+        }
+    }
+
+    function ShowMessage(str)
+    {
+        alert(str);
+    }
+
+</script>
+<style type="text/css">
+    .rsf-items {
+        display: block;
+        width: 45px;
+        height: 45px;
+        background: #45CF4D;
+        margin-bottom: 1px;
+        cursor: pointer;
+    }
+    .right-side-flyelem {
+        position: fixed;
+        bottom: 30%;
+        right: 0;
+        z-index: 90;
+        -webkit-transform: translateX(45px);
+        -ms-transform: translateX(45px);
+        transform: translateX(45px);
+        -webkit-transition: -webkit-transform 1s linear;
+        transition: transform 1s linear;
+        -webkit-transition-timing-function: cubic-bezier(0, 0.93, 0.06, 1);
+        transition-timing-function: cubic-bezier(0, 0.93, 0.06, 1);
+    }
+    .right-side-flyelem a{
+        text-decoration:none;
+    }
+    .right-side-flyelem.show {
+        -webkit-transform: translateX(0px);
+        -moz-transform: translateX(0px);
+        -ms-transform: translateX(0px);
+        transform: translateX(0xpx);
+        opacity: 1;
+    }
+    .rsf-items {
+        display: block;
+        width: 45px;
+        height: 45px;
+        background: #45CF4D;
+        margin-bottom: 1px;
+        cursor: pointer;
+    }
+    .side-icon {
+        text-align: center;
+        line-height: 45px;
+        font-size: 24px;
+        color: #ffffff;
+        position: relative;
+    }
+    .side-icon:before {
+        position: relative;
+        z-index: 1;
+    }
+    .side-icon:after {
+        position: absolute;
+        display: block;
+        content: " ";
+        height: 45px;
+        width: 160px;
+        background: #3399FF;
+        top: 0;
+        right: 0;
+        -webkit-transform: translateX(160px);
+        -ms-transform: translateX(160px);
+        transform: translateX(160px);
+        -webkit-transform-origin: right center;
+        -ms-transform-origin: right center;
+        transform-origin: right center;
+        -webkit-transition-property: -webkit-transform, color, text-indent;
+        transition-property: transform, color, text-indent;
+        -webkit-transition-duration: 0.6s, 0.6s, 1s;
+        transition-duration: 0.6s, 0.6s, 1s;
+        -webkit-transition-delay: 0s, 0.2s, 0.2s;
+        transition-delay: 0s, 0.2s, 0.2s;
+        -webkit-transition-timing-function: cubic-bezier(0, 1, 0.09, 1);
+        transition-timing-function: cubic-bezier(0, 1, 0.09, 1);
+    }
+    .side-icon:hover:after {
+        -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+        transform: translateX(0);
+        color: #ffffff;
+        text-indent: 10px;
+    }
+    .side-icon:after {
+        line-height: 45px;
+        font-size: 14px;
+        color: #ffffff;
+        text-align: left;
+        text-indent: 30px;
+        font-family: microsoft yahei;
+    }
+    .fa-arrow-circle-up:after {
+        content: "返回顶部";
+    }
+    .fa-qq2:after {
+        content: "QQ客服";
+    }
+    .fa-qq3:after {
+        content: "关注安心服务号微信";
+    }
+    .fa-message:after {
+        content: "线上咨询单";
+    }
+    .fa-question-circle:after {
+        content: "常见问题";
+    }
+    .fa-phone:after {
+        content: "400 816 6768";
+    }
+
+</style>
+<body>
+<script type="text/javascript">
+//<![CDATA[
+var theForm = document.forms['form1'];
+if (!theForm) {
+    theForm = document.form1;
+}
+function __doPostBack(eventTarget, eventArgument) {
+    if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
+        theForm.__EVENTTARGET.value = eventTarget;
+        theForm.__EVENTARGUMENT.value = eventArgument;
+        theForm.submit();
+    }
+}
+//]]>
+</script>
+
+    <div id="homePage_head">
+        <div class="hd_global_top_bar"  id="global_top_bar">
+            <div class="wrap clearfix">
+                <?php if (!empty($aUser['iUserID'])) { ?>
+                <div class="hd_topbar_left clearfix" style="padding-left:110px;" >
+                    <span style="float: left;">
+                        <span id="lblUserName"><b><?php echo $aUser['sRealName'] ?></b>，您好！</span></span>
+                    <div id="global_unlogin" class="hd_unlogin_wrap">
+                        <div class="hd_login_wrap" id="divusercenter">
+                            <a id="jsddm" href="/index/record/list/" class="hd_user_center fl" >个人中心</a>
+                        </div>
+                    </div>
+                    <a id="linkOut" class="logout blue_link none" href="/index/account/logout">退出</a>
+                </div>
+                <?php } else { ?>
+                <div class="wrap clearfix">
+                    <div class="hd_topbar_left clearfix" style="padding-left:110px">
+                        <span style="float: left;">
+                            <span id="lblUserName"></span></span>
+                    </div>
+                    <div class="hd_top_manu clearfix">
+                        <ul id="SingleUser" class="clearfix">
+                            <li class="hd_menu_tit">
+                                <a href="/index/account/cdlogin">个人登录</a>/
+                                <a href="/index/account/register">注册</a>
+                            </li>
+                        </ul>
+                        <ul class="clearfix">
+                            <li class="hd_menu_tit hd_my_favorite" id="glShouCang"><a target="_blank" href="#" onclick="addFav();" rel="sidebar"><i></i>加入收藏夹</a> </li>
+                        </ul>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+        </div>
+        <div id="topbanner" class="wrap">
+            <div class="banner_img">
+            </div>
+        </div>
+        <div class="wrap clearfix" id="site_header">
+            <div id="logo_areaID" class="hd_logo_area fl clearfix" style="padding-left: 110px;">
+                <a href="../Account/PageIndex.aspx" class="fl">
+                    <img id="imgLogo" src="<?php echo $sStaticRoot ?>/backend/img/ciiclogo.png" /></a>
+            </div>
+            <div style="float:right; padding-right:130px; color:orangered; font-size:18px; font-weight:bold; padding-top:20px ">
+                咨询电话：400-816-6768 &nbsp;&nbsp;&nbsp;&nbsp
+                
+            </div>
+            <div class="hd_head_search" >
+            </div>
+        </div>
+        <div id="headerNav" class="hd_header_nav headerNav_channel ">
+            <div class="hd_fixed_bg">
+            </div>
+            <div class="wrap2" style="z-index: 1000;">
+                <div id="allSortOuterbox">
+                    <h2 class="hd_all_sort_link fl">
+                        <a href="#" class="fl" style="background-image: none; width: 90px;"></a>
+                    </h2>
+                    
+                </div>
+                <div class="headerNavWrap" id="global_menu" style="width: 800px;">
+                    <ul id="wideScreenTabShowID" class="headerNavMain clearfix">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/index/web/list">安心体检</a></li>
+                        <li><a href="/index/cooper">合作伙伴</a></li>
+                        <li><a href="/index/about">关于我们</a></li>
+                    </ul>
+                </div>
+                <div id="divShop" style="padding-top: 10px; padding-left: 30px; float: left; "><img src="<?php echo $sStaticRoot ?>/backend/img/shop.png" alt="" width="20px" height="20px;" />&nbsp;
+                    <a onclick="return ShowLogin();" id="lnkCarShop" href="javascript:__doPostBack(&#39;ctl00$lnkCarShop&#39;,&#39;&#39;)" style="font-size: 15px; font-weight: bold; color: #FFFFFF;">购物车</a>
+                    <span style="font-size: 15px; font-weight: bold; color: #FFFFFF;">(<span id="lblShopNum">0</span>)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="wrap">
+        <div class="row c mb25 bs02 mt10">
+            <div class="pr pd02 bs03 pdr10 pb10">
+                <table width="100%">
+                    <tr>
+                        <td style="font-size: 15px; font-weight: bold;">
+                            <span id="main_lblPlanName">我的体检计划</span></td>
+                        <td style="font-size: 15px; text-align: right;">
+                            <a href="/record/list/">返回</a></td>
+                    </tr>
+                </table>
+            </div>
+            <div class="timeline_noresult">
+                <ol class="progress_bar">
+                    <li class="<?php echo $class1 ?>" style="width:20%"><i></i><a href="<?php echo $sBaseInfoUrl ?>">1.填写体检信息</a></li>
+                    <li class="<?php echo $class2 ?>" style="width:20%"><i></i>
+                        <?php  echo  $sBuyNextUrl ? '<a href="' . $sBuyNextUrl . '">' : '' ?>
+                        2.选择体检产品
+                        <?php  echo $sBuyNextUrl ?  '</a>' : '' ?>
+                    </li>
+                    <li class="<?php echo $class3 ?>" style="width:20%"><i></i>3.选择体检机构</li>
+                    <li class="<?php echo $class4 ?>" style="width:20%"><i></i>4.核对信息并支付</li>
+                    <li class="<?php echo $class5 ?>" style="width:20%"><i></i>5.完成体检预约</li>
+                </ol> 
+                <?php include $_script; ?>
+            </div>
+    </div>
+    <input type="hidden" name="ctl00$main$hidProductIDs" id="main_hidProductIDs" value="126" />
+    <input type="hidden" name="ctl00$main$hidBaseProductID" id="main_hidBaseProductID" value="126" />
+    <input type="hidden" name="ctl00$main$hidMaxSaleValue" id="main_hidMaxSaleValue" value="0.0100" />
+
+    <div class="base_pop" id="divMap" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                <span id="main_lblCompanyName2">Label</span></h3>
+            <div class="input-container" id="showmap" style="height:480px;">
+                
+            </div>
+        </div>
+    </div>
+    
+    <div class="base_pop" id="divCompare" style="width: 800px; height: 550px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                体检项目对比</h3>
+            <div class="input-container">
+                <iframe id="framemapcompare" src="" height="500px" width="760px" frameborder="0" scrolling="no"></iframe>
+            </div>
+        </div>
+    </div>
+    <div id="backgroundPopup" style="height: 924px; width: 100%; display: none; opacity: 0.5;">
+    </div>
+
+    <div class="clear">
+    </div>
+    <!--footer-->
+    <div class="hz-footer bt-e2 bgf9">
+        <div class="hz-wrapper">
+            <div class="fl pt15 pb15 wid-01 bt-ef tc lh26 fc8">
+                
+                <div style="margin:0px auto; width:600px;">
+                <div style="float:left; padding: 20px 0px 20px 0px;">
+                    上海中盈保险经纪有限公司&nbsp;&nbsp;<a class="pr5 lk-f8"
+                        href="http://www.miitbeian.gov.cn/" rel="nofollow" target="_blank">沪ICP备11037892号</a>Copyright<em
+                            class="pl5 pr5">©</em>2012-
+                <script language="JavaScript" type="text/javascript">
+                    Btoday = new Date(); document.write(Btoday.getFullYear());</script><br />
+                <a class="pr5 pl5 lk-f8" href="#" target="_blank">中盈保险网</a>版权所有</div>
+                <div style="float:left; margin-left:30px;"><img src="<?php echo $sStaticRoot ?>/backend/img/qr_code.jpg" width="80" height="80" alt="" /></div>
+                    </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div id="ctl00_HrShopWindowManager" style="z-index:7002;display:none;">
+    <!-- 2012.3.1016.40 --><div id="ctl00_WinSmall" style="display:none;">
+        <div id="ctl00_WinSmall_C">
+
+        </div><input id="ctl00_WinSmall_ClientState" name="ctl00_WinSmall_ClientState" type="hidden" />
+    </div><div id="ctl00_WinLarge" style="display:none;">
+        <div id="ctl00_WinLarge_C">
+
+        </div><input id="ctl00_WinLarge_ClientState" name="ctl00_WinLarge_ClientState" type="hidden" />
+    </div><div id="ctl00_HrShopWindowManager_alerttemplate" style="display:none;">
+            <div class="DialogStyle" style="display: block; width: 100%; height: 240px;">
+                <div class="mainArea">
+                    <h3 class="NoB">
+                        信息提示</h3>
+                    <div class="topToolbar">
+                        <a onclick="$find('{0}').close();" href="javascript:void(0);">
+                            <img src="/Content/images/icon_r_b_close.png" /></a>
+                    </div>
+                    <div class="content" style="height: 120px; overflow-y: auto;">
+                        {1}
+                    </div>
+                    <div class="ButtonArea">
+                        <a onclick="$find('{0}').close();" class="Bu1" href="javascript:void(0);">确定</a>
+                    </div>
+                </div>
+            </div>
+        </div><div id="ctl00_HrShopWindowManager_prompttemplate" style="display:none;">
+         <div class="rwDialogPopup radprompt">          
+                <div class="rwDialogText">
+                {1}             
+                </div>      
+                <div>
+                    <script type="text/javascript">
+                    function RadWindowprompt_detectenter(id, ev, input)
+                    {                           
+                        if (!ev) ev = window.event;                
+                        if (ev.keyCode == 13)
+                        {                                                                   
+                            var but = input.parentNode.parentNode.getElementsByTagName("A")[0];                         
+                            if (but)
+                            {                           
+                                if (but.click) but.click();
+                                else if (but.onclick)
+                                {
+                                    but.focus(); var click = but.onclick; but.onclick = null; if (click) click.call(but);                            
+                                }
+                            }
+                           return false;
+                        } 
+                        else return true;
+                    }    
+                    </script>
+                    <input title="Enter Value" onkeydown="return RadWindowprompt_detectenter('{0}', event, this);" type="text"  class="rwDialogInput" value="{2}" />
+                </div>
+                <div>
+                    <a onclick="$find('{0}').close(this.parentNode.parentNode.getElementsByTagName('input')[0].value);"             
+                        class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+                    <a onclick="$find('{0}').close(null);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+                </div>
+            </div>                     
+        </div><div id="ctl00_HrShopWindowManager_confirmtemplate" style="display:none;">
+        <div class="rwDialogPopup radconfirm">          
+            <div class="rwDialogText">
+            {1}             
+            </div>                      
+            <div>
+                <a onclick="$find('{0}').close(true);"  class="rwPopupButton" href="javascript:void(0);" ><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[OK]##</span></span></a>
+                <a onclick="$find('{0}').close(false);" class="rwPopupButton"  href="javascript:void(0);"><span class="rwOuterSpan"><span class="rwInnerSpan">##LOC[Cancel]##</span></span></a>
+            </div>
+        </div>      
+        </div><input id="ctl00_HrShopWindowManager_ClientState" name="ctl00_HrShopWindowManager_ClientState" type="hidden" />
+</div>
+    
+    <!--message bar-->
+    <ul class="right-side-flyelem show">
+        <a href="#">
+            <li class="rsf-items fa " style="background:url('<?php echo $sStaticRoot ?>/backend/img/ciictop.png') no-repeat right center;"></li>
+        </a>
+        <a hre="javascript:void(0);">
+        <li class="rsf-items  fa " style="background:url('<?php echo $sStaticRoot ?>/backend/img/wx.png') no-repeat right center;" onmousemove="showqrcode(this);" onmouseout="hideqrcode();"></li>
+        
+        </a>
+        <a hre="javascript:void(0);">
+            <li class="rsf-items  fa " style="background:url('<?php echo $sStaticRoot ?>/backend/img/tel.png') no-repeat right center;"></li>
+        </a>
+        <a target="_blank" href="/">
+            <li class="rsf-items  fa " style="background:url('<?php echo $sStaticRoot ?>/backend/img/question.png') no-repeat right center;"></li>
+        </a>
+    </ul>
+    <div id="divQr_Code" style="position: absolute; display:none;"><img src="<?php echo $sStaticRoot ?>/backend/img/qr_code.jpg" width="110px" height="110px" /></div>
+
+    
+    <div class="base_pop" id="tos" style="width: 580px; display: none; z-index: 888;">
+        <div class="pop_hd">
+            <a class="pop_close" onclick="closeTos()" href="javascript:void(0)">×</a>
+            <h3>
+                用户登录</h3>
+        </div>
+        <!-- normal start -->
+        <div class="input-container">
+            <div style="float: left;">
+                <div id="msg_login" class="login-message">
+                </div>
+                <p class="p-input clearfix">
+                    <span class="l input-label">账&nbsp;&nbsp;号：</span>
+                    <input name="ctl00$txtAccount" type="text" maxlength="30" id="txtAccount" tabindex="1" class="l input-common" />
+                    <i id="empty-username" class="btn-clear" style="display: none;"></i>
+                </p>
+                <p id="p-psw" class="p-input clearfix">
+                    <span class="l input-label">密&nbsp;&nbsp;码：</span>
+                    <input name="ctl00$txtPassword" type="password" maxlength="30" id="txtPassword" tabindex="2" class="l input-common" />
+                </p>
+                <div id="login_passcode" class="p-input clearfix" style="">
+                    <span class="l input-label">验证码：</span><span class="wrap-verify">
+                        <input name="ctl00$txtValidateCode" type="text" maxlength="6" id="txtValidateCode" tabindex="3" class="l input-common input-upper" style="height:20px;width:75px;" />
+                        <img width="70" height="30" class="l" id="getcode" alt="看不清楚.点击更换" src="#"
+                            onclick="fGetCode();" style="cursor: pointer;" />
+                    </span>
+                </div>
+                <p class="p-btn p-submit">
+                    <input type="submit" name="ctl00$btnLogin" value="登录" id="btnLogin" class="btn-common btn-shadow yahei" />
+
+                    <a href="../Account/ForgetPassword.aspx" class="btn-forgot green" target="_blank">忘记密码？</a>
+                    <a href="../Account/EmpRegister.aspx" class="btn-forgot green" target="_blank">马上注册</a>
+
+                    <p class="p-btn">
+                        <span id="tips-login" class="tips-common"></span>
+                    </p>
+            </div>
+            <div style="float: left;">
+                <img src="'<?php echo $sStaticRoot ?>/backend/img/register_pic.jpg" style="width: 210px; height: 210px;" alt="" />
+            </div>
+            <div style="clear: both;">
+            </div>
+        </div>
+        <div style="clear: both;">
+        </div>
+    </div>
+
+    <input type="hidden" name="ctl00$client" id="client" value="1" />
+    <div id="backgroundPopup" style="height: 924px; width: 100%; display: none; opacity: 0.5;">
+    </div>
+</script>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/validate.js"></script>
+<script type="text/javascript">
+     function showqrcode(obj) {
+        $("#divQr_Code").show();
+        var offsettop = $(obj).offset().top;
+        var offsetleft = $(obj).offset().left;
+        $("#divQr_Code").css({'top': offsettop + 45 + 'px', 'left': offsetleft - 115 + 'px'});
+    }
+    function hideqrcode() {
+        $("#divQr_Code").hide();
+    }
+
+    function ShowMap(suppliername, sLat, sLng) {
+        popUp("divMap");
+        $("span[id$='lblCompanyName2']").text(suppliername);
+        setLatLng(sLat, sLng);
+        return false;
+    }
+
+    AMap.service('AMap.Geocoder',function(){//回调函数
+        //实例化Geocoder
+        geocoder = new AMap.Geocoder({
+            city: ""//城市，默认全国
+        });
+    })
+
+    function setLatLng (lat, lng) {
+        if ($('#showmap').length) {
+            var map = new AMap.Map('showmap', {
+                resizeEnable: true,
+                center: [lat, lng],
+                zoom: 13
+            });
+            var marker = new AMap.Marker({
+                position: map.getCenter()
+            });
+            marker.setMap(map);
+
+            // 设置鼠标划过点标记显示的文字提示
+            // marker.setTitle('');
+            // 设置label标签
+            marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+                offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+            });
+        }
+    }
+</script>
+</body>
+</html>

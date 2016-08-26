@@ -1,0 +1,12 @@
+.idea/
+/vendor
+/node_modules
+/public/storage
+Homestead.yaml
+Homestead.json
+.env
+.settings/
+sftp-config.json
+.DS_Store
+#doc/
+/nbproject

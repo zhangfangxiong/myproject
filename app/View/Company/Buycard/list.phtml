@@ -1,0 +1,80 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <a id="item-add-select" class="item_add btn btn-warning pull-right navbar-btn" href="javascript:;" role="button"
+       title="批量购买体检卡"><i class="fa fa-rmb fa-lg"></i> 批量购买体检卡</a>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center th-width"><input type="checkbox" id="itemall"></th>
+            <th class="text-center">产品编号</th>
+            <th class="text-center">体检产品</th>
+            <th class="text-center">实体卡类型</th>
+            <th class="text-center">可购买类型</th>
+            <th class="text-center">价格</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aCardList['aList'])) {
+            unset($aCardType[0]);
+            foreach ($aCardList['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><input class="itemlist" type="checkbox" name="itemlist[]"
+                                                   value="<?php echo !empty($value['iProductID']) ? $value['iProductID'] : 0 ?>">
+                    </td>
+                    <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] : $value['sProductName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aCardType[$value['iPCard']]) ? $aCardType[$value['iPCard']] : '无' ?></td>
+                    <td class="text-center"><?php echo !empty($value['iPCard']) ? '实体卡+' : '' ?>电子卡</td>
+                    <td class="text-center"><?php echo !empty($value['iUserCanPrice']) ? 'hr不可见' : $value['iPrice'].'元' ?></td>
+                    <td class="text-center">
+                        <a class="item_buy btn btn-primary" href="javascript:;" role="button"
+                           data-url="<?php echo !empty($sBuyUrl) ? $sBuyUrl : '' ?>?pid=<?php echo !empty($value['iProductID']) ? $value['iProductID'] : 0 ?>"
+                           title="购买体检卡"><i class="fa fa-rmb fa-lg"></i> 购买体检卡</a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aCardList['aPager']) ? $aCardList['aPager'] : '' ?>
+</div>
+<script>
+    $('.item_buy').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+
+    //全选效果
+    $('#itemall').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+
+    //批量购买
+    $('#item-add-select').click(function () {
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sBuyUrl) ? $sBuyUrl : '' ?>?pid=';
+        $('.itemlist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_item += $(dom).val() + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要购买的体检卡');
+            return false;
+        }
+        select_item = select_item.substring(0, select_item.length - 1);
+        url += select_item;
+        if (confirm("您确认要购买选中的" + count_num + "个体检卡吗？")) {
+            location.href = url;
+        }
+    });
+</script>

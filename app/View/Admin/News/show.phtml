@@ -1,0 +1,56 @@
+<div class="pheader clearfix">消息中心</div>
+<div class="pbody clearfix">
+    <hr>
+    <div class="btn-toolbar list-toolbar">
+        <a href="/admin/news/list.html">返回列表</a>
+        <div style="float:right">
+            <label> 排序方式：</label>
+            <select class="input-sm" id="sOrder">
+                <option value="iCityID ASC">按城市排序</option>
+                <option value="sAdminName DESC" <?php echo isset($aParam['sOrder'])&&'sAdminName DESC'==$aParam['sOrder']?'selected':''?>>按帐号排序</option>
+                <option value="sRealName ASC" <?php echo isset($aParam['sOrder'])&&'sRealName ASC'==$aParam['sOrder']?'selected':''?>>按员工姓名排序</option>
+                <option value="iCreateTime DESC" <?php echo isset($aParam['sOrder'])&&'iCreateTime DESC'==$aParam['sOrder']?'selected':''?>>按创建时间排序</option>
+            </select>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="col-sm-1 text-center">#</th>
+            <th class="text-center">姓名</th>
+            <th class="text-center">角色</th>
+            <th class="text-center">邮箱</th>
+<!--            <th class="text-center">操作</th>-->
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($aUser as $v) {?>
+            <tr style="text-align: center">
+                <td class="col-sm-1 text-center"><?php echo $v['iUserID']?></td>
+                <td class="text-center"><?php echo $v['sRealName'] ?></td>
+                <td><?php echo $v['iType']==1?'广告主':'自媒体'?></td>
+                <td class="text-center"><?php echo $v['sEmail']?></td>
+<!--                <td class="text-center">-->
+<!--                    <a href="/admin/news/show?id=--><?php //echo $v['NewsId']?><!--" title="查看"><i class="fa fa-pencil fa-large"></i></a>-->
+<!--                    <a class="user_delete" href="/admin/user/del?id=--><?php //echo $aUser['iAdminID']?><!--" title="删除"><i class="fa fa-trash fa-large"></i></a>-->
+<!--                </td>-->
+            </tr>
+        <?php }?>
+        </tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/xcConfirm.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/js/xcConfirm.css"/>
+<style type="text/css">
+    .sgBtn{width: 135px; height: 35px; line-height: 35px; margin-left: 10px; margin-top: 10px; text-align: center; background-color: #0095D9; color: #FFFFFF; float: left; border-radius: 5px;}
+</style>
+<script>
+    $(function () {
+        $('#user_add').click(function(){
+            location.href = '/admin/news/add.html';
+        });
+    })
+
+</script>

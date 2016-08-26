@@ -1,0 +1,105 @@
+<div class="pheader clearfix">员工列表</div>
+<div class="pbody clearfix">
+<form class="form-inline search-form" role="form" method="post" id="myform" action="/Employee/user/list.html">
+        <div class="row sousuo_now">
+            <div class="form-group">
+                <label>帐号：</label>
+                <input type="text"
+                       value="<?php echo isset($aParam['sEmployeeName']) ? $aParam['sEmployeeName'] : '' ?>"
+                       class="form-control" name="sEmployeeName" style="width: 100px">
+            </div>
+            <div class="form-group">
+                <label>姓名：</label>
+                <input type="text" value="<?php echo isset($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 100px">
+            </div>
+            <div class="form-group">
+                <input type="hidden" id="fOrder" name="sOrder"
+                       value="<?php echo isset($aParam['sOrder']) ? $aParam['sOrder'] : '' ?>">
+                <input type="submit" id="formbtn" class="btn btn-default btn-sm" value="搜索">
+            </div>
+            <div class="form-group">
+                <label>职级：</label>
+    		    <select name="iRoleID" class="form-control">
+    		        <option value="0">选择角色</option>
+    		    <?php foreach ($aRole as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aParam['iRoleID'])&&$aParam['iRoleID']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <label>部门：</label>
+    		    <select name="iRoleID" class="form-control">
+    		        <option value="0">选择角色</option>
+    		    <?php foreach ($aRole as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aParam['iRoleID'])&&$aParam['iRoleID']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+        	</div>
+            <div class="form-group">
+                <label>状态：</label>
+    		    <select name="iRoleID" class="form-control">
+    		        <option value="0">选择状态</option>
+    		    <?php foreach ($aRole as $k => $v) {?>
+    		        <option value="<?php echo $k?>" <?php echo isset($aParam['iRoleID'])&&$aParam['iRoleID']==$k?'selected':''?>><?php echo $v?></option>
+    		    <?php }?>
+    		    </select>
+        	</div>
+        </div>
+    </form>
+    <hr>
+    
+    <div class="btn-toolbar list-toolbar">
+    	<button class="btn btn-primary" id="price_add">
+    		<i class="fa fa-plus"></i> 添加员工
+    	</button>
+    </div>
+    <table class="table table-bordered table-hover">
+    	<thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="text-center">价格配置段标题</th>
+    			<th class="text-center">最小价格</th>
+    			<th class="text-center">最大价格</th>
+    			<th class="text-center">更新时间</th>
+    			<th class="text-center">创建时间</th>
+    			<th class="text-center">操作</th>
+    		</tr>
+    	</thead>
+    	<tbody>
+        <?php foreach ($aList['aList'] as $v) {?>
+            <tr>
+    			<td class="col-sm-1 text-center"><?php echo $v['iAutoID']?></td>
+    			<td class="text-center"><?php echo $v['sTitle']?></td>
+    			<td class="text-center"><?php echo $v['iMinPrice']?></td>
+    			<td class="text-center"><?php echo $v['iMaxPrice']?></td>
+    			<td class="text-center"><?php echo ((isset($v['iUpdateTime']) && $v['iUpdateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iUpdateTime'])) : '');?></td>
+    			<td class="text-center"><?php echo ((isset($v['iCreateTime']) && $v['iCreateTime'] > 0) ? (date('Y-m-d H:i:s' , $v['iCreateTime'])) : '');?></td>
+    			<td class="text-center">
+    			    <a href="/Employee/price/edit?id=<?php echo $v['iAutoID']?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    			    <a class="price_delete" href="/Employee/price/del?id=<?php echo $v['iAutoID']?>" role="button" data-toggle="modal" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+        <?php }?>
+    	</tbody>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+
+<script>
+$('.price_delete').click(function() {
+	var url = this.href;
+	if (confirm("您确认要删除该价格配置段吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+$('#price_add').click(function(){
+	location.href = '/Employee/price/add';
+});
+</script>

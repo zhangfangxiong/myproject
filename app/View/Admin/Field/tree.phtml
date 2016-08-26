@@ -1,0 +1,71 @@
+<div class="pheader clearfix">部门设置</div>
+<div class="pbody clearfix">
+    <table class="table table-bordered table-hover">
+		<tr>
+			<td>
+			    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+                    <input name="iAutoID" type="hidden" value="<?php echo isset($aField['iAutoID'])?$aField['iAutoID']:''?>">
+                    <input name="sType" type="hidden" value="<?php echo isset($aField['sType'])?$aField['sType']:$sType?>">
+                    <input name="iParentID" type="hidden" value="<?php echo isset($aParent['iAutoID'])?$aParent['iAutoID']:0?>">
+            		<div class="form-group">
+            			<label for="sPName" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 上级部门：</label>
+            			<div class="col-sm-10">
+            				<?php echo empty($aParent['sName']) ? '--' : $aParent['sName']?>
+            			</div>
+            		</div>
+            		<div class="form-group">
+            			<label for="sName" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 部门名称：</label>
+            			<div class="col-sm-10">
+            				<input name="sName" validate="!length:2-20" type="text" value="<?php echo isset($aField['sName'])?$aField['sName']:''?>" class="form-control input-validate">
+            				<span class="validate_checktip"></span>
+            			</div>
+            		</div>
+            		<div class="form-group">
+            			<label for="sRemark" class="col-sm-2 control-label"><strong style="color:red;">*</strong> 备注：</label>
+            			<div class="col-sm-10">
+            				<textarea class="form-control input-validate" name="sRemark"><?php echo isset($aField['sRemark'])?$aField['sRemark']:''?></textarea>
+            				<span class="validate_checktip"></span>
+            			</div>
+            		</div>
+                	<div class="btn-toolbar text-center">
+                    	<button id="save" class="btn btn-primary">保存</button>
+                    	<button id="cancel"class="btn btn-primary" onclick="location.href='/admin/field/tree/type/<?php echo $sType?>.html?pid=<?php echo $aField['iAutoID']?>';return false;">添加下级部门</button>
+                    </div>
+            	</form>
+			</td>
+			<td>
+			    <div id="tree"></div>
+			</td>
+		</tr>
+    </table>
+    <?php echo $aList['aPager']?>
+</div>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/jqtree/jqtree.min.css"/>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/jqtree/tree.jquery.min.js"></script>
+<script>
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+		$.post(form.action, $(form).serialize(), function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+		return false;
+	}});
+
+	
+	var data = <?php echo json_encode($aTree)?>;
+    $('#tree').tree({
+        data: data,
+        autoOpen: true,
+        dragAndDrop: true
+    });
+    $('#tree').bind(
+	    'tree.click',
+	    function(event) {
+	        location.href = '/admin/field/tree/type/dept.html?id=' + event.node.id;	        
+	    }
+	);
+});
+</script>

@@ -1,0 +1,145 @@
+<div class="pheader clearfix"><?php echo isset($aFinance['iAutoID'])?'编辑':'增加'?>财务</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iAutoID" type="hidden" value="<?php echo isset($aFinance['iAutoID'])?$aFinance['iAutoID']:''?>">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aFinance['iUserID'])?$aFinance['iUserID']:''?>">
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 用户名称：</label>
+			<div class="col-sm-10">
+				<?php echo $aUser['sRealName']; ?>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 收支情况：</label>
+			<div class="col-sm-10">
+				<select name="iPayment" class="form-control" style="width:250px;">
+    				<option value="1" <?php echo isset($aFinance['iPayment'])&&$aFinance['iPayment']=='1'?'selected':''?>>收入</option>
+    		        <option value="2" <?php echo isset($aFinance['iPayment'])&&$aFinance['iPayment']=='2'?'selected':''?>>支出</option>
+    		    </select>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 事件来源：</label>
+			<div class="col-sm-10">
+				<select name="iSource" class="form-control" style="width:250px;">
+    				<option value="1" <?php echo isset($aFinance['iSource'])&&$aFinance['iSource']=='1'?'selected':''?>>自主充值</option>
+    		        <option value="2" <?php echo isset($aFinance['iSource'])&&$aFinance['iSource']=='2'?'selected':''?>>付款充值</option>
+    		        <option value="3" <?php echo isset($aFinance['iSource'])&&$aFinance['iSource']=='3'?'selected':''?>>拒单退款</option>
+    		        <option value="4" <?php echo isset($aFinance['iSource'])&&$aFinance['iSource']=='4'?'selected':''?>>取现</option>
+    		        <option value="5" <?php echo isset($aFinance['iSource'])&&$aFinance['iSource']=='5'?'selected':''?>>广告费用</option>
+    		    </select>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 申请人：</label>
+			<div class="col-sm-10">
+				<input name="sRealName" type="text" value="<?php echo isset($aFinance['sRealName'])?$aFinance['sRealName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 支付类型：</label>
+			<div class="col-sm-10">
+				<select name="iPayType" class="form-control" style="width:250px;">
+    				<option value="0" <?php echo isset($aFinance['iPayType'])&&$aFinance['iPayType']=='0'?'selected':''?>>无</option>
+    		        <option value="1" <?php echo isset($aFinance['iPayType'])&&$aFinance['iPayType']=='1'?'selected':''?>>支付宝</option>
+    		        <option value="2" <?php echo isset($aFinance['iPayType'])&&$aFinance['iPayType']=='2'?'selected':''?>>微信</option>
+    		        <option value="3" <?php echo isset($aFinance['iPayType'])&&$aFinance['iPayType']=='3'?'selected':''?>>银行卡</option>
+    		    </select>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 本次金额：</label>
+			<div class="col-sm-10">
+				<input name="iPayMoney" type="text" value="<?php echo isset($aFinance['iPayMoney'])?$aFinance['iPayMoney']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 用户余额：</label>
+			<div class="col-sm-10">
+				<input name="iUserMoney" type="text" value="<?php echo isset($aFinance['iUserMoney'])?$aFinance['iUserMoney']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 银行开户姓名：</label>
+			<div class="col-sm-10">
+				<input name="sOpenName" type="text" value="<?php echo isset($aFinance['sOpenName'])?$aFinance['sOpenName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 开户银行：</label>
+			<div class="col-sm-10">
+				<input name="sBankName" type="text" value="<?php echo isset($aFinance['sBankName'])?$aFinance['sBankName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 支付帐号：</label>
+			<div class="col-sm-10">
+				<input name="sPayAccount" type="text" value="<?php echo isset($aFinance['sPayAccount'])?$aFinance['sPayAccount']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 支付状态：</label>
+			<div class="col-sm-10">
+				<input name="iPayStatus" type="text" value="<?php echo isset($aFinance['iPayStatus'])?$aFinance['iPayStatus']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 支付流水号：</label>
+			<div class="col-sm-10">
+				<input name="sPayOrder" type="text" value="<?php echo isset($aFinance['sPayOrder'])?$aFinance['sPayOrder']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sWord" class="col-sm-2 control-label"> 备注：</label>
+			<div class="col-sm-10">
+				<textarea name="sRemark" class="form-control input-validate" rows="3" cols="20"><?php echo isset($aFinance['sRemark'])?$aFinance['sRemark']:''?></textarea>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<?php if(isset($aFinance['iAutoID'])){ ?>
+    	<?php if(isset($aFinance['iUpdateTime']) && $aFinance['iUpdateTime'] > 0){ ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 更新时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aFinance['iUpdateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="form-group">
+    		<label for="iMoney" class="col-sm-2 control-label"> 创建时间：</label>
+    		<div class="col-sm-10">
+    			<?php echo date('Y-m-d H:i:s' , $aFinance['iCreateTime']); ?>
+    		</div>
+    	</div>
+    	<?php } ?>
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/finance/list/';return false;">取消</button>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            history.back();
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>

@@ -1,0 +1,41 @@
+<form id="myform" action="" method="post">
+    手机验证码<input type="text" name="iPhoneCode"><br>
+    <input name="verify" type="hidden" value="<?php echo !empty($verify) ? $verify : '' ?>">
+    <input type="button" id="complete" value="完成注册">
+    <input type="button" id="again" value="重发验证码">
+</form>
+
+<script>
+    var CodeUrl = '/index/Verify/sms?type=<?php echo $iType ?>&mobile=<?php echo $sPhoneNum ?>';
+    var UcenterUrl = '';
+    function codeChange()
+    {
+        $.get(CodeUrl, function(data){
+            alert(data.data);
+        });
+    }
+    $('#again').click(function(){
+        codeChange();
+    });
+    $('#complete').click(function(){
+        var CanSummit = 1;
+        var form = $('#myform');
+        if (CanSummit) {
+            $.post(form.action, $(form).serialize(), function (ret) {
+                if (ret.status) {
+                    //跳转到个人中心
+                    alert('注册成功');
+                    window.location = UcenterUrl;
+                    return true;
+                } else {
+                    alert(ret.data);
+                    return false;
+                }
+            }, 'json');
+        }
+        return false;
+    })
+
+</script>
+
+

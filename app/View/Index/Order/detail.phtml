@@ -1,0 +1,189 @@
+<div class="div_1000px" style="margin-bottom: 20px; margin-top: 20px; width: 650px;">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td style="width: 50%; font-size: 15px; font-weight: bold;">
+                <span id="main_lblProductName" style="font-size:15px;font-weight:bold;">
+                <?php echo $aProduct['sProductName']?>
+                </span>
+            </td>
+            <td style="width: 50%; font-size: 15px; font-weight: bold; color: Orange; text-align: right; display:none;">￥<span id="main_lblSaleValue">0.00</span>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="myform" action="<?php echo $sCAUrl ?>" class="form-horizontal" role="form" method="post">
+<div class="div_1000px" style="margin-bottom: 20px; width: 650px;">
+    <table cellspacing="0" cellpadding="0" border="0" class="bx_item_table" width="100%">
+        <tr>
+            <td colspan="4" style="font-size: 15px; font-weight: bold;">订单基本信息
+            </td>
+        </tr>
+        <?php 
+        if (is_array($aUser) && $aUser) { ?>
+         <tr>
+            <td style="width: 15%">订购人</td>
+            <td style="width: 35%">
+                <span id="main_lblOrderUser"><?php echo $aUser['sRealName']?></span>
+            </td>
+            <td style="width: 15%">订购时间</td>
+            <td style="width: 35%">
+                <span id="main_lblOrderDate"><?php echo date('Y-m-d H:i:s', $aCard['iCreateTime'])?></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%">产品名称</td>
+            <td style="width: 35%">
+                <span id="main_lblProductName1"><?php echo $aProduct['sProductName']?></span>
+            </td>
+            <td style="width: 15%">订单编号
+            </td>
+            <td style="width: 35%">
+                <span id="main_lblOrderID"><?php echo @$aOrder['sOrderCode'] ?></span>
+            </td>
+        </tr>
+        
+        <tr>
+            <td style="width: 15%">体检日期</td>
+            <td style="width: 35%">
+                <span id="main_lblBeginDate"><?php echo date('Y-m-d', $aCardProduct['iOrderTime'])?></span>
+            </td>
+        </tr>
+        <?php } ?>
+    </table>
+    <div id="main_Panel1">
+        <div>
+            <table id="tableFrame" cellpadding="0" cellspacing="0" border="0" width="650px" class="bx_item_table">
+                <tr>
+                    <td style="font-size: 15px; font-weight: bold;" colspan="5">体检人员资料</td>
+                </tr>
+                
+                <tr>
+                    <td style="width: 15%; font-weight: bold;">姓名</td>
+                    <td style="width: 15%; font-weight: bold;">性别</td>
+                    <td style="width: 15%; font-weight: bold;">婚姻状况</td>
+                    <td style="width: 20%; font-weight: bold;">联系电话</td>
+                    <td style="width: 35%; font-weight: bold;">身份证</td>
+                </tr>
+            
+                <?php if (!empty($aEmployee)) { ?>
+                <tr>
+                    <td style="width: 15%">
+                        <?php echo $aEmployee['sRealName'] ?>
+                    </td>
+                    <td style="width: 15%">
+                        <?php echo ($aEmployee['iSex']==2) ? '女' : '男' ?>
+                    </td>
+                    <td style="width: 15%">
+                        <?php echo $aEmployee['iMarriage']==2 ? '已婚' : '未婚' ?>
+                    </td>
+                    <td style="width: 20%">
+                        <?php echo $aEmployee['sMobile'] ?>
+                    </td>
+                    <td style="width: 35%;">
+                        <?php echo $aEmployee['sIdentityCard'] ?>
+                    </td>
+                </tr>
+                <?php } ?>
+            </table>
+        </div>
+    <table cellspacing="0" cellpadding="0" border="0" width="650px">
+        <tr>
+            <td style="height: 20px;"></td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; ">体检地点：
+                <span id="main_lblCompanyName"><?php echo $aStore['sName']?></span>&nbsp;&nbsp;&nbsp;&nbsp;
+                <span id="main_lblAddress"><?php echo $aStore['sAddress']?></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; ">营业时间：<span id="main_lblWorkDay"><?php echo $aStore['sWorktime']?></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; ">附近交通：<span id="main_lblTrafficLine"><?php echo $aStore['sTraffic']?></span>
+            </td>
+        </tr>
+        <tr>
+            <td style="font-size: 14px; line-height:25px;"><b>体检当日流程及注意事项</b><br />
+                1.	为了避免人多体检时间过长，体检当日请尽量提早前往。<br />
+                2.	请务必在10：30之前完成采血体检项目检查，同时体检当日请先进行体检空腹项目的检查。<br />
+                3.	请在体检过程中配合导检人员的引导，如遇到任何问题请咨询导检人员解决<br />
+                4.	体检过程中如发现问题请及时与体检医生联系，应积极配合医生的各项检查，请勿擅自更改自己的体检项目。<br />
+                5.	如需进行妇科B超检查，请保持膀胱充盈（憋尿）。<br />
+                6.	如需妇检，检查前请排清小便。<br />
+                7.	完成全部体检项目，到前台交体检表。如需邮寄纸质体检报告，请告之前台并自行支付快递费用。<br />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <br />
+                <p style="font-weight: bold;">温馨提示：此体检套餐所含检查单项内容因各家体检机构门店设备差异会有相应替换及调整。</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="vertical-align: top; text-align: left;">
+                <div id="allmap" style="overflow: hidden; zoom: 1; position: relative;">
+                    <div id="map" style="height: 100%; -webkit-transition: all 0.5s ease-in-out; transition: all 0.5s ease-in-out;">
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="text-align: center; margin-bottom: 40px; width: 650px;" class="tab_r_view div_1000px">
+        <a href="<?php echo $sUrl ?>"><input type="button" name="" value="返回个人中心" class="btn_submit" /></a>
+        <?php if (in_array($aCardProduct['iBookStatus'], [1, 3])) { ?>
+        <a href="<?php echo $sEAUrl ?>"><input type="button" name="" value="预约改期" class="btn_submit" /></a>
+        <a href=""><input type="submit" name="" value="取消预约" class="btn_submit" /></a>
+        <?php } ?>
+
+        <?php if (isset($sDPUrl) && $aCard['iPhysicalType'] == 1 && $aCardProduct['iBookStatus'] == 5) { ?>
+        <a href='<?php echo $sDPUrl ?>'><input type="button" name="" value="下载体检报告" class="btn_submit" /></a>
+        <?php } ?>
+    </div>
+</form>
+<!-- 
+    <div class="col-sm-7" style="height:400px">
+        <div id="container"></div>
+    </div>
+ -->
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4bfffe2dca93bbf875de0181774419c4&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<script type="text/javascript">
+    AMap.service('AMap.Geocoder',function(){//回调函数
+    //实例化Geocoder
+        geocoder = new AMap.Geocoder({
+            city: ""//城市，默认全国
+        });
+    })
+
+    if ($('#container').length) {
+        var map = new AMap.Map('container', {
+            resizeEnable: true,
+            center: [<?php echo $aStore['iX']?>, <?php echo $aStore['iY']?>],
+            zoom: 13
+        });
+        var marker = new AMap.Marker({
+            position: map.getCenter()
+        });
+        marker.setMap(map);
+
+        // 设置鼠标划过点标记显示的文字提示
+        // marker.setTitle('');
+        // 设置label标签
+        marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+            offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+        });
+    }
+
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.url != '') {
+               location.href = ret.url; 
+            }
+        }, 'json');
+        return false;
+    }});
+});
+</script>

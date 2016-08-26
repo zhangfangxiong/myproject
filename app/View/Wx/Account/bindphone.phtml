@@ -1,0 +1,188 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div role="alert" class="alert alert-danger alert-dismissible fade in card-warn-alert" style="display: none">
+        <button aria-label="Close" class="close" type="button"><span aria-hidden="false">×</span></button>
+        <span class="phone-warn-msg"></span>
+    </div>
+    <div class="reservestore-content">
+        <div class="bind-phone-title">绑定身份证后，为您提供更加专业的安心服务!</div>
+        <!--
+        <div class="form-group clearfix">
+            <label for="iProductType" class="col-xs-2 control-label">昵称：</label>
+
+            <div class="col-xs-9 store-select-div">
+                <?php echo !empty($aUser['nickname']) ? $aUser['nickname'] : '' ?>
+            </div>
+        </div>
+        -->
+        <div class="clearfix">
+            <div class="form-group verify-input-width">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-mobile fa-lg"></i></span>
+                    <input type="text" placeholder="请填写手机号码" class="form-control" id="phoneSuccess"
+                           aria-describedby="phoneStatus">
+                </div>
+                <div id="verify-msg1" class="verify-msg text-danger">请输入您的手机号码</div>
+            </div>
+            <div class="bind-phone-button">
+                <button type="button" id="get-verify" class="btn btn-info">获取验证码</button>
+            </div>
+        </div>
+        <div class="clearfix">
+            <div class="form-group verify-input-width">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                    <input type="text" placeholder="请输入短信验证码" class="form-control" id="verifySuccess"
+                           aria-describedby="verifyStatus">
+                </div>
+                <div id="verify-msg2" class="verify-msg text-danger">请输入您收到的手机验证码</div>
+            </div>
+        </div>
+        <div class="modal-footer clearfix">
+            <button type="button" id="bind-query" class="btn btn-warning col-xs-4 col-xs-offset-1">提交</button>
+            <!--<button type="button" id="bind-skip" class="btn btn-default col-xs-4 col-xs-offset-1">跳过</button>-->
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var phonecheck = false;
+        var intDiff = parseInt(60);//倒计时总秒数量
+
+        function codeChange() {
+            var CodeUrl = '<?php echo $sSendSmsUrl ?>type/<?php echo $iCodeType ?>/mobile/';
+            CodeUrl += $('#phoneSuccess').val();
+            $('#get-verify').attr('disabled',true).css({ 'padding': '6px 3px' });
+             $.get(CodeUrl, function(data){
+                 $('.phone-warn-msg').html(data.data);
+                 $('.alert').show();
+                 if (data.status) {
+                     timer(intDiff);
+                     $('.phone-warn-msg').parent().addClass('alert-success');
+                     $('.phone-warn-msg').parent().removeClass('alert-danger');
+                 } else {
+                     $('.phone-warn-msg').parent().removeClass('alert-success');
+                     $('.phone-warn-msg').parent().addClass('alert-danger');
+                 }
+            },'json');
+        }
+
+        function timer(intDiff) {
+           var interval = window.setInterval(function () {
+                if (intDiff > 0) {
+                    $('#get-verify').html(intDiff + '秒后可重复获取');
+                    intDiff--;
+                } else {
+                    clearInterval(interval);
+                    $('#get-verify').html( '获取验证码');
+                    $('#get-verify').attr('disabled',false).css({ 'padding': '6px 12px' });
+                }
+            }, 1000);
+        }
+
+        $('#get-verify').click(function () {
+            if (phoneCheck()) {
+                phoneAjaxCheck();
+                if (phonecheck) {
+                    codeChange();
+                }
+            }
+        });
+
+        $('#bind-query').click(function () {
+            if (phoneCheck() && verifyCheck()) {
+                phoneAjaxCheck();
+                if (phonecheck) {
+                    var phonenum = $('#phoneSuccess').val();
+                    var verifycode = $('#verifySuccess').val();
+                    $.ajax({
+                        url: '<?php echo $sBindPhoneUrl ?>',
+                        type: 'post',
+                        async: false,
+                        data: {phonenum: phonenum,verifycode:verifycode},
+                        dataType: 'json',
+                        success: function (ret) {
+                            if (ret.status) {
+                                alert(ret.data);
+                                window.location.href = '<?php echo $sUserInfoUrl ?>';
+                            } else {
+                                $('.alert').show();
+                                $('.phone-warn-msg').html(ret.data);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+
+        $('#bind-skip').click(function(){
+           window.history.back();
+        });
+
+        $('#phoneSuccess').blur(function () {
+            phoneCheck();
+        });
+        $('#verifySuccess').blur(function () {
+            verifyCheck();
+        });
+        //手机验证
+        function phoneCheck() {
+            if (isMobil($('#phoneSuccess').val())) {
+                $('#phoneSuccess').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#verify-msg1').hide();
+                return true;
+            } else {
+                $('#phoneSuccess').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#verify-msg1').show();
+                return false;
+            }
+        }
+
+        //手机ajax验证
+        function phoneAjaxCheck() {
+            var phonenum = $('#phoneSuccess').val();
+            $.ajax({
+                url: '<?php echo $sAjaxCheckBindphoneUrl ?>',
+                type: 'post',
+                async: false,
+                data: {phonenum: phonenum},
+                dataType: 'json',
+                success: function (ret) {
+                    if (ret.status) {
+                        $('.alert').hide();
+                        phonecheck = true;
+                    } else {
+                        $('.alert').show();
+                        $('.phone-warn-msg').html(ret.data);
+                        phonecheck = false;
+                    }
+                }
+            });
+        }
+
+        //手机规则验证
+        function isMobil(s) {
+            var patrn = /^1[34578][0-9]{9}$/;
+            if (!patrn.test(s)) {
+                return false;
+            }
+            return true;
+        }
+
+        //验证码验证
+        function verifyCheck() {
+            if ($('#verifySuccess').val().length != 4) {
+                $('#verifySuccess').parent().parent().addClass('has-error').removeClass('has-success');
+                $('#verify-msg2').show();
+                return false;
+            } else {
+                $('#verifySuccess').parent().parent().addClass('has-success').removeClass('has-error');
+                $('#verify-msg2').hide();
+                return true;
+            }
+        }
+
+        $('.close').click(function () {
+            $('.alert').hide();
+        });
+    })
+</script>

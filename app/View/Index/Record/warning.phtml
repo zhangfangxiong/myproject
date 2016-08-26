@@ -1,0 +1,56 @@
+<!-- 模态框（Modal） -->
+<div class="modal modalwarning" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel">
+					体检卡使用条款
+				</h4>
+			</div>
+			<div class="modal-body" data-scrollbar="true" data-height="200" style="overflow-y:scroll; height:400px" data-scrollcolor="#000">  
+				<?php include 'warningcontent.phtml'; ?>
+			</div>
+			<div class="modal-footer">
+				<button id='disagree' type="button" class="btn btn-default">返回
+				</button>
+				<button id='agree' type="button" class="btn btn-primary">
+					已阅读并同意以上条款
+				</button>
+			</div>
+			<input id='iCustomerID' type='hidden' name='iCustomerID' value='<?php echo $aUser['iUserID'] ?>'>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+
+</div><!-- /.modal -->
+
+<script>
+$(function () { 
+	$('#myModal').modal({
+		backdrop: 'static', 
+		keyboard: false
+	});
+
+	$('#disagree').click(function() {
+		window.location.href = '/index/account/cdlogin';
+	});
+
+	$('#agree').click(function() {
+		$.ajax({
+			url : '/index/web/confirmLogin',
+            type : 'post',
+            data : {
+                iCustomerID : $('#iCustomerID').val(),                
+            },
+            dataType : 'json',
+            success : function(ret) {
+                if (ret.status) {
+                    window.location.reload();
+                } else {
+                	alert(ret.data);
+                	return false;
+                }
+            }
+		})
+	});
+});
+</script>

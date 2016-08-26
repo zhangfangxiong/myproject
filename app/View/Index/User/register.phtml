@@ -1,0 +1,203 @@
+<div class="cf2 login_w gray_border">
+
+	<dl class="tab_nav login_nav">
+		<dd>
+			<a href="javascript:;" <?php echo $iType==Model_User::TYPE_AD?'class="tab_light"':''?>>广告主注册</a>
+			<a href="javascript:;" <?php echo $iType!=Model_User::TYPE_AD?'class="tab_light"':''?>>自媒体注册</a>
+		</dd>
+	</dl>
+
+	<div class="tab_box login_t_box" style="position: relative;top: -20px">
+		<div>
+		    <form autocomplete="off">
+		    <input type="hidden" name="iType" value="1">
+			<dl class="login_box reg_box">
+				<dt>
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_1 png"></span>
+						<input type="text" name="sEmail" class="login_text r" placeholder="请输入登录邮箱">
+						<label class="error sEmail" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_3 png"></span>
+						<input type="text" name="sMobile" class="login_text r" placeholder="请输入手机号">
+						<label class="error sMobile" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_2 png"></span>
+						<input type="password" name="sPassword" class="login_text r" placeholder="请输入登录密码">
+						<label class="error sPassword" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_2 png"></span>
+						<input type="password" name="sRePassword" class="login_text r" placeholder="请再次输入登录密码">
+						<label class="error sRePassword" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="l_5 png"></span>
+						<input type="text" name="sCoName" class="login_text r" placeholder="请输入企业名称">
+						<label class="error sCoName" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_6 png"></span>
+						<input type="text" name="sRealName" class="login_text r" placeholder="请输入联系人名称">
+						<label class="error sRealName" style="display: none"></label>
+					</div>
+
+					<div>
+						<input type="text" name="sCode" class="login_text hover_input" placeholder="输入验证码" style="width: 100px;"> 
+						<a href="javascript:;" style="padding-left: 1em;"><img class="verifyimage" src="/verify/image/type/1" alt=""></a>
+						<label class="error sCode" style="display: none"></label>
+					</div>
+				</dt>
+				<dd style="padding-top: .5em;">
+					<span class="blue_link">
+						<div class="sel_box">
+							<input type="checkbox" id="protocol1" name="protocol" /> 
+							<label for="protocol1"></label>
+						</div> 我同意并已阅读<a class="tweebox" href="/help/none/type/adreg.html">服务条款</a>
+					</span>
+					<input type="button" class="login_btn_i" value="确认注册">
+					<p class="red_link">
+						已有帐户？<a href="/user/login.html">点击登录</a>
+					</p>
+				</dd>
+			</dl>
+			</form>
+		</div>
+		<!--end广告主注册-->
+		<div>
+		    <form autocomplete="off">
+		    <input type="hidden" name="iType" value="2">
+			<dl class="login_box reg_box">
+				<dt>
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_1 png"></span>
+						<input type="text" name="sEmail" autocomplete="off" class="login_text r" placeholder="请输入登录邮箱">
+						<label class="error sEmail" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_3 png"></span>
+						<input type="text" name="sMobile" autocomplete="off" class="login_text r" placeholder="请输入手机号">
+						<label class="error sMobile" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_2 png"></span>
+						<input type="password" name="sPassword" autocomplete="off" class="login_text r" placeholder="请输入登录密码">
+						<label class="error sPassword" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_2 png"></span>
+						<input type="password" name="sRePassword" autocomplete="off" class="login_text r" placeholder="请再次输入登录密码">
+						<label class="error sRePassword" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="l_5 png"></span>
+						<input type="text" name="sCoName" autocomplete="off" class="login_text r" placeholder="请输入企业名称">
+						<label class="error sQQ" style="display: none"></label>
+					</div>
+
+					<div class="input_text">
+						<span class="red_arrow">*</span><span class="l_6 png"></span>
+					     	<input type="text" name="sRealName" autocomplete="off" class="login_text r" placeholder="请输入联系人名称">
+						<label class="error sWeixin" style="display: none"></label>
+					</div>
+					<div>
+						<input type="text" name="sCode" autocomplete="off" class="login_text hover_input" placeholder="输入验证码" style="width: 100px;"> 
+						<a href="javascript:;" style="padding-left: 1em;"><img class="verifyimage" src="/verify/image/type/2" alt=""></a>
+						<label class="error sCode" style="display: none"></label>
+					</div>
+				</dt>
+				<dd style="padding-top: .5em;">
+					<span class="blue_link">
+						<div class="sel_box">
+							<input type="checkbox" id="protocol2" name="protocol" checked /> 
+							<label for="protocol2"></label>
+						</div> 我同意并已阅读<a class="tweebox" href="/help/none/type/mediareg.html">服务条款</a>
+					</span>
+					<input type="button" class="login_btn_i" value="确认登录">
+					<p class="red_link">
+						已有帐户？<a href="/user/login.html">点击登录</a>
+					</p>
+				</dd>
+			</dl>
+			</form>
+		</div>
+		<!--end自媒体注册-->
+	</div>
+	<!--end标签内容-->
+</div>
+<!--end中间区域-->    
+<link href="<?php echo $sStaticRoot ?>/easyDialog/easydialog.css" rel="stylesheet" type="text/css">
+<script src="<?php echo $sStaticRoot ?>/easyDialog/easydialog.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot?>/minitip/minitip.js"></script>
+<script type="text/javascript">
+$(function() {
+	$(".tweebox").click(function(){
+		$.get(this.href, function(ret){
+	    	easyDialog.open({
+	            container : {
+	                header : '51wom服务条款',
+	                content : ret,
+	                noFn : false
+	            }
+	        });
+	    }, 'text');
+		return false;
+	});
+	
+	$(".login_btn_i").click(function(){
+		var form = $(this).parents('form');
+		if (form.find('input[name=protocol]').prop('checked') == false) {
+			alert('请阅读并同意服务条款!');
+			return false;
+		}
+	    $.post(form.action?form.action:location.href, $(form).serialize(), function(ret){
+	        if (ret.status) {
+	            location.href = '/user/regok.html?uid=' + ret.data;
+	        } else {
+	        	$(form).find('label.error').hide();
+	        	for (var key in ret.data) {
+		        	$(form).find('label.' + key).html(ret.data[key]).show();
+	        	}
+	        	resetVerifyImage($(form).find('.verifyimage').get(0));
+	        }
+	    }, 'json');
+		return false;
+	});
+	
+	function resetVerifyImage(img){
+		var src = img.src.substring(0, img.src.indexOf('?')) + '';
+		src = src.length == 0 ? img.src : src;
+		img.src = src + '?r=' + Math.random();
+	}
+	$('.verifyimage').click(function(){
+		resetVerifyImage(this);
+	});
+
+	$('input[name=sEmail], input[name=sMobile]').blur(function(){
+		var eid = this.name;
+		var form = $(this).parents('form');
+		if (this.value.length < 6) {
+			$(form).find('label.' + eid).html($(this).attr('placeholder')).show();
+			return false;
+		}
+		$.get('/user/check/type/<?php echo $iType?>?field='+eid+'&value=' + this.value, function(ret){
+			if (ret.status) {
+				$(form).find('label.' + eid).hide();
+			} else {
+				$(form).find('label.' + eid).html(ret.data).show();
+			}
+		});
+	});
+});
+</script>

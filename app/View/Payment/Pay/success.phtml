@@ -1,0 +1,31 @@
+<div class="row c mb25 bs02 mt10">
+    <div class="pr pd02 bs03 pdr10 pb10">
+        <table width="100%">
+            <tr>
+                <td style="font-size: 15px; font-weight: bold;">体检卡采购</td>
+                <td style="font-size: 15px; text-align: right;"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="timeline_noresult">
+        <ol class="progress_bar">
+            <li class="complete" style="width: 33%"><i></i>1.信息填写及核对</li>
+            <li class="complete" style="width: 33%"><i></i>2.支付费用</li>
+            <li class="complete" style="width: 33%"><i></i>3.发送体检卡</li>
+        </ol>
+        <div style="padding-top: 100px; text-align: center; height:200px">
+            <span style="line-height: 30px; font-size: 18px; color:orange;">您的订单已经完成</span><br /><br />
+            <span id="main_lblMessage" style="line-height: 30px; font-size: 15px;">稍后我们会将体检卡号发送至您填写的邮箱（<?php echo $aData['sEmail'] ?>）。</span>
+            <br /><br />
+            <span style="line-height: 30px; font-size: 15px;">您可以
+            <a href="/order/cardorder/id/<?php echo $aData['iOrderID'];?>" style="font-weight:bold;color:orange">点击此处</a>查看订单。<br />
+            <br/><br/>如有任何问题，可拨打安心体检客服热线：400-816-6768
+            </span>
+        </div>
+    </div>
+    <div style="text-align: center; padding: 20px;">
+    	<a href='/order/list'>
+        	<input type="button" name="" value="返回个人中心" id="main_btnBuyCard" class="btn_submit" style="background-color:Orange;" />
+        </a>
+    </div>
+</div>

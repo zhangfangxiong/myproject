@@ -1,0 +1,146 @@
+<div class="div_welcome_picbg">
+    <div class="div_welcome_cen_picbg">
+        <div class="div_welcome_big_banner">
+        </div>
+    </div>
+    <!-- banner end -->
+</div>
+<!-- 中间  -->
+<form id="myform" action="" method="post">
+<div id="public_c" class="margin_1">
+    <div class="public_c">
+        <!-- 文本信息  -->
+        <div id="main_tblSetPwd" class="w_950 margin_1 float_l">
+            <table cellpadding="0" cellspacing="0" width="100%" border="0" class="ListInfo">
+                <colgroup>
+                    <col style="width: 40%" />
+                    <col style="width: 60%" />
+                </colgroup>
+                <tr>
+                    <td colspan="2" style="font-size: 18px; font-weight: bold;">
+                        <span id="main_lblCompanyName" style="color:Gray;font-size:13px;font-weight:normal;"></span>
+                        重置密码 </td>
+                </tr>
+                <tr >
+                    <th align="right">
+                        体检卡号
+                    </th>
+                    <td align="left">
+                        <span id="main_txtCardId"><?php echo $aCard['sCardCode']?></span>
+                        <input type="hidden" name="sCardCode" value="<?php echo $aCard['sCardCode']?>">
+                    </td>
+                </tr>
+                <tr id="main_password1">
+                    <th align="right">手机号码</th>
+                    <td align="left">
+                         <span id="verify"><?php echo $aCustomer['sMobile']?></span>
+                    </td>
+                </tr>
+                <tr id="main_password2">
+                    <th align="right">
+                        <span class="f_c_f63 f20">*</span>验证码
+                    </th>
+                    <td align="left">
+                        <input name="sVerifyCode" type="text" id="" class="input_text" style="height:23px;width:200px;" />
+                        <input type="submit" name="" value="获取验证码" id="verify_nb" class="verify_gr" />
+                    </td>
+                </tr>
+                <tr id="main_password2">
+                    <th align="right">
+                        <span class="f_c_f63 f20">*</span>请输入新密码
+                    </th>
+                    <td align="left">
+                        <input name="sCardPwd" type="password" id="" class="input_text" style="height:23px;width:200px;" />
+                    </td>
+                </tr>
+                <tr id="main_password2">
+                    <th align="right">
+                        <span class="f_c_f63 f20">*</span>再次输入密码
+                    </th>
+                    <td align="left">
+                        <input name="sConfirmCardPwd" type="password" id="" class="input_text" style="height:23px;width:200px;" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td  style="text-align: center; height:30px;" colspan="2">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: center;" colspan="2">
+                        <button id="save" class="btn btn-primary">确定</button>
+                        <a href='/account/cdlogin' class="btn btn-primary">返回</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <!-- 文本信息 over-->
+        <div class="clear">
+        </div>
+        <div class="clear">
+        </div>
+    </div>
+</div>
+</form>
+
+<script type="text/javascript">
+var UcenterUrl = '/index/web/list';
+function codeChange()
+{
+    var CodeUrl = '/index/account/sendcode/type/<?php echo $iCodeType ?>/mobile/';
+    var Mobile = $('#verify').text();
+    if (!Mobile) {
+        alert('请输入手机号');
+        return false;
+    }
+    CodeUrl = CodeUrl + Mobile;
+    $.get(CodeUrl, function (data) {
+        data = eval("(" + data + ")")
+        if (data.status) {
+            // alert('发送成功');
+        } else {
+            alert('发送失败，请稍后重试');
+        }
+    });
+}
+$('#verify_nb').click(function () {
+     BindButtonTime() 
+});
+
+
+function BindButtonTime() {
+    codeChange();
+    var tc = 90;
+    var tid = 0;
+
+    var timer1 = function () {
+        tc--;
+
+        if (tc > 0) {
+            $('#verify_nb').attr('disabled', "true"); //添加disabled属性
+            $("#verify_nb").val(tc + '秒后可获取');
+            tid = setTimeout(timer1, 1000);
+        }
+        else {
+            $('#verify_nb').removeAttr("disabled"); //移除disabled属性
+            $("#verify_nb").val('获取验证码');
+        }
+    }
+
+    timer1();
+}
+
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+                location.href = ret.url;
+            }
+        }, 'json');
+
+        return false;
+    }});
+});
+</script>

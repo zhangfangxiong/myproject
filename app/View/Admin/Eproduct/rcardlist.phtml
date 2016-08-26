@@ -1,0 +1,127 @@
+<div class="pbody clearfix">
+    <?php include('rcardheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="<?php echo $sRCardListUrl ?>">
+        <div class="row">
+
+            <div class="form-group col-sm-3">
+                <label>卡号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sCardCode']) ? $aParam['sCardCode'] : '' ?>"
+                       class="form-control" name="sCardCode">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>体检卡类别：</label>
+                <select name="iPCard" class="form-control">
+                    <option value="-1">请选择</option>
+                    <?php unset($aPCard[0]); foreach ($aPCard as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iPCard']) && $aParam['iPCard'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>使用状态：</label>
+                <select name="iStatus" class="form-control">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iStatus']) && $aParam['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label>批号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sInitNo']) ? $aParam['sInitNo'] : '' ?>"
+                       class="form-control" name="sInitNo">
+            </div>
+            <div class="form-group col-sm-3">
+                <label>体检卡渠道：</label>
+                <select name="iCardType" class="form-control">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aCardType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iCardType']) && $aParam['iCardType'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group col-sm-3">
+                <label>发放状态：</label>
+                <select name="iSendStatus" class="form-control">
+                    <option value="-1">请选择</option>
+                    <?php foreach ($aSendStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iSendStatus']) && $aParam['iSendStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">卡号</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">有效期</th>
+            <th class="text-center">体检卡类别</th>
+            <th class="text-center">生成批次</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aCardList['aList'])) {
+            foreach ($aCardList['aList'] as $value) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($value['sCardCode']) ? $value['sCardCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($value['sStartDate']) ? $value['sStartDate'] : '' ?>-<?php echo !empty($value['sEndDate']) ? $value['sEndDate'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aPCard[$value['iPCard']]) ? $aPCard[$value['iPCard']] : '' ?>（<?php echo !empty($aCardType[$value['iCardType']]) ? $aCardType[$value['iCardType']] : '' ?>）</td>
+                    <td class="text-center"><?php echo !empty($value['sInitNo']) ? $value['sInitNo'] : '' ?></td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aCardList['aPager']) ? $aCardList['aPager'] : '' ?>
+</div>
+<script>
+    $('.item_buy').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+
+    //全选效果
+    $('#itemall').click(function () {
+        if ($(this).prop("checked") == false) {
+            $('.itemlist').prop("checked", false);
+        } else {
+            $('.itemlist').prop("checked", true);
+        }
+    });
+
+    //批量购买
+    $('#item-add-select').click(function () {
+        var select_item = '';
+        var count_num = 0;
+        var url = '<?php echo !empty($sBuyUrl) ? $sBuyUrl : '' ?>?pid=';
+        $('.itemlist').each(function (index, dom) {
+            if ($(dom).prop('checked')) {
+                select_item += $(dom).val() + ',';
+                count_num++;
+            }
+        });
+        if (!count_num) {
+            alert('请选择要购买的体检卡');
+            return false;
+        }
+        select_item = select_item.substring(0, select_item.length - 1);
+        url += select_item;
+        if (confirm("您确认要购买选中的" + count_num + "个体检卡吗？")) {
+            location.href = url;
+        }
+    });
+</script>

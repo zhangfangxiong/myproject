@@ -1,0 +1,348 @@
+<div class="pbody clearfix">
+    <div class="pheader pmargin clearfix"><?php echo $aProduct['sProductName'] ?>
+        (<?php echo $aProduct['sProductCode'] ?>)
+    </div>
+    <form id="myform" class="form-horizontal" role="form" method="post"
+          action="<?php echo !empty($sStoreCodeListUrl) ? $sStoreCodeListUrl . '?id=' . $aProduct['iProductID'] : '' ?>">
+        <div class="pcate clearfix">
+            <div class="pmargin clearfix">
+                <div class="catetitle">供应商</div>
+                <div class="col-sm-11">
+                    <span class="supplierall <?php echo !empty($aParam['aSupplier']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aSupplier)) {
+                        foreach ($aSupplier as $key => $value) {
+                            if ($key == 0) continue;
+                            ?>
+                            <span
+                                class="supplier <?php echo in_array($key, $aParam['aSupplier']) ? 'pbold' : 'pcursor' ?>"
+                                data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key, $aParam['aSupplier']) ? 'checked' : '' ?> type="checkbox"
+                                                                                                       class="aSupplier"
+                                                                                                       id="aSupplier_<?php echo $key; ?>"
+                                                                                                       name="aSupplier[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">性别</div>
+                <div class="col-sm-11">
+                    <span class="sexall <?php echo !empty($aParam['aSex']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aSex)) {
+                        foreach ($aSex as $key => $value) {
+                            if ($key == 0) continue;
+                            ?>
+                            <span class="sex <?php echo in_array($key, $aParam['aSex']) ? 'pbold' : 'pcursor' ?>"
+                                  data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key, $aParam['aSex']) ? 'checked' : '' ?> type="checkbox"
+                                                                                                  class="aSex"
+                                                                                                  id="aSex_<?php echo $key; ?>"
+                                                                                                  name="aSex[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">可用城市</div>
+                <div class="col-sm-11">
+                    <span class="cityall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aCity)) {
+                        foreach ($aCity as $key => $value) {
+                            if ($key == 0) continue;
+                            ?>
+                            <span class="city <?php echo in_array($key, $aParam['aCity']) ? 'pbold' : 'pcursor' ?>"
+                                  data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key, $aParam['aCity']) ? 'checked' : '' ?> type="checkbox"
+                                                                                                   class="aCity"
+                                                                                                   id="aCity_<?php echo $key; ?>"
+                                                                                                   name="aCity[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">修改状态</div>
+                <div class="col-sm-11">
+                    <span class="statusall <?php echo !empty($aParam['aStatus']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aStatus)) {
+                        foreach ($aStatus as $key => $value) {
+                            if ($key == 0) continue;
+                            ?>
+                            <span class="status <?php echo in_array($key, $aParam['aStatus']) ? 'pbold' : 'pcursor' ?>"
+                                  data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key, $aParam['aStatus']) ? 'checked' : '' ?> type="checkbox"
+                                                                                                     class="aStatus"
+                                                                                                     id="aStatus_<?php echo $key; ?>"
+                                                                                                     name="aStatus[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索门店名称或编号" name="sKeyword" type="text"
+                           value="<?php echo !empty($aParam['sKeyword']) ? $aParam['sKeyword'] : '' ?>"
+                           class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <input data-toggle="modal" data-target="#matchModal" type="button" value="导入门店代码"
+                           class="btn btn-primary">
+                    <a id="importbycity" href="javascript:;" class="btn btn-primary">按城市批量输入门店代码</a>
+                    <input data-toggle="modal" data-target="#matchModal1" type="button" value="按供应商城市导入门店代码"
+                           class="btn btn-primary">
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">门店名称</th>
+                <th class="text-center">供应商</th>
+                <th class="text-center">城市</th>
+                <th class="text-center">性别</th>
+                <th class="text-center">产品代码</th>
+                <th class="text-center">门店代码</th>
+                <th class="text-center">供应商结算价</th>
+                <th class="text-center">渠道结算价</th>
+                <th class="text-center">修改状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aData['aList'])) {
+                foreach ($aData['aList'] as $value) { ?>
+                    <tr>
+                        <td class="text-center"><?php echo !empty($value['sStoreName']) ? $value['sStoreName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aSupplier[$value['iSupplierID']]) ? $aSupplier[$value['iSupplierID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aCity[$value['iCityID']]) ? $aCity[$value['iCityID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aSex[$value['iSex']]) ? $aSex[$value['iSex']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sCode']) ? $value['sCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sStoreCode']) ? $value['sStoreCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sSupplierPrice']) ? $value['sSupplierPrice'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['sChannelPrice']) ? $value['sChannelPrice'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                        <td class="text-center">
+                            <a class="product_eidt" href="javascript:;"
+                               data-url="<?php echo !empty($sEditStoreCodeUrl) ? $sEditStoreCodeUrl : '' ?>?id=<?php echo $value['iAutoID'] ?>"
+                               title="编辑"><i
+                                    class="fa fa-pencil fa-large"></i></a>
+                        </td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+    </form>
+    <div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="matchModalLabel">请您上传符合导入模板格式的文件</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="myImportform" method="post"
+                          action="<?php echo $sImportStoreCodeUrl . '?id=' . $aProduct['iProductID'] ?>">
+                        <div class="form-group">
+                            <button type="button" data-ext="xls,xlsx,xltx" data-title="Excel files" data-fsize="10mb"
+                                    class="btn btn-default plupload" data-target="#sItemTemplate">选择文件
+                            </button>
+                            <input id="sItemTemplate" name="sItemTemplate" type="hidden">
+
+                            <p class="help-block"></p>
+                        </div>
+                        <div class="form-group">
+                            <a href="<?php echo $sStaticRoot . '/doc/storecodedemo.xls'?>">导入模版下载</a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">上传</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="matchModal1" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="matchModalLabel">请您上传符合导入模板格式的文件</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="myImportform1" method="post"
+                          action="<?php echo $sImportCityStoreCodeUrl . '?id=' . $aProduct['iProductID'] ?>">
+                        <div class="form-group">
+                            <button type="button" data-ext="xls,xlsx,xltx" data-title="Excel files" data-fsize="10mb"
+                                    class="btn btn-default plupload" data-target="#sItemTemplate1">选择文件
+                            </button>
+                            <input id="sItemTemplate1" name="sItemTemplate" type="hidden">
+
+                            <p class="help-block"></p>
+                        </div>
+                        <div class="form-group">
+                            <a href="<?php echo $sStaticRoot . '/doc/citystorecodedemo.xls'?>">导入模版下载</a>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                            <button type="submit" class="btn btn-primary">上传</button>
+                        </div>;
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="bugModal" tabindex="-1" role="dialog" aria-labelledby="bugModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="bugModalLabel">导入失败清单</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <table class="table table-hover" id="buglist">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script>
+    //城市点击效果
+    $('.city').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cityall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCity_' + key).prop("checked", true);
+    });
+    //城市全部点击效果
+    $('.cityall').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.city').addClass('pcursor').removeClass('pbold');
+        $('.aCity').prop("checked", false);
+    });
+    //供应商点击效果
+    $('.supplier').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplierall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aSupplier_' + key).prop("checked", true);
+    });
+    //供应商全部点击效果
+    $('.supplierall').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplier').addClass('pcursor').removeClass('pbold');
+        $('.aSupplier').prop("checked", false);
+    });
+    //状态点击效果
+    $('.status').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.statusall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aStatus_' + key).prop("checked", true);
+    });
+    //状态全部点击效果
+    $('.statusall').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.status').addClass('pcursor').removeClass('pbold');
+        $('.aStatus').prop("checked", false);
+    });
+    //状态点击效果
+    $('.sex').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.sexall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aSex_' + key).prop("checked", true);
+    });
+    //状态全部点击效果
+    $('.sexall').click(function () {
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.sex').addClass('pcursor').removeClass('pbold');
+        $('.aSex').prop("checked", false);
+    });
+    $('.product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $('#importbycity').click(function(){
+        window.location.href = '<?php echo $sImportCodeByCityUrl ?>id/<?php echo $aProduct['iProductID']; ?>';
+    });
+
+    $(function () {
+        $("#myImportform").validate({
+
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert('导入成功，成功' + ret.data.iSuccess + '条，失败' + ret.data.iFail + '条');
+                        if (ret.data.aFail) {
+                            var buglistHtml = '<tr align="center" class="info"><td>行数</td><td>产品名称</td> <td>失败原因</td> </tr>';
+                            $.each(ret.data.aFail, function (key, value) {
+                                buglistHtml += '<tr align="center" class="danger"><td>' + value.iHang + '</td><td>' + value.storeName + '</td> <td>' + value.reason + '</td><tr>';
+
+                            })
+                            $('#buglist').html(buglistHtml);
+                            $('#matchModal').modal('hide');
+                            $('#bugModal').modal('show');
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+
+        $("#myImportform1").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        var msg = '导入成功，共需要导入'+ret.data.iTotal+'门店，成功' + ret.data.iSuccess + '条，失败' + ret.data.iFail + '条';
+                        alert(msg.replace(/，/g,"\n"));
+                        if (ret.data.aFail) {
+                            var buglistHtml = '<tr align="center" class="info"><td>行数</td><td>供应商</td><td>城市</td><td>门店名称</td> <td>失败原因</td> </tr>';
+                            console.log(ret.data.aFail);
+                            $.each(ret.data.aFail, function (k, val) {
+                                $.each(val, function (key, value) {
+                                    var storename = value.storeName ? value.storeName : '/';
+                                    buglistHtml += '<tr align="center" class="danger"><td>' + value.iHang + '</td><td>' + value.supplierName + '</td><td>' + value.city + '</td><td>' + storename + '</td> <td>' + value.reason + '</td><tr>';
+                                })
+                            })
+                            $('#buglist').html(buglistHtml);
+                            $('#matchModal').modal('hide');
+                            $('#bugModal').modal('show');
+                        } else {
+                            window.location.reload();
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    })
+</script>

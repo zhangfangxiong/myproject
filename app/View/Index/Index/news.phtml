@@ -1,0 +1,35 @@
+<div class="row c mb10">
+    <div class="page_location" style="padding-left: 30px;">
+        <a title="首页" href="../Account/PageIndex.aspx">首页</a><span class="location_next">&gt;</span><span><a
+            href="#">常见问题</a></span>
+    </div>
+</div>
+<!-- 中间  -->
+<div id="public_c" class="margin_1">
+    <div class="public_c">
+        <!-- 文本信息  -->
+        <div class="w_950 margin_1 float_l">
+            <div class="health_caset float_l border_1" style="width: 700px;">
+                <div class="health_pbp_o float_l" style="width: 700px;">
+                    <p style="margin-bottom: 0px;">
+                        <span id="main_lblTitle"><?php echo $aNews['sTitle'] ?></span></p>
+                    <span class="float_l" style="padding: 10px; font-size: 15px; line-height: 25px;">
+                        <span id="main_lblContent"><?php echo $aNews['sContent'] ?></span>
+                    </span>
+                </div>
+            </div>
+            <div class="health_caset float_r border_1" style="width: 200px;">
+                <div class="health_pbp_o float_l" style="width: 200px;">
+                    <p style="margin-bottom: 0px;">其他问题</p>
+                    <p>
+                        <?php foreach ($aFaq['aList'] as $key => $value) { ?>
+                        <li style="line-height:25px; font-size:13px; padding-left:10px;">
+                            <a  href="/index/news/id/<?php echo $value['iAutoID']?>" style="line-height:25px; font-size:13px;"><?php echo $value['sTitle']?></a>
+                        </li>
+                        <?php }?>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  

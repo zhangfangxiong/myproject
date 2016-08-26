@@ -1,0 +1,27 @@
+<div class="activate_w cf2" style="background: #fff; padding: 4em 0;">
+	<dl class="activate_w activate_note">
+		<dt>
+			<img src="/front/images/tool/icon_tips.png" class="png" alt="ok">
+		</dt>
+		<dd>
+			<h4>请激活您的帐号，才可投放广告</h4>
+			<p>
+				为了保障您的帐号安全，我们已经给您的注册邮箱：<span class="eng"><?php echo $sEmail?></span><br>
+				发送了一个激活邮件，请点击下方按钮查收并点击激活链接完成注册。
+			</p>
+			<ul class="cf2">
+				<li><h5>小提示</h5>
+					<p>若一直未收到激活邮件，请查询邮箱垃圾箱，并把激活邮件设置为“不是垃圾邮件”</p>
+					<p>
+						有任何问题可致电：<b class="eng blue_text">400- 878-9551</b>
+					</p></li>
+				<li></li>
+			</ul>
+			<?php if ($sMailServer) {?>
+			<div>
+				<a target="_blank" href="<?php echo $sMailServer?>" class="red_btn_t">前往邮箱</a>
+			</div>
+			<?php }?>
+		</dd>
+	</dl>
+</div>

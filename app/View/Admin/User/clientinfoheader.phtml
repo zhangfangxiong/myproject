@@ -1,0 +1,11 @@
+<br>
+<div class="pheader clearfix"><?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?><button id="cancel" class="btn btn-primary pull-right" onclick="location.href='/admin/user/clientlist/'">返回客户列表</button></div>
+<ul class="nav nav-tabs pbody">
+    <?php if (!empty($aMenu)) {
+        foreach ($aMenu as $key => $value) {
+            ?>
+            <li role="presentation" <?php echo ($key == $iMenu) ? 'class="active"' : '' ?>><a href="<?php echo !empty($value['url']) ? $value['url'] : 'javascript:;' ?>?id=<?php echo !empty($aUser['iUserID']) ? $aUser['iUserID'] : '' ?>"><?php echo !empty($value['name']) ? $value['name'] : '' ?></a></li>
+        <?php
+        }
+    } ?>
+</ul>

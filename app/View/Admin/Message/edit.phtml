@@ -1,0 +1,340 @@
+<style>
+    .tubiao {
+        font-weight: bold;
+        color: red;
+        padding-right: 2px;
+    }
+    .publish-div {
+        margin-bottom: 20px;
+    }
+</style>
+<div class="pheader clearfix"><?php echo isset($aArticle['iArticleID']) ? '编辑' : '增加' ?><?php echo $aClass['sTitle']?></div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iArticleID" type="hidden" value="<?php echo isset($aArticle['iArticleID']) ? $aArticle['iArticleID'] : '' ?>">
+        <input name="sClass" type="hidden" value="<?php echo isset($aArticle['sClass']) ? $aArticle['sClass'] : $sClass ?>">
+        <input type="hidden" name="sCityID" value="<?php echo $aClass['iCity'] == 0 ? 0 : $iCurrCityID;?>">
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 标&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;题：</label>
+
+            <div class="col-sm-10">
+                <input name="sTitle" validate="!length:5-80" type="text"
+                       value="<?php echo isset($aArticle['sTitle']) ? htmlentities($aArticle['sTitle']) : '' ?>"
+                       class="form-control input-validate" placeholder="标题不能超过80字">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php if ($aClass['sShortTitle'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label "><span class="tubiao">*</span> 短&nbsp;&nbsp;标&nbsp;&nbsp;题：</label>
+            <div class="col-sm-10">
+                <input name="sShortTitle" validate="*length:5-50" type="text"
+                       value="<?php echo isset($aArticle['sShortTitle']) ?  htmlentities($aArticle['sShortTitle']) : '' ?>"
+                       class="form-control input-validate" placeholder="短标题不能超过<?php echo $aClass['aShortTitle'][1]?>字">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sCategory'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 分&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;类：</label>
+            <div class="col-sm-10">
+                <select name="iCategoryID" class="form-control input-validate">
+                    <?php foreach ($aCategory as $k => $v) { ?>
+                        <option value="<?php echo $k ?>" <?php echo isset($aArticle['iCategoryID']) && $aArticle['iCategoryID'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sAuthor'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 作&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;者：</label>
+            <div class="col-sm-10">
+                <input type="hidden" name="iAuthorID" id="iAuthorID" validate="required:true" placeholder="请输入作者，并选择所匹配作者" value="<?php echo isset($aArticle['iAuthorID']) ? $aArticle['iAuthorID'] : 0 ?>">
+                <input id="sAuthorName" name="sAuthorName" type="text"
+                       value="<?php echo isset($aArticle['sAuthorName']) ? $aArticle['sAuthorName'] : '' ?>"
+                       class="form-control input-validate yyauto"
+                       source="/admin/type/auto/class/author.html" ivalue="sTypeName" ishow="item.sTypeName" iresult="#iAuthorID=iTypeID"
+                       >
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sSource'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">资讯来源：</label>
+            <div class="col-sm-10">
+                <input name="sSource" validate="url:true" type="text"
+                       value="<?php echo isset($aArticle['sSource']) ? $aArticle['sSource'] : '' ?>"
+                       class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sMedia'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 媒体来源：</label>
+            <div class="col-sm-10">
+                <input validate="*length:<?php echo $aClass['aMedia'][0]?>-<?php echo $aClass['aMedia'][1]?>" name="sMedia" validate="url:true" type="text"
+                       value="<?php echo (isset($aArticle['sMedia']) && $aArticle['sMedia']) ? $aArticle['sMedia'] : '' ?>"
+                       class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sImage'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 默认图片：</label>
+            <div class="col-sm-10">
+                <input type="hidden" validate="*required:请上传默认图片" id="sImage" name="sImage" value="<?php echo isset($aArticle['sImage']) ? $aArticle['sImage'] : '' ?>">
+                <img id="sImageShow" style="width:160px;height:120px;" src="<?php if (isset($aArticle['sImage']) && !empty($aArticle)) { echo Util_Uri::getDFSViewURL($aArticle['sImage']); }else{ echo '';}?>">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow" data-fsize="100kb">
+                <span class="text-muted">请上传大小≤100K，支持png、jpg图片</span>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sAbstract'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 资讯摘要：</label>
+            <div class="col-sm-10">
+                <textarea name="sAbstract" rows="5" id="sAbstract" class="form-control input-validate"
+                          validate="*length:20-90" placeholder="摘要需在<?php echo $aClass['aAbstract'][0]?>-<?php echo $aClass['aAbstract'][1]?>字范围内"><?php echo isset($aArticle['sAbstract']) ? $aArticle['sAbstract'] : '' ?></textarea>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 资讯正文：</label>
+            <div class="col-sm-7">
+                <textarea name="sContent" id="sContent" class="input-validate"><?php echo isset($aArticle['sContent']) ? $aArticle['sContent'] : '' ?></textarea>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php if ($aClass['sKeyword'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 关&nbsp;&nbsp;键&nbsp;&nbsp;字：</label>
+            <div class="col-sm-10">
+                <input name="sKeyword" validate="*regexp:/^([^\s]+[\s]?){1,4}[^\s]*$/" type="text"
+                       value="<?php echo isset($aArticle['sKeyword']) ? $aArticle['sKeyword'] : '' ?>"
+                       class="form-control input-validate" placeholder="多个关键词之间以空格隔开，最多可输入5个">
+                <span class="validate_checktip"></span>
+            </div>
+            <div class="col-sm-3 validate_checktip"><span></span></div>
+        </div>
+        <?php }?>
+        <?php if ($aClass['sTag'] != '') {?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">资讯标签：</label>
+            <div class="col-sm-10">
+                <input type="hidden" name="sTag" id="sTag"
+                       value="<?php echo isset($aArticle['sTag']) ? $aArticle['sTag'] : '' ?>">
+
+                <div style="float:left;width:70%">
+                    <div class="clear"></div>
+                    <div class="selestbeizhu">
+                        <span style="float:left;">可选5个标签：</span>
+
+                        <div id="artTagSelect" style="">
+                            <?php if (isset($aArticle['aTag'])) {
+                                foreach ($aArticle['aTag'] as $sTag) { if (isset($aTag[$sTag])) { ?>
+                                    <a href="javascript:void(0);" class="des_post" rel="<?php echo $sTag?>"><span><?php echo $aTag[$sTag] ?></span><i
+                                            class="fa fa-remove"></i></a>
+                                <?php }}
+                            } ?>
+                        </div>
+                    </div>
+                    <div class="selestxuanze" id="arttags">
+                        <?php foreach ($aTag as $iTagID => $sTag) { ?>
+                            <a href="javascript:void(0)" rel="<?php echo $iTagID;?>" <?php
+                            if (isset($aArticle['aTag']) && in_array($iTagID, $aArticle['aTag'])) {
+                                echo "class='gray'";
+                            }
+                            ?>><?php echo $sTag ?></a>
+                        <?php } ?>
+                    </div>
+                </div>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <?php }?>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">发布时间：</label>
+
+            <div class="col-sm-10">
+                <input name="iPublishTime" readonly validate="datetime:true"
+                       class="<?php echo (isset($aArticle) && $aArticle['iStatus'] && $aArticle['iPublishStatus'] && $aArticle['iPublishTime'] <= time()) ? '' : 'laydatetime'?> form-control input-validate" validate="" type="text"
+                       value="<?php echo isset($aArticle['iPublishTime']) ? date('Y-m-d H:i:s',
+                           $aArticle['iPublishTime']) : date('Y-m-d H:i:s',
+                           time()) ?>">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center col-sm-9 publish-div">
+            <input type="hidden" name="iOptype" id="iOptype" value="">
+            <input type="hidden" name="time" id="iTime" value="<?php echo time()?>">
+            <button id="publish" onclick="$(this.form).attr('must', 1); $( '#iOptype' ).val(1)" class="btn btn-danger">发布</button>
+            <?php if (isset($aArticle['iArticleID']) && isset($aArticle['iPublishStatus']) && 1 == $aArticle['iPublishStatus']):?>
+
+            <?php else:?>
+            <button id="save" onclick="$(this.form).attr('must', 0); $( '#iOptype' ).val(0)" class="btn btn-primary">保存</button>
+            <?php endif;?>
+            <!-- <button id="preview" onclick="$(this.form).attr('must', 0);$( '#iOptype' ).val('')" class="btn btn-info">预览</button> -->
+            <button id="cancel" class="btn" onclick="location.href='<?php echo $sListUrl?>';return false;">取消</button>
+            <!-- 
+            <?php if (!empty($aArticle)) {?>
+            <a target="_blank" href="<?php echo 'http://' . Util_Common::getConf('art', 'domain') . '/shanghai/art/detail/preview/?id=' . $aArticle['iArticleID']?>" class="btn btn-info">保存后预览</a>
+            <?php }?>
+             -->
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/ueditor.all.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/ueditor/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+    $(function () {
+        //富文本编辑框
+        var opt = {
+            //这里可以选择自己需要的工具按钮名称,此处仅选择如下五个
+            toolbars: [['source', 'undo', 'redo', '|',
+                'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'removeformat', 'blockquote', 'pasteplain', '|',
+                'forecolor', 'backcolor', 'insertorderedlist', 'insertunorderedlist', '|',
+                'justifyleft', 'justifycenter', 'justifyright', '|',
+                'link', 'unlink', 'horizontal', '|',
+                'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                //'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                'inserttable', //插入表格
+                'insertrow', //前插入行
+                'insertcol', //前插入列
+                'deleterow', //删除行
+                'deletecol', //删除列
+                'mergecells', //合并多个单元格
+                'deletetable', //删除表格
+                'edittable', //表格属性
+                'edittd', //单元格属性
+                'insertimage']],
+            //关闭字数统计
+            wordCount: true,
+            //关闭elementPath
+            elementPathEnabled: true,
+            //默认的编辑区域高度
+            initialFrameHeight: 100,
+            catchRemoteImageEnable: false
+            //更多其他参数，请参考ueditor.config.js中的配置项
+        };
+        //var aue = UE.getEditor('sAbstract', opt);
+        var cue = UE.getEditor('sContent', opt);
+
+
+        //提交表单
+        $("#myform").validate({
+            submitHandler: function (form) {
+                if($('#iOptype').val() == '') {
+                    form.action = 'http://<?php echo (Yaf_G::getConf('art', 'domain'));?>/shanghai/art/detail/preview/';
+                    form.target = '_blank';
+                    form.submit();
+                    return false;
+                }
+                
+                form.action = '';
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        var sEditUrl = '<?php echo $sEditUrl?>?id=' + ret.data.iArticleID;
+                        var sMsg = ret.data.sMsg;
+                    } else {
+                        alert(ret.data);
+                        return false;
+                    }
+                    showArticleMsgTips(sMsg, '<?php echo $sListUrl?>', sEditUrl, '<?php echo $sAddUrl?>');
+                }, 'json');
+                return false;
+            }
+        });
+
+        function showArticleMsgTips(sMsg, sRedirectUrl, sEditUrl, sAddUrl) {
+        	var returnBnt = '';
+        	var addTips = '文章';
+        	if(sRedirectUrl.indexOf("news") > 0 )
+        	{
+        		addTips = "文章";
+        	} else if ( sRedirectUrl.indexOf("template") > 0 ) {
+        		addTips = "模板";
+        	}
+        	if (sRedirectUrl) {
+        		returnBnt = '<button type="button" class="btn btn-primary" onclick="location.href=\''+sRedirectUrl+'\'">返回列表</button>';
+        	}
+        	var msgModal = '<div class="modal fade" id="msgModel">' +
+        		'<div class="modal-dialog">' +
+        		'<div class="modal-content">' +
+        		'<div class="modal-header">' +
+        		'<h4 class="modal-title">提示信息</h4>' +
+        		'</div>' +
+        		'<div class="modal-body">' +
+        		'<p>'+sMsg+'</p>' +
+        		'</div>' +
+        		'<div class="modal-footer">' +
+        		'<button type="button" class="btn btn-success" data-dismiss="modal" onclick="location.href=\'' + sEditUrl +'\'">继续编辑</button>' +
+        		returnBnt+
+        		'<button type="button" class="btn btn-info" data-dismiss="modal" onclick="location.href=\'' + sAddUrl +'\'">新增'+addTips+'</button>' +
+        		'</div>' +
+        		'</div>' +
+        		'</div>' +
+        		'</div>';
+        	$(document.body).append(msgModal);
+        	$('#msgModel').modal({backdrop:'static'}).css({
+        		"margin-top": function () {return ($(window).height() / 2 - 60);}
+        	}).modal('show');
+        }
+
+        //标签操作
+        $('#arttags a').click(function () {
+            if ($(this).hasClass('gray')) {
+                return false;
+            }
+            var val = $('#sTag').val();
+            if (val.split(',').length == 5) {
+                alert('只能添加五个房源标签！');
+                return false;
+            }
+            val = val.length == 0 ? $(this).prop('rel') : val + ',' + $(this).prop('rel');
+            $('#sTag').val(val);
+
+            var str = '<a href="javascript:void(0);" class="des_post" rel="' + $(this).prop('rel') + '"><span>' + $(this).html() + '</span><i class="fa fa-remove"></i></a>';
+            $('#artTagSelect').append($(str));
+            $(this).addClass('gray');
+            $('#artTagSelect a').click(delArticleTag);
+        });
+        $('#artTagSelect a').click(delArticleTag);
+        function delArticleTag() {
+            var str = $(this).prop('rel');
+            var vals = $('#sTag').val().split(',');
+            for (var i = 0; i < vals.length; i++) {
+                if (vals[i] == str) {
+                    vals.splice(i, 1);
+                    break;
+                }
+            }
+            $('#sTag').val(vals.join(','));
+            $(this).remove();
+            $('#arttags a').each(function () {
+                if ($(this).prop('rel') == str) {
+                    $(this).removeClass('gray');
+                }
+            });
+        }
+    });
+</script>
+<link rel="stylesheet" href="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.css" type="text/css"/>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/jquery-ui/1.11.1/jquery-ui.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/autocomplete.js"></script>

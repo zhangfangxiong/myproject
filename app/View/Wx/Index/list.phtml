@@ -1,0 +1,72 @@
+<div class="row row-main-margin" id="productlist">
+    <?php if (!empty($aHRData)) {
+        foreach ($aHRData as $key => $value) {
+            ?>
+            <a href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>">
+                <div class="col-xs-6">
+                    <div class="product-image"><img class="img-responsive" src="<?php echo !empty($value['sImage']) ? Util_Uri::getDFSViewURL($value['sImage']) : '' ?>"></div>
+                    <div class="product-title cut"><?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] :$value['sProductName'] : '' ?></div>
+                    <div class="product-price"><i class="fa fa-cny"></i><span class="p-price"><?php echo !empty($value['iPrice']) ? $value['iPrice'] : '' ?></span></div>
+                </div>
+            </a>
+        <?php
+        }
+    } ?>
+    <?php if (!empty($aData['aList'])) {
+        foreach ($aData['aList'] as $key => $value) {
+            ?>
+            <a href="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?>">
+                <div class="col-xs-6">
+                    <div class="product-image"><img class="img-responsive" src="<?php echo !empty($value['sImage']) ? Util_Uri::getDFSViewURL($value['sImage']) : '' ?>"></div>
+                    <div class="product-title cut"><?php echo !empty($value['sProductName']) ? !empty($value['sAlias']) ? $value['sAlias'] :$value['sProductName'] : '' ?></div>
+                    <div class="product-price"><i class="fa fa-cny"></i><span class="p-price"><?php echo !empty($value['iPrice']) ? $value['iPrice'] : '' ?></span></div>
+                </div>
+            </a>
+        <?php
+        }
+    } ?>
+    <div class="loaddiv"></div>
+</div>
+
+<script type="text/javascript">
+    var detailurl = '<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>';
+    var imgurl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>/';
+    var listObj={
+        pagenumber:2,
+        initList:function(){
+            commonObj.moreUrl = "/wx/list";//设置下拉分页url
+            commonObj.appendId="productlist";
+            //下滑分页数据
+            commonObj.pageData={page:listObj.pagenumber,t:true};
+
+            //下滑分页回调函数
+            commonObj.searchCallBack=function(res){
+                $(".loaddiv").hide();
+                var dataLength=res.data.aList.length;
+                if(dataLength>0){
+                    listObj.pagenumber++;
+                    commonObj.ajaxstatus=true;
+                    commonObj.pageData.page=listObj.pagenumber;
+                    var htmlArray=[];
+                    for(var i=0;i<dataLength;i++){
+                        htmlArray[i]='<a href="'+detailurl+'id/'+res.data.aList[i].sProductCode+'">'+
+                        '<div class="col-xs-6">'+
+                            '<div class="product-image"><img class="img-responsive" src="'+imgurl+res.data.aList[i].sImage+'"></div>'+
+                            '<div class="product-title cut">'+res.data.aList[i].sProductName+'</div>'+
+                            '<div class="product-price"><i class="fa fa-cny"></i><span class="p-price">'+res.data.aList[i].iPrice+'</span></div>'+
+                        '</div>'+
+                   ' </a>';
+
+                    }
+                    $("#"+commonObj.appendId).append(htmlArray.join(""));
+                }else{
+                    commonObj.fenyestatus=false
+                }
+            }
+            //下滑分页触发
+            commonObj.scrollNextPage();
+
+        }
+    }
+    $(listObj.initList)
+    </script>

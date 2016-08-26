@@ -1,0 +1,194 @@
+<div class="pheader clearfix"><?php echo isset($aEmployee['iUserID'])?'编辑':'增加'?>员工信息</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aEmployee['iUserID'])?$aEmployee['iUserID']:''?>">
+
+        <div class="form-group col-sm-6">
+            <label for="sUserName" class="col-sm-3 control-label"> <span class="tubiao">*</span>员工编号：</label>
+            <div class="col-sm-9">
+                <input name="sUserName" type="text" disabled="disabled" value="<?php echo isset($aEmployee['sUserName'])?$aEmployee['sUserName']:'自动生成'?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sRealName" class="col-sm-3 control-label"> <span class="tubiao">*</span>员工姓名：</label>
+            <div class="col-sm-9">
+                <input name="sRealName"  type="text" value="<?php echo !empty($aEmployee['sRealName']) ? $aEmployee['sRealName'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>        
+
+        <div class="form-group col-sm-6">
+            <label for="iSex" class="col-sm-3 control-label"> <span class="tubiao">*</span>性别：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iSex' value='1' 
+                <?php echo empty($aEmployee['iSex']) || 1 == $aEmployee['iSex'] ? 'checked': '';?>>男</input>
+                <input type='radio' name='iSex' value='2'
+                <?php echo 2 == $aEmployee['iSex'] ? 'checked': '';?>>女</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iMarriage" class="col-sm-3 control-label"> <span class="tubiao">*</span>婚姻状况：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iMarriage' value='1'
+                <?php echo empty($aEmployee['iMarriage']) || 1 == $aEmployee['iMarriage'] ? 'checked': '';?>>未婚</input>
+                <input type='radio' name='iMarriage' value='2' 
+                <?php echo 2 == $aEmployee['iMarriage'] ? 'checked': '';?>>已婚</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sIdentityCard" class="col-sm-3 control-label"><span class="tubiao">*</span>身份证号码：</label>
+            <div class="col-sm-9">
+                <input name="sIdentityCard" type="text" value="<?php echo !empty($aEmployee['sIdentityCard']) ? $aEmployee['sIdentityCard'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sMobile" class="col-sm-3 control-label"><span class="tubiao">*</span>手机号码：</label>
+            <div class="col-sm-9">
+                <input name="sMobile" type="text" value="<?php echo isset($aEmployee['sMobile'])?$aEmployee['sMobile']:''?>" class="form-control input-validate">
+            </div>
+        </div>   
+
+        <div class="form-group col-sm-6">
+            <label for="iDeptID" class="col-sm-3 control-label">所属机构：</label>
+            <div class="col-sm-9">
+                <select name="iDeptID" class="form-control input-validate">
+                    <?php foreach ($aDeptSet as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aEmployee['iDeptID']) && $aEmployee['iDeptID']==$k ? 'selected' : ''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iIsHR" class="col-sm-3 control-label">是否HR：</label>
+            <div class="col-sm-9">
+                <select name="iIsHR" class="form-control input-validate">
+                    <option value='1' <?php echo isset($aEmployee['iIsHR']) && $aEmployee['iIsHR']==1 ? 'selected' : ''?>>是</option>
+                    <option value='2' <?php echo !isset($aEmployee['iIsHR']) || $aEmployee['iIsHR']==2 ? 'selected' : ''?>>否</option>                     
+                </select>
+            </div>
+        </div>     
+
+        <div class="form-group col-sm-6">
+            <label for="sEmail" class="col-sm-3 control-label"> 公司邮箱：</label>
+            <div class="col-sm-9">
+                <input name="sEmail" type="text" value="<?php echo isset($aEmployee['sEmail'])?$aEmployee['sEmail']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sBirthDate" class="col-sm-3 control-label">生日：</label>
+            <div class="col-sm-9">
+                <input id="sBirthDate" name="sBirthDate" type="text" value="<?php echo !empty($aEmployee['sBirthDate']) ? $aEmployee['sBirthDate'] : ''?>" class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>        
+
+        <div class="form-group col-sm-6">
+            <label for="sJobTitleName" class="col-sm-3 control-label"> 职位：</label>
+            <div class="col-sm-9">
+                <input name="sJobTitleName" type="text" value="<?php echo isset($aEmployee['sJobTitleName'])?$aEmployee['sJobTitleName']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iJobGradeID" class="col-sm-3 control-label">职级：</label>
+            <div class="col-sm-9">
+                <select name="iJobGradeID" class="form-control input-validate">
+                    <?php foreach ($aLevel as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aEmployee['iJobGradeID'])&&$aEmployee['iJobGradeID']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sJobDate" class="col-sm-3 control-label"> 入职日期：</label>
+            <div class="col-sm-9">
+                <input id="sJobDate" name="sJobDate" type="text" value="<?php echo isset($aEmployee['sJobDate'])?$aEmployee['sJobDate']:''?>" class="laydatetime form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="iStatus" class="col-sm-3 control-label">账号状态：</label>
+            <div class="col-sm-9">
+                <select name="iStatus" class="form-control input-validate">
+                    <?php foreach ($aState as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aEmployee['iStatus'])&&$aEmployee['iStatus']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sCiicNumber" class="col-sm-3 control-label"> 中智编号：</label>
+            <div class="col-sm-9">
+                <input name="sCiicNumber" type="text" value="<?php echo isset($aEmployee['sCiicNumber'])?$aEmployee['sCiicNumber']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+            <label for="sExpNumber" class="col-sm-3 control-label"> 外派编号：</label>
+            <div class="col-sm-9">
+                <input name="sExpNumber" type="text" value="<?php echo isset($aEmployee['sExpNumber'])?$aEmployee['sExpNumber']:''?>" class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group col-sm-9">
+            <label for="sRemark" class="col-sm-2 control-label"> 备注：</label>
+            <div class="col-sm-10">
+                <textarea name="sRemark" class="form-control input-validate"><?php echo isset($aEmployee['sRemark'])?$aEmployee['sRemark']:''?></textarea>
+            </div>
+        </div>
+
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">保存</button>
+            <?php
+            if (isset($aEmployee['iUserID']) ) {
+                $href = '/company/employee/detail?iEmployeeID=' . $aEmployee['iUserID'];
+            } else {
+                $href = '/company/employee/list';
+            }
+            ?>
+            <a class="text-right btn btn-default" href=<?php echo $href;?>>取消</a>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.status) {
+               location.href = '<?php echo $href; ?>';
+            }
+        }, 'json');
+        return false;
+    }});
+
+    laydate({
+        elem: '#sBirthDate',
+        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+        festival: true, //显示节日
+        choose: function(datas){ //选择日期完毕的回调
+        }
+    });
+
+    laydate({
+        elem: '#sJobDate',
+        format: 'YYYY-MM-DD', // 分隔符可以任意定义，该例子表示只显示年月
+        festival: true, //显示节日
+        choose: function(datas){ //选择日期完毕的回调
+        }
+    });
+});
+</script>

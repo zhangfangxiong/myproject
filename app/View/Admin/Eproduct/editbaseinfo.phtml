@@ -1,0 +1,330 @@
+<?php if (!empty($aEditHeaderInfo)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix" >
+        第一步：增加基本信息
+    </div>
+<?php
+} ?>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iProductID" type="hidden"
+               value="<?php echo !empty($aProduct['iProductID']) ? $aProduct['iProductID'] : '' ?>">
+
+        <?php if (!empty($aEditHeaderInfo)) {
+            ?>
+            <div class="form-group">
+                <label for="sProductName" class="col-sm-2 control-label">基础产品：</label>
+
+                <div class="col-sm-6">
+                    <input disabled type="text"
+                           value="<?php echo !empty($aBaseList[$aProduct['iParentID']]) ? $aBaseList[$aProduct['iParentID']] : '' ?>"
+                           class="form-control input-validate">
+                </div>
+            </div>
+        <?php
+        } else {
+            ?>
+            <div class="form-group">
+                <label for="sProductName" class="col-sm-2 control-label"> 选择基础产品：</label>
+
+                <div class="col-sm-6">
+                    <select name="iParentID" id="iParentID" class="form-control input-validate">
+                        <?php foreach ($aBaseList as $v) { ?>
+                            <option
+                                value="<?php echo $v['iProductID'] ?>" <?php echo $v['iProductID'] == $aProduct['iParentID'] ? 'selected' : '' ?>><?php echo $v['sProductName'] ?></option>
+                        <?php } ?>
+                    </select>&nbsp;&nbsp;
+                    <input data-toggle="modal" data-target="#matchModal" type="button" value="匹配推荐"
+                           class="btn btn-primary">
+                </div>
+            </div>
+        <?php
+        } ?>
+
+        <div class="form-group">
+            <label for="sProductName" class="col-sm-2 control-label"> <span class="tubiao">*</span>扩展产品名称：</label>
+
+            <div class="col-sm-6">
+                <input name="sProductName" id="sProductName" validate="!required:true" placeholder="请填写产品名称" type="text"
+                       value="<?php echo !empty($aProduct['sProductName']) ? $aProduct['sProductName'] : '' ?>"
+                       class="form-control input-validate">
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sProductCode" class="col-sm-2 control-label"> 产品编号：</label>
+
+            <div class="col-sm-6">
+                <input name="sProductCode"
+                       type="text" disabled
+                       value="<?php echo !empty($aProduct['sProductCode']) ? $aProduct['sProductCode'] : '自动生成' ?>"
+                       class="form-control input-validate">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">产品类型：</label>
+
+            <div class="col-sm-3">
+                <select name="iProductType" class="form-control input-validate" id="iProductType">
+                    <?php foreach ($aProductType as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iProductType']) && $aProduct['iProductType'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group" id="iSpecialCheckDiv">
+            <label for="iProductType" class="col-sm-2 control-label">选择专项：</label>
+
+            <div class="col-sm-3">
+                <select name="iSpecialCheck" id="iSpecialCheck" class="form-control input-validate">
+                    <?php foreach ($aSpecialCheck as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iSpecialCheck']) && $aProduct['iSpecialCheck'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iAttribute" class="col-sm-2 control-label">产品属性：</label>
+
+            <div class="col-sm-3">
+                <select name="iAttribute" class="form-control input-validate">
+                    <?php foreach ($aAttribute as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iAttribute']) && $aProduct['iAttribute'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iStatus" class="col-sm-2 control-label">产品状态：</label>
+
+            <div class="col-sm-3">
+                <select name="iStatus" class="form-control input-validate">
+                    <?php foreach ($aStatus as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iStatus']) && $aProduct['iStatus'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">实物卡类型：</label>
+
+            <div class="col-sm-3">
+                <select name="iPCard" class="form-control input-validate">
+                    <?php foreach ($aPCard as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo !empty($aProduct['iPCard']) && $aProduct['iPCard'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">有效日期(选填)：</label>
+
+            <div class="col-sm-9">
+                <input type="text" name="sStartDate" format="YYYY-MM-DD" class="laydatetime form-control input-width input-inline" value="<?php echo (empty($aProduct['sStartDate']) || $aProduct['sStartDate'] == '0000-00-00') ? date('Y-m-d',time()) : $aProduct['sStartDate']?>"> 至
+                <input type="text" name="sEndDate" format="YYYY-MM-DD" class="laydatetime form-control input-width input-inline" value="<?php echo (empty($aProduct['sEndDate']) || $aProduct['sEndDate'] == '0000-00-00') ? '' : $aProduct['sEndDate']?>">
+        </div>
+
+        <div class="form-group">
+            <label for="iProductType" class="col-sm-2 control-label">作为标准产品：</label>
+
+            <div class="col-sm-3">
+                <input type="radio" name="iIsStand" class=""
+                       value="1" <?php echo isset($aProduct['iIsStand']) && $aProduct['iIsStand'] == 1 ? 'checked' : '' ?>>
+                是
+                <input type="radio" name="iIsStand" class=""
+                       value="0" <?php echo empty($aProduct['iIsStand']) ? 'checked' : '' ?>> 否
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label"><span class="tubiao">*</span> 默认图片：</label>
+
+            <div class="col-sm-10">
+                <input type="hidden" validate="!required:请上传默认图片" id="sImage" name="sImage"
+                       value="<?php echo isset($aProduct['sImage']) ? $aProduct['sImage'] : '' ?>">
+                <img id="sImageShow" style="width:160px;height:120px;"
+                     src="<?php if (isset($aProduct['sImage']) && !empty($aProduct)) {
+                         echo Util_Uri::getDFSViewURL($aProduct['sImage']);
+                     } else {
+                         echo '';
+                     } ?>">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow">
+                <span class="text-muted">请上传大小≤100K，支持png、jpg图片</span>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="sRemark" class="col-sm-2 control-label"> 产品简介：</label>
+
+            <div class="col-sm-6">
+                <textarea class="form-control input-validate"
+                          name="sRemark"
+                          id="sRemark"><?php echo !empty($aProduct['sRemark']) ? $aProduct['sRemark'] : '' ?></textarea>
+            </div>
+        </div>
+        <div class="btn-toolbar text-center">
+            <input type="hidden" name="selectBaseID" id="selectBaseID">
+            <input type="hidden" name="importItemID" id="importItemID">
+            <input type="submit" id="next" class="btn btn-primary"
+                   value="<?php echo !empty($aEditHeaderInfo) ? '保存' : '下一步' ?>">
+            <input type="button" value="取消" id="cancel" class="btn"
+                   onclick="location.href='<?php echo !empty($sEpListUrl) ? $sEpListUrl : 'javascript:;' ?>';return false;">
+        </div>
+    </form>
+</div>
+
+<div class="modal fade" id="matchModal" tabindex="-1" role="dialog" aria-labelledby="matchModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="matchModalLabel">请您上传符合导入模板格式的文件</h4>
+            </div>
+            <div class="modal-body">
+                <form id="myImportform" method="post" action="<?php echo $sImportItemUrl ?>">
+                    <div class="form-group">
+                        <button type="button" data-ext="xls,xlsx,xltx" data-title="Excel files" data-fsize="10mb"
+                                class="btn btn-default plupload" data-target="#sItemTemplate">选择文件
+                        </button>
+                        <input id="sItemTemplate" name="sItemTemplate" type="hidden">
+
+                        <p class="help-block"></p>
+                    </div>
+                    <div class="form-group">
+                        <a href="<?php echo $sStaticRoot . '/doc/matchdemo.xls'?>">导入模版下载</a>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="submit" class="btn btn-primary">上传</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="selectModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="selectModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group select-list">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                        <button type="button" id="select-query" class="btn btn-primary">确认选择</button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+<script type="text/javascript">
+    $('#iParentID').change(function () {
+        var parentID = $(this).val();
+        changeBProduct(parentID);
+    });
+    function changeBProduct(id) {
+        var Url = '<?php echo $sGetParentUrl;?>';
+        $.get(Url, {id: id}, function (ret) {
+            if (ret.status) {
+                var Name = ret.data.sProductName + '-拓展版' + ret.data.sExpandCode;
+                $('#sProductName').val(Name);
+                $('#iProductType').val(ret.data.iProductType);
+                $('#iSpecialCheck').val(ret.data.iSpecialCheck);
+                $('#sImage').val(ret.data.sImage);
+                $('#sImageShow').attr('src', ret.data.sImageShow);
+                $('#sRemark').val(ret.data.sRemark);
+                changeStatus();
+            } else {
+                alert(ret.data);
+            }
+        }, 'json');
+    }
+
+    function changeStatus() {
+        if ($('#iProductType').val() == 1) {
+            $('#iSpecialCheckDiv').show();
+        } else {
+            $('#iSpecialCheckDiv').hide();
+        }
+    }
+    changeStatus();
+
+    $('#iProductType').change(function () {
+        changeStatus();
+    });
+
+    $('#select-query').click(function(){
+        var select_val= $("input[name='match_list_radio']:checked").val();
+        $('#selectBaseID').val(select_val);
+        $('#selectModal').modal('hide');
+        $('#iParentID').val(select_val);
+        changeBProduct(select_val);
+    });
+
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+        $("#myImportform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert('匹配成功');
+                        $('#selectModalLabel').html(ret.data.mathTitle);
+                        $('.select-list').html(ret.data.matchListhtml);
+                        $('#matchModal').modal('hide');
+                        $('#selectModal').modal('show');
+                        $('#importItemID').val(ret.data.importItems);
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

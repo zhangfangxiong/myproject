@@ -1,0 +1,99 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div class="reservestore-content">
+        <form id="myform" class="form-horizontal" role="form" method="post">
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-3 control-label">体检套餐：</label>
+
+                <div class="col-xs-8 store-select-div">
+                    <span
+                        class="origin font-18"><?php echo !empty($aOrderProduct[0]['sProductName']) ? $aOrderProduct[0]['sProductName'] : '' ?></span>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-3 control-label">支付金额：</label>
+
+                <div class="col-xs-8 store-select-div">
+                    <span
+                        class="origin font-18"><?php echo !empty($aOrder['sOrderAmount']) ? number_format($aOrder['sOrderAmount'], 2) : '0.00' ?></span>元
+                </div>
+            </div>
+
+            <div class="cart-return">
+                <input type="button" id="pay" value="支付" class="form-control btn-warning">
+            </div>
+            <div class="cart-return">
+                <input class="form-control" id="reback" value="返回" type="button">
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        var sDetailUrl = '<?php echo $sReserveDetailUrl.'id/'.$aProductAttr['iCardID'].'/pid/'.$aOrderProduct[0]['iProductID']; ?>';
+
+        $('#pay').click(function(){
+            callpay();
+        });
+
+        //调用微信JS api 支付
+        function jsApiCall()
+        {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest',
+                <?php echo $aData['jsApiParameters']; ?>,
+                function(res){
+                    WeixinJSBridge.log(res.err_msg);
+                    if(res.err_msg == "get_brand_wcpay_request:ok" ) {// 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。
+                        window.location.href = sDetailUrl;
+                    }
+                }
+            );
+        }
+
+        function callpay()
+        {
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            }else{
+                jsApiCall();
+            }
+        }
+        //获取共享地址
+        function editAddress()
+        {
+            WeixinJSBridge.invoke(
+                'editAddress',
+                <?php echo $aData['editAddress']; ?>,
+                function(res){
+                    var value1 = res.proviceFirstStageName;
+                    var value2 = res.addressCitySecondStageName;
+                    var value3 = res.addressCountiesThirdStageName;
+                    var value4 = res.addressDetailInfo;
+                    var tel = res.telNumber;
+
+                    //alert(value1 + value2 + value3 + value4 + ":" + tel);
+                }
+            );
+        }
+
+        window.onload = function(){
+            if (typeof WeixinJSBridge == "undefined"){
+                if( document.addEventListener ){
+                    document.addEventListener('WeixinJSBridgeReady', editAddress, false);
+                }else if (document.attachEvent){
+                    document.attachEvent('WeixinJSBridgeReady', editAddress);
+                    document.attachEvent('onWeixinJSBridgeReady', editAddress);
+                }
+            }else{
+                editAddress();
+            }
+        };
+
+    })
+</script>

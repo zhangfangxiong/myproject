@@ -1,0 +1,230 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="<?php echo !empty($sEpListUrl) ? $sEpListUrl : '' ?>">
+        <div class="pcate clearfix">
+            <!--这个暂时屏蔽
+            <div class="pmargin clearfix">
+                <div class="catetitle">渠道</div>
+                <div class="col-sm-11">
+                    <span class="channelall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aChannel)) {
+                        foreach ($aChannel as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="channel <?php echo in_array($key,$aParam['aCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aChannel']) ? 'checked' : '' ?> type="checkbox" class="aChannel" id="aChannel_<?php echo $key; ?>" name="aChannel[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            -->
+            <div class="pmargin clearfix">
+                <div class="catetitle">供应商</div>
+                <div class="col-sm-11">
+                    <span class="supplierall <?php echo !empty($aParam['aSupplier']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aSupplier)) {
+                        foreach ($aSupplier as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="supplier <?php echo in_array($key,$aParam['aSupplier']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aSupplier']) ? 'checked' : '' ?> type="checkbox" class="aSupplier" id="aSupplier_<?php echo $key; ?>" name="aSupplier[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">状态</div>
+                <div class="col-sm-11">
+                    <span class="statusall <?php echo !empty($aParam['aStatus']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aStatus)) {
+                        foreach ($aStatus as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="status <?php echo in_array($key,$aParam['aStatus']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aStatus']) ? 'checked' : '' ?> type="checkbox" class="aStatus" id="aStatus_<?php echo $key; ?>" name="aStatus[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">从属基础产品</div>
+                <div class="col-sm-11">
+                    <span class="parentall <?php echo !empty($aParam['aParent']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aParent)) {
+                        foreach ($aParent as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="parent <?php echo in_array($key,$aParam['aParent']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aParent']) ? 'checked' : '' ?> type="checkbox" class="aParent" id="aParent_<?php echo $key; ?>" name="aParent[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">可用城市</div>
+                <div class="col-sm-11">
+                    <span class="cityall <?php echo !empty($aParam['aCity']) ? 'pcursor' : 'pbold' ?>">全部</span>
+                    <?php if (!empty($aCity)) {
+                        foreach ($aCity as $key => $value) {
+                            if ($key==0) continue;
+                            ?>
+                            <span class="city <?php echo in_array($key,$aParam['aCity']) ? 'pbold' : 'pcursor' ?>" data-key="<?php echo $key; ?>"><?php echo $value ?></span>
+                            <input <?php echo in_array($key,$aParam['aCity']) ? 'checked' : '' ?> type="checkbox" class="aCity" id="aCity_<?php echo $key; ?>" name="aCity[<?php echo $key; ?>]">
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+            <div class="pmargin clearfix">
+                <div class="catetitle">关键字</div>
+                <div class="col-sm-11">
+                    <input placeholder="支持搜索门店名称或编号" name="sKeyword" type="text" value="<?php echo !empty($aParam['sKeyword'])?$aParam['sKeyword']:''?>" class="input-margin-right input-width form-control input-validate">
+                    <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+                    <input type="button" id="sysUpgrade" class="btn btn-primary" value="同步所有升级关系">
+                </div>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+            <tr>
+                <th class="text-center">产品编号</th>
+                <th class="text-center">产品名称</th>
+                <th class="text-center">从属基础产品</th>
+                <th class="text-center">公司渠道</th>
+                <th class="text-center">公司客户</th>
+                <th class="text-center">个人渠道</th>
+                <th class="text-center">个人客户</th>
+                <th class="text-center">城市数量</th>
+                <th class="text-center">门店数量</th>
+                <th class="text-center">价格</th>
+                <th class="text-center">状态</th>
+                <th class="text-center">操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php if (!empty($aData['aList'])) {
+                foreach ($aData['aList'] as $value) {?>
+                    <tr>
+                        <td class="text-center"><?php echo !empty($value['sProductCode']) ? $value['sProductCode'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['sProductName']) ? $value['sProductName'] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($aParent[$value['iParentID']]) ? $aParent[$value['iParentID']] : '' ?></td>
+                        <td class="text-center"><?php echo !empty($value['iComChannelNum']) ? $value['iComChannelNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iComUserNum']) ? $value['iComUserNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iIndivChannelNum']) ? $value['iIndivChannelNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iIndivUserNum']) ? $value['iIndivUserNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iCityNum']) ? $value['iCityNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iStoreNum']) ? $value['iStoreNum'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($value['iManPrice']) ? $value['iManPrice'] : 0 ?></td>
+                        <td class="text-center"><?php echo !empty($aStatus[$value['iStatus']]) ? $aStatus[$value['iStatus']] : '' ?></td>
+                        <td class="text-center">
+                            <a class="product_view" href="javascript:;" data-url="<?php echo !empty($sViewBaseInfoUrl) ? $sViewBaseInfoUrl : '' ?>?id=<?php echo $value['iProductID'] ?>" title="查看"><i
+                                    class="fa fa-eye fa-large"></i></a>
+                            <a class="product_eidt" href="javascript:;" data-url="<?php echo !empty($sEditBaseInfoUrl) ? $sEditBaseInfoUrl : '' ?>?id=<?php echo $value['iProductID'] ?>" title="编辑"><i
+                                    class="fa fa-pencil fa-large"></i></a>
+                            <a class="product_code" href="javascript:;" data-url="<?php echo !empty($sStoreCodeListUrl) ? $sStoreCodeListUrl : '' ?>?id=<?php echo $value['iProductID'] ?>" title="代码配置"><i
+                                    class="fa fa-file-code-o fa-large"></i></a>
+                        </td>
+                    </tr>
+                <?php }
+            } ?>
+            </tbody>
+        </table>
+        <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+    </form>
+</div>
+<script>
+    //城市点击效果
+    $('.city').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.cityall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aCity_'+key).prop("checked",true);
+    });
+    //城市全部点击效果
+    $('.cityall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.city').addClass('pcursor').removeClass('pbold');
+        $('.aCity').prop("checked", false);
+    });
+    //供应商点击效果
+    $('.supplier').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplierall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aSupplier_'+key).prop("checked",true);
+    });
+    //供应商全部点击效果
+    $('.supplierall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.supplier').addClass('pcursor').removeClass('pbold');
+        $('.aSupplier').prop("checked", false);
+    });
+    //渠道点击效果
+    $('.channel').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.channelall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aChannel_'+key).prop("checked",true);
+    });
+    //渠道全部点击效果
+    $('.channelall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.channel').addClass('pcursor').removeClass('pbold');
+        $('.aChannel').prop("checked", false);
+    });
+    //状态点击效果
+    $('.status').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.statusall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aStatus_'+key).prop("checked",true);
+    });
+    //状态全部点击效果
+    $('.statusall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.status').addClass('pcursor').removeClass('pbold');
+        $('.aStatus').prop("checked", false);
+    });
+    //状态点击效果
+    $('.parent').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.parentall').addClass('pcursor').removeClass('pbold');
+        var key = $(this).data('key');
+        $('#aParent_'+key).prop("checked",true);
+    });
+    //状态全部点击效果
+    $('.parentall').click(function(){
+        $(this).addClass('pbold').removeClass('pcursor');
+        $('.parent').addClass('pcursor').removeClass('pbold');
+        $('.aParent').prop("checked", false);
+    });
+    $('.product_view').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $('.product_eidt').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $('.product_code').click(function () {
+        location.href = $(this).data('url');
+        return false;
+    });
+    $('#sysUpgrade').click(function(){
+        var Url = '<?php echo $sSysAllUpgradeUrl ?>';
+        $.get(Url,function (ret) {
+            if (ret.status) {
+                alert(ret.data.replace(/\|/g,"\n"));
+            } else {
+                alert(ret.data);
+            }
+        }, 'json');
+    });
+
+</script>

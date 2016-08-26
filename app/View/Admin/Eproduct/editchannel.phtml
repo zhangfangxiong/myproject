@@ -1,0 +1,316 @@
+<style>
+    .padding-top-7 {
+        padding-top: 7px;
+    }
+
+    .companyChannelDetail, .individualChannelDetail {
+        padding-left: 150px;
+        margin-bottom: 10px;
+    }
+
+    .companyChannelDetail .form-group, .individualChannelDetail .form-group {
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+</style>
+<?php if (!empty($iHeaderType)) {
+    include('productheader.phtml');
+} else {
+    ?>
+    <div class="pheader clearfix">
+        第三步：选择渠道
+    </div>
+<?php
+} ?>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iProductID" type="hidden"
+               value="<?php echo !empty($aProduct['iProductID']) ? $aProduct['iProductID'] : '' ?>">
+
+        <div class="form-group company">
+            <div class="col-sm-2 control-label">是否支持公司用户渠道：</div>
+            <div class="col-sm-2">
+                <label class="radio-inline">
+                    <input type="radio" class="iCanCompany" data-moduleid="companyChannelSet" name="iCanCompany"
+                           value="1" <?php echo !empty($aProduct['iCanCompany']) ? 'checked' : '' ?>> 是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" class="iCanCompany" data-moduleid="companyChannelSet" name="iCanCompany"
+                           value="0" <?php echo !empty($aProduct['iCanCompany']) ? '' : 'checked' ?>> 否
+                </label>
+            </div>
+            <div class="col-sm-8 padding-top-7">
+                选择此项后，可见渠道的公司HR可以在后台中选择此体检产品
+            </div>
+        </div>
+
+        <div class="form-group" id="companyChannelSet">
+            <div class="col-sm-2 control-label">设置支持的渠道：</div>
+            <div class="clearfix"></div>
+            <?php if (!empty($aChannel)) {
+                foreach ($aChannel as $key => $value) {
+                    if ($key == 0) {
+                        continue;
+                    }
+                    ?>
+                    <div class="checkbox control-label">
+                        <label class="col-sm-2">
+                            <input class="companyChannel" id="companyChannel_<?php echo $key ?>" name="companyChannel[<?php echo $key ?>]"
+                                   data-moduleid="companyModule<?php echo $key ?>" type="checkbox"
+                                   value="<?php echo $key ?>" <?php echo !empty($aCompanyChannel[$key]) ? 'checked' : '' ?>>
+                            <?php echo $value ?>
+                        </label>
+
+                        <div class="clearfix"></div>
+                        <div id="companyModule<?php echo $key ?>">
+                            <div class="companyChannelDetail form-inline text-left">
+                                <label class="form-group">客户可见范围：</label>
+
+                                <div class="form-group">
+                                    <select class="form-control companyViewType" name="companyViewType[<?php echo $key ?>]" data-viewid="<?php echo $key ?>">
+                                        <?php if (!empty($aCanView)) {
+                                            foreach ($aCanView as $k => $v) {
+                                                ?>
+                                                <option value="<?php echo $k ?>" <?php echo !empty($aCompanyChannel[$key]['iViewRange']) && $aCompanyChannel[$key]['iViewRange'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                    <input id="companyCanView<?php echo $key ?>"
+                                           onclick="summitType('1-<?php echo $key ?>-1')" type="submit"
+                                           class="btn btn-primary" value="选择可见客户(已选<?php echo (!empty($aCompanyChannel[$key]['iViewRange']) && !empty($aCompanyChannel[$key]['iViewRangeNum']) && $aCompanyChannel[$key]['iViewRange'] == 1) ? $aCompanyChannel[$key]['iViewRangeNum'] : 0 ?>家)">
+                                    <input id="companyNoView<?php echo $key ?>"
+                                           onclick="summitType('1-<?php echo $key ?>-2')" type="submit"
+                                           class="btn btn-primary" value="选择不可见客户(已选<?php echo (!empty($aCompanyChannel[$key]['iViewRange']) && !empty($aCompanyChannel[$key]['iViewRangeNum']) && $aCompanyChannel[$key]['iViewRange'] == 2) ? $aCompanyChannel[$key]['iViewRangeNum'] : 0 ?>家)">
+                                </div>
+                            </div>
+                            <div class="companyChannelDetail form-inline text-left">
+                                <div class="form-group">
+                                    渠道通用价
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyPrice1_<?php echo $key ?>">男：</label>
+                                    <input id="companyPrice1_<?php echo $key ?>" name="companyPrice1[<?php echo $key ?>]" type="text"
+                                           class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aCompanyChannel[$key]['iManPrice']) ? $aCompanyChannel[$key]['iManPrice'] : $aProduct['iManPrice'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyPrice2_<?php echo $key ?>">女-未婚：</label>
+                                    <input id="companyPrice2_<?php echo $key ?>" name="companyPrice2[<?php echo $key ?>]" type="text"
+                                           class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aCompanyChannel[$key]['iWomanPrice1']) ? $aCompanyChannel[$key]['iWomanPrice1'] : $aProduct['iWomanPrice1'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="companyPrice3_<?php echo $key ?>">女-已婚：</label>
+                                    <input id="companyPrice3_<?php echo $key ?>" name="companyPrice3[<?php echo $key ?>]" type="text"
+                                           class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aCompanyChannel[$key]['iWomanPrice2']) ? $aCompanyChannel[$key]['iWomanPrice2'] : $aProduct['iWomanPrice2'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+            } ?>
+        </div>
+
+        <div class="form-group individual">
+            <div class="col-sm-2 control-label">是否支持个人用户渠道：</div>
+            <div class="col-sm-2">
+                <label class="radio-inline">
+                    <input type="radio" class="iCanIndividual" data-moduleid="individualChannelSet"
+                           name="iCanIndividual" value="1" <?php echo !empty($aProduct['iCanIndividual']) ? 'checked' : '' ?>> 是
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" class="iCanIndividual" data-moduleid="individualChannelSet"
+                           name="iCanIndividual" value="0" <?php echo !empty($aProduct['iCanIndividual']) ? '' : 'checked' ?>> 否
+                </label>
+            </div>
+            <div class="col-sm-8 padding-top-7">
+                选择此项后，可见渠道的个人HR可以在后台中选择此体检产品
+            </div>
+        </div>
+
+        <div class="form-group" id="individualChannelSet">
+            <div class="col-sm-2 control-label">设置支持的渠道：</div>
+            <div class="clearfix"></div>
+            <?php if (!empty($aChannel)) {
+                foreach ($aChannel as $key => $value) {
+                    if ($key == 0) {
+                        continue;
+                    }
+                    ?>
+                    <div class="checkbox control-label">
+                        <label class="col-sm-2">
+                            <input class="individualChannel" id="individualChannel_<?php echo $key ?>" name="individualChannel[<?php echo $key ?>]"
+                                   data-moduleid="individualModule<?php echo $key ?>" type="checkbox"
+                                   value="<?php echo $key ?>" <?php echo !empty($aIndividualChannel[$key]) ? 'checked' : '' ?>>
+                            <?php echo $value ?>
+                        </label>
+
+                        <div class="clearfix"></div>
+                        <div id="individualModule<?php echo $key ?>">
+                            <div class="individualChannelDetail form-inline text-left">
+                                <label class="form-group">客户可见范围：</label>
+
+                                <div class="form-group">
+                                    <select class="form-control individualViewType" name="individualViewType[<?php echo $key ?>]" data-viewid="<?php echo $key ?>">
+                                        <?php if (!empty($aCanView)) {
+                                            foreach ($aCanView as $k => $v) {
+                                                ?>
+                                                <option value="<?php echo $k ?>" <?php echo !empty($aIndividualChannel[$key]['iViewRange']) && $aIndividualChannel[$key]['iViewRange'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                                            <?php
+                                            }
+                                        } ?>
+                                    </select>
+                                    <input id="individualCanView<?php echo $key ?>"
+                                           onclick="summitType('2-<?php echo $key ?>-1')" type="submit"
+                                           class="btn btn-primary" value="选择可见客户(已选<?php echo (!empty($aIndividualChannel[$key]['iViewRange']) && !empty($aIndividualChannel[$key]['iViewRangeNum']) && $aIndividualChannel[$key]['iViewRange'] == 1) ? $aIndividualChannel[$key]['iViewRangeNum'] : 0 ?>家)">
+                                    <input id="individualNoView<?php echo $key ?>"
+                                           onclick="summitType('2-<?php echo $key ?>-2')" type="submit"
+                                           class="btn btn-primary" value="选择不可见客户(已选<?php echo (!empty($aIndividualChannel[$key]['iViewRange']) && !empty($aIndividualChannel[$key]['iViewRangeNum']) && $aIndividualChannel[$key]['iViewRange'] == 2) ? $aIndividualChannel[$key]['iViewRangeNum'] : 0 ?>家)">
+                                </div>
+                            </div>
+                            <div class="individualChannelDetail form-inline text-left">
+                                <div class="form-group">
+                                    渠道通用价
+                                </div>
+                                <div class="form-group">
+                                    <label for="individualPrice1_<?php echo $key ?>">男：</label>
+                                    <input id="individualPrice1_<?php echo $key ?>" name="individualPrice1[<?php echo $key ?>]" type="text"
+                                           class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aIndividualChannel[$key]['iManPrice']) ? $aIndividualChannel[$key]['iManPrice'] : $aProduct['iManPrice'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="individualPrice2_<?php echo $key ?>">女-未婚：</label>
+                                    <input  id="individualPrice2_<?php echo $key ?>" name="individualPrice2[<?php echo $key ?>]" type="text"
+                                            class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aIndividualChannel[$key]['iWomanPrice1']) ? $aIndividualChannel[$key]['iWomanPrice1'] : $aProduct['iWomanPrice1'] ?>">
+                                </div>
+                                <div class="form-group">
+                                    <label for="individualPrice3_<?php echo $key ?>">女-已婚：</label>
+                                    <input  id="individualPrice3_<?php echo $key ?>" name="individualPrice3[<?php echo $key ?>]" type="text"
+                                            class="form-control onlycanint" style="width: 100px" value="<?php echo !empty($aIndividualChannel[$key]['iWomanPrice2']) ? $aIndividualChannel[$key]['iWomanPrice2'] : $aProduct['iWomanPrice2'] ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php
+                }
+            } ?>
+        </div>
+        <div class="btn-toolbar text-center">
+            <input type="hidden" name="submit_type" id="submit_type">
+            <input type="submit" class="btn btn-primary" onclick="summitType(0)"
+                   value="<?php echo !empty($iType) ? '保存' : '下一步' ?>">
+            <?php if (!empty($iType)) {
+                ?>
+                <input type="button" value="取消" id="cancel" class="btn"
+                       onclick="location.href='<?php echo !empty($sViewViewRangeUrl) ? $sViewViewRangeUrl.'id/'.$aProduct['iProductID'] : 'javascript:;' ?>';return false;">
+            <?php
+            } else {
+                ?>
+                <input type="button" value="取消" id="cancel" class="btn"
+                       onclick="location.href='<?php echo !empty($sEpListUrl) ? $sEpListUrl : 'javascript:;' ?>';return false;">
+            <?php
+            } ?>
+        </div>
+    </form>
+</div>
+<script type="text/javascript">
+    function summitType($iType) {
+        $('#submit_type').val($iType);
+    }
+    function radiocheck(sRadioClass, iModuleID) {
+        var iCanRadio = $("." + sRadioClass + ":checked").val();
+        if (iCanRadio == 1) {
+            $('#' + iModuleID).fadeIn('slow');
+        } else {
+            $('#' + iModuleID).fadeOut("slow");
+        }
+    }
+
+    function checkboxcheck(iCheckboxID, iModuleID) {
+        if ($('#' + iCheckboxID).prop('checked') == true) {
+            $('#' + iModuleID).fadeIn('slow');
+        } else {
+            $('#' + iModuleID).fadeOut("slow");
+        }
+    }
+
+    function selectCheck(selectid, selectval,type) {
+        if (selectval == 0) {
+            $('#'+type+'CanView' + selectid).hide();
+            $('#'+type+'NoView' + selectid).hide();
+        } else if (selectval == 1) {
+            $('#'+type+'CanView' + selectid).show();
+            $('#'+type+'NoView' + selectid).hide();
+
+        } else if (selectval == 2) {
+            $('#'+type+'CanView' + selectid).hide();
+            $('#'+type+'NoView' + selectid).show();
+
+        }
+    }
+
+    $('.iCanCompany').click(function () {
+        radiocheck('iCanCompany', $(this).data('moduleid'));
+    });
+    $('.iCanCompany').each(function () {
+        radiocheck('iCanCompany', $(this).data('moduleid'));
+    });
+    $('.companyChannel').click(function () {
+        checkboxcheck($(this).attr('id'), $(this).data('moduleid'));
+    });
+    $('.companyChannel').each(function () {
+        checkboxcheck($(this).attr('id'), $(this).data('moduleid'));
+    });
+
+    $('.iCanIndividual').click(function () {
+        radiocheck('iCanIndividual', $(this).data('moduleid'));
+    });
+    $('.iCanIndividual').each(function () {
+        radiocheck('iCanIndividual', $(this).data('moduleid'));
+    });
+    $('.individualChannel').click(function () {
+        checkboxcheck($(this).attr('id'), $(this).data('moduleid'));
+    });
+    $('.individualChannel').each(function () {
+        checkboxcheck($(this).attr('id'), $(this).data('moduleid'));
+    });
+
+    $('.companyViewType').change(function () {
+        selectCheck($(this).data('viewid'), $(this).val(),'company');
+    });
+    $('.companyViewType').each(function () {
+        selectCheck($(this).data('viewid'), $(this).val(),'company');
+    });
+    $('.individualViewType').change(function () {
+        selectCheck($(this).data('viewid'), $(this).val(),'individual');
+    });
+    $('.individualViewType').each(function () {
+        selectCheck($(this).data('viewid'), $(this).val(),'individual');
+    });
+
+    $('.onlycanint').keyup(function(){
+        var c=$(this);
+        if(/[^\d]/.test(c.val())){//替换非数字字符
+            var temp_amount=c.val().replace(/[^\d.]/g,'');
+            $(this).val(temp_amount);
+        }
+    });
+    $(function () {
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        if (ret.data) {
+                            alert(ret.data);
+                        }
+                        if (ret.url) {
+                            location.href = ret.url;
+                        }
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    });
+</script>

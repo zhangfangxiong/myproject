@@ -1,0 +1,201 @@
+<link rel="stylesheet" type="text/css" href="/front/css/indent.css">
+<?php // print_r($aList);?>
+<div class="body">
+    <div class="_body">
+<!--订单详情-->
+        <?php //print_r($aUser)?>
+    <div class="deatils">
+
+            <div class="deatils_title">
+                <p><img src="/front//images/dingdanxiangqing.jpg" style="position: relative;top: 10px"/>&nbsp;&nbsp;<span>订单详情</span></p>
+            </div>
+            <div class="deatils_content">
+                <div class="deatils_news">
+                    <table class="deatils_news_table">
+                    <tr><td>订单号：</td><td><?php echo $aAd['iAdID'] ?></td></tr>
+                    <tr><td>订单名称：</td><td><?php echo $aAd['sAdName'] ?></td></tr>
+                    <tr><td>下单时间：</td><td><?php echo $aAd['iCreateTime'] ?></td></tr>
+                    <tr><td>投放时间：</td><td><?php echo $aAd['iPlanTime'] ?></td></tr>
+                    <tr><td>总投放金额：</td><td><?php echo $aAd['iTotalMoney'] ?></td></tr>
+                    <tr>
+                        <td>查看内容：</td>
+                        <td>
+                            <a href="javascript:;" id="showw">查看原文</a>
+                        </td>
+                    </tr>
+                    <tr><td>原文链接：</td><td><a href="<?php echo $aSetting['sOriginalUrl'] ?>">点击查看</a></td></tr>
+                    <tr><td>文章导入链接：</td><td><a href="<?php echo $aSetting['sImportUrl'] ?>">查看链接</a></td></tr>
+                    </table>
+
+                </div>
+                <div class="deatils_right">
+                    <span style="position: relative;top: 40px;">封面图片：</span>
+                    <img aria-disabled="true"  class="eight imageplus plupload" src="<?php echo empty($aSetting)?'/front/images/tool/imageplus.png':Util_Uri::getDFSViewURL($aSetting['sCoverImg'])?>" data-target="#sCoverImg"  data-img="#sCoverImgShow"/>
+                    <div class="deatils_right_phone">
+                        <img src="/front//images/phone.jpg" class="phone"/>
+                        <div class="deatils_div">
+                           <?php echo $aSetting['sContent']?>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                <p>服务的总媒体账号：<span id=""><?php echo count($aList) ?></span><span>个</span></p>
+                <table class="table_table" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <th>订单号</th>
+                        <th>推广名称</th>
+                        <th>媒体类型</th>
+                        <th>推广账号</th>
+                        <th>推广位置</th>
+                        <th>价格</th>
+                        <th>执行时间</th>
+                        <th>支付状态</th>
+                        <th>执行状态</th>
+                        <th>评价</th>
+                    </tr>
+                    <?php foreach($aList as $k=>$v){ ?>
+                    <tr>
+                        <td><?php echo $v['iAutoID'] ?></td>
+                        <td><?php echo $v['aAd']['sAdName'] ?></td>
+                        <td><?php echo $v['aMedia']['iMediaType']==1?'微信公众号':'新浪微博'?></td>
+                        <td><?php echo $v['aMedia']['sMediaName']?></td>
+                        <td><?php echo $aTitle[$v['iAdPos']]?></td>
+                        <td><?php $num=$v['iAdPos']+4; $num2=$v['iAdPos']+10;
+                            $iPrice1='iPrice'.$num ;$iPrice2='iPrice'.$num2;
+                            echo $aTypr==1?$v['aMedia'][$iPrice1]:$v['aMedia'][$iPrice2]?></td>
+                        <td><?php echo date('Y-m-d H:i', $v['iPlanTime'])?></td>
+                        <td><span><?php echo $v['aAd']['iPayStatus']==0?'未付款':'已付款'?></span>
+                        </td><td><span><?php echo $aStatus[$v['iStatus']]?></span></td>
+                        <td>
+                            <?php if($v['iStatus']==8){?>
+                            <?php
+                            if(!empty($v['iEvaluation1'])||!empty($v['iEvaluation2'])){ ?><input type="button" value="查看" id="pj-<?php echo
+                            $v['iAutoID']?>" class="btnn">
+                                <input id="pinjia1_id_<?php echo $v['iAutoID'] ?>" type="hidden" value="<?php echo  $v['iEvaluation1']?>">
+                                <input id="pinjia2_id_<?php echo $v['iAutoID'] ?>" type="hidden" value="<?php echo empty($v['iEvaluation2'])?'无评价备注':$v['iEvaluation2']?>">
+                            <?php	}else{?>
+                                <input type="button" class="remark-btn" id="btn-<?php echo $v['iAutoID']?>" value="去评价" />
+                            <?php	}
+                            }else{
+                                echo "订单尚未完成";
+                            }?>
+                        </td>
+                    </tr>
+                    <?php }?>
+                </table>
+            </div>
+    </div>
+
+
+
+
+        <div class="quiz yincang" style="display: none;position: fixed;top: 100px;left: 300px;background: whitesmoke;">
+            <h3>我要评论 <img src="<?php echo $sStaticRoot ?>/front/images/wellcome_quit.png" style="position: relative;left: 680px" id="xiaos"/> </h3>
+            <div class="quiz_content">
+                <form action="" id="mydform" method="post">
+                    <div class="goods-comm">
+                        <div class="goods-comm-stars">
+                            <span class="star_l">满意度：</span>
+                            <div id="rate-comm-1" class="rate-comm"></div>
+                            <input type="hidden" name="pinf" id="StarNum" value="">
+                            <input type="hidden" name="iAutoid" id="hidden_id" value="">
+                        </div>
+                    </div>
+
+                    <div class="l_text">
+                        <label class="m_flo">内  容：</label>
+                        <textarea name="content" id="content" class="text"></textarea>
+                        <span class="tr">字数限制为5-200个</span>
+                    </div>
+                    <input class="btm" type="button" id="tijiao" />
+                </form>
+            </div><!--quiz_content end-->
+        </div>
+
+        <script src="<?php echo $sStaticRoot ?>/front/js/comment.js"></script>
+        <script type="text/javascript" src="<?php echo $sStaticRoot ?>/front/js/jquery.datetimepicker.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/front/css/jquery.datetimepicker.css"/>
+        <link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/front/css/pinjia.css"/ >
+        <script>
+            $(function () {
+                $('.remark-btn').click(function(){
+                    var _id = this.id.replace('btn-','');
+                    $('#hidden_id').val(_id);
+                    $(".yincang").css('display','block');
+                });
+                $('.btnn').click(function () {
+                    var pj_id = this.id.replace('pj-', '');
+                    var pingjia1 = $('#pinjia1_id_' + pj_id).val();
+                    var pingjia2 = $('#pinjia2_id_' + pj_id).val();
+                    if (pingjia1==1) {
+                        layer.alert('评价星级：' + '<img src="/front/images/stars-all.gif"><br>评价内容：' + pingjia2, {});
+                    }
+                    if(pingjia1==2){
+                        layer.alert('评价星级：'  + '<img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><br>评价内容：' + pingjia2, {});
+                    }
+                    if(pingjia1==3){
+                        layer.alert('评价星级：'  + '<img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><br>评价内容：' + pingjia2, {});
+                    }
+                    if(pingjia1==4){
+                        layer.alert('评价星级：'  + '<img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><br>评价内容：' + pingjia2, {});
+                    }	if(pingjia1==5){
+                        layer.alert('评价星级：'  + '<img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><img src="/front/images/stars-all.gif"><br>评价内容：' + pingjia2, {});
+                    }
+
+                });
+
+//		$('.btnn').click(function () {
+//			var pj_id = this.id.replace('pj-','');
+//			var pingjia1 = $('#pinjia1_id_'+pj_id).val();
+//			var pingjia2 = $('#pinjia2_id_'+pj_id).val();
+//			layer.alert(pingjia1+'<img src="/front/images/stars-all.gif"><br>评价内容：'+pingjia2, {
+//			});
+//		})
+
+                $('#xiaos').click(function () {
+                    $(".yincang").css('display','none');
+                });
+
+                $('#tijiao').click(function () {
+                    var id = $('#hidden_id').val();
+                    var pf = $('#StarNum').val();
+                    var content = $('#content').val();
+                    $.post('/acenter/excu', {iAutoid: id, pinf: pf, content: content}, function (ret) {
+                        if (ret.status) {
+                            alert(ret.data);
+                            location.reload();
+                        } else {
+                            alert(ret.data);
+                        }
+                    });
+                    return false;
+                });
+            })
+        </script>
+
+
+
+
+    </div>
+</div>
+<script src="/front/js/indent.js"></script>
+<script>
+    $(function () {
+
+        $('#showw').click(function () {
+           // alert(1);
+
+            layer.open({
+                type: 1,
+                skin: 'layui-layer-rim', //加上边框
+                area: ['800px', '600px'], //宽高
+                content: '<div style="font-size: x-large;color: red;text-align: center;">' +
+                '<?php echo empty($aSetting)?'':$aSetting['sTitle']?> ' +
+                '<br><br><br></div>' +
+                '<div>' +
+                '<?php echo empty($aSetting)?'':$aSetting['sContent']?>' +
+                '</div> '
+            });
+    })
+    })
+</script>

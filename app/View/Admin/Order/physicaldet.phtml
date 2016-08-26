@@ -1,0 +1,178 @@
+<div class="pheader clearfix">购卡信息</div>
+<div class="pbody clearfix">
+    <form id="myform1" class="form-horizontal" role="form" method="post" action="">
+        <input name="iArticleID" type="hidden" value="<?php echo isset($aData['iAutoID']) ? $aData['iAutoID'] : '' ?>">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">姓名：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['sConsignee'])?$orderDetail['sConsignee']:''?></span>
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">手机号码：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['sMobile'])?$orderDetail['sMobile']:''?></span>
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">体检卡类型：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo isset($aCardType[$orderDetail['iOrderType']]) ? $aCardType[$orderDetail['iOrderType']] : ''; ?></span>
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">发放状态：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo isset($aShippingStatus[$orderDetail['iShippingStatus']]) ? $aShippingStatus[$orderDetail['iShippingStatus']] : ''; ?></span>
+
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">是否需要发票：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['iIfInv'])?'需要':'不需要'?></span>
+            </label>
+            
+            <label class="col-sm-3 control-label text-right">邮箱：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['sEmail'])?$orderDetail['sEmail']:''?></span>
+            </label>
+        </div>
+        
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">地址：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['sAddress'])?$orderDetail['sAddress']:''?></span>
+            </label>
+            <label class="col-sm-3 control-label text-right">邮编：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['sZipcode'])?$orderDetail['sZipcode']:''?></span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">是否生成：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['iPayStatus']) && 1== intval($orderDetail['iPayStatus']) ? '已生成' : '未生成'; ?></span>
+            </label>
+            <label class="col-sm-3 control-label text-right">付款状态：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo isset($aPayStatus[$orderDetail['iPayStatus']]) ? $aPayStatus[$orderDetail['iPayStatus']] : ''; ?></span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">中智支付ID：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo !empty($orderDetail['iOrderID'])?$orderDetail['iOrderID']:''?></span>
+            </label>
+            <label class="col-sm-3 control-label text-right">支付宝ID：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo ( !empty($orderDetail['iPayChannel']) && 1 == $orderDetail['iPayChannel'] && !empty($orderDetail['sPayOrderID']) ) ?$orderDetail['sPayOrderID'] : ''?></span>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-right">微信支付ID：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo ( !empty($orderDetail['iPayChannel']) && 2 == $orderDetail['iPayChannel'] && !empty($orderDetail['sPayOrderID']) ) ?$orderDetail['sPayOrderID'] : ''?></span></span>
+            </label>
+            <label class="col-sm-3 control-label text-right">银联支付ID：</label>
+            <label class="col-sm-3 control-label" style="text-align: left">
+                <span><?php echo ( !empty($orderDetail['iPayChannel']) && 3 == $orderDetail['iPayChannel'] && !empty($orderDetail['sPayOrderID']) ) ?$orderDetail['sPayOrderID'] : ''?></span></span>
+            </label>
+        </div>
+
+    </form>
+
+    <div>
+        <table class="table table-bordered table-hover">
+            <tr class="info">
+                <td>体检产品</td>
+                <td>单价</td>
+                <td>订购数量</td>
+                <td>合计</td>
+            </tr>
+            <?php if(!empty($products)) { $total = 0;?>
+                <?php foreach($products as $product) { $total += $product['sTotalPrice'];?>
+                    <tr>
+                        <td><?php echo !empty($product['sProductName']) ? $product['sProductName'] : '';?></td>
+                        <td><?php echo !empty($product['sProductPrice']) ? $product['sProductPrice'] : 0;?></td>
+                        <td><?php echo !empty($product['iProductNumber']) ? $product['iProductNumber'] : 0;?></td>
+                        <td><?php echo !empty($product['sTotalPrice']) ? $product['sTotalPrice'] : '';?></td>
+                    </tr>
+                <?php }?>
+            <?php }?>
+        </table>
+        <span style="color: darkorange;display: inline-block;float: right;margin: 20px;">总金额：<span><?php echo $total;?></span>元</span>
+        <div style="clear: both;"></div>
+    </div>
+
+    <div style="text-align: center;">
+        <?php if(empty($orderDetail['iPayStatus'])) {?>
+            <a href="javascript: checkPay('<?php echo $orderDetail['sOrderCode'];?>');" class="btn btn-primary">确认付款</a>
+        <?php }?>
+        <?php if(empty($orderDetail['iShippingStatus']) || 1 == intval($orderDetail['iShippingStatus'])) {?>
+            <a href="javascript: checkSent(<?php echo $orderDetail['iOrderID'];?>);" class="btn btn-primary">发卡</a>
+        <?php }?>
+        <a href="javascript: history.go(-1);" class="btn btn-primary">返回</a>
+    </div>
+
+    <?php if(!empty($cards)) {?>
+    <div style="margin-top: 20px;">
+        <table class="table table-bordered table-hover">
+            <tr class="info">
+                <td>序号</td>
+                <td>体检卡号</td>
+                <td>对应套餐(截止有效期)</td>
+                <td>使用状态</td>
+                <td>是否激活</td>
+            </tr>
+            <?php foreach($cards as $card) {?>
+                <tr>
+                    <td><?php echo !empty($card['iAutoID']) ? $card['iAutoID'] : '';?></td>
+                    <td><?php echo !empty($card['sCardCode']) ? $card['sCardCode'] : '';?></td>
+                    <td>
+                        <?php
+                        echo !empty($card['sProductName']) ? $card['sProductName'] : '';
+                        echo "<br>";
+                        echo !empty($card['sEndDate']) && $card['sEndDate'] != "0000-00-00" ? $card['sEndDate'] : "";
+                        ?>
+                    </td>
+                    <td><?php echo !empty($card['iBindStatus']) ? '已使用' : '未使用';?></td>
+                    <td><?php echo (!empty($card['iStatus']) && 1 == $card['iStatus']) ? '已激活' : '';?></td>
+                </tr>
+            <?php }?>
+        </table>
+    </div>
+    <?php }?>
+</div>
+
+
+<script>
+    function checkPay(sOrderCode){
+        if (confirm("您确认已经付款吗？")) {
+            $.post('/admin/order/confirmPay', {ordercode: sOrderCode, iPayStatus: 2}, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                }else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        }
+    }
+
+    function checkSent(id){
+        if (confirm("您确认已经发卡吗？")) {
+            $.post('/admin/order/updateOrder', {iOrderID: id, iShippingStatus: 1}, function (ret) {
+                if (ret.status) {
+                    alert(ret.data);
+                    location.reload();
+                }else {
+                    alert(ret.data);
+                }
+            }, 'json');
+        }
+    }
+</script>

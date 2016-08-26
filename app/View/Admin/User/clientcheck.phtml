@@ -1,0 +1,97 @@
+<style>
+    .search-form .form-group {
+        margin-bottom: 15px;
+    }
+</style>
+<div class="pheader clearfix">客户审核</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form" role="form" method="post" id="myform" action="/admin/user/clientcheck">
+        <div class="row">
+
+            <div class="form-group col-sm-3">
+                <label>客户名称：</label>
+                <input type="text" value="<?php echo !empty($aParam['sRealName']) ? $aParam['sRealName'] : '' ?>"
+                       class="form-control" name="sRealName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>客户性质：</label>
+                <select name="iProperty" class="form-control" style="width: 100px">
+                    <?php foreach ($aProperty as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iProperty']) && $aParam['iProperty'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>关系等级：</label>
+                <select name="iRelationLevel" class="form-control" style="width: 100px">
+                    <?php foreach ($aRelationLevel as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iRelationLevel']) && $aParam['iRelationLevel'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>客户编号：</label>
+                <input type="text" value="<?php echo !empty($aParam['sUserName']) ? $aParam['sUserName'] : '' ?>"
+                       class="form-control" name="sUserName" style="width: 100px">
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>信用等级：</label>
+                <select name="iCreditLevel" class="form-control" style="width: 100px">
+                    <?php foreach ($aCreditLevel as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iCreditLevel']) && $aParam['iCreditLevel'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+
+            <div class="form-group col-sm-3">
+                <label>入库方式：</label>
+                <select name="iChannel" class="form-control" style="width: 100px">
+                    <?php foreach ($aChannel as $k => $v) { ?>
+                        <option
+                            value="<?php echo $k ?>" <?php echo isset($aParam['iChannel']) && $aParam['iChannel'] == $k ? 'selected' : '' ?>><?php echo $v ?></option>
+                    <?php } ?>
+                </select>
+
+                <input type="submit" id="formbtn" class="btn btn-primary" value="查询">
+            </div>
+        </div>
+    </form>
+    <hr>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">客户编号</th>
+            <th class="text-center">客户名称</th>
+            <th class="text-center">入库方式	</th>
+            <th class="text-center">审核状态</th>
+            <th class="text-center">备注</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aData['aList'])) {
+            foreach ($aData['aList'] as $aUser) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($aUser['sUserName']) ? $aUser['sUserName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aChannel[$aUser['iChannel']]) ? $aChannel[$aUser['iChannel']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aIsCheck[$aUser['iIsCheck']]) ? $aIsCheck[$aUser['iIsCheck']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aUser['sRemark']) ? $aUser['sRemark'] : '' ?></td>
+                    <td class="text-center">
+                        <a href="/admin/user/clientCheckDetail?id=<?php echo $aUser['iUserID'] ?>" title="查看详情"><i
+                                class="fa fa-pencil fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aData['aPager']) ? $aData['aPager'] : '' ?>
+</div>

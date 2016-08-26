@@ -1,0 +1,40 @@
+<div class="pbody clearfix">
+    <?php include('listheader.phtml'); ?>
+</div>
+<div class="pbody clearfix">
+    <table class="table table-hover table-bordered" id="listtable">
+        <thead>
+        <tr class="info">
+            <th class="text-center">订单号</th>
+            <th class="text-center">姓名</th>
+            <th class="text-center">订购数量</th>
+            <th class="text-center">订购时间</th>
+            <th class="text-center">支付状态</th>
+            <th class="text-center">生成状态</th>
+            <th class="text-center">发卡状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php if (!empty($aList['aList'])) {
+            foreach ($aList['aList'] as $order) { ?>
+                <tr>
+                    <td class="text-center"><?php echo !empty($order['sOrderCode']) ? $order['sOrderCode'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($order['sConsignee']) ? $order['sConsignee'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($order['iCardNum']) ? $order['iCardNum'] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($order['iCreateTime']) ? date('Y-m-d H:i:s',$order['iCreateTime']) : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aPayStatus[$order['iPayStatus']]) ? $aPayStatus[$order['iPayStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aGenStatus[$order['iPayStatus']]) ? $aGenStatus[$order['iPayStatus']] : '' ?></td>
+                    <td class="text-center"><?php echo !empty($aShippingStatus[$order['iShippingStatus']]) ? $aShippingStatus[$order['iShippingStatus']] : '' ?></td>
+
+                    <td class="text-center">
+                        <a href="<?php echo $sBuyDetailUrl ?>id/<?php echo $order['iOrderID'] ?>" title="查看"><i
+                                class="fa fa-eye fa-large"></i></a>
+                    </td>
+                </tr>
+            <?php }
+        } ?>
+        </tbody>
+    </table>
+    <?php echo !empty($aList['aPager']) ? $aData['aPager'] : '' ?>
+</div>

@@ -1,0 +1,145 @@
+<div class="pheader clearfix"><?php echo $aClass['sTitle']?>管理</div>
+<div class="pbody clearfix">
+    <form class="form-inline search-form">
+	<button class="btn btn-primary" id="type_add">
+		<i class="fa fa-plus"></i> 增加<?php echo $aClass['sTitle']?>
+	</button>
+	</form>
+	<table class="table table-bordered table-hover">
+	    <thead>
+    		<tr>
+    			<th class="col-sm-1 text-center">#</th>
+    			<th class="col-sm-3"><?php echo $aClass['sTitle']?>名称</th>
+    			<?php if ($aClass['sClass'] === 'supplier') {?>
+				<th class="col-sm-3">
+						<?php echo $aClass['sTitle']?>全称
+					</th>
+					<th class="col-sm-3">
+						<?php echo $aClass['sTitle']?>唯一标示
+					</th>
+    			<?php }?>
+    			<th class="col-sm-2 text-center">备注</th>
+    			<th class="col-sm-2 text-center">操作</th>
+    		</tr>
+		</thead>
+		<tbody>
+		    <?php makeTree($aTree, $aColor, $aClass);?>
+		</tbody>
+	</table>
+</div>
+<?php 
+function makeTree($aTree, $aColor, $aClass) {
+    foreach ($aTree as $v) {
+?>
+    		<tr cid="<?=$v['iTypeID']?>" ppid="<?=$v['iParentID']?>" class="<?php echo $aColor[$v['iLevel']]?> <?php echo $v['iLevel']==0?'':'hide';?> typepp<?=$v['iParentID']?> <?=$v['sPath']?>">
+    			<td align="center"><?=$v['iTypeID']?></td>
+    			<td align="left">
+    			    <?php if ($aClass['iLevel'] > 0) {?>
+    				<?php echo str_repeat('&nbsp;', 4*$v['iLevel'])?>
+    				<?php if(!empty($v['aChild'])){?><i class="fa fa-plus-square mopenbtn"></i><?php }else{?><i class="fa fa-minus"></i><?php }?>
+    				<?php }?>
+    				<?php echo $v['sTypeName'];?>
+    			</td>
+    			<?php if ($aClass['sClass'] === 'supplier') {?>
+				<td align="left">
+				<?php echo $v['sFullName'];?>
+				</td>
+					<td align="left">
+						<?php echo $v['sCode'];?>
+					</td>
+    			<?php }?>
+    			<td align="center"><?php echo $v['sRemark'];?></td>
+    			<td class="text-center">
+    				<a onclick="return type_move(this,0);" href="/admin/type/move?id=<?php echo $v['iTypeID']?>&direct=0" title="上移"><i class="fa fa-arrow-up fa-large"></i></a>
+    				<a onclick="return type_move(this,1);" href="/admin/type/move?id=<?php echo $v['iTypeID']?>&direct=1" title="下移"><i class="fa fa-arrow-down fa-large"></i></a>
+    				<a href="/admin/type/edit?id=<?php echo $v['iTypeID'];?>" title="编辑"><i class="fa fa-pencil fa-large"></i></a>
+    				<a href="/admin/type/del?id=<?php echo $v['iTypeID'];?>"  role="button" class="type_del" title="删除"><i class="fa fa-trash fa-large"></i></a>
+    			</td>
+    		</tr>
+<?php
+        if (!empty($v['aChild'])) {
+            makeTree($v['aChild'], $aColor);
+        }
+    }
+}		
+?>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/xcConfirm.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo $sStaticRoot ?>/js/xcConfirm.css"/>
+<style type="text/css">
+.sgBtn{width: 135px; height: 35px; line-height: 35px; margin-left: 10px; margin-top: 10px; text-align: center; background-color: #0095D9; color: #FFFFFF; float: left; border-radius: 5px;}
+</style>
+<script>
+$('#type_add').click(function(){
+	location.href = '/admin/type/add<?php echo empty($sClass)?'.html':"/class/$sClass.html"?>';
+	return false;
+});
+$('.type_del').click(function() {
+	var url = this.href;
+	if (confirm("你确定要删除该<?php echo $aClass['sTitle']?>吗？")) {
+		$.get(url, function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.reload();
+			}
+		}, 'json');
+	}
+	return false;
+});
+
+
+$('.mopenbtn').click(function(){
+	var ptr = $(this).parent().parent();
+	if ($(this).hasClass('fa-plus-square')) {
+		$('.typepp' + ptr.attr('cid')).removeClass('hide');
+		$(this).removeClass('fa-plus-square').addClass('fa-minus-square');
+	} else {
+		$('.typep' + ptr.attr('cid')).addClass('hide');
+	    $(this).removeClass('fa-minus-square').addClass('fa-plus-square');
+		$('.typepp' + ptr.attr('cid') + ' .mopenbtn').removeClass('fa-minus-square').addClass('fa-plus-square');
+	}
+});
+
+var type_moving = false;
+function type_move(ele, direct) {
+	if (type_moving == true) {
+		return false;
+	}
+	type_moving = true;
+	$.get($(ele).attr('href'), function(ret){
+		type_moving = false;
+		if (ret.status == false) {
+			alert(ret.data);
+			return false;
+		}
+		if (ret.data > 0) {
+			var currtr = $(ele).parent().parent();
+			var ppid = '.typepp' + currtr.attr('ppid');
+			if (direct == 0) {
+				var swaptr = currtr.prevAll(ppid).first();
+				if (swaptr.length == 0) {
+					return false;
+				}
+				swaptr.before(currtr);
+				$('.typep' + currtr.attr('cid')).each(function(){
+					swaptr.before($(this));
+				});
+			} else {
+				var swaptr = currtr.nextAll(ppid).first();
+				if ($('.typep' + swaptr.attr('cid')).length > 0) {
+					swaptr = $('.typep' + swaptr.attr('cid')).last();
+				}
+				if (swaptr.length == 0) {
+					return false;
+				}
+				swaptr.after(currtr);
+				var nexttr = currtr;
+				$('.typep' + currtr.attr('cid')).each(function(){
+					nexttr.after(this);
+					nexttr = $(this);
+				});
+			}
+		}
+	});
+	return false;
+}
+</script>

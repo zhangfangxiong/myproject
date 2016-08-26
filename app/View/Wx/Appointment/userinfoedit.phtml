@@ -1,0 +1,195 @@
+<div class="row <?php echo empty($hassnotoremenu) ? 'row-main-margin' : ''; ?>">
+    <div class="reservestore-content">
+        <div class="jumbotron">
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">体检卡号：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aCard['sCardCode']) ? $aCard['sCardCode'] : '' ?>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">体检套餐：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aProduct['sProductName']) ? !empty($aProduct['sAlias']) ? $aProduct['sAlias'] : $aProduct['sProductName'] : '' ?>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">体检类型：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aProductType[$aProduct['iProductType']]) ? $aProductType[$aProduct['iProductType']] : '' ?>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">有效期：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aCard['sStartDate']) ? $aCard['sStartDate'] : '' ?>
+                    至<?php echo !empty($aCard['sEndDate']) ? $aCard['sEndDate'] : '' ?>
+                </div>
+            </div>
+        </div>
+        <form id="myform" class="form-horizontal" role="form" method="post">
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">体检人姓名：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aUser['sRealName']) ? $aUser['sRealName'] : '' ?>
+                </div>
+            </div>
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">证件号码：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php echo !empty($aUser['sIdentityCard']) ? $aUser['sIdentityCard'] : '' ?>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label"><span class="tubiao">*</span>性别：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php if (!empty($aSex)) {
+                        foreach ($aSex as $key => $value) {
+                            ?>
+                            <input type="radio" name="iSex"
+                                   value="<?php echo $key ?>" <?php echo $key == $aUser['iSex'] ? 'checked' : '' ?>><?php echo $value ?>
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label"><span class="tubiao">*</span>婚姻状况：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <?php if (!empty($aMarriage)) {
+                        foreach ($aMarriage as $key => $value) {
+                            ?>
+                            <input type="radio" name="iMarriage"
+                                   value="<?php echo $key ?>" <?php echo $key == $aUser['iMarriage'] ? 'checked' : '' ?>><?php echo $value ?>
+                        <?php
+                        }
+                    } ?>
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label"><span class="tubiao">*</span>生日：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <input name="sBirthDate" id="sBirthDate" validate="!date:true" placeholder="请填写生日" type="text"
+                           value="<?php echo !empty($aUser['sBirthDate']) ? $aUser['sBirthDate'] : '' ?>"
+                           class="form-control input-validate">
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label"><span class="tubiao">*</span>手机：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <input name="sMobile" id="sMobile" validate="!mobile:true" placeholder="请填写手机" type="text"
+                           value="<?php echo !empty($aUser['sMobile']) ? $aUser['sMobile'] : '' ?>"
+                           class="form-control input-validate">
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">邮箱：</label>
+
+                <div class="col-xs-7 store-select-div">
+                    <input name="sEmail" id="sEmail" placeholder="请填写邮箱" type="text"
+                           value="<?php echo !empty($aUser['sEmail']) ? $aUser['sEmail'] : '' ?>"
+                           class="form-control input-validate">
+                </div>
+            </div>
+
+            <div class="form-group clearfix">
+                <label for="iProductType" class="col-xs-4 control-label">城市/区域：</label>
+
+                <div class="col-xs-3 store-select-div">
+                    <select id="iCityID" name="iCityID" class="form-control input-validate store-select">
+                        <option value="0" selected="">请选择</option>
+                        <?php if (!empty($aCitys)) {
+                            foreach ($aCitys as $key => $value) {
+                                ?>
+                                <option
+                                    value="<?php echo $key ?>" <?php echo ($key == $aUser['iCityID']) ? 'selected' : '' ?>><?php echo $value ?></option>
+                            <?php
+                            }
+                        } ?>
+                    </select>
+                </div>
+
+                <div class="col-xs-3 store-select-div">
+                    <select id="iRegionID" name="iRegionID" class="form-control input-validate store-select">
+                        <option value="0">全部</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="order-attention">
+                性别，婚姻状况关系到你的体检项目，请检查确认<br>
+                <span class="tubiao">*</span>标示的信息必须填写
+            </div>
+
+            <div class="jiesuan">
+                <input type="hidden" name="iUserID" id="iUserID" value="<?php echo $aUser['iUserID'] ?>">
+                <input type="submit" value="保存" class="form-control btn-warning">
+            </div>
+            <div class="cart-return">
+                <input class="form-control" value="返回" type="button" onclick="window.history.back()">
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(function () {
+        var getreginUrl = '<?php echo $sGetRegionUrl; ?>';
+        var regionID = '<?php echo $aUser['iRegionID']; ?>';
+        //var reserveStoreUrl = '<?php echo $sReserveStoreUrl.'id/'.$aParam['id'].'/pid/'.$aParam['pid'].'/sid/'.$aParam['sid'].'/upid/'.$aParam['upid']; ?>';
+        citychange();
+        function citychange() {
+            var cid = $('#iCityID').find('option:selected').val();
+            $('#iRegionID').empty();
+            $.post(getreginUrl, {iCityID: cid}, function (ret) {
+                if (ret.status) {
+                    $('#iRegionID').append('<option value="0">全部</option>');
+                    $.each(ret.data, function (i, e) {
+                        var select = '';
+                        if (regionID == e.iRegionID) {
+                            select = 'selected';
+                        }
+                        $('#iRegionID').append('<option ' + select + ' value="' + e.iRegionID + '">' + e.sRegionName + '</option>');
+                    });
+                    return false;
+                } else {
+                    alert('请求数据失败!');
+                }
+            }, 'json');
+        }
+
+        $('#iCityID').on('click', function () {
+            citychange();
+        });
+
+        $("#myform").validate({
+            submitHandler: function (form) {
+                $.post(form.action, $(form).serialize(), function (ret) {
+                    if (ret.status) {
+                        alert(ret.data);
+                        self.location=document.referrer;//返回页面并刷新
+                    } else {
+                        alert(ret.data);
+                    }
+                }, 'json');
+                return false;
+            }
+        });
+    })
+</script>

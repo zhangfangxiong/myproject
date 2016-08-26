@@ -1,0 +1,190 @@
+<style>
+    .radio-inline + .radio-inline {
+        padding-left: 5px;
+        margin-left: 0px;
+    }
+    .radio-inline {
+        padding-left: 0px;
+    }
+</style>
+<div class="row row-main-margin">
+    <form method="post" id="myform" action="<?php echo !empty($sBalanceUrl) ? $sBalanceUrl : '' ?>">
+        <div class="clearfix">
+            <?php if (!empty($aCart)) {
+                $sTotalPrice = 0;
+                foreach ($aCart as $key => $value) {
+                    ?>
+                    <div class="productitem clearfix"
+                         data-url="<?php echo !empty($sDetailUrl) ? $sDetailUrl : '' ?>id/<?php echo !empty($value['detail']['sProductCode']) ? $value['detail']['sProductCode'] : '' ?>">
+                        <div class="col-xs-4 padding-flush">
+                            <img class="img-responsive"
+                                 src="<?php echo !empty($value['detail']['sImage']) ? Util_Uri::getDFSViewURL($value['detail']['sImage']) : '' ?>">
+                        </div>
+                        <div class="col-xs-8 item-detail">
+                            <div
+                                class="item-title item-line cut"><?php echo !empty($value['detail']['sProductName']) ? !empty($value['detail']['sAlias']) ? $value['detail']['sAlias'] : $value['detail']['sProductName'] : '' ?>
+                                <i class="fa fa-chevron-right chevron-right"></i></div>
+                            <div class="item-price clearfix item-line">
+                                <div class="item-i-content">单价：</div>
+                                <div class="col-xs-9 padding-flush">
+                                    <i class="fa fa-cny"></i><span
+                                        class="p-item-price"
+                                        id="cart_price_<?php echo $value['iProductID'] ?>"><?php echo !empty($value['detail']['iManPrice']) ? number_format($value['detail']['iManPrice'], 2,'.','') : '' ?></span>
+                                    元
+                                </div>
+                            </div>
+                            <div class="item-num item-line1 clearfix">
+                                <div class="item-i-content">数量：</div>
+                                <i class="cart-btn fa fa-minus-square fa-2x reduce-num"
+                                   data-numid="cart_num_<?php echo $value['iProductID'] ?>"
+                                   data-priceid="cart_price_<?php echo $value['iProductID'] ?>"
+                                   data-totalid="cart_total_<?php echo $value['iProductID'] ?>"></i>
+
+                                <div class="col-xs-2 cart-num">
+                                    <input name="cartnum[<?php echo $value['iProductID'] ?>]"
+                                           id="cart_num_<?php echo $value['iProductID'] ?>" type="text" readonly
+                                           class="form-control text-center"
+                                           value="<?php echo !empty($value['iNum']) ? $value['iNum'] : '' ?>">
+                                </div>
+                                <i id="add_<?php echo $value['iProductID'] ?>" class="cart-btn fa fa-plus-square fa-2x add-num"
+                                   data-numid="cart_num_<?php echo $value['iProductID'] ?>"
+                                   data-priceid="cart_price_<?php echo $value['iProductID'] ?>"
+                                   data-totalid="cart_total_<?php echo $value['iProductID'] ?>"></i>
+                                <i data-id="<?php echo $value['iProductID'] ?>" class="cart-btn fa fa-trash-o col-xs-2 fa-2x delete-cart"></i>
+                            </div>
+                            <div class="item-sex item-line">
+                                <div class="item-i-content">性别：</div>
+                                <div class="col-md-8">
+                                    <?php if (!empty($aSex)) {
+                                        foreach ($aSex as $k => $val) {
+                                            ?>
+                                            <label onclick="changeSex($(this))" data-id="<?php echo $value['iProductID'] ?>" data-price="<?php if($k==1){echo $value['detail']['iManPrice'];}elseif($k==2){echo $value['detail']['iWomanPrice1'];}elseif($k==3){echo $value['detail']['iWomanPrice2'];} ?>" class="<?php if($k==1){echo 'labelchecked';} ?> radio-inline aProductSex<?php echo $value['iProductID'] ?>">
+                                                <input type="radio" class="inputhidden aProductSex<?php echo $value['iProductID'] ?>" name="aProductSex[<?php echo $value['iProductID'] ?>]" value="<?php echo $k ?>" <?php if($k==1){echo 'checked';} ?>>
+                                                <span><?php echo $val?></span>
+                                            </label>
+                                        <?php
+                                        }
+                                    } ?>
+                                </div>
+                            </div>
+                            <div class="item-total-price item-line">
+                                <div class="item-i-content">小计：</div>
+                                <div class="col-xs-8 padding-flush">
+                                    <i class="fa fa-cny"></i><span
+                                        class="p-item-total"
+                                        id="cart_total_<?php echo $value['iProductID'] ?>"><?php echo (!empty($value['iNum']) && !empty($value['detail']['iManPrice'])) ? number_format($value['iNum'] * $value['detail']['iManPrice'], 2,'.','') : 0 ?></span>元
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <?php
+                    $sTotalPrice = $sTotalPrice + $value['iNum'] * $value['detail']['iManPrice'];
+                }
+            } ?>
+        </div>
+
+        <div class="cart-total clearfix">
+            <strong>合计</strong>：<i class="fa fa-cny"></i><span
+                class="cart-total-num"><?php echo number_format($sTotalPrice, 2,'.','') ?></span>元
+        </div>
+        <div class="clearfix"></div>
+        <div class="jiesuan">
+            <input type="hidden" value="" name="checkdata" id="checkdata">
+            <input type="hidden" value="<?php echo $sTotalPrice ?>" name="total_price" id="total_price">
+            <input type="submit" value="结算" class="form-control btn-warning">
+        </div>
+        <div class="cart-return">
+            <input class="form-control" value="返回" type="button" id="reback">
+        </div>
+    </form>
+</div>
+<script>
+    function changeprice(event, num) {
+        var totalprice = 0;
+        //改变当前小计
+        var priceid = event.data('priceid');
+        var price = $('#' + priceid).html();
+        var totalid = event.data('totalid');
+        var total = price * num;
+        total = total.toFixed(2);
+        $('#' + totalid).html(total);
+        //改变总计
+        $('.p-item-total').each(function () {
+            totalprice += parseFloat($(this).html());
+        });
+        totalprice = totalprice.toFixed(2);
+        $('#total_price').val(totalprice);
+        $('.cart-total-num').html(totalprice);
+    }
+
+    $('.add-num').click(function () {
+        //改变num数目
+        var numid = $(this).data('numid');
+        var num = $('#' + numid).val();
+        num = parseInt(num) + 1;
+        $('#' + numid).val(num);
+        changeprice($(this), num);
+    });
+    $('.reduce-num').click(function () {
+        //改变num数目
+        var numid = $(this).data('numid');
+        var num = $('#' + numid).val();
+        num = (parseInt(num) - 1) > 0 ? parseInt(num) - 1 : 1;
+        $('#' + numid).val(num);
+        changeprice($(this), num);
+    });
+
+    $("#myform").submit(function () {
+        return balanceValidate();
+    });
+
+    function balanceValidate() {
+        var breturn = false;
+        $.ajax({
+            url: '<?php echo !empty($sBalanceValidateUrl) ? $sBalanceValidateUrl : '' ?>',
+            type: 'post',
+            async: false,
+            data: $($("#myform")).serialize(),
+            dataType: 'json',
+            success: function (ret) {
+                if (ret.status) {
+                    $('#checkdata').val(JSON.stringify(ret.data));
+                    breturn = true;
+                } else {
+                    alert(ret.data);
+                }
+            }
+        });
+        return breturn;
+    }
+
+    function deleteCart(productid) {
+        var Url = '<?php echo $sDeleteCartUrl;?>';
+        $.get(Url, {id: productid}, function (ret) {
+            if (ret.status) {
+                alert('删除成功');
+                window.location.reload();
+            } else {
+                alert('删除失败');
+            }
+        }, 'json');
+    }
+
+    $('.delete-cart').click(function () {
+        var productid = $(this).data('id');
+        deleteCart(productid);
+    });
+    $('#reback').click(function(){
+        window.history.back();
+    });
+
+    function changeSex(event)
+    {
+        event.addClass('labelchecked').siblings().removeClass('labelchecked');
+        var id = event.data('id');
+        var price = event.data('price');
+        var num = $('#cart_num_' + id).val();
+        $('#cart_price_' + id).html(price);
+        changeprice($('#add_'+id), num);
+    }
+</script>

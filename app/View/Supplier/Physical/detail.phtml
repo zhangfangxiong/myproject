@@ -1,0 +1,170 @@
+<div class="pheader clearfix">体检预约单</div>
+<div class="pbody clearfix">
+<?php if ($aDetail) { ?>
+    <div class="form-group col-sm-6">
+        <label for="iOrderID" class="col-sm-5 ">中盈订单流水号：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['iOrderID'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sOrderCode" class="col-sm-5 ">中盈订单编号：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sOrderCode'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sProductName" class="col-sm-5 ">体检项目：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sProductName'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sStoreName" class="col-sm-5 ">预约门店：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sStoreName'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sRealName" class="col-sm-5 ">姓名：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sRealName']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="iJobGradeID" class="col-sm-5 ">性别：</label>
+
+        <div class="col-sm-7">
+            <?php echo $aDetail['sSex']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sIdentityCard" class="col-sm-5 ">身份证：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sIdentityCard']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sBirthDate" class="col-sm-5 ">生日：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sBirthDate']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sMobile" class="col-sm-5 ">联系电话：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sMobile']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sEmail" class="col-sm-5 "> 邮箱：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sEmail']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sOrderDate" class="col-sm-5 "> 体检日期：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sOrderDate']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sStatus" class="col-sm-5 "> 状态：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sOrderStatus'] . '&nbsp;&nbsp;&nbsp;&nbsp;' . $aDetail['sPreStatus'] ?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sPhysicalTime" class="col-sm-5 "> 到检时间：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sPhysicalTime']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sReportTime" class="col-sm-5 "> 报告时间：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sReportTime']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-6">
+        <label for="sPaperReport" class="col-sm-5 "> 是否提供纸质报告：</label>
+        <div class="col-sm-7">
+            <?php echo $aDetail['sPaperReport']?>
+        </div>
+    </div>
+
+    <div class="form-group col-sm-12 text-center">
+        <a class="btn btn-default" href='/supplier/physical/list'>返回</a>
+        <?php if ($aDetail['iBookStatus'] == 1) { ?>
+        <button id="confirm" data-type='2' class="btn btn-primary">到检确认</button>
+        <?php }?>
+        <?php if ($aDetail['iBookStatus'] == 2) { ?>
+        <button id="confirm" data-type='5' class="btn btn-primary">已出体检报告</button>
+        <?php }?>
+    </div>
+
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <div class="pheader col-sm-12">大病检出记录</div>
+        <div class="form-group col-sm-12">
+            <label for="iIsSerious" class="col-sm-3 control-label"> <span class="tubiao">*</span>是否检出大病：</label>
+            <div class="col-sm-9">
+                <input type='radio' name='iIsSerious' value='1' 
+                <?php echo 1 == $aDetail['iIsSerious'] ? 'checked': '';?>>是</input>
+                <input type='radio' name='iIsSerious' value='0'
+                <?php echo 0 == $aDetail['iIsSerious'] ? 'checked': '';?>>否</input>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label for="sSeriousRemark" class="col-sm-3 control-label"> <span class="tubiao">*</span>备注说明：</label>
+           <div class="col-sm-9">
+                <textarea name="sSeriousRemark" class="form-control input-validate"><?php echo $aDetail['sSeriousRemark']?></textarea>
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center col-sm-12">
+            <button id="save" class="btn btn-primary">提交大病检出</button>
+        </div>
+    </form>
+<?php }?>
+</div>
+
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/laydate/laydate.js"></script>
+<script type="text/javascript">
+$(function() {
+    $("#myform").validate({submitHandler: function(form) {
+        $.post(form.action, $(form).serialize(), function(ret){
+            alert(ret.data);
+            if (ret.url != '') {
+               location.href = ret.url; 
+            }
+        }, 'json');
+        return false;
+    }});
+
+    $('#confirm').click(function () {
+        $.post('/supplier/physical/confirm', {id: <?php echo $aDetail['iAutoID'] ?>, type: $(this).data('type')}, function(ret){
+            alert(ret.data);
+            if (ret.status) {
+                location.href = ret.url;     
+            }            
+        }, 'json');
+    })
+});
+</script>
+
+

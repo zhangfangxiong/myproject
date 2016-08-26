@@ -1,0 +1,353 @@
+<script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=4bfffe2dca93bbf875de0181774419c4&plugin=AMap.Autocomplete,AMap.PlaceSearch"></script>
+<?php if (!empty($sOpt) && $sOpt != 'detail') { ?>
+<div class="pheader clearfix"><?php echo isset($aStore['iStoreID'])?'编辑':'增加'?>供应商门店</div>
+<?php } else { ?>
+<link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css"/>
+<script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+<?php include 'menu.phtml';  } ?>
+
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iStoreID" type="hidden" value="<?php echo isset($aStore['iStoreID'])?$aStore['iStoreID']:''?>">
+		<div class="form-group col-sm-6">
+			<label for="sCode" class="col-sm-3 control-label"> 门店编号：</label>
+			<div class="col-sm-9">
+				<input name="sCode" placeholder="自动生成" type="text" value="<?php echo !empty($aStore['sCode']) ? $aStore['sCode']: '';?>" readonly class="form-control">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sName" class="col-sm-3 control-label"> <span class="tubiao">*</span> 门店名称：</label>
+			<div class="col-sm-9">
+				<input name="sName" type="text" value="<?php echo isset($aStore['sName'])?$aStore['sName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sShortName" class="col-sm-3 control-label"> <span class="tubiao">*</span>门店简称：</label>
+			<div class="col-sm-9">
+				<input name="sShortName" placeholder="" type="text" value="<?php echo isset($aStore['sShortName'])?$aStore['sShortName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sStoreCode" class="col-sm-3 control-label"> <span class="tubiao">*</span> 门店代码：</label>
+			<div class="col-sm-9">
+				<input name="sStoreCode" type="text" value="<?php echo isset($aStore['sStoreCode'])?$aStore['sStoreCode']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sEnName" class="col-sm-3 control-label"> 门店英文：</label>
+			<div class="col-sm-9">
+				<input name="sEnName" type="text" value="<?php echo isset($aStore['sEnName'])?$aStore['sEnName']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sCoIndustry" class="col-sm-3 control-label">门店类型：</label>
+			<div class="col-sm-9">
+				<select name="iCategory" class="form-control input-validate">
+					<?php foreach ($aStoreCategory as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iCategory'])&&$aStore['iCategory']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCityID" class="col-sm-3 control-label">所在地区：</label>
+			<div class="col-sm-4">
+				<select id="iCityID" name="iCityID" class="form-control input-validate">
+					<option value="0" <?php echo empty($aStore['iCityID']) ? 'selected' :''?>>请选择</option>
+					<?php foreach ($aCity as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iCityID'])&&$aStore['iCityID']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+			<div class="col-sm-4">
+				<select id="iRegionID" name="iRegionID" class="form-control input-validate">
+					<option value="0" <?php echo empty($aStore['iRegionID']) ? 'selected' :''?>>请选择</option>
+					<?php foreach ($aRegion as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iRegionID'])&&$aStore['iRegionID']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iCreditID" class="col-sm-3 control-label">信用等级：</label>
+			<div class="col-sm-9">
+				<select name="iCreditID" class="form-control input-validate">
+					<?php foreach ($aCreditLevel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iCreditID'])&&$aStore['iCreditID']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iRelationID" class="col-sm-3 control-label">关系等级：</label>
+			<div class="col-sm-9">
+				<select name="iRelationID" class="form-control input-validate">
+					<?php foreach ($aRelationLevel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iRelationID'])&&$aStore['iRelationID']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sTel" class="col-sm-3 control-label"> 门店电话：</label>
+			<div class="col-sm-9">
+				<input name="sTel" type="text" value="<?php echo isset($aStore['sTel'])?$aStore['sTel']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sFax" class="col-sm-3 control-label">传真：</label>
+			<div class="col-sm-9">
+				<input name="sFax" type="text" value="<?php echo isset($aStore['sFax'])?$aStore['sFax']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sAddress" class="col-sm-3 control-label"> 地址：</label>
+			<div class="col-sm-9">
+				<input name="sAddress" id='sAddress' type="text" value="<?php echo isset($aStore['sAddress'])?$aStore['sAddress']:''?>" class="form-control input-validate">
+				<a id="latlng" class="btn btn-primary">获取经纬度</a>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iXY" class="col-sm-3 control-label">坐标(X,Y)：</label>
+			<div class="col-sm-4">				
+				<input name="iX" id="iX" placeholder="" type="text" value="<?php echo isset($aStore['iX'])?$aStore['iX']:''?>" class="form-control input-validate">
+			</div>
+			<div class="col-sm-4">		
+				<input name="iY" id="iY" placeholder="" type="text" value="<?php echo isset($aStore['iY'])?$aStore['iY']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sZipCode" class="col-sm-3 control-label">邮政编码：</label>
+			<div class="col-sm-9">
+				<input name="sZipCode" type="text" value="<?php echo isset($aStore['sZipCode'])?$aStore['sZipCode']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sWebsite" class="col-sm-3 control-label"> 网址：</label>
+			<div class="col-sm-9">
+				<input name="sWebsite" type="text" value="<?php echo isset($aStore['sWebsite'])?$aStore['sWebsite']:''?>" class="form-control input-validate">
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="sWorktime" class="col-sm-3 control-label"> 营业时间：</label>
+			<div class="col-sm-9">
+				<!-- <input name="sWorktime" type="text" value="<?php echo isset($aStore['sWorktime'])?$aStore['sWorktime']:''?>" class="form-control input-validate"> -->
+				<textarea placeholder="最多输入500字" name="sWorktime" class="form-control input-validate"><?php echo isset($aStore['sWorktime'])?$aStore['sWorktime']:''?></textarea>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iSupplierID" class="col-sm-3 control-label"><span class="tubiao">*</span>所属供应商：</label>
+			<div class="col-sm-9">
+				<select name="iSupplierID" class="form-control input-validate">
+					<option value="0" <?php echo empty($aStore['iSupplierID']) ? 'selected' :''?>>请选择</option>
+					<?php foreach ($aSupplier as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iSupplierID'])&&$aStore['iSupplierID']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iIsTestShop" class="col-sm-3 control-label">是否体检门店：</label>
+			<div class="col-sm-9">
+				<select name="iIsTestShop" class="form-control input-validate">
+					<option value="1" <?php echo !isset($aStore['iIsTestShop']) || $aStore['iIsTestShop']==1 ?'selected':''?>>是</option>
+					<option value="2" <?php echo isset($aStore['iIsTestShop']) && $aStore['iIsTestShop']==2?'selected':''?>>否</option>					
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iShopLevel" class="col-sm-3 control-label">门店星级：</label>
+			<div class="col-sm-9">
+				<select name="iShopLevel" class="form-control input-validate">
+					<?php foreach ($aShopLevel as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iShopLevel'])&&$aStore['iShopLevel']==$v?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-6">
+			<label for="iStoreNature" class="col-sm-3 control-label">门店性质：</label>
+			<div class="col-sm-9">
+				<select name="iStoreNature" class="form-control input-validate">
+					<option value="0" <?php echo empty($aStore['iStoreNature']) ? 'selected' :''?>>请选择</option>
+					<?php foreach ($aStoreProperty as $k => $v) {?>
+						<option value="<?php echo $k?>" <?php echo isset($aStore['iStoreNature'])&&$aStore['iStoreNature']==$k?'selected':''?>><?php echo $v?></option>
+					<?php }?>
+				</select>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-12">
+			<label for="sTraffic" class="col-sm-3 control-label"> 交通线路：</label>
+			<div class="col-sm-9">
+				<textarea placeholder="最多输入1000字" name="sTraffic" class="form-control input-validate"><?php echo isset($aStore['sTraffic'])?$aStore['sTraffic']:''?></textarea>
+			</div>
+		</div>
+
+		<div class="form-group col-sm-12">
+			<label for="sLogo" class="col-sm-3 control-label"> 公司LOGO：</label>
+			<div class="col-sm-6">
+                <input type="hidden" id="sLogo" name="sLogo" value="<?php echo !empty($aStore['sLogo']) ? 
+                $sLogo : '' ?>">
+                <img id="imgurlShow" style="width:120px;height:90px;" src="<?php echo !empty($aStore['sLogo']) ?Util_Uri::getDFSViewURL($aStore['sLogo']) : '' ?>">
+                <?php if (!empty($sOpt) && $sOpt != 'detail') { ?>
+                <input type="button" value="选择" class="plupload" data-target="#sLogo" data-img="#imgurlShow">
+                <?php } ?>       
+            </div>
+		</div>	
+
+		<div class="form-group col-sm-12">
+			<label for="sDesc" class="col-sm-3 control-label"> 公司简介：</label>
+			<div class="col-sm-9">
+				<textarea name="sDesc" class="form-control input-validate"><?php echo isset($aStore['sRemark'])?$aStore['sDesc']:''?></textarea>
+			</div>
+		</div>
+
+		<div class="btn-toolbar text-center col-sm-12">
+		<?php if (!empty($sOpt) && $sOpt == 'detail') { ?>
+	    	<a class="text-right btn btn-primary" href='/admin/store/edit/id/<?php echo $aStore['iStoreID']?>'>修改</a>        
+		<?php } else { ?>		
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<a id="cancel" class="btn btn-primary" href="/admin/store/list.html">取消</a>
+        <?php } ?>
+        </div>
+    </form>
+</div>
+
+<?php if (!empty($sOpt) && $sOpt == 'detail') { ?>
+<div class="pbody clearfix">
+	<div class="form-group">
+		<label class="col-sm-2 control-label"> 地图位置: </label>
+		<div class="col-sm-7" style="height:400px">
+			<div id="container"></div>
+		</div>
+	</div>
+</div>
+<?php } ?>
+
+<script type="text/javascript">
+global.sUploadUrl = '<?php echo Util_Common::getConf('upload', 'url')?>';
+global.sDfsViewUrl = '<?php echo Util_Common::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" src="<?php echo $sStaticRoot ?>/plupload/zh_CN.js"></script>
+
+<script type="text/javascript">
+AMap.service('AMap.Geocoder',function(){//回调函数
+	//实例化Geocoder
+    geocoder = new AMap.Geocoder({
+        city: ""//城市，默认全国
+    });
+})
+
+if ($('#container').length) {
+	var map = new AMap.Map('container', {
+	    resizeEnable: true,
+	    center: [<?php echo $aStore['iX']?>, <?php echo $aStore['iY']?>],
+	    zoom: 13
+	});
+	var marker = new AMap.Marker({
+	    position: map.getCenter()
+	});
+	marker.setMap(map);
+
+	// 设置鼠标划过点标记显示的文字提示
+	// marker.setTitle('');
+	// 设置label标签
+	marker.setLabel({//label默认蓝框白底左上角显示，样式className为：amap-marker-label
+	    offset: new AMap.Pixel(20, 20),//修改label相对于maker的位置
+	});
+}
+
+
+$(function() {
+	$('#iCityID').on('change',function(){
+        var cid = $(this).find('option:selected').val();
+        $('#iRegionID').empty();
+        $.post('/admin/city/getregion', {iCityID: cid}, function(ret){
+            if (ret.status) {
+                $('#iRegionID').append('<option value="0">全部</option>');
+                $.each(ret.data, function(i,e) {
+                    $('#iRegionID').append('<option value="'+e.iRegionID+'">'+e.sRegionName+'</option>');
+                });
+                return false;
+            }else {
+                alert('请求数据失败!');
+            }
+        }, 'json');
+    });
+
+    $('#latlng').click(function() {    	
+    	var city = '';
+    	var region = '';
+    	var addr = '';
+
+    	if($('#iCityID').val() > 0) {
+    		city = $('#iCityID').find('option:selected').text();
+    	}
+
+    	if($('#iRegionID').val() > 0) {
+    		region = $('#iRegionID').find('option:selected').text();
+    	}
+
+    	addr = city + region + $('#sAddress').val();    	
+    	if ($.trim(addr) != '') {
+    		geocoder.getLocation(addr, function(status, result) {
+	            if (status === 'complete' && result.info === 'OK') {
+	                lnglat = result.geocodes[0].location;
+	                lng = lnglat.lng;
+	                lat = lnglat.lat;
+
+	                $('#iX').val(lng);
+	                $('#iY').val(lat);
+	            }else{
+	                alert('获取失败,请填写完整地址');
+	            }
+	        }); 
+    	} else {
+    		alert('请填写完整地址');
+    	}
+
+    	
+    })
+
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){	
+	    	alert(ret.data);
+	        if (ret.status) {
+	          	window.location.href = ret.url;
+	        }
+	   	}, 'json');
+		return false;
+	}});
+
+	<?php if (!empty($sOpt) && $sOpt == 'detail') { ?>
+	$('input').attr('readonly', 'readonly');
+	$('select').attr('disabled', 'true');
+	$('textarea').attr('readonly', 'readonly');
+	<?php } ?>
+});
+</script>

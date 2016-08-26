@@ -1,0 +1,108 @@
+<div class="pheader clearfix">选择条件</div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input name="iUserID" type="hidden" value="<?php echo isset($aEmployee['iUserID'])?$aEmployee['iUserID']:''?>">
+        <div class="form-group col-sm-4">
+            <label for="iDeptID" class="col-sm-4 control-label">所属机构：</label>
+            <div class="col-sm-8">
+                <select name="iDeptID" class="form-control input-validate">
+                	<option value="0" <?php echo empty($aParam['iDeptID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aDeptSet as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aParams['iDeptID']) && $aParams['iDeptID']==$k ? 'selected' : ''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+        
+        <div class="form-group col-sm-3">
+            <label for="iLevelID" class="col-sm-4 control-label">职级：</label>
+            <div class="col-sm-8">
+                <select name="iLevelID" class="form-control input-validate">
+                	<option value="0" <?php echo empty($aParam['iLevelID'])  ? 'selected' : '' ?>>全部</option>
+                    <?php foreach ($aLevel as $k => $v) {?>
+                        <option value="<?php echo $k?>" <?php echo isset($aParams['iLevelID'])&&$aParams['iLevelID']==$k?'selected':''?>><?php echo $v?></option>
+                    <?php }?>
+                </select>
+            </div>
+        </div>
+
+         <div class="form-group col-sm-4">
+            <label for="iSendLoginStatus" class="col-sm-4 control-label">其他条件：</label>
+            <div class="col-sm-8">
+                <select name="iSendLoginStatus" class="form-control input-validate">
+                	<option value='0' <?php echo isset($aParams['iSendLoginStatus']) ? 'selected' : ''?>>全部</option>
+                    <option value='1' <?php echo 1 == $aParams['iSendLoginStatus'] ? 'selected' : '' ?>>未发送过账号的员工</option>
+                    <option value='2' <?php echo 2 == $aParams['iSendLoginStatus'] ? 'selected' : ''?>>未登陆过账号的员工</option>                     
+                </select>
+            </div>
+        </div>
+
+        <div class="btn-toolbar text-center col-sm-1">
+            <button id="save" class="btn btn-primary">查询</button>
+        </div>
+    </form>
+
+    <hr>
+    <?php if ($aList) { ?> 
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th class="text-center">员工编号</th>
+            <th class="text-center">员工姓名</th>
+            <th class="text-center">机构名称</th>
+            <th class="text-center">邮箱</th>
+            <th class="text-center">联系电话</th>
+            <th class="text-center">职级</th>
+            <th class="text-center">操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($aList as $key => $aUser) { ?>
+                <tr>
+                    <td class="text-center"><?php echo $aUser['sUserName'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sRealName'] ?></td>
+                    <td class="text-center"><?php echo $aDeptSet[$aUser['iDeptID']] ?></td>
+                    <td class="text-center"><?php echo $aUser['sEmail'] ?></td>
+                    <td class="text-center"><?php echo $aUser['sMobile'] ?></td>
+                    <td class="text-center"><?php echo $aLevel[$aUser['iJobGradeID']] ?></td>
+                    <td class="text-center">
+                        <a href="/company/employee/detail?iEmployeeID=<?php echo $aUser['iUserID'] ?>" title="查看详情">查看</a>
+                        <a href="/company/mail/setmail?employeeId=<?php echo $aUser['iUserID'] ?>" title="发送账号">发送账号</a>                        
+                    </td>
+                </tr>
+            <?php }?>
+        </tbody>
+    </table>
+
+    <form id="sIDs" class="form-horizontal" role="form" method="post">
+    	<input name="employeeIds" type="hidden" value="<?php echo $sIDs;?>"></input>
+    	<div class="btn-toolbar text-center col-sm-12">
+        	<button id="send" class="btn btn-primary">发送</button>
+	        <a class="text-right btn btn-default" href='/company/employee/list'>返回</a>
+	    </div>
+    </form>
+
+    <?php } ?>
+</div>
+
+<div class="pheader clearfix">邮件内容预览，**标签 [ ] 的内容会自动替换成对应的信息</div>
+
+<div class="form-group col-sm-12">
+<div class="col-sm-10">
+   <textarea style="margin: 0px; height: 207px; width: 574px;" name="" class="form-control input-validate">
+   <?php echo $sMail;?>
+   </textarea>
+</div>
+</div>
+
+
+<script type="text/javascript">
+$(function() {
+	$("#sIDs").validate({submitHandler: function(form) {
+        $.post('/company/mail/sendmultimail', $(form).serialize(), function(ret){
+            alert(ret.data);
+        }, 'json');
+        return false;
+    }});
+});
+</script>

@@ -1,0 +1,46 @@
+<div class="pheader clearfix"><?php echo isset($aField['iAutoID'])?'编辑':'增加'?><?php echo $sTypeName?></div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post" action="">
+        <input name="iAutoID" type="hidden" value="<?php echo isset($aField['iAutoID'])?$aField['iAutoID']:''?>">
+        <input name="sType" type="hidden" value="<?php echo isset($aField['sType'])?$aField['sType']:$sType?>">
+		<div class="form-group">
+			<label for="sName" class="col-sm-2 control-label"><strong style="color:red;">*</strong> <?php echo $sTypeName?>：</label>
+			<div class="col-sm-10">
+				<input name="sName" validate="!length:2-20" type="text" value="<?php echo isset($aField['sName'])?$aField['sName']:''?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sPassword" class="col-sm-2 control-label"> 排序：</label>
+			<div class="col-sm-10">
+			    <input name="iOrder" validate="!digit:true" type="text" value="<?php echo isset($aField['iOrder'])?$aField['iOrder']:'0'?>" class="form-control input-validate">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="sPassword" class="col-sm-2 control-label"> 备注：</label>
+			<div class="col-sm-10">
+			    <textarea name="sRemark" rows="4" class="form-control input-validate"><?php echo isset($aField['sRemark'])?$aField['sRemark']:''?></textarea>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+    	<div class="btn-toolbar text-center">
+        	<button id="save" class="btn btn-primary">保存</button>
+        	<button id="cancel"class="btn" onclick="location.href='/admin/field/list/type/<?php echo $sType?>.html';return false;">取消</button>
+        </div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+		$.post(form.action, $(form).serialize(), function(ret){
+			alert(ret.data);
+			if (ret.status) {
+				location.href = '/admin/field/list/type/<?php echo $sType?>.html';
+			}
+		}, 'json');
+		return false;
+	}});
+
+});
+</script>

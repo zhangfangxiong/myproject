@@ -1,0 +1,93 @@
+<div class="pheader clearfix"><?php echo isset($aType['iTypeID'])?'编辑':'增加'?><?php echo $aClass['sTitle']?></div>
+<div class="pbody clearfix">
+    <form id="myform" class="form-horizontal" role="form" method="post">
+        <input type="hidden" class="form-control" name="iTypeID" value="<?php echo isset($aType['iTypeID'])?$aType['iTypeID']:''?>">
+        <input type="hidden" class="form-control" name="sClass" value="<?php echo $sClass?>">
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong> <?php echo $aClass['sTitle']?>名称：</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control input-validate" validate="!length:2-50" name="sTypeName" value="<?php echo isset($aType['sTypeName'])?$aType['sTypeName']:''?>">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		
+		<?php if ($aClass['sClass'] === 'supplier') { ?>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong><?php echo $aClass['sTitle']?>全称：</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control input-validate" validate="!length:1-100" name="sFullName" value="<?php echo isset($aType['sFullName'])?$aType['sFullName']:''?>">
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+			<div class="form-group">
+				<label class="col-sm-2 control-label"><strong style="color:red;">*</strong><?php echo $aClass['sTitle']?>唯一标示：</label>
+				<div class="col-sm-10">
+					<input type="text" class="form-control input-validate" validate="!length:1-100" name="sCode" value="<?php echo isset($aType['sCode'])?$aType['sCode']:''?>">
+					<span class="validate_checktip"></span>
+				</div>
+			</div>
+		<?php } ?>
+
+	    <?php if ($aClass['iLevel'] > 0) {?>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><strong style="color:red;">*</strong> 父级<?php echo $aClass['sTitle']?>：</label>
+			<div class="col-sm-10">
+				<select name="iParentID" class="form-control input-validate col-sm-10">
+					<option value="0">顶级<?php echo $aClass['sTitle']?></option>
+					<?php
+					if(!empty($aTree)){
+					    $iTypeID = isset($aType['iParentID'])?$aType['iParentID']:'';
+					    foreach ($aTree as $v){
+                    ?>
+					<option value="<?php echo $v['iTypeID']?>" <?php echo $v['iTypeID']==$iTypeID?'selected':'';?>><?php echo ($v['iLevel']>0?'└'.str_repeat('─', $v['iLevel'] * 2):'') . $v['sTypeName']?></option>
+					<?php }}?>
+				</select>
+			</div>
+		</div>
+		<?php }?>
+		<?php if ($aClass['sImage'] != '') {?>
+		<div class="form-group">
+            <label class="col-sm-2 control-label"><strong style="color:red;">*</strong> <?php echo $aClass['sImage']?>：</label>
+            <div class="col-sm-10">
+                <input type="hidden" validate="*required:请上传<?php echo $aClass['sImage']?>" id="sImage" name="sImage" value="<?php echo isset($aType['sImage']) ? $aType['sImage'] : '' ?>">
+                <img id="sImageShow" style="width:160px;height:120px;" src="<?php if (isset($aType['sImage']) && !empty($aType)) { echo Util_Uri::getDFSViewURL($aType['sImage']); }else{ echo '';}?>">
+                <input type="button" value="选择" class="plupload" data-target="#sImage" data-img="#sImageShow" data-fsize="100kb">
+                <span class="text-muted">请上传大小≤100K，支持png、jpg图片</span>
+                <span class="validate_checktip"></span>
+            </div>
+        </div>
+		<?php }?>
+		<div class="form-group">
+			<label class="col-sm-2 control-label"><?php echo $aClass['sTitle']?>备注：</label>
+			<div class="col-sm-10">
+			    <textarea name="sRemark" class="form-control input-validate"><?php echo isset($aType['sRemark'])?$aType['sRemark']:''?></textarea>
+				<span class="validate_checktip"></span>
+			</div>
+		</div>
+		<div class="btn-toolbar text-center">
+			<input type="submit" class="btn btn-primary" value="保存">
+    	    <button id="cancel"class="btn" onclick="location.href='/admin/type/<?php echo empty($sClass)?"list":$sClass?>.html';return false;">取消</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(function() {
+	$("#myform").validate({submitHandler: function(form) {
+	    $.post(form.action, $(form).serialize(), function(ret){
+	        alert(ret.data);
+	        if (ret.status) {
+	            location.href = '/admin/type/<?php echo empty($sClass)?"list":$sClass?>.html';
+	        }
+	    }, 'json');
+		return false;
+	}});
+});
+</script>
+
+<script type="text/javascript">
+    global.sUploadUrl = '<?php echo Yaf_G::getConf('upload', 'url')?>';
+    global.sDfsViewUrl = '<?php echo Yaf_G::getConf('dfsview', 'url')?>';
+</script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/plupload/plupload.full.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot ?>/js/upload.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo $sStaticRoot?>/plupload/zh_CN.js"></script>
